@@ -1,415 +1,361 @@
-/* global NexT, CONFIG */
+/* utils function */
+import { navbarShrink } from "./layouts/navbarShrink.js";
+import { initTOC } from "./layouts/toc.js";
+import { main } from "./main.js";
+import imageViewer from "./tools/imageViewer.js";
 
-HTMLElement.prototype.wrap = function(wrapper) {
-  this.parentNode.insertBefore(wrapper, this);
-  this.parentNode.removeChild(this);
-  wrapper.appendChild(this);
+export const navigationState = {
+  isNavigating: false,
 };
 
-NexT.utils = {
+export default function initUtils() {
+  const utils = {
+    html_root_dom: document.querySelector("html"),
+    pageContainer_dom: document.querySelector(".page-container"),
+    pageTop_dom: document.querySelector(".main-content-header"),
+    homeBanner_dom: document.querySelector(".home-banner-container"),
+    scrollProgressBar_dom: document.querySelector(".scroll-progress-bar"),
+    pjaxProgressBar_dom: document.querySelector(".pjax-progress-bar"),
+    pjaxProgressIcon_dom: document.querySelector(".swup-progress-icon"),
+    backToTopButton_dom: document.querySelector(".tool-scroll-to-top"),
+    toolsList: document.querySelector(".hidden-tools-list"),
+    toggleButton: document.querySelector(".toggle-tools-list"),
 
-  /**
-   * Wrap images with fancybox.
-   */
-  wrapImageWithFancyBox: function() {
-    document.querySelectorAll('.post-body :not(a) > img, .post-body > img').forEach(element => {
-      var $image = $(element);
-      var imageLink = $image.attr('data-src') || $image.attr('src');
-      var $imageWrapLink = $image.wrap(`<a class="fancybox fancybox.image" href="${imageLink}" itemscope itemtype="http://schema.org/ImageObject" itemprop="url"></a>`).parent('a');
-      if ($image.is('.post-gallery img')) {
-        $imageWrapLink.attr('data-fancybox', 'gallery').attr('rel', 'gallery');
-      } else if ($image.is('.group-picture img')) {
-        $imageWrapLink.attr('data-fancybox', 'group').attr('rel', 'group');
+    innerHeight: window.innerHeight,
+    pjaxProgressBarTimer: null,
+    prevScrollValue: 0,
+    fontSizeLevel: 0,
+
+    isHasScrollProgressBar: theme.global.scroll_progress.bar === true,
+    isHasScrollPercent: theme.global.scroll_progress.percentage === true,
+
+    // Scroll Style
+    updateScrollStyle() {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight =
+        window.innerHeight || document.documentElement.clientHeight;
+      const percent = this.calculatePercentage(
+        scrollTop,
+        scrollHeight,
+        clientHeight,
+      );
+
+      this.updateScrollProgressBar(percent);
+      this.updateScrollPercent(percent);
+      this.updatePageTopVisibility(scrollTop, clientHeight);
+
+      this.prevScrollValue = scrollTop;
+    },
+
+    updateScrollProgressBar(percent) {
+      if (this.isHasScrollProgressBar) {
+        const progressPercent = percent.toFixed(3);
+        const visibility = percent === 0 ? "hidden" : "visible";
+
+        this.scrollProgressBar_dom.style.visibility = visibility;
+        this.scrollProgressBar_dom.style.width = `${progressPercent}%`;
+      }
+    },
+
+    updateScrollPercent(percent) {
+      if (this.isHasScrollPercent) {
+        const percentDom = this.backToTopButton_dom.querySelector(".percent");
+        const showButton = percent !== 0 && percent !== undefined;
+
+        this.backToTopButton_dom.classList.toggle("show", showButton);
+        percentDom.innerHTML = percent.toFixed(0);
+      }
+    },
+
+    updatePageTopVisibility(scrollTop, clientHeight) {
+      if (theme.navbar.auto_hide) {
+        const prevScrollValue = this.prevScrollValue;
+        const hidePageTop =
+          prevScrollValue > clientHeight && scrollTop > prevScrollValue;
+
+        this.pageTop_dom.classList.toggle("hide", hidePageTop);
       } else {
-        $imageWrapLink.attr('data-fancybox', 'default').attr('rel', 'default');
+        this.pageTop_dom.classList.remove("hide");
       }
+    },
 
-      var imageTitle = $image.attr('title') || $image.attr('alt');
-      if (imageTitle) {
-        $imageWrapLink.append(`<p class="image-caption">${imageTitle}</p>`);
-        // Make sure img title tag will show correctly in fancybox
-        $imageWrapLink.attr('title', imageTitle).attr('data-caption', imageTitle);
+    calculatePercentage(scrollTop, scrollHeight, clientHeight) {
+      return Math.round((scrollTop / (scrollHeight - clientHeight)) * 100);
+    },
+
+    // register window scroll event
+    registerWindowScroll() {
+      window.addEventListener("scroll", () => {
+        this.updateScrollStyle();
+        this.updateTOCScroll();
+        this.updateNavbarShrink();
+        this.updateHomeBannerBlur();
+        this.updateAutoHideTools();
+        this.updateAPlayerAutoHide();
+      });
+    },
+
+    updateTOCScroll() {
+      if (
+        theme.articles.toc.enable &&
+        initTOC().hasOwnProperty("updateActiveTOCLink")
+      ) {
+        initTOC().updateActiveTOCLink();
       }
-    });
+    },
 
-    $.fancybox.defaults.hash = false;
-    $('.fancybox').fancybox({
-      loop   : true,
-      helpers: {
-        overlay: {
-          locked: false
-        }
+    updateNavbarShrink() {
+      if (!navigationState.isNavigating) {
+        navbarShrink.init();
       }
-    });
-  },
+    },
 
-  registerExtURL: function() {
-    document.querySelectorAll('span.exturl').forEach(element => {
-      let link = document.createElement('a');
-      // https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
-      link.href = decodeURIComponent(atob(element.dataset.url).split('').map(c => {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      link.rel = 'noopener external nofollow noreferrer';
-      link.target = '_blank';
-      link.className = element.className;
-      link.title = element.title;
-      link.innerHTML = element.innerHTML;
-      element.parentNode.replaceChild(link, element);
-    });
-  },
+    updateHomeBannerBlur() {
+      if (
+        theme.home_banner.style === "fixed" &&
+        location.pathname === config.root
+      ) {
+        const blurElement = document.querySelector(".home-banner-background");
+        const viewHeight = window.innerHeight;
+        const scrollY = window.scrollY || window.pageYOffset;
+        const triggerViewHeight = viewHeight / 2;
+        const blurValue = scrollY >= triggerViewHeight ? 15 : 0;
 
-  /**
-   * One-click copy code support.
-   */
-  registerCopyCode: function() {
-    document.querySelectorAll('figure.highlight').forEach(element => {
-      const box = document.createElement('div');
-      element.wrap(box);
-      box.classList.add('highlight-container');
-      box.insertAdjacentHTML('beforeend', '<div class="copy-btn"><i class="fa fa-clipboard fa-fw"></i></div>');
-      var button = element.parentNode.querySelector('.copy-btn');
-      button.addEventListener('click', event => {
-        var target = event.currentTarget;
-        var code = [...target.parentNode.querySelectorAll('.code .line')].map(line => line.innerText).join('\n');
-        var ta = document.createElement('textarea');
-        ta.style.top = window.scrollY + 'px'; // Prevent page scrolling
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.readOnly = true;
-        ta.value = code;
-        document.body.append(ta);
-        const selection = document.getSelection();
-        const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
-        ta.select();
-        ta.setSelectionRange(0, code.length);
-        ta.readOnly = false;
-        var result = document.execCommand('copy');
-        if (CONFIG.copycode.show_result) {
-          target.querySelector('i').className = result ? 'fa fa-check fa-fw' : 'fa fa-times fa-fw';
-        }
-        ta.blur(); // For iOS
-        target.blur();
-        if (selected) {
-          selection.removeAllRanges();
-          selection.addRange(selected);
-        }
-        document.body.removeChild(ta);
-      });
-      button.addEventListener('mouseleave', event => {
-        setTimeout(() => {
-          event.target.querySelector('i').className = 'fa fa-clipboard fa-fw';
-        }, 300);
-      });
-    });
-  },
-
-  wrapTableWithBox: function() {
-    document.querySelectorAll('table').forEach(element => {
-      const box = document.createElement('div');
-      box.className = 'table-container';
-      element.wrap(box);
-    });
-  },
-
-  registerVideoIframe: function() {
-    document.querySelectorAll('iframe').forEach(element => {
-      const supported = [
-        'www.youtube.com',
-        'player.vimeo.com',
-        'player.youku.com',
-        'player.bilibili.com',
-        'www.tudou.com'
-      ].some(host => element.src.includes(host));
-      if (supported && !element.parentNode.matches('.video-container')) {
-        const box = document.createElement('div');
-        box.className = 'video-container';
-        element.wrap(box);
-        let width = Number(element.width);
-        let height = Number(element.height);
-        if (width && height) {
-          element.parentNode.style.paddingTop = (height / width * 100) + '%';
-        }
+        try {
+          blurElement.style.transition = "0.3s";
+          blurElement.style.webkitFilter = `blur(${blurValue}px)`;
+        } catch (e) {}
       }
-    });
-  },
+    },
 
-  registerScrollPercent: function() {
-    var THRESHOLD = 50;
-    var backToTop = document.querySelector('.back-to-top');
-    var readingProgressBar = document.querySelector('.reading-progress-bar');
-    // For init back to top in sidebar if page was scrolled after page refresh.
-    window.addEventListener('scroll', () => {
-      if (backToTop || readingProgressBar) {
-        var docHeight = document.querySelector('.container').offsetHeight;
-        var winHeight = window.innerHeight;
-        var contentVisibilityHeight = docHeight > winHeight ? docHeight - winHeight : document.body.scrollHeight - winHeight;
-        var scrollPercent = Math.min(100 * window.scrollY / contentVisibilityHeight, 100);
-        if (backToTop) {
-          backToTop.classList.toggle('back-to-top-on', window.scrollY > THRESHOLD);
-          backToTop.querySelector('span').innerText = Math.round(scrollPercent) + '%';
-        }
-        if (readingProgressBar) {
-          readingProgressBar.style.width = scrollPercent.toFixed(2) + '%';
-        }
-      }
-    });
+    updateAutoHideTools() {
+      const y = window.pageYOffset;
+      const height = document.body.scrollHeight;
+      const windowHeight = window.innerHeight;
+      const toolList = document.getElementsByClassName(
+        "right-side-tools-container",
+      );
 
-    backToTop && backToTop.addEventListener('click', () => {
-      window.anime({
-        targets  : document.scrollingElement,
-        duration : 500,
-        easing   : 'linear',
-        scrollTop: 0
-      });
-    });
-  },
-
-  /**
-   * Tabs tag listener (without twitter bootstrap).
-   */
-  registerTabsTag: function() {
-    // Binding `nav-tabs` & `tab-content` by real time permalink changing.
-    document.querySelectorAll('.tabs ul.nav-tabs .tab').forEach(element => {
-      element.addEventListener('click', event => {
-        event.preventDefault();
-        var target = event.currentTarget;
-        // Prevent selected tab to select again.
-        if (!target.classList.contains('active')) {
-          // Add & Remove active class on `nav-tabs` & `tab-content`.
-          [...target.parentNode.children].forEach(element => {
-            element.classList.remove('active');
-          });
-          target.classList.add('active');
-          var tActive = document.getElementById(target.querySelector('a').getAttribute('href').replace('#', ''));
-          [...tActive.parentNode.children].forEach(element => {
-            element.classList.remove('active');
-          });
-          tActive.classList.add('active');
-          // Trigger event
-          tActive.dispatchEvent(new Event('tabs:click', {
-            bubbles: true
-          }));
-        }
-      });
-    });
-
-    window.dispatchEvent(new Event('tabs:register'));
-  },
-
-  registerCanIUseTag: function() {
-    // Get responsive height passed from iframe.
-    window.addEventListener('message', ({ data }) => {
-      if ((typeof data === 'string') && data.includes('ciu_embed')) {
-        var featureID = data.split(':')[1];
-        var height = data.split(':')[2];
-        document.querySelector(`iframe[data-feature=${featureID}]`).style.height = parseInt(height, 10) + 5 + 'px';
-      }
-    }, false);
-  },
-
-  registerActiveMenuItem: function() {
-    document.querySelectorAll('.menu-item').forEach(element => {
-      var target = element.querySelector('a[href]');
-      if (!target) return;
-      var isSamePath = target.pathname === location.pathname || target.pathname === location.pathname.replace('index.html', '');
-      var isSubPath = !CONFIG.root.startsWith(target.pathname) && location.pathname.startsWith(target.pathname);
-      element.classList.toggle('menu-item-active', target.hostname === location.hostname && (isSamePath || isSubPath));
-    });
-  },
-
-  registerLangSelect: function() {
-    let selects = document.querySelectorAll('.lang-select');
-    selects.forEach(sel => {
-      sel.value = CONFIG.page.lang;
-      sel.addEventListener('change', () => {
-        let target = sel.options[sel.selectedIndex];
-        document.querySelectorAll('.lang-select-label span').forEach(span => span.innerText = target.text);
-        let url = target.dataset.href;
-        window.pjax ? window.pjax.loadUrl(url) : window.location.href = url;
-      });
-    });
-  },
-
-  registerSidebarTOC: function() {
-    const navItems = document.querySelectorAll('.post-toc li');
-    const sections = [...navItems].map(element => {
-      var link = element.querySelector('a.nav-link');
-      var target = document.getElementById(decodeURI(link.getAttribute('href')).replace('#', ''));
-      // TOC item animation navigate.
-      link.addEventListener('click', event => {
-        event.preventDefault();
-        var offset = target.getBoundingClientRect().top + window.scrollY;
-        window.anime({
-          targets  : document.scrollingElement,
-          duration : 500,
-          easing   : 'linear',
-          scrollTop: offset + 10
-        });
-      });
-      return target;
-    });
-
-    var tocElement = document.querySelector('.post-toc-wrap');
-    function activateNavByIndex(target) {
-      if (target.classList.contains('active-current')) return;
-
-      document.querySelectorAll('.post-toc .active').forEach(element => {
-        element.classList.remove('active', 'active-current');
-      });
-      target.classList.add('active', 'active-current');
-      var parent = target.parentNode;
-      while (!parent.matches('.post-toc')) {
-        if (parent.matches('li')) parent.classList.add('active');
-        parent = parent.parentNode;
-      }
-      // Scrolling to center active TOC element if TOC content is taller then viewport.
-      window.anime({
-        targets  : tocElement,
-        duration : 200,
-        easing   : 'linear',
-        scrollTop: tocElement.scrollTop - (tocElement.offsetHeight / 2) + target.getBoundingClientRect().top - tocElement.getBoundingClientRect().top
-      });
-    }
-
-    function findIndex(entries) {
-      let index = 0;
-      let entry = entries[index];
-      if (entry.boundingClientRect.top > 0) {
-        index = sections.indexOf(entry.target);
-        return index === 0 ? 0 : index - 1;
-      }
-      for (; index < entries.length; index++) {
-        if (entries[index].boundingClientRect.top <= 0) {
-          entry = entries[index];
+      for (let i = 0; i < toolList.length; i++) {
+        const tools = toolList[i];
+        if (y <= 0) {
+          if (location.pathname !== "/") {
+            //console.log(location.pathname)
+          } else {
+            tools.classList.add("hide");
+          }
+        } else if (y + windowHeight >= height - 20) {
+          tools.classList.add("hide");
         } else {
-          return sections.indexOf(entry.target);
+          tools.classList.remove("hide");
         }
       }
-      return sections.indexOf(entry.target);
-    }
+    },
 
-    function createIntersectionObserver(marginTop) {
-      marginTop = Math.floor(marginTop + 10000);
-      let intersectionObserver = new IntersectionObserver((entries, observe) => {
-        let scrollHeight = document.documentElement.scrollHeight + 100;
-        if (scrollHeight > marginTop) {
-          observe.disconnect();
-          createIntersectionObserver(scrollHeight);
-          return;
+    updateAPlayerAutoHide() {
+      const aplayer = document.getElementById("aplayer");
+      if (aplayer == null) {
+      } else {
+        const y = window.pageYOffset;
+        const height = document.body.scrollHeight;
+        const windowHeight = window.innerHeight;
+        if (y <= 0) {
+          if (location.pathname !== "/") {
+            //console.log(location.pathname)
+          } else {
+            aplayer.classList.add("hide");
+          }
+        } else if (y + windowHeight >= height - 20) {
+          aplayer.classList.add("hide");
+        } else {
+          aplayer.classList.remove("hide");
         }
-        let index = findIndex(entries);
-        activateNavByIndex(navItems[index]);
-      }, {
-        rootMargin: marginTop + 'px 0px -100% 0px',
-        threshold : 0
-      });
-      sections.forEach(element => {
-        element && intersectionObserver.observe(element);
-      });
-    }
-    createIntersectionObserver(document.documentElement.scrollHeight);
-  },
-
-  hasMobileUA: function() {
-    let ua = navigator.userAgent;
-    let pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
-    return pa.test(ua);
-  },
-
-  isTablet: function() {
-    return window.screen.width < 992 && window.screen.width > 767 && this.hasMobileUA();
-  },
-
-  isMobile: function() {
-    return window.screen.width < 767 && this.hasMobileUA();
-  },
-
-  isDesktop: function() {
-    return !this.isTablet() && !this.isMobile();
-  },
-
-  supportsPDFs: function() {
-    let ua = navigator.userAgent;
-    let isFirefoxWithPDFJS = ua.includes('irefox') && parseInt(ua.split('rv:')[1].split('.')[0], 10) > 18;
-    let supportsPdfMimeType = typeof navigator.mimeTypes['application/pdf'] !== 'undefined';
-    let isIOS = /iphone|ipad|ipod/i.test(ua.toLowerCase());
-    return isFirefoxWithPDFJS || (supportsPdfMimeType && !isIOS);
-  },
-
-  /**
-   * Init Sidebar & TOC inner dimensions on all pages and for all schemes.
-   * Need for Sidebar/TOC inner scrolling if content taller then viewport.
-   */
-  initSidebarDimension: function() {
-    var sidebarNav = document.querySelector('.sidebar-nav');
-    var sidebarNavHeight = sidebarNav.style.display !== 'none' ? sidebarNav.offsetHeight : 0;
-    var sidebarOffset = CONFIG.sidebar.offset || 12;
-    var sidebarb2tHeight = CONFIG.back2top.enable && CONFIG.back2top.sidebar ? document.querySelector('.back-to-top').offsetHeight : 0;
-    var sidebarSchemePadding = (CONFIG.sidebar.padding * 2) + sidebarNavHeight + sidebarb2tHeight;
-    // Margin of sidebar b2t: -4px -10px -18px, brings a different of 22px.
-    if (CONFIG.scheme === 'Pisces' || CONFIG.scheme === 'Gemini') sidebarSchemePadding += (sidebarOffset * 2) - 22;
-    // Initialize Sidebar & TOC Height.
-    var sidebarWrapperHeight = document.body.offsetHeight - sidebarSchemePadding + 'px';
-    document.querySelector('.site-overview-wrap').style.maxHeight = sidebarWrapperHeight;
-    document.querySelector('.post-toc-wrap').style.maxHeight = sidebarWrapperHeight;
-  },
-
-  updateSidebarPosition: function() {
-    var sidebarNav = document.querySelector('.sidebar-nav');
-    var hasTOC = document.querySelector('.post-toc');
-    if (hasTOC) {
-      sidebarNav.style.display = '';
-      sidebarNav.classList.add('motion-element');
-      document.querySelector('.sidebar-nav-toc').click();
-    } else {
-      sidebarNav.style.display = 'none';
-      sidebarNav.classList.remove('motion-element');
-      document.querySelector('.sidebar-nav-overview').click();
-    }
-    NexT.utils.initSidebarDimension();
-    if (!this.isDesktop() || CONFIG.scheme === 'Pisces' || CONFIG.scheme === 'Gemini') return;
-    // Expand sidebar on post detail page by default, when post has a toc.
-    var display = CONFIG.page.sidebar;
-    if (typeof display !== 'boolean') {
-      // There's no definition sidebar in the page front-matter.
-      display = CONFIG.sidebar.display === 'always' || (CONFIG.sidebar.display === 'post' && hasTOC);
-    }
-    if (display) {
-      window.dispatchEvent(new Event('sidebar:show'));
-    }
-  },
-
-  getScript: function(url, callback, condition) {
-    if (condition) {
-      callback();
-    } else {
-      var script = document.createElement('script');
-      script.onload = script.onreadystatechange = function(_, isAbort) {
-        if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
-          script.onload = script.onreadystatechange = null;
-          script = undefined;
-          if (!isAbort && callback) setTimeout(callback, 0);
-        }
-      };
-      script.src = url;
-      document.head.appendChild(script);
-    }
-  },
-
-  loadComments: function(element, callback) {
-    if (!CONFIG.comments.lazyload || !element) {
-      callback();
-      return;
-    }
-    let intersectionObserver = new IntersectionObserver((entries, observer) => {
-      let entry = entries[0];
-      if (entry.isIntersecting) {
-        callback();
-        observer.disconnect();
       }
-    });
-    intersectionObserver.observe(element);
-    return intersectionObserver;
-  }
-};
+    },
+
+    toggleToolsList() {
+      this.toggleButton.addEventListener("click", () => {
+        this.toolsList.classList.toggle("show");
+      });
+    },
+
+    globalFontSizeAdjust() {
+      const htmlRoot = this.html_root_dom;
+      const fontAdjustPlus = document.querySelector(".tool-font-adjust-plus");
+      const fontAdjustMinus = document.querySelector(".tool-font-adjust-minus");
+
+      const fontSize = document.defaultView.getComputedStyle(
+        document.body,
+      ).fontSize;
+      const baseFontSize = parseFloat(fontSize);
+
+      let fontSizeLevel = 0;
+      const styleStatus = main.getStyleStatus();
+      if (styleStatus) {
+        fontSizeLevel = styleStatus.fontSizeLevel;
+        setFontSize(fontSizeLevel);
+      }
+
+      function setFontSize(level) {
+        const fontSize = baseFontSize * (1 + level * 0.05);
+        htmlRoot.style.fontSize = `${fontSize}px`;
+        main.styleStatus.fontSizeLevel = level;
+        main.setStyleStatus();
+      }
+
+      function increaseFontSize() {
+        fontSizeLevel = Math.min(fontSizeLevel + 1, 5);
+        setFontSize(fontSizeLevel);
+      }
+
+      function decreaseFontSize() {
+        fontSizeLevel = Math.max(fontSizeLevel - 1, 0);
+        setFontSize(fontSizeLevel);
+      }
+
+      fontAdjustPlus.addEventListener("click", increaseFontSize);
+      fontAdjustMinus.addEventListener("click", decreaseFontSize);
+    },
+    // go comment anchor
+    goComment() {
+      this.goComment_dom = document.querySelector(".go-comment");
+      if (this.goComment_dom) {
+        this.goComment_dom.addEventListener("click", () => {
+          const target = document.querySelector("#comment-anchor");
+          if (target) {
+            const offset = target.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+              top: offset,
+              behavior: "smooth",
+            });
+          }
+        });
+      }
+    },
+
+    // get dom element height
+    getElementHeight(selectors) {
+      const dom = document.querySelector(selectors);
+      return dom ? dom.getBoundingClientRect().height : 0;
+    },
+
+    // init first screen height
+    inithomeBannerHeight() {
+      this.homeBanner_dom &&
+        (this.homeBanner_dom.style.height = this.innerHeight + "px");
+    },
+
+    // init page height handle
+    initPageHeightHandle() {
+      if (this.homeBanner_dom) return;
+      const temp_h1 = this.getElementHeight(".main-content-header");
+      const temp_h2 = this.getElementHeight(".main-content-body");
+      const temp_h3 = this.getElementHeight(".main-content-footer");
+      const allDomHeight = temp_h1 + temp_h2 + temp_h3;
+      const innerHeight = window.innerHeight;
+      const pb_dom = document.querySelector(".main-content-footer");
+      if (allDomHeight < innerHeight) {
+        const marginTopValue = Math.floor(innerHeight - allDomHeight);
+        if (marginTopValue > 0) {
+          pb_dom.style.marginTop = `${marginTopValue - 2}px`;
+        }
+      }
+    },
+
+    // big image viewer
+
+    // set how long ago language
+    setHowLongAgoLanguage(p1, p2) {
+      return p2.replace(/%s/g, p1);
+    },
+
+    getHowLongAgo(timestamp) {
+      const l = lang_ago;
+
+      const __Y = Math.floor(timestamp / (60 * 60 * 24 * 30) / 12);
+      const __M = Math.floor(timestamp / (60 * 60 * 24 * 30));
+      const __W = Math.floor(timestamp / (60 * 60 * 24) / 7);
+      const __d = Math.floor(timestamp / (60 * 60 * 24));
+      const __h = Math.floor((timestamp / (60 * 60)) % 24);
+      const __m = Math.floor((timestamp / 60) % 60);
+      const __s = Math.floor(timestamp % 60);
+
+      if (__Y > 0) {
+        return this.setHowLongAgoLanguage(__Y, l.year);
+      } else if (__M > 0) {
+        return this.setHowLongAgoLanguage(__M, l.month);
+      } else if (__W > 0) {
+        return this.setHowLongAgoLanguage(__W, l.week);
+      } else if (__d > 0) {
+        return this.setHowLongAgoLanguage(__d, l.day);
+      } else if (__h > 0) {
+        return this.setHowLongAgoLanguage(__h, l.hour);
+      } else if (__m > 0) {
+        return this.setHowLongAgoLanguage(__m, l.minute);
+      } else if (__s > 0) {
+        return this.setHowLongAgoLanguage(__s, l.second);
+      }
+    },
+
+    relativeTimeInHome() {
+      const post = document.querySelectorAll(
+        ".home-article-meta-info .home-article-date",
+      );
+      const df = theme.home.article_date_format;
+      if (df === "relative") {
+        post &&
+          post.forEach((v) => {
+            const nowDate = Date.now();
+            const postDate = new Date(
+              v.dataset.date.split(" GMT")[0],
+            ).getTime();
+            v.innerHTML = this.getHowLongAgo(
+              Math.floor((nowDate - postDate) / 1000),
+            );
+          });
+      } else if (df === "auto") {
+        post &&
+          post.forEach((v) => {
+            const nowDate = Date.now();
+            const postDate = new Date(
+              v.dataset.date.split(" GMT")[0],
+            ).getTime();
+            const finalDays = Math.floor(
+              (nowDate - postDate) / (60 * 60 * 24 * 1000),
+            );
+            if (finalDays < 7) {
+              v.innerHTML = this.getHowLongAgo(
+                Math.floor((nowDate - postDate) / 1000),
+              );
+            }
+          });
+      }
+    },
+  };
+
+  // init scroll
+  utils.registerWindowScroll();
+
+  // toggle show tools list
+  utils.toggleToolsList();
+
+  // main font adjust
+  utils.globalFontSizeAdjust();
+
+  // go comment
+  utils.goComment();
+
+  // init page height handle
+  utils.initPageHeightHandle();
+
+  // init first screen height
+  utils.inithomeBannerHeight();
+
+  // set how long ago in home article block
+  utils.relativeTimeInHome();
+
+  // image viewer handle
+  imageViewer();
+}
