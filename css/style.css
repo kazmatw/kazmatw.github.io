@@ -4703,6 +4703,27 @@ html.is-animating .swup-progress-icon {
   transform: scale(0.72);
   transform-origin: left;
 }
+.navbar-container .navbar-content .left .logo-image {
+  width: 46px;
+  height: 46px;
+  margin-right: 8px;
+}
+@media (max-width: 768px) {
+  .navbar-container .navbar-content .left .logo-image {
+    width: 41.4px;
+    height: 41.4px;
+  }
+}
+@media (max-width: 640px) {
+  .navbar-container .navbar-content .left .logo-image {
+    width: 36.800000000000004px;
+    height: 36.800000000000004px;
+  }
+}
+.navbar-container .navbar-content .left .logo-image img {
+  border-radius: 6px;
+  width: 100%;
+}
 .navbar-container .navbar-content .left .logo-title {
   font-size: 2rem;
   font-weight: 520;
