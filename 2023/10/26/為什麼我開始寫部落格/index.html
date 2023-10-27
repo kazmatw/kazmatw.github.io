@@ -18,18 +18,20 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+        <meta name="description" content="為什麼我開始經營部落格終於踏出這一步，正式開始我的部落格旅程。在此，來和大家分享我的動機和初衷。 前言身為一個表達自我和分享知識的平台。很多身邊的朋友都有自己的部落格，配備專屬的域名，並經常撰寫文章分享給大眾。看著他們透過這個平台表達自己，我也開始萌生想要建立屬於我部落格的念頭。 在尋找實習機會時，發現身邊許多大神在履歷上附上了自己的個人網站或部落格連結。而且，有些知名的公司，像是 DEVCORE">
 <meta property="og:type" content="article">
-<meta property="og:title" content="為什麼我開始寫部落格">
+<meta property="og:title" content="為什麼我開始經營部落格">
 <meta property="og:url" content="https://kazma.tw/2023/10/26/%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E9%96%8B%E5%A7%8B%E5%AF%AB%E9%83%A8%E8%90%BD%E6%A0%BC/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="為什麼我開始經營部落格終於踏出這一步，正式開始我的部落格旅程。在此，來和大家分享我的動機和初衷。 前言身為一個表達自我和分享知識的平台。很多身邊的朋友都有自己的部落格，配備專屬的域名，並經常撰寫文章分享給大眾。看著他們透過這個平台表達自己，我也開始萌生想要建立屬於我部落格的念頭。 在尋找實習機會時，發現身邊許多大神在履歷上附上了自己的個人網站或部落格連結。而且，有些知名的公司，像是 DEVCORE">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/devcore.png">
 <meta property="article:published_time" content="2023-10-26T03:27:21.000Z">
-<meta property="article:modified_time" content="2023-10-26T03:27:21.468Z">
+<meta property="article:modified_time" content="2023-10-27T17:18:59.144Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="talk">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/devcore.png">
     
     
     <!--- Icon Part-->
@@ -41,7 +43,7 @@
     
     <title>
         
-            為什麼我開始寫部落格 -
+            為什麼我開始經營部落格 -
         
         kazma&#39;s blog
     </title>
@@ -124,151 +126,294 @@
 
 
         <div class="main-content-header">
-            <header class="navbar-container">
-    
-    <div class="navbar-content">
-        <div class="left">
-            
-                <a class="logo-image" href="/">
-                    <img src="/images/kazma.png">
-                </a>
-            
-            <a class="logo-title" href="/">
-                
-                kazma&#39;s blog
-                
-            </a>
-        </div>
+            $logo-title-font-size = 2rem
+$desktop-search-icon-font-size = 1.5rem
+$navbar-bar-line-height = 2.5px
+$logo-image-box-width = 46px
 
-        <div class="right">
-            <!-- PC -->
-            <div class="desktop">
-                <ul class="navbar-list">
-                    
-                        
-                            <li class="navbar-item">
-                                <!-- Menu -->
-                                <a class="" 
-                                    href="/"  >
-                                    
-                                        
-                                            <i class="fa-regular fa-house"></i>
-                                        
-                                        HOME
-                                    
-                                </a>
-                                <!-- Submenu -->
-                                
-                            </li>
-                    
-                        
-                            <li class="navbar-item">
-                                <!-- Menu -->
-                                <a class="" 
-                                    href="/archives"  >
-                                    
-                                        
-                                            <i class="fa-regular fa-archive"></i>
-                                        
-                                        LS
-                                    
-                                </a>
-                                <!-- Submenu -->
-                                
-                            </li>
-                    
-                        
-                            <li class="navbar-item">
-                                <!-- Menu -->
-                                <a class="" 
-                                    href="/about"  >
-                                    
-                                        
-                                            <i class="fa-regular fa-user"></i>
-                                        
-                                        WHOAMI
-                                    
-                                </a>
-                                <!-- Submenu -->
-                                
-                            </li>
-                    
-                    
-                        <li class="navbar-item search search-popup-trigger">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </li>
-                    
-                </ul>
-            </div>
-            <!-- Mobile -->
-            <div class="mobile">
-                
-                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
-                
-                <div class="icon-item navbar-bar">
-                    <div class="navbar-bar-middle"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+@import '../../common/variables'
 
-    <!-- Mobile drawer -->
-    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
-        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
-            
-                
-                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
-                        href="/"  >
-                             
-                                
-                                    <i class="fa-regular fa-house"></i>
-                                
-                                HOME
-                            
-                        </a>
-                    </li>
-                    <!-- Submenu -->
-                    
-            
-                
-                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
-                        href="/archives"  >
-                             
-                                
-                                    <i class="fa-regular fa-archive"></i>
-                                
-                                LS
-                            
-                        </a>
-                    </li>
-                    <!-- Submenu -->
-                    
-            
-                
-                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
-                        href="/about"  >
-                             
-                                
-                                    <i class="fa-regular fa-user"></i>
-                                
-                                WHOAMI
-                            
-                        </a>
-                    </li>
-                    <!-- Submenu -->
-                    
-            
+.navbar-container
+  font-family 'Chillax-Variable', sans-serif
+  width 100%
+  height 100%
+  box-sizing border-box
+  display flex
+  align-items center
+  justify-content center
+  background $nav-color-bg
+  -webkit-backdrop-filter blur(10px)
+  backdrop-filter blur(10px)
+  padding-top $scroll-progress-bar-height
+  hover-style(
+    false,
+    0,
+    0
+  )
 
-        </ul>
-    </div>
+  .navbar-content
+    position relative
+    height 100%
+    width $main-content-width
+    max-width $content-max-width
+    display flex
+    flex-direction row
+    justify-content space-between
+    align-items center
+    z-index $z-index-5
+    transition max-width 0.3s ease
 
-    <div class="window-mask"></div>
+    &.has-home-banner
+      max-width $content-max-width * 1.2
 
-</header>
+    +redefine-tablet()
+      width $main-content-width-tablet
 
+    +redefine-mobile()
+      width $main-content-width-mobile
+
+    .left
+      display flex
+      align-items center
+      transform-origin left
+      transition-t('transform', '0', '0.2', 'linear')
+
+      .navbar-shrink &
+        transform scale(0.72)
+        transform-origin left
+
+      if (hexo-config('defaults.logo') && hexo-config('defaults.logo') != '')
+        .logo-image
+          width $logo-image-box-width
+          height $logo-image-box-width
+          margin-right 8px
+
+          +redefine-tablet()
+            width: $logo-image-box-width * 0.9
+            height: $logo-image-box-width * 0.9
+
+          +redefine-mobile()
+            width: $logo-image-box-width * 0.8
+            height: $logo-image-box-width * 0.8
+
+          img
+            border-radius 6px
+            width 100%
+
+      .logo-title
+        font-size $logo-title-font-size
+        font-weight 520
+        // letter-spacing 1px
+        line-height 1
+        color var(--first-text-color)
+
+        h1
+          margin 0
+          font-size $logo-title-font-size
+          font-weight 520
+          //letter-spacing 1px
+          line-height 1
+          color var(--first-text-color)
+
+          +redefine-tablet()
+            font-size: $logo-title-font-size * 0.9
+
+          +redefine-mobile()
+            font-size: $logo-title-font-size * 0.8
+
+        +redefine-tablet()
+          font-size: $logo-title-font-size * 0.9
+
+        +redefine-mobile()
+          font-size: $logo-title-font-size * 0.8
+
+    .right
+      .desktop
+        .navbar-list
+          display flex
+          gap 24px
+          align-items center
+
+          +redefine-tablet()
+            display none
+
+          .navbar-item
+            float left
+            // padding 5px
+            position relative
+            font-size 1rem
+            font-weight 450
+            cursor pointer
+            color var(--default-text-color)
+
+            a
+              display block
+              padding 5px
+
+            a .fa-chevron-down
+              transform rotate(0deg)
+              transition transform 0.3s ease
+
+            &:hover a .fa-chevron-down
+              transform rotate(180deg)
+
+            &:hover .has-dropdown
+              &::after
+                display none !important
+
+            &:hover a, .active
+              &::after
+                content ''
+                position absolute
+                bottom -5px
+                left 50%
+                width 100%
+                height 2px
+                transform translateX(-50%)
+                border-radius $redefine-border-radius-large
+                background var(--primary-color)
+                transition-t('transform, bottom', '0, 0', '0.2, 0.2', 'linear, linear')
+
+                .navbar-shrink &
+                  bottom -($navbar-shrink-height / 2 - 17)
+
+            &.search
+              font-size $desktop-search-icon-font-size
+              margin-left 26px
+
+              i
+                color var(--default-text-color)
+
+            .sub-menu
+              position absolute
+              right auto
+              left 50%
+              -webkit-transform translate(-50%, 0)
+              -o-transform translate(-50%, 0)
+              transform translate(-50%, 0)
+              margin-top 0px
+              width auto
+              text-align center
+              list-style none
+              padding 0 10px
+              border-radius $redefine-border-radius-large
+              // visibility hidden
+              max-height 0px
+              overflow hidden
+              transition-t('all', '0', '0.2', 'linear')
+
+              li a
+                white-space nowrap
+                color var(--default-text-color)
+                font-size 1rem
+                padding 3px 15px
+                display block
+                text-align center
+                border-radius 8px
+                transition-t('all', '0', '0.2', 'linear')
+
+                &:hover
+                  color var(--primary-color)
+                  background-color var(--third-background-color)
+
+        .navbar-list .navbar-item:hover .sub-menu
+          // visibility visible
+          max-height 500px
+          transition-t('all', '0', '0.2', 'ease')
+          redefine-container(
+            false,
+            0,
+            0,
+            10px,
+            5px
+          )
+
+      .mobile
+        display flex
+        justify-content space-between
+        align-items center
+
+        .icon-item
+          display none
+          position relative
+          cursor pointer
+          font-size 18px
+          margin-left 12px
+          width 20px
+          height 20px
+          color var(--default-text-color)
+
+          i
+            color var(--default-text-color)
+
+          &:first-child
+            margin-left 0
+
+          +redefine-tablet()
+            display flex
+            justify-content center
+            align-items center
+
+        .navbar-bar
+          .navbar-bar-middle
+            width 18px
+            height $navbar-bar-line-height
+            position relative
+            background var(--default-text-color)
+
+            .navbar-drawer-show &
+              background transparent
+
+            &::before, &::after
+              content ''
+              position absolute
+              left 0
+              width 100%
+              height $navbar-bar-line-height
+              background var(--default-text-color)
+              transition-t('transform', '0', '0.38', 'ease')
+
+            &::before
+              top -6px
+
+              .navbar-drawer-show &
+                transform translateY(6px) rotate(45deg)
+
+            &::after
+              bottom -6px
+
+              .navbar-drawer-show &
+                transform translateY(-6px) rotate(-45deg)
+
+  .navbar-drawer
+    padding $navbar-height 0 20px 0
+    transform scaleY(0)
+    transform-origin top
+    z-index $z-index-2
+    opacity 0
+    transition-t('transform,opacity', '0,0.1', '0.38,0.38', 'ease,ease')
+
+    .navbar-drawer-show &
+      transform scaleY(1)
+      opacity 1
+
+  .window-mask
+    position absolute
+    top 0
+    width 100%
+    height 100vh
+    background rgba(0, 0, 0, 0.4)
+    z-index $z-index-1
+    visibility hidden
+    opacity 0
+    transition-t('transform, opacity', '0, 0', '0.38, 0.38', 'ease, ease')
+
+    .navbar-drawer-show &
+      visibility visible
+      opacity 1
+
+.navbar-drawer-show
+  overflow hidden
 
         </div>
 
@@ -284,7 +429,7 @@
 
         <div class="article-title">
             
-                <h1 class="article-title-regular">為什麼我開始寫部落格</h1>
+                <h1 class="article-title-regular">為什麼我開始經營部落格</h1>
             
             </div>
             
@@ -313,13 +458,24 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-10-26 11:27:21</span>
-            <span class="mobile">2023-10-26 11:27:21</span>
+            <span class="desktop">2023-10-28 01:18:59</span>
+            <span class="mobile">2023-10-28 01:18:59</span>
             <span class="hover-info">Updated</span>
         </span>
     
 
     
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/talk/">talk</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
     
 
     
@@ -341,21 +497,29 @@
 
 
         <div class="article-content markdown-body">
-            
+            <h1 id="為什麼我開始經營部落格"><a href="#為什麼我開始經營部落格" class="headerlink" title="為什麼我開始經營部落格"></a>為什麼我開始經營部落格</h1><p>終於踏出這一步，正式開始我的部落格旅程。在此，來和大家分享我的動機和初衷。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>身為一個表達自我和分享知識的平台。很多身邊的朋友都有自己的部落格，配備專屬的域名，並經常撰寫文章分享給大眾。看著他們透過這個平台表達自己，我也開始萌生想要建立屬於我部落格的念頭。</p>
+<p>在尋找實習機會時，發現身邊許多大神在履歷上附上了自己的個人網站或部落格連結。而且，有些知名的公司，像是 DEVCORE，甚至提到附上部落格對應徵有加分。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/devcore.png"
+                      alt="devcore"
+                > </p>
+<h2 id="分享我的知識和經驗"><a href="#分享我的知識和經驗" class="headerlink" title="分享我的知識和經驗"></a>分享我的知識和經驗</h2><h2 id="增強寫作能力"><a href="#增強寫作能力" class="headerlink" title="增強寫作能力"></a>增強寫作能力</h2><h2 id="與同好互動"><a href="#與同好互動" class="headerlink" title="與同好互動"></a>與同好互動</h2><h2 id="紀錄我的生活和成長"><a href="#紀錄我的生活和成長" class="headerlink" title="紀錄我的生活和成長"></a>紀錄我的生活和成長</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2>
         </div>
 
         
             <div class="post-copyright-info">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> 為什麼我開始寫部落格</li>
+        <li><strong>Title:</strong> 為什麼我開始經營部落格</li>
         <li><strong>Author:</strong> kazma</li>
         <li><strong>Created at
                 :</strong> 2023-10-26 11:27:21</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2023-10-26 11:27:21
+                    :</strong> 2023-10-28 01:18:59
             </li>
         
         <li>
@@ -376,6 +540,14 @@
             </div>
         
 
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/talk/">#talk</a>&nbsp;
+                    </li>
+                
+            </ul>
         
 
         
@@ -455,8 +627,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">為什麼我開始寫部落格</div>
-        
+        <div class="page-title">為什麼我開始經營部落格</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E9%96%8B%E5%A7%8B%E7%B6%93%E7%87%9F%E9%83%A8%E8%90%BD%E6%A0%BC"><span class="nav-text">為什麼我開始經營部落格</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E4%BA%AB%E6%88%91%E7%9A%84%E7%9F%A5%E8%AD%98%E5%92%8C%E7%B6%93%E9%A9%97"><span class="nav-text">分享我的知識和經驗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A2%9E%E5%BC%B7%E5%AF%AB%E4%BD%9C%E8%83%BD%E5%8A%9B"><span class="nav-text">增強寫作能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%88%87%E5%90%8C%E5%A5%BD%E4%BA%92%E5%8B%95"><span class="nav-text">與同好互動</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%80%E9%8C%84%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB%E5%92%8C%E6%88%90%E9%95%B7"><span class="nav-text">紀錄我的生活和成長</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text"></span></a></li></ol></li></ol>
 
     </div>
 </div>
