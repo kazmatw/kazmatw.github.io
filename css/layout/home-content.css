@@ -243,16 +243,16 @@
   --mermaid-theme: '';
 }
 .home-content-container {
-  margin-left: 38px;
+  margin-right: 38px;
 }
 @media (max-width: 768px) {
   .home-content-container {
-    margin-left: 0;
+    margin-right: 0;
   }
 }
 @media (max-width: 640px) {
   .home-content-container {
-    margin-left: 0;
+    margin-right: 0;
   }
 }
 .home-content-container .seo-reader-text {
