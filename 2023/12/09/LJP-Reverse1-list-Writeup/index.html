@@ -13,21 +13,31 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/archives/2023/10/"/>
+    <link rel="canonical" href="https://kazma.tw/2023/12/09/ljp-reverse1-list-writeup/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="kazma&#39;s blog">
-<meta property="og:url" content="https://kazma.tw/archives/2023/10/index.html">
+        <meta name="description" content="list先來 main 逛逛吧～  看到題目給我們的提示：  “TODO: Xor node-&gt;value1 and node-&gt;value2”  所以這題的目標應該是找到 node 的 value1 和 value2 兩者 xor，應該就結束了。我們可以看到 main call 了一個 function 叫 sub_1168+1，這通常應該是因為 IDA 解爛了，我們來重新定義一下他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LJP Reverse1 list Writeup">
+<meta property="og:url" content="https://kazma.tw/2023/12/09/LJP-Reverse1-list-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="list先來 main 逛逛吧～  看到題目給我們的提示：  “TODO: Xor node-&gt;value1 and node-&gt;value2”  所以這題的目標應該是找到 node 的 value1 和 value2 兩者 xor，應該就結束了。我們可以看到 main call 了一個 function 叫 sub_1168+1，這通常應該是因為 IDA 解爛了，我們來重新定義一下他">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/images/main.png">
+<meta property="og:image" content="https://kazma.tw/images/1168.png">
+<meta property="og:image" content="https://kazma.tw/images/undefine.png">
+<meta property="og:image" content="https://kazma.tw/images/1169.png">
+<meta property="og:image" content="https://kazma.tw/images/1169c.png">
+<meta property="og:image" content="https://kazma.tw/images/struct.png">
+<meta property="og:image" content="https://kazma.tw/images/guess.png">
+<meta property="article:published_time" content="2023-12-08T16:37:00.000Z">
+<meta property="article:modified_time" content="2023-12-08T18:17:38.922Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="reverse | writeups">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/main.png">
     
     
     <!--- Icon Part-->
@@ -39,7 +49,7 @@
     
     <title>
         
-            Archive: 2023/10 -
+            LJP Reverse1 list Writeup -
         
         kazma&#39;s blog
     </title>
@@ -162,7 +172,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active" 
+                                <a class="" 
                                     href="/archives"  >
                                     
                                         
@@ -263,7 +273,7 @@
             
                 
                     <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group active" 
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
                         href="/archives"  >
                              
                                 
@@ -339,64 +349,267 @@
             <div class="main-content">
 
                 
-                    <div class="archive-container ">
-    
+                    <div class="post-page-container">
+    <div class="article-content-container">
 
-<div class="archive-list-container">
-    
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2023</span>
-                <span class="archive-year-post-count">[4]</span>
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">LJP Reverse1 list Writeup</h1>
+            
             </div>
-            <ul class="article-list">
-              
-                
+            
                     
-                    <li class="article-item" date-is='12-09'>
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-12-09 00:37</span>
+        <span class="mobile">2023-12-09 00:37</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-12-09 02:17:38</span>
+            <span class="mobile">2023-12-09 02:17:38</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
                 
+                    <li>
+                        <a href="/tags/reverse-writeups/">reverse | writeups</a>&nbsp;
+                    </li>
                 
-                    <a href="/2023/12/09/LJP-Reverse1-list-Writeup/">
-                        <span class="article-title">LJP Reverse1 list Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-03'>
-                
-                
-                    <a href="/2023/12/03/LJP-Reverse1-Writeups/">
-                        <span class="article-title">LJP Reverse1 baby Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='11-03'>
-                
-                
-                    <a href="/2023/11/03/2023%E7%A5%9E%E7%9B%BE%E6%9D%AF%E6%B1%BA%E8%B3%BD%E5%BF%83%E5%BE%97/">
-                        <span class="article-title">2023神盾杯決賽心得</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='10-26'>
-                
-                
-                    <a href="/2023/10/26/%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E9%96%8B%E5%A7%8B%E5%AF%AB%E9%83%A8%E8%90%BD%E6%A0%BC/">
-                        <span class="article-title">為什麼我開始經營部落格</span>
-                    </a>
-                
-              
             </ul>
-        </section>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <h1 id="list"><a href="#list" class="headerlink" title="list"></a>list</h1><p>先來 main 逛逛吧～</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/main.png"
+                      alt="main"
+                ></p>
+<p>看到題目給我們的提示：</p>
+<blockquote>
+<p>“TODO: Xor node-&gt;value1 and node-&gt;value2”</p>
+</blockquote>
+<p>所以這題的目標應該是找到 node 的 value1 和 value2 兩者 xor，應該就結束了。<br>我們可以看到 main call 了一個 function 叫 sub_1168+1，這通常應該是因為 IDA 解爛了，我們來重新定義一下他。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../image/../images/1168.png"
+                      alt="1168"
+                ></p>
+<p>先對 sub_1168 按 u 取消定義。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/undefine.png"
+                      alt="undefine"
+                ></p>
+<p>按完應該會長這樣，再來我們對 sub_1169 按 p 定義為函式。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/1169.png"
+                      alt="1169"
+                ></p>
+<p>完成，那我們來看看 sub_1169 裡面在做些什麼，看一下反編譯。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/1169c.png"
+                      alt="1169c"
+                ></p>
+<p>首先我們看到他 malloc 了兩個空間，那就先來定義兩個 structs，分別是 0x18 和 0x10 的大小。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/struct.png"
+                      alt="structs"
+                ></p>
+<p>再來稍微整理一下 sub_1169 的邏輯，變成下面這樣：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../image/../images/guess.png"
+                      alt="guess"
+                ></p>
+<p>有逆出邏輯基本上就簡單了，可以看到他把 array1 xor 0x5A 存到 value1，然後把 array2 xor 0xA5 存到 value2 裡，再根據題目的提示，我們把 value1 和 value2 xor，就可以拿到 flag 了，寫一個 exploit 來幫我們完成這些計算：</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Given two arrays of hexadecimal values, we will perform the following operations:</span></span><br><span class="line"><span class="comment"># 1. XOR each value of array1 with 0x5A</span></span><br><span class="line"><span class="comment"># 2. XOR each value of array2 with 0xA5</span></span><br><span class="line"><span class="comment"># 3. XOR the results of the above two operations with each other</span></span><br><span class="line"></span><br><span class="line">array1 = [<span class="number">0x16</span>, <span class="number">0x68</span>, <span class="number">0x13</span>, <span class="number">0x58</span>, <span class="number">0x7B</span>, <span class="number">0x4B</span>, <span class="number">0x43</span>, <span class="number">0x1B</span>, <span class="number">0x00</span>, <span class="number">0x4F</span>, <span class="number">0x68</span>,</span><br><span class="line">          <span class="number">0x10</span>, <span class="number">0x11</span>, <span class="number">0x14</span>, <span class="number">0x39</span>, <span class="number">0x4C</span>, <span class="number">0x6B</span>, <span class="number">0x11</span>, <span class="number">0x04</span>, <span class="number">0x1A</span>, <span class="number">0x17</span>, <span class="number">0x6D</span>,</span><br><span class="line">          <span class="number">0x6E</span>, <span class="number">0x47</span>, <span class="number">0x6D</span>, <span class="number">0x54</span>, <span class="number">0x1D</span>, <span class="number">0x16</span>, <span class="number">0x55</span>, <span class="number">0x1B</span>, <span class="number">0x05</span>, <span class="number">0x5E</span>]</span><br><span class="line"></span><br><span class="line">array2 = [<span class="number">0x0AF</span>, <span class="number">0x0DB</span>, <span class="number">0x0AD</span>, <span class="number">0x0E0</span>, <span class="number">0x0FF</span>, <span class="number">0x0D5</span>, <span class="number">0x0D0</span>, <span class="number">0x97</span>, <span class="number">0x8F</span>,</span><br><span class="line">          <span class="number">0x0D4</span>, <span class="number">0x0FB</span>, <span class="number">0x9F</span>, <span class="number">0x0DF</span>, <span class="number">0x0D9</span>, <span class="number">0x0AA</span>, <span class="number">0x0D5</span>, <span class="number">0x0F8</span>, <span class="number">0x8F</span>,</span><br><span class="line">          <span class="number">0x88</span>, <span class="number">0x95</span>, <span class="number">0x84</span>, <span class="number">0x0F9</span>, <span class="number">0x0E7</span>, <span class="number">0x88</span>, <span class="number">0x0AB</span>, <span class="number">0x99</span>, <span class="number">0x0D1</span>, <span class="number">0x82</span>,</span><br><span class="line">          <span class="number">0x0CC</span>, <span class="number">0x0D4</span>, <span class="number">0x0CB</span>, <span class="number">0x0DC</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># XOR with 0x5A and 0xA5 respectively</span></span><br><span class="line">array1_xor_5A = [value ^ <span class="number">0x5A</span> <span class="keyword">for</span> value <span class="keyword">in</span> array1]</span><br><span class="line">array2_xor_A5 = [value ^ <span class="number">0xA5</span> <span class="keyword">for</span> value <span class="keyword">in</span> array2]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Element-wise XOR between the two new arrays</span></span><br><span class="line">final_xor = [a ^ b <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>(array1_xor_5A, array2_xor_A5)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Convert the final XOR results to ASCII characters</span></span><br><span class="line">final_ascii_string = <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">chr</span>(value) <span class="keyword">for</span> value <span class="keyword">in</span> final_xor)</span><br><span class="line"><span class="built_in">print</span>(final_ascii_string)</span><br></pre></td></tr></table></figure></div>
+<p>最後執行可以得到：<code>FLAG&#123;...&#125;</code></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> LJP Reverse1 list Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2023-12-09 00:37:00</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2023-12-09 02:17:38
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2023/12/09/LJP-Reverse1-list-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
 </div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/reverse-writeups/">#reverse | writeups</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/12/03/LJP-Reverse1-Writeups/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">LJP Reverse1 baby Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+ 
+    <div id="waline"></div>
+    <script type="module"  data-swup-reload-script>
+        import { init } from '/js/libs/waline.mjs';
+
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://example.example.com',
+                lang: 'zh-tw',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+            });
+        }
+
+        if ('true') {
+            const loadWalineTimeout = setTimeout(() => {
+                loadWaline();
+                clearTimeout(loadWalineTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadWaline);
+        }
+        
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">LJP Reverse1 list Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#list"><span class="nav-text">list</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
 
                 
 
@@ -469,6 +682,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
