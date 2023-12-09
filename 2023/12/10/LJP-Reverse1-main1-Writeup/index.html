@@ -13,18 +13,20 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/"/>
+    <link rel="canonical" href="https://kazma.tw/2023/12/10/ljp-reverse1-main1-writeup/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
         <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="kazma&#39;s blog">
-<meta property="og:url" content="https://kazma.tw/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LJP Reverse1 main1 Writeup">
+<meta property="og:url" content="https://kazma.tw/2023/12/10/LJP-Reverse1-main1-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-09T16:11:01.000Z">
+<meta property="article:modified_time" content="2023-12-09T16:11:01.291Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
 <meta name="twitter:card" content="summary">
@@ -38,6 +40,8 @@
     <!--- Page Info-->
     
     <title>
+        
+            LJP Reverse1 main1 Writeup -
         
         kazma&#39;s blog
     </title>
@@ -115,124 +119,6 @@
 <main class="page-container" id="swup">
 
     
-        
-    <style>
-        .home-banner-container {
-            background: transparent !important;
-        }
-
-        .home-article-item,
-        .sidebar-links,
-        .sidebar-content,
-        a.page-number,
-        a.extend,
-        .sidebar-links .links:hover,
-        .right-bottom-tools,
-        footer.footer {
-            background-color: var(--background-color-transparent-80) !important;
-        }
-
-        .right-bottom-tools:hover,
-        a.page-number:hover,
-        a.extend:hover {
-            background-color: var(--primary-color) !important;
-        }
-
-        .site-info,
-        .home-article-sticky-label {
-            background-color: var(--background-color-transparent-15) !important;
-        }
-
-        .home-article-sticky-label {
-            backdrop-filter: none !important;
-        }
-    </style>
-
-    <div class="home-banner-background transition-fade">
-    </div>
-
-
-<div class="home-banner-container flex justify-center items-center transition-fade">
-    <div class="content flex justify-center items-center">
-        <div class="description flex flex-col justify-center items-center"
-        
-        >
-            kazma.tw
-            
-            
-                <p><i id="subtitle"></i></p>
-            
-        </div>
-        
-            <div class="social-contacts">
-                
-                    
-                        
-                            <span class="social-contact-item github">
-                                <a target="_blank" href="https://github.com/kazmatw">
-                                    <i class="fa-brands fa-github"></i>
-                                </a>
-                            </span>
-                        
-                    
-                
-                    
-                        
-                            <span class="social-contact-item instagram">
-                                <a target="_blank" href="https://www.instagram.com/kazma.tw/">
-                                    <i class="fa-brands fa-instagram"></i>
-                                </a>
-                            </span>
-                        
-                    
-                
-                    
-                
-                    
-                
-                    
-                        
-                            <span class="social-contact-item email">
-                                <a href="mailto:kazmatw@gmail.com">
-                                    <i class="fa-solid fa-envelope"></i>
-                                </a>
-                            </span>
-                        
-                    
-                
-                    
-                        
-                            <span class="social-contact-item telegram">
-                                <a target="_blank" href="https://t.me/kazma_tw">
-                                    <i class="fa-brands fa-telegram"></i>
-                                </a>
-                            </span>
-                        
-                    
-                
-                    
-                        
-                            <span class="social-contact-item discord">
-                                <a target="_blank" href="https://discord.com/users/870280109360316457">
-                                    <i class="fa-brands fa-discord"></i>
-                                </a>
-                            </span>
-                        
-                    
-                
-                
-                    
-                        
-                    
-                
-            </div>
-        
-    </div>
-</div>
-
-
-
-    
 
     <div class="main-content-container">
 
@@ -240,7 +126,7 @@
         <div class="main-content-header">
             <header class="navbar-container">
     
-    <div class="navbar-content has-home-banner">
+    <div class="navbar-content">
         <div class="left">
             
                 <a class="logo-image" href="/">
@@ -248,9 +134,9 @@
                 </a>
             
             <a class="logo-title" href="/">
-                <h1>
+                
                 kazma&#39;s blog
-                </h1>
+                
             </a>
         </div>
 
@@ -262,7 +148,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active" 
+                                <a class="" 
                                     href="/"  >
                                     
                                         
@@ -364,7 +250,7 @@
             
                 
                     <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group active" 
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
                         href="/"  >
                              
                                 
@@ -455,347 +341,196 @@
             <div class="main-content">
 
                 
-                    <div class="home-content-container">
-    <ul class="home-article-list">
-        
-            <li class="home-article-item">
+                    <div class="post-page-container">
+    <div class="article-content-container">
 
-                
-
-                
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2023/12/10/LJP-Reverse1-main1-Writeup/">
-                        LJP Reverse1 main1 Writeup
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sun Dec 10 2023 00:11:01 GMT+0800">
-                
-                    2023-12-10
-                
-            </span>
-        </span>
-        
-        
-    </div>
-
-    <a href="/2023/12/10/LJP-Reverse1-main1-Writeup/">Read more<span class="seo-reader-text">LJP Reverse1 main1 Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2023/12/09/LJP-Reverse1-list-Writeup/">
-                        LJP Reverse1 list Writeup
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        list先來 main 逛逛吧～
-
-看到題目給我們的提示：
-
-“TODO: Xor node-&gt;value1 and node-&gt;value2”
-
-所以這題的目標應該是找到 node 的 value1 和 value2 兩者 xor，應該...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sat Dec 09 2023 00:37:00 GMT+0800">
-                
-                    2023-12-09
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/reverse-writeups/">reverse | writeups</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/09/LJP-Reverse1-list-Writeup/">Read more<span class="seo-reader-text">LJP Reverse1 list Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2023/12/03/LJP-Reverse1-Writeups/">
-                        LJP Reverse1 baby Writeup
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        baby先用 IDA 開起來看看。
-
-首先會先看到一個解爛的 start()，裡面塞了一大坨參數，對他 y 一下把參數清掉。
-
-舒服多了，再來我們四處逛一下會發現他好像開了一個檔然後一直往裡面寫東西，那我們就在它寫入的地方下個斷點來看看他在寫啥。
-
-...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sun Dec 03 2023 23:58:23 GMT+0800">
-                
-                    2023-12-03
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/reverse-writeups/">reverse | writeups</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/03/LJP-Reverse1-Writeups/">Read more<span class="seo-reader-text">LJP Reverse1 baby Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2023/11/03/2023%E7%A5%9E%E7%9B%BE%E6%9D%AF%E6%B1%BA%E8%B3%BD%E5%BF%83%E5%BE%97/">
-                        2023神盾杯決賽心得
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        2023神盾杯決賽心得第一次寫競賽心得文，希望未來能養成這個習慣，預計這篇文章會定位在心得感想，技術的部分會獨立出來。
-前情提要因為疫情，時隔兩年神盾杯又開戰。決賽總共錄取十支隊伍，初賽很幸運的獲得了第五名。確定晉級後沒多久也決定了這次 ncku 出...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Fri Nov 03 2023 01:19:35 GMT+0800">
-                
-                    2023-11-03
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/contest-forensics/">contest, forensics</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/11/03/2023%E7%A5%9E%E7%9B%BE%E6%9D%AF%E6%B1%BA%E8%B3%BD%E5%BF%83%E5%BE%97/">Read more<span class="seo-reader-text">2023神盾杯決賽心得</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2023/10/26/%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E9%96%8B%E5%A7%8B%E5%AF%AB%E9%83%A8%E8%90%BD%E6%A0%BC/">
-                        為什麼我開始經營部落格
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        為什麼我開始經營部落格我一直都是個蠻喜歡文字的人。看書、或是寫日記、瀏覽各式各樣的部落格。所以當我看到朋友們用心經營自己的部落格，分享他們的故事和經歷後，心中便萌生了一個念頭：為何不開始經營我的部落格呢？
-前言這個時代，文字仍是最直接的溝通方式。部落...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Thu Oct 26 2023 11:27:21 GMT+0800">
-                
-                    2023-10-26
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/talk/">talk</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/10/26/%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E9%96%8B%E5%A7%8B%E5%AF%AB%E9%83%A8%E8%90%BD%E6%A0%BC/">Read more<span class="seo-reader-text">為什麼我開始經營部落格</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-    </ul>
-
-    <div class="home-paginator">
-        <div class="paginator">
-    <span class="page-number current">1</span>
-</div>
-
-    </div>
-</div>
-
-                    <div class="comment-container pjax"></div>
-                
-
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">LJP Reverse1 main1 Writeup</h1>
+            
             </div>
-
             
-                <div class="home-sidebar-container">
-    <div class="sticky-container sticky">
+                    
         
-            
-                <div class="sidebar-links">
-                    <div class="site-info">
-                        <div class="site-name">kazma&#39;s blog</div>
-                        
-                    </div>
-                    
-                        
-                            
-                                <a class="links" href="/archives">
-                                    
-                                        <i class="fa-regular fa-archive icon-space"></i>
-                                    
-                                    <span class="link-name">Archives</span>
-                                </a>
-                            
-                        
-                            
-                                <a class="links" href="/tags">
-                                    
-                                        <i class="fa-regular fa-tags icon-space"></i>
-                                    
-                                    <span class="link-name">Tags</span>
-                                </a>
-                            
-                        
-                            
-                                <a class="links" href="/categories">
-                                    
-                                        <i class="fa-regular fa-folder icon-space"></i>
-                                    
-                                    <span class="link-name">Categories</span>
-                                </a>
-                            
-                        
-                    
-                </div>
-            
-            <div class="sidebar-content"  marginTop >
-                <div class="avatar flex justify-center">
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
                     <img src="/images/kazma.png">
                 </div>
-                <div class="author flex flex-col justify-center my-2.5 mx-0">
-                    <div class="name">kazma</div>
-                    
-                        <div class="label">成大資安社 創辦人/社長</div>
-                    
-                </div>
-                <div class="statistics">
-                    <a class="item" href="/tags">
-                        <div class="number">3</div>
-                        <div class="label">Tags</div>
-                    </a>
-                    <a class="item" href="/categories">
-                        <div class="number">0</div>
-                        <div class="label">Categories</div>
-                    </a>
-                    <a class="item" href="/archives">
-                        <div class="number">5</div>
-                        <div class="label">Posts</div>
-                    </a>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-12-10 00:11:01</span>
+        <span class="mobile">2023-12-10 00:11:01</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-12-10 00:11:01</span>
+            <span class="mobile">2023-12-10 00:11:01</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
                 </div>
             </div>
         
 
+        
+
+
+        <div class="article-content markdown-body">
+            
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> LJP Reverse1 main1 Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2023-12-10 00:11:01</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2023-12-10 00:11:01
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2023/12/10/LJP-Reverse1-main1-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/12/09/LJP-Reverse1-list-Writeup/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">LJP Reverse1 list Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+ 
+    <div id="waline"></div>
+    <script type="module"  data-swup-reload-script>
+        import { init } from '/js/libs/waline.mjs';
+
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://example.example.com',
+                lang: 'zh-tw',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+            });
+        }
+
+        if ('true') {
+            const loadWalineTimeout = setTimeout(() => {
+                loadWaline();
+                clearTimeout(loadWalineTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadWaline);
+        }
+        
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">LJP Reverse1 main1 Writeup</div>
+        
+
     </div>
 </div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
 
             
 
@@ -864,6 +599,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
@@ -977,7 +733,6 @@
         containers: ["#swup"],
     });
 </script>
-
 
 
 
