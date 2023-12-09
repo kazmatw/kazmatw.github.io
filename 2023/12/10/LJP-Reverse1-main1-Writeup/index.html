@@ -18,18 +18,27 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+        <meta name="description" content="main1一樣先丟 IDA，由於這題 LJP 有提示可疑的位置我們就不拐彎了，首先看 start：  這個系列的題目是希望大家了解到除了 main 還有其他位置值得留意，例如 init，進去之後會發現他一直 call r15+rbx*8 的位置：  來看看 r15 是什麼鬼東西：  看到 funcs_1399，追過去會看到：  這邊就看到關鍵了，正常來說 init 跟 fini 應該都只有一個 f">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LJP Reverse1 main1 Writeup">
 <meta property="og:url" content="https://kazma.tw/2023/12/10/LJP-Reverse1-main1-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="main1一樣先丟 IDA，由於這題 LJP 有提示可疑的位置我們就不拐彎了，首先看 start：  這個系列的題目是希望大家了解到除了 main 還有其他位置值得留意，例如 init，進去之後會發現他一直 call r15+rbx*8 的位置：  來看看 r15 是什麼鬼東西：  看到 funcs_1399，追過去會看到：  這邊就看到關鍵了，正常來說 init 跟 fini 應該都只有一個 f">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/images/main1_start.png">
+<meta property="og:image" content="https://kazma.tw/images/main1_recall.png">
+<meta property="og:image" content="https://kazma.tw/images/main1_r15.png">
+<meta property="og:image" content="https://kazma.tw/images/sub3.png">
+<meta property="og:image" content="https://kazma.tw/images/1328.png">
+<meta property="og:image" content="https://kazma.tw/images/11EA.png">
+<meta property="og:image" content="https://kazma.tw/images/main1_para.png">
+<meta property="og:image" content="https://kazma.tw/images/main1_flag.png">
 <meta property="article:published_time" content="2023-12-09T16:11:01.000Z">
-<meta property="article:modified_time" content="2023-12-09T16:11:01.291Z">
+<meta property="article:modified_time" content="2023-12-09T16:53:22.876Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="reverse writeup">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/main1_start.png">
     
     
     <!--- Icon Part-->
@@ -375,13 +384,24 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-12-10 00:11:01</span>
-            <span class="mobile">2023-12-10 00:11:01</span>
+            <span class="desktop">2023-12-10 00:53:22</span>
+            <span class="mobile">2023-12-10 00:53:22</span>
             <span class="hover-info">Updated</span>
         </span>
     
 
     
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/reverse-writeup/">reverse writeup</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
     
 
     
@@ -403,7 +423,64 @@
 
 
         <div class="article-content markdown-body">
-            
+            <h1 id="main1"><a href="#main1" class="headerlink" title="main1"></a>main1</h1><p>一樣先丟 IDA，由於這題 LJP 有提示可疑的位置我們就不拐彎了，首先看 start：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/main1_start.png"
+                      alt="start"
+                ></p>
+<p>這個系列的題目是希望大家了解到除了 main 還有其他位置值得留意，例如 init，進去之後會發現他一直 call r15+rbx*8 的位置：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/./../images/main1_recall.png"
+                      alt="recall"
+                ></p>
+<p>來看看 r15 是什麼鬼東西：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/main1_r15.png"
+                      alt="r15"
+                ></p>
+<p>看到 funcs_1399，追過去會看到：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/sub3.png"
+                      alt="subs"
+                ></p>
+<p>這邊就看到關鍵了，正常來說 init 跟 fini 應該都只有一個 function pointer 那 init 有兩個肯定事有蹊蹺，我們先來看看 sub_1328：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/1328.png"
+                      alt="1328"
+                ></p>
+<p>再追進去 sub_12CF：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/11EA.png"
+                      alt="11EA"
+                ></p>
+<p>再追進去 sub_11EA，會看到他在做可疑的事情，我們反編譯看一下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/main1_para.png"
+                      alt="para"
+                ></p>
+<p>會看到他 cin 讀取 v1，然後 v1 等於 1418168133 的話就會做某件事，那二話不說就來看看會發生什麼事吧：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/main1_flag.png"
+                      alt="flag"
+                ></p>
+<p>flag 出來囉～</p>
+
         </div>
 
         
@@ -417,7 +494,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2023-12-10 00:11:01
+                    :</strong> 2023-12-10 00:53:22
             </li>
         
         <li>
@@ -438,6 +515,14 @@
             </div>
         
 
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/reverse-writeup/">#reverse writeup</a>&nbsp;
+                    </li>
+                
+            </ul>
         
 
         
@@ -518,7 +603,7 @@
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">LJP Reverse1 main1 Writeup</div>
-        
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#main1"><span class="nav-text">main1</span></a></li></ol>
 
     </div>
 </div>
