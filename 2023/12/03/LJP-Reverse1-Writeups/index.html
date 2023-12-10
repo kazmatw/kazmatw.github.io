@@ -133,244 +133,294 @@
 
 
         <div class="main-content-header">
-            <header class="navbar-container">
-    
-    <div class="navbar-content">
-        <div class="left">
-            
-                <a class="logo-image" href="/">
-                    <img src="/images/kazma.png">
-                </a>
-            
-            <a class="logo-title" href="/">
-                
-                kazma&#39;s blog
-                
-            </a>
-        </div>
+            $logo-title-font-size = 2rem
+$desktop-search-icon-font-size = 1.5rem
+$navbar-bar-line-height = 2.5px
+$logo-image-box-width = 46px
 
-        <div class="right">
-            <!-- PC -->
-            <div class="desktop">
-                <ul class="navbar-list">
-                    
-                        
-                            <li class="navbar-item">
-                                <!-- Menu -->
-                                <a class="" 
-                                    href="/"  >
-                                    
-                                        
-                                            <i class="fa-regular fa-house"></i>
-                                        
-                                        HOME
-                                    
-                                </a>
-                                <!-- Submenu -->
-                                
-                            </li>
-                    
-                        
-                            <li class="navbar-item">
-                                <!-- Menu -->
-                                <a class="" 
-                                    href="/archives"  >
-                                    
-                                        
-                                            <i class="fa-regular fa-archive"></i>
-                                        
-                                        LS
-                                    
-                                </a>
-                                <!-- Submenu -->
-                                
-                            </li>
-                    
-                        
-                            <li class="navbar-item">
-                                <!-- Menu -->
-                                <a class="" 
-                                    href="/tags"  >
-                                    
-                                        
-                                            <i class="fa-solid fa-tags"></i>
-                                        
-                                        TAGS
-                                    
-                                </a>
-                                <!-- Submenu -->
-                                
-                            </li>
-                    
-                        
-                            <li class="navbar-item">
-                                <!-- Menu -->
-                                <a class="" 
-                                    href="/whoami"  >
-                                    
-                                        
-                                            <i class="fa-regular fa-user"></i>
-                                        
-                                        WHOAMI
-                                    
-                                </a>
-                                <!-- Submenu -->
-                                
-                            </li>
-                    
-                        
-                            <li class="navbar-item">
-                                <!-- Menu -->
-                                <a class="" 
-                                    href="/cv"  >
-                                    
-                                        
-                                            <i class="fa-regular fa-file"></i>
-                                        
-                                        CV
-                                    
-                                </a>
-                                <!-- Submenu -->
-                                
-                            </li>
-                    
-                        
-                            <li class="navbar-item">
-                                <!-- Menu -->
-                                <a class="" 
-                                    target="_blank" rel="noopener" href="https://class.nckuctf.org/"  >
-                                    
-                                        
-                                            <i class="fa-brands fa-font-awesome"></i>
-                                        
-                                        CTFD
-                                    
-                                </a>
-                                <!-- Submenu -->
-                                
-                            </li>
-                    
-                    
-                        <li class="navbar-item search search-popup-trigger">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </li>
-                    
-                </ul>
-            </div>
-            <!-- Mobile -->
-            <div class="mobile">
-                
-                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
-                
-                <div class="icon-item navbar-bar">
-                    <div class="navbar-bar-middle"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+@import '../../common/variables'
 
-    <!-- Mobile drawer -->
-    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
-        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
-            
-                
-                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
-                        href="/"  >
-                             
-                                
-                                    <i class="fa-regular fa-house"></i>
-                                
-                                HOME
-                            
-                        </a>
-                    </li>
-                    <!-- Submenu -->
-                    
-            
-                
-                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
-                        href="/archives"  >
-                             
-                                
-                                    <i class="fa-regular fa-archive"></i>
-                                
-                                LS
-                            
-                        </a>
-                    </li>
-                    <!-- Submenu -->
-                    
-            
-                
-                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
-                        href="/tags"  >
-                             
-                                
-                                    <i class="fa-solid fa-tags"></i>
-                                
-                                TAGS
-                            
-                        </a>
-                    </li>
-                    <!-- Submenu -->
-                    
-            
-                
-                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
-                        href="/whoami"  >
-                             
-                                
-                                    <i class="fa-regular fa-user"></i>
-                                
-                                WHOAMI
-                            
-                        </a>
-                    </li>
-                    <!-- Submenu -->
-                    
-            
-                
-                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
-                        href="/cv"  >
-                             
-                                
-                                    <i class="fa-regular fa-file"></i>
-                                
-                                CV
-                            
-                        </a>
-                    </li>
-                    <!-- Submenu -->
-                    
-            
-                
-                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
-                        target="_blank" rel="noopener" href="https://class.nckuctf.org/"  >
-                             
-                                
-                                    <i class="fa-brands fa-font-awesome"></i>
-                                
-                                CTFD
-                            
-                        </a>
-                    </li>
-                    <!-- Submenu -->
-                    
-            
+.navbar-container
+  font-family 'Chillax-Variable', sans-serif
+  width 100%
+  height 100%
+  box-sizing border-box
+  display flex
+  align-items center
+  justify-content center
+  background $nav-color-bg
+  -webkit-backdrop-filter blur(10px)
+  backdrop-filter blur(10px)
+  padding-top $scroll-progress-bar-height
+  hover-style(
+    false,
+    0,
+    0
+  )
 
-        </ul>
-    </div>
+  .navbar-content
+    position relative
+    height 100%
+    width $main-content-width
+    max-width $content-max-width
+    display flex
+    flex-direction row
+    justify-content space-between
+    align-items center
+    z-index $z-index-5
+    transition max-width 0.3s ease
 
-    <div class="window-mask"></div>
+    &.has-home-banner
+      max-width $content-max-width * 1.2
 
-</header>
+    +redefine-tablet()
+      width $main-content-width-tablet
 
+    +redefine-mobile()
+      width $main-content-width-mobile
+
+    .left
+      display flex
+      align-items center
+      transform-origin left
+      transition-t('transform', '0', '0.2', 'linear')
+
+      .navbar-shrink &
+        transform scale(0.72)
+        transform-origin left
+
+      if (hexo-config('defaults.logo') && hexo-config('defaults.logo') != '')
+        .logo-image
+          width $logo-image-box-width
+          height $logo-image-box-width
+          margin-right 8px
+
+          +redefine-tablet()
+            width: $logo-image-box-width * 0.9
+            height: $logo-image-box-width * 0.9
+
+          +redefine-mobile()
+            width: $logo-image-box-width * 0.8
+            height: $logo-image-box-width * 0.8
+
+          img
+            border-radius 6px
+            width 100%
+
+      .logo-title
+        font-size $logo-title-font-size
+        font-weight 520
+        // letter-spacing 1px
+        line-height 1
+        color var(--first-text-color)
+
+        h1
+          margin 0
+          font-size $logo-title-font-size
+          font-weight 520
+          //letter-spacing 1px
+          line-height 1
+          color var(--first-text-color)
+
+          +redefine-tablet()
+            font-size: $logo-title-font-size * 0.9
+
+          +redefine-mobile()
+            font-size: $logo-title-font-size * 0.8
+
+        +redefine-tablet()
+          font-size: $logo-title-font-size * 0.9
+
+        +redefine-mobile()
+          font-size: $logo-title-font-size * 0.8
+
+    .right
+      .desktop
+        .navbar-list
+          display flex
+          gap 24px
+          align-items center
+
+          +redefine-tablet()
+            display none
+
+          .navbar-item
+            float left
+            // padding 5px
+            position relative
+            font-size 1rem
+            font-weight 450
+            cursor pointer
+            color var(--default-text-color)
+
+            a
+              display block
+              padding 5px
+
+            a .fa-chevron-down
+              transform rotate(0deg)
+              transition transform 0.3s ease
+
+            &:hover a .fa-chevron-down
+              transform rotate(180deg)
+
+            &:hover .has-dropdown
+              &::after
+                display none !important
+
+            &:hover a, .active
+              &::after
+                content ''
+                position absolute
+                bottom -5px
+                left 50%
+                width 100%
+                height 2px
+                transform translateX(-50%)
+                border-radius $redefine-border-radius-large
+                background var(--primary-color)
+                transition-t('transform, bottom', '0, 0', '0.2, 0.2', 'linear, linear')
+
+                .navbar-shrink &
+                  bottom -($navbar-shrink-height / 2 - 17)
+
+            &.search
+              font-size $desktop-search-icon-font-size
+              margin-left 26px
+
+              i
+                color var(--default-text-color)
+
+            .sub-menu
+              position absolute
+              right auto
+              left 50%
+              -webkit-transform translate(-50%, 0)
+              -o-transform translate(-50%, 0)
+              transform translate(-50%, 0)
+              margin-top 0px
+              width auto
+              text-align center
+              list-style none
+              padding 0 10px
+              border-radius $redefine-border-radius-large
+              // visibility hidden
+              max-height 0px
+              overflow hidden
+              transition-t('all', '0', '0.2', 'linear')
+
+              li a
+                white-space nowrap
+                color var(--default-text-color)
+                font-size 1rem
+                padding 3px 15px
+                display block
+                text-align center
+                border-radius 8px
+                transition-t('all', '0', '0.2', 'linear')
+
+                &:hover
+                  color var(--primary-color)
+                  background-color var(--third-background-color)
+
+        .navbar-list .navbar-item:hover .sub-menu
+          // visibility visible
+          max-height 500px
+          transition-t('all', '0', '0.2', 'ease')
+          redefine-container(
+            false,
+            0,
+            0,
+            10px,
+            5px
+          )
+
+      .mobile
+        display flex
+        justify-content space-between
+        align-items center
+
+        .icon-item
+          display none
+          position relative
+          cursor pointer
+          font-size 18px
+          margin-left 12px
+          width 20px
+          height 20px
+          color var(--default-text-color)
+
+          i
+            color var(--default-text-color)
+
+          &:first-child
+            margin-left 0
+
+          +redefine-tablet()
+            display flex
+            justify-content center
+            align-items center
+
+        .navbar-bar
+          .navbar-bar-middle
+            width 18px
+            height $navbar-bar-line-height
+            position relative
+            background var(--default-text-color)
+
+            .navbar-drawer-show &
+              background transparent
+
+            &::before, &::after
+              content ''
+              position absolute
+              left 0
+              width 100%
+              height $navbar-bar-line-height
+              background var(--default-text-color)
+              transition-t('transform', '0', '0.38', 'ease')
+
+            &::before
+              top -6px
+
+              .navbar-drawer-show &
+                transform translateY(6px) rotate(45deg)
+
+            &::after
+              bottom -6px
+
+              .navbar-drawer-show &
+                transform translateY(-6px) rotate(-45deg)
+
+  .navbar-drawer
+    padding $navbar-height 0 20px 0
+    transform scaleY(0)
+    transform-origin top
+    z-index $z-index-2
+    opacity 0
+    transition-t('transform,opacity', '0,0.1', '0.38,0.38', 'ease,ease')
+
+    .navbar-drawer-show &
+      transform scaleY(1)
+      opacity 1
+
+  .window-mask
+    position absolute
+    top 0
+    width 100%
+    height 100vh
+    background rgba(0, 0, 0, 0.4)
+    z-index $z-index-1
+    visibility hidden
+    opacity 0
+    transition-t('transform, opacity', '0, 0', '0.38, 0.38', 'ease, ease')
+
+    .navbar-drawer-show &
+      visibility visible
+      opacity 1
+
+.navbar-drawer-show
+  overflow hidden
 
         </div>
 
