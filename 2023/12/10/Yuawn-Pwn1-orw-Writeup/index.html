@@ -13,18 +13,20 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/tags/writeup/"/>
+    <link rel="canonical" href="https://kazma.tw/2023/12/10/yuawn-pwn1-orw-writeup/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
         <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="kazma&#39;s blog">
-<meta property="og:url" content="https://kazma.tw/tags/writeup/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yuawn Pwn1 orw Writeup">
+<meta property="og:url" content="https://kazma.tw/2023/12/10/Yuawn-Pwn1-orw-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-10T13:24:37.000Z">
+<meta property="article:modified_time" content="2023-12-10T13:24:37.656Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
 <meta name="twitter:card" content="summary">
@@ -39,7 +41,7 @@
     
     <title>
         
-            Tag: writeup -
+            Yuawn Pwn1 orw Writeup -
         
         kazma&#39;s blog
     </title>
@@ -178,7 +180,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active" 
+                                <a class="" 
                                     href="/tags"  >
                                     
                                         
@@ -294,7 +296,7 @@
             
                 
                     <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group active" 
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
                         href="/tags"  >
                              
                                 
@@ -370,83 +372,219 @@
             <div class="main-content">
 
                 
-                    <div class="tag-container">
-	<div class="tag-name">
-		<i class="fa-solid fa-tag"></i>&nbsp;writeup
-	</div>
-	<div class="tag-post-list">
-		
+                    <div class="post-page-container">
+    <div class="article-content-container">
 
-<div class="archive-list-container">
-    
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2023</span>
-                <span class="archive-year-post-count">[5]</span>
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">Yuawn Pwn1 orw Writeup</h1>
+            
             </div>
-            <ul class="article-list">
-              
-                
+            
                     
-                    <li class="article-item" date-is='12-12'>
-                
-                
-                    <a href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/">
-                        <span class="article-title">Yuawn Pwn2 rop Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-10'>
-                
-                
-                    <a href="/2023/12/10/Yuawn-Pwn1-bof-Writeup/">
-                        <span class="article-title">Yuawn Pwn1 bof Writeup</span>
-                    </a>
-                
-              
-                
-                
-                    <a href="/2023/12/10/LJP-Reverse1-main1-Writeup/">
-                        <span class="article-title">LJP Reverse1 main1 Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-09'>
-                
-                
-                    <a href="/2023/12/09/LJP-Reverse1-list-Writeup/">
-                        <span class="article-title">LJP Reverse1 list Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-03'>
-                
-                
-                    <a href="/2023/12/03/LJP-Reverse1-Writeups/">
-                        <span class="article-title">LJP Reverse1 baby Writeup</span>
-                    </a>
-                
-              
-            </ul>
-        </section>
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-12-10 21:24:37</span>
+        <span class="mobile">2023-12-10 21:24:37</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-12-10 21:24:37</span>
+            <span class="mobile">2023-12-10 21:24:37</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
-	</div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Yuawn Pwn1 orw Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2023-12-10 21:24:37</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2023-12-10 21:24:37
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2023/12/10/Yuawn-Pwn1-orw-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
 </div>
 
-<div class="tag-paginator">
-	<div class="paginator">
-    <span class="page-number current">1</span>
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Yuawn Pwn2 rop Writeup</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/12/10/Yuawn-Pwn1-bof-Writeup/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Yuawn Pwn1 bof Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'Gitalk',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
 </div>
 
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Yuawn Pwn1 orw Writeup</div>
+        
+
+    </div>
 </div>
+        </div>
+    
+</div>
+
 
 
                 
@@ -520,6 +658,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
