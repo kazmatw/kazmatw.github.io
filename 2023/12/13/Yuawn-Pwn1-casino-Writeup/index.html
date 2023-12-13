@@ -13,21 +13,30 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/tags/pwn/"/>
+    <link rel="canonical" href="https://kazma.tw/2023/12/13/yuawn-pwn1-casino-writeup/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="kazma&#39;s blog">
-<meta property="og:url" content="https://kazma.tw/tags/pwn/index.html">
+        <meta name="description" content="casino先執行看一下：  一樣假裝沒有 source code 來用 r2 分析一下 main 先：  首先 name 是全域變數，可以輸入 0x100 個 bytes，位址是 0x6020f0，age 也是全域變數，位址是 0x602104，再來 jg 是 jump is greater 的意思，大於 19 就可以進 casino 了，接下來 r2 看一下 casino：  看到 seed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yuawn Pwn1 casino Writeup">
+<meta property="og:url" content="https://kazma.tw/2023/12/13/Yuawn-Pwn1-casino-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="casino先執行看一下：  一樣假裝沒有 source code 來用 r2 分析一下 main 先：  首先 name 是全域變數，可以輸入 0x100 個 bytes，位址是 0x6020f0，age 也是全域變數，位址是 0x602104，再來 jg 是 jump is greater 的意思，大於 19 就可以進 casino 了，接下來 r2 看一下 casino：  看到 seed">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/images/casino_preview.png">
+<meta property="og:image" content="https://kazma.tw/images/r2.png">
+<meta property="og:image" content="https://kazma.tw/images/casino_casino.png">
+<meta property="og:image" content="https://kazma.tw/images/chosenum.png">
+<meta property="article:published_time" content="2023-12-13T15:05:16.000Z">
+<meta property="article:modified_time" content="2023-12-13T17:05:54.530Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="lab">
+<meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/casino_preview.png">
     
     
     <!--- Icon Part-->
@@ -39,7 +48,7 @@
     
     <title>
         
-            Tag: pwn -
+            Yuawn Pwn1 casino Writeup -
         
         kazma&#39;s blog
     </title>
@@ -178,7 +187,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active" 
+                                <a class="" 
                                     href="/tags"  >
                                     
                                         
@@ -294,7 +303,7 @@
             
                 
                     <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group active" 
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
                         href="/tags"  >
                              
                                 
@@ -370,80 +379,271 @@
             <div class="main-content">
 
                 
-                    <div class="tag-container">
-	<div class="tag-name">
-		<i class="fa-solid fa-tag"></i>&nbsp;pwn
-	</div>
-	<div class="tag-post-list">
-		
+                    <div class="post-page-container">
+    <div class="article-content-container">
 
-<div class="archive-list-container">
-    
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2023</span>
-                <span class="archive-year-post-count">[5]</span>
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">Yuawn Pwn1 casino Writeup</h1>
+            
             </div>
-            <ul class="article-list">
-              
-                
+            
                     
-                    <li class="article-item" date-is='12-13'>
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-12-13 23:05:16</span>
+        <span class="mobile">2023-12-13 23:05:16</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-12-14 01:05:54</span>
+            <span class="mobile">2023-12-14 01:05:54</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
                 
+                    <li>
+                        <a href="/tags/writeup/">writeup</a>&nbsp;
+                    </li>
                 
-                    <a href="/2023/12/13/Yuawn-Pwn1-casino-Writeup/">
-                        <span class="article-title">Yuawn Pwn1 casino Writeup</span>
-                    </a>
+                    <li>
+                        | <a href="/tags/lab/">lab</a>&nbsp;
+                    </li>
                 
-              
+                    <li>
+                        | <a href="/tags/pwn/">pwn</a>&nbsp;
+                    </li>
                 
-                    
-                    <li class="article-item" date-is='12-12'>
-                
-                
-                    <a href="/2023/12/12/LYS-Rop-lab-rop1-Writeup/">
-                        <span class="article-title">LYS Rop lab_rop1 Writeup</span>
-                    </a>
-                
-              
-                
-                
-                    <a href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/">
-                        <span class="article-title">Yuawn Pwn2 rop Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-10'>
-                
-                
-                    <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/">
-                        <span class="article-title">Yuawn Pwn1 orw Writeup</span>
-                    </a>
-                
-              
-                
-                
-                    <a href="/2023/12/10/Yuawn-Pwn1-bof-Writeup/">
-                        <span class="article-title">Yuawn Pwn1 bof Writeup</span>
-                    </a>
-                
-              
             </ul>
-        </section>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
-	</div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <h1 id="casino"><a href="#casino" class="headerlink" title="casino"></a>casino</h1><p>先執行看一下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/casino_preview.png"
+                      alt="casino"
+                ></p>
+<p>一樣假裝沒有 source code 來用 r2 分析一下 main 先：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/r2.png"
+                      alt="r2"
+                ></p>
+<p>首先 name 是全域變數，可以輸入 0x100 個 bytes，位址是 0x6020f0，age 也是全域變數，位址是 0x602104，再來 jg 是 jump is greater 的意思，大於 19 就可以進 casino 了，接下來 r2 看一下 casino：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/casino_casino.png"
+                      alt="casino_casino"
+                ></p>
+<p>看到 seed 了，位址是 0x602100，我們再四處看看會發現 guess[] 的 index 是沒有限制輸入的：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/chosenum.png"
+                      alt="chose"
+                ></p>
+<p>guess[] 的位置是在 0x6020d0，完整的計畫如下：<br>首先透過 overflow name 去蓋掉 seed 跟 age 接著蓋上 shellcode，再來隨便輸入一個大於 19 的 age 進到 casino，透過分析流程可以發現只要猜對樂透最後會 call 一個 puts 來輸出勝利訊息，輸的話會用 printf 來輸出失敗訊息，這裡我們決定用沒有限制輸入的 index 來改 puts 的 got，因為整數只有 4 個 bytes，所以需要兩次來改成想要控成的 rip 也就是剛剛 shellcode 的位址，至於為什麼不是改 printf 的 got 是因為第二次改數字還會用到 printf，以及樂透要怎麼猜對，並且走到勝利訊息就是從剛剛控的 seed 來固定隨機種子，然後可以寫一個 lottery.c 來直接透視號碼。<br>lottery.c：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> lottery[<span class="number">6</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">        srand(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">                lottery[i] = rand() % <span class="number">100</span>;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, lottery[i]);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 83 86 77 15 93 35</span></span><br></pre></td></tr></table></figure></div>
+<p>exploit.py：</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Yuawn Pwn1 casino Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2023-12-13 23:05:16</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2023-12-14 01:05:54
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2023/12/13/Yuawn-Pwn1-casino-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
 </div>
 
-<div class="tag-paginator">
-	<div class="paginator">
-    <span class="page-number current">1</span>
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/lab/">#lab</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/12/12/LYS-Rop-lab-rop1-Writeup/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">LYS Rop lab_rop1 Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
 </div>
 
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Yuawn Pwn1 casino Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#casino"><span class="nav-text">casino</span></a></li></ol>
+
+    </div>
 </div>
+        </div>
+    
+</div>
+
 
 
                 
@@ -517,6 +717,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
