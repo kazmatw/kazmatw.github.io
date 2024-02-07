@@ -18,26 +18,21 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Pwnable.tw - startSrc: https:&#x2F;&#x2F;pwnable.tw&#x2F;challenge&#x2F;#1  0x1 Initial Reconnaissance首先觀察這題的一些基本資訊（下有附圖參考）可以發現這題是 x86 的 binary，然後保護機制都沒開。沒有 main ，代表很有可能是直接用組語手刻的。gdb 反組譯 _start 之後也會發現指令確實很少。 file checkse">
+        <meta name="description" content="Pwnable.tw - startSrc: https:&#x2F;&#x2F;pwnable.tw&#x2F;challenge&#x2F;#1  0x1 Initial Reconnaissance首先觀察這題的一些基本資訊（下有附圖參考）可以發現這題是 x86 的 binary，然後保護機制都沒開。沒有 main ，代表很有可能是直接用組語手刻的。gdb 反組譯 _start 之後也會發現指令確實很少。 file12└─$ fi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pwnable.tw start Writeup">
 <meta property="og:url" content="https://kazma.tw/2024/02/07/Pwnable-tw-start-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="Pwnable.tw - startSrc: https:&#x2F;&#x2F;pwnable.tw&#x2F;challenge&#x2F;#1  0x1 Initial Reconnaissance首先觀察這題的一些基本資訊（下有附圖參考）可以發現這題是 x86 的 binary，然後保護機制都沒開。沒有 main ，代表很有可能是直接用組語手刻的。gdb 反組譯 _start 之後也會發現指令確實很少。 file checkse">
+<meta property="og:description" content="Pwnable.tw - startSrc: https:&#x2F;&#x2F;pwnable.tw&#x2F;challenge&#x2F;#1  0x1 Initial Reconnaissance首先觀察這題的一些基本資訊（下有附圖參考）可以發現這題是 x86 的 binary，然後保護機制都沒開。沒有 main ，代表很有可能是直接用組語手刻的。gdb 反組譯 _start 之後也會發現指令確實很少。 file12└─$ fi">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/images/start_file.png">
-<meta property="og:image" content="https://kazma.tw/images/start_checksec.png">
-<meta property="og:image" content="https://kazma.tw/images/start_exe.png">
-<meta property="og:image" content="https://kazma.tw/images/start_disas.png">
 <meta property="article:published_time" content="2024-02-06T17:46:25.000Z">
-<meta property="article:modified_time" content="2024-02-07T07:07:19.872Z">
+<meta property="article:modified_time" content="2024-02-07T10:21:12.086Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="ret2sc">
 <meta property="article:tag" content="pwnabletw">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/images/start_file.png">
     
     
     <!--- Icon Part-->
@@ -414,8 +409,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-02-07 15:07:19</span>
-            <span class="mobile">2024-02-07 15:07:19</span>
+            <span class="desktop">2024-02-07 18:21:12</span>
+            <span class="mobile">2024-02-07 18:21:12</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -467,30 +462,14 @@
         <div class="article-content markdown-body">
             <h1 id="Pwnable-tw-start"><a href="#Pwnable-tw-start" class="headerlink" title="Pwnable.tw - start"></a>Pwnable.tw - start</h1><p>Src: <a class="link"   target="_blank" rel="noopener" href="https://pwnable.tw/challenge/#1" >https://pwnable.tw/challenge/#1 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <h2 id="0x1-Initial-Reconnaissance"><a href="#0x1-Initial-Reconnaissance" class="headerlink" title="0x1 Initial Reconnaissance"></a>0x1 Initial Reconnaissance</h2><p>首先觀察這題的一些基本資訊（下有附圖參考）可以發現這題是 x86 的 binary，然後保護機制都沒開。沒有 main ，代表很有可能是直接用組語手刻的。gdb 反組譯 _start 之後也會發現指令確實很少。</p>
-<h3 id="file"><a href="#file" class="headerlink" title="file"></a>file</h3><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/start_file.png"
-                      alt="file"
-                ></p>
-<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/start_checksec.png"
-                      alt="checksec"
-                ></p>
-<h3 id="start"><a href="#start" class="headerlink" title=".&#x2F;start"></a>.&#x2F;start</h3><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/start_exe.png"
-                      alt="exe"
-                ></p>
-<h3 id="disassemble"><a href="#disassemble" class="headerlink" title="disassemble"></a>disassemble</h3><p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/start_disas.png"
-                      alt="disas"
-                ></p>
+<h3 id="file"><a href="#file" class="headerlink" title="file"></a>file</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ file start</span><br><span class="line">start: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), statically linked, not stripped</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ checksec start</span><br><span class="line">[*] <span class="string">&#x27;/home/kazmatw/pwnable/start/start&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    No RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX disabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="start"><a href="#start" class="headerlink" title=".&#x2F;start"></a>.&#x2F;start</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./start</span><br><span class="line">Let<span class="string">&#x27;s start the CTF:123</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="disassemble"><a href="#disassemble" class="headerlink" title="disassemble"></a>disassemble</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">gef➤  info <span class="keyword">function</span></span><br><span class="line">All defined <span class="built_in">functions</span>:</span><br><span class="line"></span><br><span class="line">Non-debugging symbols:</span><br><span class="line">0x08048060  _start</span><br><span class="line">0x0804809d  _exit</span><br><span class="line">0x080490a3  __bss_start</span><br><span class="line">0x080490a3  _edata</span><br><span class="line">0x080490a4  _end</span><br><span class="line">0xf7ffc580  __kernel_vsyscall</span><br><span class="line">0xf7ffc5a0  __kernel_sigreturn</span><br><span class="line">0xf7ffc5b0  __kernel_rt_sigreturn</span><br><span class="line">0xf7ffc7a0  __vdso_gettimeofday</span><br><span class="line">0xf7ffcb50  __vdso_time</span><br><span class="line">0xf7ffcba0  __vdso_clock_gettime</span><br><span class="line">0xf7ffd060  __vdso_clock_gettime64</span><br><span class="line">0xf7ffd560  __vdso_clock_getres</span><br><span class="line">0xf7ffd5f0  __vdso_getcpu</span><br><span class="line">gef➤  disassemble _start</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> _start:</span><br><span class="line">=&gt; 0x08048060 &lt;+0&gt;:     push   esp</span><br><span class="line">   0x08048061 &lt;+1&gt;:     push   0x804809d</span><br><span class="line">   0x08048066 &lt;+6&gt;:     xor    eax,eax</span><br><span class="line">   0x08048068 &lt;+8&gt;:     xor    ebx,ebx</span><br><span class="line">   0x0804806a &lt;+10&gt;:    xor    ecx,ecx</span><br><span class="line">   0x0804806c &lt;+12&gt;:    xor    edx,edx</span><br><span class="line">   0x0804806e &lt;+14&gt;:    push   0x3a465443</span><br><span class="line">   0x08048073 &lt;+19&gt;:    push   0x20656874</span><br><span class="line">   0x08048078 &lt;+24&gt;:    push   0x20747261</span><br><span class="line">   0x0804807d &lt;+29&gt;:    push   0x74732073</span><br><span class="line">   0x08048082 &lt;+34&gt;:    push   0x2774654c</span><br><span class="line">   0x08048087 &lt;+39&gt;:    mov    ecx,esp</span><br><span class="line">   0x08048089 &lt;+41&gt;:    mov    dl,0x14</span><br><span class="line">   0x0804808b &lt;+43&gt;:    mov    bl,0x1</span><br><span class="line">   0x0804808d &lt;+45&gt;:    mov    al,0x4</span><br><span class="line">   0x0804808f &lt;+47&gt;:    int    0x80</span><br><span class="line">   0x08048091 &lt;+49&gt;:    xor    ebx,ebx</span><br><span class="line">   0x08048093 &lt;+51&gt;:    mov    dl,0x3c</span><br><span class="line">   0x08048095 &lt;+53&gt;:    mov    al,0x3</span><br><span class="line">   0x08048097 &lt;+55&gt;:    int    0x80</span><br><span class="line">   0x08048099 &lt;+57&gt;:    add    esp,0x14</span><br><span class="line">   0x0804809c &lt;+60&gt;:    ret</span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure></div>
+
 <h2 id="0x2-Inspecting-Assembly-Instructions"><a href="#0x2-Inspecting-Assembly-Instructions" class="headerlink" title="0x2 Inspecting Assembly Instructions"></a>0x2 Inspecting Assembly Instructions</h2><p>對應上面的圖為了方便說明，我用偏移量來代表各條指令：</p>
 <table>
 <thead>
@@ -678,7 +657,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-02-07 15:07:19
+                    :</strong> 2024-02-07 18:21:12
             </li>
         
         <li>
@@ -725,6 +704,21 @@
 
         
             <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/02/07/Pwnable-tw-orw-Writeup/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Pwnable.tw orw Writeup</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
                 
                 
                     <div class="article-next">
