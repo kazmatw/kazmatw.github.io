@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://kazma.tw/images/start_exe.png">
 <meta property="og:image" content="https://kazma.tw/images/start_disas.png">
 <meta property="article:published_time" content="2024-02-06T17:46:25.000Z">
-<meta property="article:modified_time" content="2024-02-06T18:28:03.569Z">
+<meta property="article:modified_time" content="2024-02-07T05:24:33.815Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="pwn">
@@ -414,8 +414,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-02-07 02:28:03</span>
-            <span class="mobile">2024-02-07 02:28:03</span>
+            <span class="desktop">2024-02-07 13:24:33</span>
+            <span class="mobile">2024-02-07 13:24:33</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -493,23 +493,54 @@
                 ></p>
 <h2 id="0x2-Inspecting-Assembly-Instructions"><a href="#0x2-Inspecting-Assembly-Instructions" class="headerlink" title="0x2 Inspecting Assembly Instructions"></a>0x2 Inspecting Assembly Instructions</h2><p>對應上面的圖為了方便說明，我用偏移量來代表各條指令：</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+0: saved esp</span><br><span class="line">+1: push exit_addr</span><br><span class="line">+6 ~ +12: initialize 4 registers</span><br><span class="line">+14 ~ +34: push &quot;Let&#x27;s start the CTF:&quot;</span><br><span class="line">+39 ~ +47: write(fd = 1, *buf = esp, count = 0x14)</span><br><span class="line">+49 ~ +55: read(fd = 1, *buf = esp, count = 0x3c)</span><br><span class="line">+57: esp + 0x14</span><br><span class="line">+60: ret</span><br></pre></td></tr></table></figure></div>
+<p>我們來用表格整理一下目前 stack 的狀態，假設一開始程式執行前 esp 的地址在 x，然後由上往下是低位到高位</p>
 <table>
 <thead>
 <tr>
-<th align="left">左对齐</th>
-<th align="center">居中对齐</th>
-<th align="right">右对齐</th>
+<th align="center">地址</th>
+<th align="center">數值</th>
+<th align="center">備註</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left">文本1</td>
-<td align="center">文本2</td>
-<td align="right">文本3</td>
+<td align="center">x-28</td>
+<td align="center">0x2774654c</td>
+<td align="center">“Let’”</td>
 </tr>
 <tr>
-<td align="left">文本4</td>
-<td align="center">文本5</td>
-<td align="right">文本6</td>
+<td align="center">x-24</td>
+<td align="center">0x74732073</td>
+<td align="center">“s st”</td>
+</tr>
+<tr>
+<td align="center">x-20</td>
+<td align="center">0x20747261</td>
+<td align="center">“art “</td>
+</tr>
+<tr>
+<td align="center">x-16</td>
+<td align="center">0x20656874</td>
+<td align="center">“the “</td>
+</tr>
+<tr>
+<td align="center">x-12</td>
+<td align="center">0x3a465443</td>
+<td align="center">“CTF:”</td>
+</tr>
+<tr>
+<td align="center">x-8</td>
+<td align="center">0x804809d</td>
+<td align="center">exit_addr</td>
+</tr>
+<tr>
+<td align="center">x-4</td>
+<td align="center">x</td>
+<td align="center">saved esp</td>
+</tr>
+<tr>
+<td align="center">x</td>
+<td align="center"></td>
+<td align="center">文本6</td>
 </tr>
 </tbody></table>
 
@@ -526,7 +557,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-02-07 02:28:03
+                    :</strong> 2024-02-07 13:24:33
             </li>
         
         <li>
