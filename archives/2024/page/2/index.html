@@ -13,32 +13,21 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/2023/12/03/ljp-reverse1-writeups/"/>
+    <link rel="canonical" href="https://kazma.tw/archives/2024/page/2/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="baby先用 IDA 開起來看看。  首先會先看到一個解爛的 start()，裡面塞了一大坨參數，對他 y 一下把參數清掉。  舒服多了，再來我們四處逛一下會發現他好像開了一個檔然後一直往裡面寫東西，那我們就在它寫入的地方下個斷點來看看他在寫啥。  可以看到我們把斷點下在 0x4010ae，並且 $rsi 也就是即將寫入的值是 “F”，再繼續 continue 看看。  所以可以猜到他在寫的是：F">
-<meta property="og:type" content="article">
-<meta property="og:title" content="LJP Reverse1 baby Writeup">
-<meta property="og:url" content="https://kazma.tw/2023/12/03/LJP-Reverse1-Writeups/index.html">
+        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="kazma&#39;s blog">
+<meta property="og:url" content="https://kazma.tw/archives/2024/page/2/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="baby先用 IDA 開起來看看。  首先會先看到一個解爛的 start()，裡面塞了一大坨參數，對他 y 一下把參數清掉。  舒服多了，再來我們四處逛一下會發現他好像開了一個檔然後一直往裡面寫東西，那我們就在它寫入的地方下個斷點來看看他在寫啥。  可以看到我們把斷點下在 0x4010ae，並且 $rsi 也就是即將寫入的值是 “F”，再繼續 continue 看看。  所以可以猜到他在寫的是：F">
+<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/images/rev1.png">
-<meta property="og:image" content="https://kazma.tw/images/rev2.png">
-<meta property="og:image" content="https://kazma.tw/images/write.png">
-<meta property="og:image" content="https://kazma.tw/images/gdb.png">
-<meta property="og:image" content="https://kazma.tw/images/L.png">
-<meta property="og:image" content="https://kazma.tw/images/A.png">
-<meta property="article:published_time" content="2023-12-03T15:58:23.000Z">
-<meta property="article:modified_time" content="2023-12-10T06:34:36.562Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="lab">
-<meta property="article:tag" content="writeup">
-<meta property="article:tag" content="reverse">
+<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/images/rev1.png">
     
     
     <!--- Icon Part-->
@@ -50,7 +39,7 @@
     
     <title>
         
-            LJP Reverse1 baby Writeup -
+            Archive: 2024 -
         
         kazma&#39;s blog
     </title>
@@ -173,7 +162,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="" 
+                                <a class="active" 
                                     href="/archives"  >
                                     
                                         
@@ -290,7 +279,7 @@
             
                 
                     <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group active" 
                         href="/archives"  >
                              
                                 
@@ -381,294 +370,312 @@
             <div class="main-content">
 
                 
-                    <div class="post-page-container">
-    <div class="article-content-container">
+                    <div class="archive-container ">
+    
 
-        <div class="article-title">
-            
-                <h1 class="article-title-regular">LJP Reverse1 baby Writeup</h1>
-            
+<div class="archive-list-container">
+    
+        <section class="archive-item">
+            <div class="archive-item-header">
+                <span class="archive-year">2024</span>
+                <span class="archive-year-post-count">[11]</span>
             </div>
-            
+            <ul class="article-list">
+              
+                
                     
-        
-        
-            <div class="article-header flex flex-row gap-2 items-center">
-                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
-                    <img src="/images/kazma.png">
-                </div>
-                <div class="info flex flex-col justify-between">
-                    <div class="author flex items-center">
-                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
-                        
-                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
-                        
-                    </div>
-                    <div class="meta-info">
-                        <div class="article-meta-info">
-    <span class="article-date article-meta-item">
-        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-12-03 23:58:23</span>
-        <span class="mobile">2023-12-03 23:58:23</span>
-        <span class="hover-info">Created</span>
-    </span>
-    
-        <span class="article-date article-meta-item">
-            <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-12-10 14:34:36</span>
-            <span class="mobile">2023-12-10 14:34:36</span>
-            <span class="hover-info">Updated</span>
-        </span>
-    
-
-    
-    
-        <span class="article-tags article-meta-item">
-            <i class="fa-regular fa-tags"></i>&nbsp;
-            <ul>
+                    <li class="article-item" date-is='02-11'>
                 
-                    <li>
-                        <a href="/tags/lab/">lab</a>&nbsp;
-                    </li>
                 
-                    <li>
-                        | <a href="/tags/writeup/">writeup</a>&nbsp;
-                    </li>
+                    <a href="/2024/02/11/Pwnable-tw-calc-Writeup/">
+                        <span class="article-title">Pwnable.tw calc Writeup</span>
+                    </a>
                 
-                    <li>
-                        | <a href="/tags/reverse/">reverse</a>&nbsp;
-                    </li>
+              
                 
+                
+                    <a href="/2024/02/11/Note-for-Pwn/">
+                        <span class="article-title">Notes for Pwn</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='02-07'>
+                
+                
+                    <a href="/2024/02/07/Pwnable-tw-orw-Writeup/">
+                        <span class="article-title">Pwnable.tw orw Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2024/02/07/Pwnable-tw-start-Writeup/">
+                        <span class="article-title">Pwnable.tw start Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='02-06'>
+                
+                
+                    <a href="/2024/02/06/Pwnctf-oob4-Writeup/">
+                        <span class="article-title">Pwnctf oob4 Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='02-05'>
+                
+                
+                    <a href="/2024/02/05/Pwnctf-oob3-Writeup/">
+                        <span class="article-title">Pwnctf oob3 Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='01-19'>
+                
+                
+                    <a href="/2024/01/19/Pwnctf-oob2-Writeup/">
+                        <span class="article-title">Pwnctf oob2 Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='01-17'>
+                
+                
+                    <a href="/2024/01/17/Pwnctf-oob1-Writeup/">
+                        <span class="article-title">Pwnctf oob1 Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='01-10'>
+                
+                
+                    <a href="/2024/01/10/Pwnctf-fmtstr-Writeup/">
+                        <span class="article-title">Pwnctf fmtstr Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='01-09'>
+                
+                
+                    <a href="/2024/01/09/Pwnctf-secret-Writeup/">
+                        <span class="article-title">Pwnctf secret Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2024/01/09/Pwnctf-ret2src-Writeup/">
+                        <span class="article-title">Pwnctf ret2src Writeup</span>
+                    </a>
+                
+              
             </ul>
-        </span>
+        </section>
     
-
-    
-    
-    
-    
-        <span class="article-pv article-meta-item">
-            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
-        </span>
-    
-</div>
-
-                    </div>
-                </div>
+        <section class="archive-item">
+            <div class="archive-item-header">
+                <span class="archive-year">2023</span>
+                <span class="archive-year-post-count">[21]</span>
             </div>
-        
-
-        
-
-
-        <div class="article-content markdown-body">
-            <h1 id="baby"><a href="#baby" class="headerlink" title="baby"></a>baby</h1><p>先用 IDA 開起來看看。</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/rev1.png"
-                      alt="Overview"
-                ></p>
-<p>首先會先看到一個解爛的 start()，裡面塞了一大坨參數，對他 y 一下把參數清掉。</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/rev2.png"
-                      alt="good"
-                ></p>
-<p>舒服多了，再來我們四處逛一下會發現他好像開了一個檔然後一直往裡面寫東西，那我們就在它寫入的地方下個斷點來看看他在寫啥。</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/write.png"
-                      alt="write"
-                ></p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/gdb.png"
-                      alt="gdb"
-                ><br>可以看到我們把斷點下在 0x4010ae，並且 $rsi 也就是即將寫入的值是 “F”，再繼續 continue 看看。</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/L.png"
-                      alt="L"
-                ><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/A.png"
-                      alt="A"
-                ></p>
-<p>所以可以猜到他在寫的是：FLAG…<br>這題就醬，繼續 c 下去就出來囉！</p>
-
-        </div>
-
-        
-            <div class="post-copyright-info">
-                <div class="article-copyright-info-container">
-    <ul>
-        <li><strong>Title:</strong> LJP Reverse1 baby Writeup</li>
-        <li><strong>Author:</strong> kazma</li>
-        <li><strong>Created at
-                :</strong> 2023-12-03 23:58:23</li>
-        
-            <li>
-                <strong>Updated at
-                    :</strong> 2023-12-10 14:34:36
-            </li>
-        
-        <li>
-            <strong>Link:</strong> https://kazma.tw/2023/12/03/LJP-Reverse1-Writeups/
-        </li>
-        <li>
-            <strong>
-                License:
-            </strong>
-            
-            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
-            
-
-        </li>
-    </ul>
-</div>
-
-            </div>
-        
-
-        
-            <ul class="post-tags-box">
+            <ul class="article-list">
+              
                 
-                    <li class="tag-item">
-                        <a href="/tags/lab/">#lab</a>&nbsp;
-                    </li>
+                    
+                    <li class="article-item" date-is='12-21'>
                 
-                    <li class="tag-item">
-                        <a href="/tags/writeup/">#writeup</a>&nbsp;
-                    </li>
                 
-                    <li class="tag-item">
-                        <a href="/tags/reverse/">#reverse</a>&nbsp;
-                    </li>
+                    <a href="/2023/12/21/Pwnctf-registration-Writeup/">
+                        <span class="article-title">Pwnctf registration Writeup</span>
+                    </a>
                 
+              
+                
+                
+                    <a href="/2023/12/21/Pwnctf-return-Writeup/">
+                        <span class="article-title">Pwnctf return Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2023/12/21/Pwnctf-binary-Writeup/">
+                        <span class="article-title">Pwnctf binary Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='12-20'>
+                
+                
+                    <a href="/2023/12/20/Pwnctf-pwntools-Writeup/">
+                        <span class="article-title">Pwnctf pwntools Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2023/12/20/Pwnctf-ret2sc-Writeup/">
+                        <span class="article-title">Pwnctf ret2sc Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2023/12/20/Pwnctf-bofe4sy-Writeup/">
+                        <span class="article-title">Pwnctf bofe4sy Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2023/12/20/Pwnctf-pass-Writeup/">
+                        <span class="article-title">Pwnctf pass Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2023/12/20/Pwnctf-gohome-Writeup/">
+                        <span class="article-title">Pwnctf gohome Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='12-18'>
+                
+                
+                    <a href="/2023/12/18/Pwnctf-echo-server-Writeup/">
+                        <span class="article-title">Pwnctf echo_server Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2023/12/18/Pwnctf-luck-Writeup/">
+                        <span class="article-title">Pwnctf luck Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2023/12/18/Yuawn-Pwn2-ret2libc-Writeup/">
+                        <span class="article-title">Yuawn Pwn2 ret2libc Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='12-17'>
+                
+                
+                    <a href="/2023/12/17/Yuawn-Pwn2-ret2plt-Writeup/">
+                        <span class="article-title">Yuawn Pwn2 ret2plt Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='12-13'>
+                
+                
+                    <a href="/2023/12/13/Yuawn-Pwn1-casino-Writeup/">
+                        <span class="article-title">Yuawn Pwn1 casino Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='12-12'>
+                
+                
+                    <a href="/2023/12/12/LYS-Rop-lab-rop1-Writeup/">
+                        <span class="article-title">LYS Rop lab_rop1 Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/">
+                        <span class="article-title">Yuawn Pwn2 rop Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='12-10'>
+                
+                
+                    <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/">
+                        <span class="article-title">Yuawn Pwn1 orw Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2023/12/10/Yuawn-Pwn1-bof-Writeup/">
+                        <span class="article-title">Yuawn Pwn1 bof Writeup</span>
+                    </a>
+                
+              
+                
+                
+                    <a href="/2023/12/10/LJP-Reverse1-main1-Writeup/">
+                        <span class="article-title">LJP Reverse1 main1 Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='12-09'>
+                
+                
+                    <a href="/2023/12/09/LJP-Reverse1-list-Writeup/">
+                        <span class="article-title">LJP Reverse1 list Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='12-03'>
+                
+                
+                    <a href="/2023/12/03/LJP-Reverse1-Writeups/">
+                        <span class="article-title">LJP Reverse1 baby Writeup</span>
+                    </a>
+                
+              
+                
+                    
+                    <li class="article-item" date-is='10-26'>
+                
+                
+                    <a href="/2023/10/26/%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E9%96%8B%E5%A7%8B%E5%AF%AB%E9%83%A8%E8%90%BD%E6%A0%BC/">
+                        <span class="article-title">為什麼我開始經營部落格</span>
+                    </a>
+                
+              
             </ul>
-        
-
-        
-
-        
-            <div class="article-nav">
-                
-                    <div class="article-prev">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2023/12/09/LJP-Reverse1-list-Writeup/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">LJP Reverse1 list Writeup</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
-                
-                    <div class="article-next">
-                        <a class="next"
-                        rel="next"
-                        href="/2023/10/26/%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E9%96%8B%E5%A7%8B%E5%AF%AB%E9%83%A8%E8%90%BD%E6%A0%BC/"
-                        >
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">為什麼我開始經營部落格</span>
-                                <span class="post-nav-item">Next posts</span>
-                            </span>
-                            <span class="right arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
-                        </a>
-                    </div>
-                
-            </div>
-        
-
-
-        
-            <div class="comment-container">
-                <div class="comments-container pjax">
-    <div id="comment-anchor"></div>
-    <div class="comment-area-title">
-        <i class="fa-solid fa-comments"></i>&nbsp;Comments
-    </div>
-    
-
-        
-            
-    <div id="gitalk-container"></div>
-    <script data-swup-reload-script
-            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-    <script data-swup-reload-script>
-
-        function loadGitalk() {
-            let __gitalk__pathname = decodeURI(location.pathname);
-            const __gitalk__pathnameLength = __gitalk__pathname.length;
-            const __gitalk__pathnameMaxLength = 50;
-            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
-                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
-            }
-
-            try {
-                Gitalk && new Gitalk({
-                    clientID: '68fd7e0e6c37358fbb4f',
-                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
-                    repo: 'kazmatw.github.io',
-                    owner: 'kazmatw',
-                    admin: ['kazmatw'],
-                    id: __gitalk__pathname,
-                    language: 'en'
-                }).render('gitalk-container');
-
-            } catch (e) {
-                window.Gitalk = null;
-            }
-        }
-
-        if ('true') {
-            const loadGitalkTimeout = setTimeout(() => {
-                loadGitalk();
-                clearTimeout(loadGitalkTimeout);
-            }, 1000);
-        } else {
-            window.addEventListener('DOMContentLoaded', loadGitalk);
-        }
-    </script>
-
-
-
-        
+        </section>
     
 </div>
 
-            </div>
-        
-    </div>
-
-    
-        <div class="toc-content-container">
-            <div class="post-toc-wrap">
-    <div class="post-toc">
-        <div class="toc-title">On this page</div>
-        <div class="page-title">LJP Reverse1 baby Writeup</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#baby"><span class="nav-text">baby</span></a></li></ol>
-
-    </div>
 </div>
-        </div>
-    
-</div>
-
-
 
                 
 
@@ -741,27 +748,6 @@
         </div>
     </div>
 
-    
-        <div class="post-tools">
-            <div class="post-tools-container">
-    <ul class="article-tools-list">
-        <!-- TOC aside toggle -->
-        
-            <li class="right-bottom-tools page-aside-toggle">
-                <i class="fa-regular fa-outdent"></i>
-            </li>
-        
-
-        <!-- go comment -->
-        
-            <li class="go-comment">
-                <i class="fa-regular fa-comments"></i>
-            </li>
-        
-    </ul>
-</div>
-
-        </div>
     
 
     <div class="right-side-tools-container">

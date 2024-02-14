@@ -13,32 +13,25 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/2023/12/03/ljp-reverse1-writeups/"/>
+    <link rel="canonical" href="https://kazma.tw/2024/02/11/note-for-pwn/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="baby先用 IDA 開起來看看。  首先會先看到一個解爛的 start()，裡面塞了一大坨參數，對他 y 一下把參數清掉。  舒服多了，再來我們四處逛一下會發現他好像開了一個檔然後一直往裡面寫東西，那我們就在它寫入的地方下個斷點來看看他在寫啥。  可以看到我們把斷點下在 0x4010ae，並且 $rsi 也就是即將寫入的值是 “F”，再繼續 continue 看看。  所以可以猜到他在寫的是：F">
+        <meta name="description" content="Notes for Pwn整理一些常用的腳本和工具。 Template1234567891011121314151617181920from pwn import *import warningswarnings.filterwarnings(&quot;ignore&quot;, category &#x3D; BytesWarning)DEBUG_MODE &#x3D; Truedef setgdb(filena">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LJP Reverse1 baby Writeup">
-<meta property="og:url" content="https://kazma.tw/2023/12/03/LJP-Reverse1-Writeups/index.html">
+<meta property="og:title" content="Notes for Pwn">
+<meta property="og:url" content="https://kazma.tw/2024/02/11/Note-for-Pwn/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="baby先用 IDA 開起來看看。  首先會先看到一個解爛的 start()，裡面塞了一大坨參數，對他 y 一下把參數清掉。  舒服多了，再來我們四處逛一下會發現他好像開了一個檔然後一直往裡面寫東西，那我們就在它寫入的地方下個斷點來看看他在寫啥。  可以看到我們把斷點下在 0x4010ae，並且 $rsi 也就是即將寫入的值是 “F”，再繼續 continue 看看。  所以可以猜到他在寫的是：F">
+<meta property="og:description" content="Notes for Pwn整理一些常用的腳本和工具。 Template1234567891011121314151617181920from pwn import *import warningswarnings.filterwarnings(&quot;ignore&quot;, category &#x3D; BytesWarning)DEBUG_MODE &#x3D; Truedef setgdb(filena">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/images/rev1.png">
-<meta property="og:image" content="https://kazma.tw/images/rev2.png">
-<meta property="og:image" content="https://kazma.tw/images/write.png">
-<meta property="og:image" content="https://kazma.tw/images/gdb.png">
-<meta property="og:image" content="https://kazma.tw/images/L.png">
-<meta property="og:image" content="https://kazma.tw/images/A.png">
-<meta property="article:published_time" content="2023-12-03T15:58:23.000Z">
-<meta property="article:modified_time" content="2023-12-10T06:34:36.562Z">
+<meta property="article:published_time" content="2024-02-11T07:24:06.000Z">
+<meta property="article:modified_time" content="2024-02-11T07:48:10.199Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="lab">
-<meta property="article:tag" content="writeup">
-<meta property="article:tag" content="reverse">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="tools">
+<meta property="article:tag" content="notes">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/images/rev1.png">
     
     
     <!--- Icon Part-->
@@ -50,7 +43,7 @@
     
     <title>
         
-            LJP Reverse1 baby Writeup -
+            Notes for Pwn -
         
         kazma&#39;s blog
     </title>
@@ -386,7 +379,7 @@
 
         <div class="article-title">
             
-                <h1 class="article-title-regular">LJP Reverse1 baby Writeup</h1>
+                <h1 class="article-title-regular">Notes for Pwn</h1>
             
             </div>
             
@@ -408,15 +401,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-12-03 23:58:23</span>
-        <span class="mobile">2023-12-03 23:58:23</span>
+        <span class="desktop">2024-02-11 15:24:06</span>
+        <span class="mobile">2024-02-11 15:24:06</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-12-10 14:34:36</span>
-            <span class="mobile">2023-12-10 14:34:36</span>
+            <span class="desktop">2024-02-11 15:48:10</span>
+            <span class="mobile">2024-02-11 15:48:10</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -428,15 +421,15 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/lab/">lab</a>&nbsp;
+                        <a href="/tags/pwn/">pwn</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/writeup/">writeup</a>&nbsp;
+                        | <a href="/tags/tools/">tools</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/reverse/">reverse</a>&nbsp;
+                        | <a href="/tags/notes/">notes</a>&nbsp;
                     </li>
                 
             </ul>
@@ -462,64 +455,26 @@
 
 
         <div class="article-content markdown-body">
-            <h1 id="baby"><a href="#baby" class="headerlink" title="baby"></a>baby</h1><p>先用 IDA 開起來看看。</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/rev1.png"
-                      alt="Overview"
-                ></p>
-<p>首先會先看到一個解爛的 start()，裡面塞了一大坨參數，對他 y 一下把參數清掉。</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/rev2.png"
-                      alt="good"
-                ></p>
-<p>舒服多了，再來我們四處逛一下會發現他好像開了一個檔然後一直往裡面寫東西，那我們就在它寫入的地方下個斷點來看看他在寫啥。</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/write.png"
-                      alt="write"
-                ></p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/gdb.png"
-                      alt="gdb"
-                ><br>可以看到我們把斷點下在 0x4010ae，並且 $rsi 也就是即將寫入的值是 “F”，再繼續 continue 看看。</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/L.png"
-                      alt="L"
-                ><br><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/A.png"
-                      alt="A"
-                ></p>
-<p>所以可以猜到他在寫的是：FLAG…<br>這題就醬，繼續 c 下去就出來囉！</p>
-
+            <h1 id="Notes-for-Pwn"><a href="#Notes-for-Pwn" class="headerlink" title="Notes for Pwn"></a>Notes for Pwn</h1><p>整理一些常用的腳本和工具。</p>
+<h2 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category = BytesWarning)</span><br><span class="line"></span><br><span class="line">DEBUG_MODE = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">setgdb</span>(<span class="params">filename : <span class="built_in">str</span></span>):</span><br><span class="line">    r = process(filename)</span><br><span class="line">    context.terminal = [<span class="string">&quot;tmux&quot;</span>, <span class="string">&quot;splitw&quot;</span>, <span class="string">&quot;-h&quot;</span>]</span><br><span class="line">    context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">    gdb.attach(r)</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">if</span>(DEBUG_MODE):</span><br><span class="line">        r = setgdb(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        r = remote(<span class="string">&quot;&quot;</span>, )</span><br><span class="line"></span><br><span class="line">    r.interactive()</span><br></pre></td></tr></table></figure></div>
         </div>
 
         
             <div class="post-copyright-info">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> LJP Reverse1 baby Writeup</li>
+        <li><strong>Title:</strong> Notes for Pwn</li>
         <li><strong>Author:</strong> kazma</li>
         <li><strong>Created at
-                :</strong> 2023-12-03 23:58:23</li>
+                :</strong> 2024-02-11 15:24:06</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2023-12-10 14:34:36
+                    :</strong> 2024-02-11 15:48:10
             </li>
         
         <li>
-            <strong>Link:</strong> https://kazma.tw/2023/12/03/LJP-Reverse1-Writeups/
+            <strong>Link:</strong> https://kazma.tw/2024/02/11/Note-for-Pwn/
         </li>
         <li>
             <strong>
@@ -540,15 +495,15 @@
             <ul class="post-tags-box">
                 
                     <li class="tag-item">
-                        <a href="/tags/lab/">#lab</a>&nbsp;
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
                     </li>
                 
                     <li class="tag-item">
-                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                        <a href="/tags/tools/">#tools</a>&nbsp;
                     </li>
                 
                     <li class="tag-item">
-                        <a href="/tags/reverse/">#reverse</a>&nbsp;
+                        <a href="/tags/notes/">#notes</a>&nbsp;
                     </li>
                 
             </ul>
@@ -562,13 +517,13 @@
                     <div class="article-prev">
                         <a class="prev"
                         rel="prev"
-                        href="/2023/12/09/LJP-Reverse1-list-Writeup/"
+                        href="/2024/02/11/Pwnable-tw-calc-Writeup/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">LJP Reverse1 list Writeup</span>
+                                <span class="post-nav-title-item">Pwnable.tw calc Writeup</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -578,10 +533,10 @@
                     <div class="article-next">
                         <a class="next"
                         rel="next"
-                        href="/2023/10/26/%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E9%96%8B%E5%A7%8B%E5%AF%AB%E9%83%A8%E8%90%BD%E6%A0%BC/"
+                        href="/2024/02/07/Pwnable-tw-orw-Writeup/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">為什麼我開始經營部落格</span>
+                                <span class="post-nav-title-item">Pwnable.tw orw Writeup</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -659,8 +614,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">LJP Reverse1 baby Writeup</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#baby"><span class="nav-text">baby</span></a></li></ol>
+        <div class="page-title">Notes for Pwn</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Notes-for-Pwn"><span class="nav-text">Notes for Pwn</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Template"><span class="nav-text">Template</span></a></li></ol></li></ol>
 
     </div>
 </div>
