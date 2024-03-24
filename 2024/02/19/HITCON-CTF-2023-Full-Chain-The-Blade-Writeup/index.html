@@ -28,10 +28,11 @@
 <meta property="og:image" content="https://kazma.tw/images/blade_verify.png">
 <meta property="og:image" content="https://kazma.tw/images/blade_flag.png">
 <meta property="og:image" content="https://kazma.tw/images/blade_enc.png">
+<meta property="og:image" content="https://kazma.tw/images/blade_r12.png">
 <meta property="og:image" content="https://kazma.tw/images/blade_xmm.png">
 <meta property="og:image" content="https://kazma.tw/images/blade_uint32_2.png">
 <meta property="article:published_time" content="2024-02-18T17:44:30.000Z">
-<meta property="article:modified_time" content="2024-02-28T15:55:37.343Z">
+<meta property="article:modified_time" content="2024-03-24T20:59:51.465Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="reverse">
 <meta property="article:tag" content="writeup">
@@ -414,8 +415,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-02-28 23:55:37</span>
-            <span class="mobile">2024-02-28 23:55:37</span>
+            <span class="desktop">2024-03-25 04:59:51</span>
+            <span class="mobile">2024-03-25 04:59:51</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -571,8 +572,19 @@
 <li>主要行為：</li>
 </ul>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 設定 r12</span><br><span class="line"># 設定 r13</span><br><span class="line"># 設定 r14</span><br><span class="line">cb:   b8 ef be ad de          mov    eax, 0xdeadbeef # 放進處理後的輸入 </span><br><span class="line">d0:   44 01 e0                add    eax, r12d       # 和 r12、r13、r14 做一些運算</span><br><span class="line">d3:   44 31 e8                xor    eax, r13d</span><br><span class="line">d6:   c1 c8 0b                ror    eax, 0xb</span><br><span class="line">d9:   f7 d0                   not    eax</span><br><span class="line">db:   44 31 f0                xor    eax, r14d </span><br><span class="line">de:   3d ef be ad de          cmp    eax, 0xdeadbeef # 比較一個特定的值</span><br></pre></td></tr></table></figure></div>
-<p>理解後目標就很明確了，我們只需要找出那三個暫存器的值就可以拿到 flag 了！<br>至於怎麼找值有很多方式，一種是直接靜態分析出來，另外一種是把 shellcode 跑起來動態分析，這邊選擇後者配合剛剛一開始執行的 <code>shellcode.c</code> 和 ida 的 remote linux debugger 來分析，得到值：</p>
-<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r12 = 0x0000000464C457F</span><br><span class="line">r13 = 0x0000000746F6F72</span><br><span class="line">r14 = 0x000000031F3831F</span><br></pre></td></tr></table></figure></div>
+<p>理解後目標就很明確了，我們只需要找出那三個暫存器的值就可以拿到 flag 了！<br>至於怎麼找值有很多方式，列出一些給大家參考：</p>
+<ol>
+<li>如果夠猛，可以直接靜態分析出來，但這有點硬 XD，推薦後面兩種。</li>
+<li>另外一種是模仿剛剛用來模擬 clinet 的 shellcode，再配合 ida 的 remote linux debugger 動態分析。</li>
+<li>當然直接用 gdb 分析也可以。</li>
+</ol>
+<p>這邊選擇第三種，用 gdb 來分析。先 <code>break main</code> 之後走到 main，然後設定 <code>watch $r12</code>、<code>watch $r13</code>、<code>watch $r14</code>完 <code>continue</code>，就可以依序看到三個暫存器被設定：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/blade_r12.png"
+                      alt="r12"
+                ></p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r12 = 0x464C457F</span><br><span class="line">r13 = 0x746F6F72</span><br><span class="line">r14 = 0x31F3831F</span><br></pre></td></tr></table></figure></div>
 <p>從 ida 取出要比較的常數：<br><img  
                      lazyload
                      src="/images/loading.svg"
@@ -620,7 +632,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-02-28 23:55:37
+                    :</strong> 2024-03-25 04:59:51
             </li>
         
         <li>
