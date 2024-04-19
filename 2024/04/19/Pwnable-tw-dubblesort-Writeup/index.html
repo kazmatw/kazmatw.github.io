@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://kazma.tw/images/dubble_canary.png">
 <meta property="og:image" content="https://kazma.tw/images/dubble_shell.png">
 <meta property="article:published_time" content="2024-04-19T06:28:20.000Z">
-<meta property="article:modified_time" content="2024-04-19T15:58:36.694Z">
+<meta property="article:modified_time" content="2024-04-19T16:01:51.514Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
 <meta name="twitter:card" content="summary">
@@ -412,8 +412,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-04-19 23:58:36</span>
-            <span class="mobile">2024-04-19 23:58:36</span>
+            <span class="desktop">2024-04-20 00:01:51</span>
+            <span class="mobile">2024-04-20 00:01:51</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -479,7 +479,7 @@
 <li>快樂 RCE</li>
 </ol>
 <h3 id="leak-libc"><a href="#leak-libc" class="headerlink" title="leak libc"></a>leak libc</h3><ul>
-<li>我們用 gdb 來分析 stack 上面的殘渣：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">└─$ gdb -q dubblesort</span><br><span class="line">gef➤  start</span><br><span class="line">gef➤  <span class="built_in">break</span> <span class="built_in">read</span>@plt</span><br><span class="line">gef➤  c</span><br><span class="line">gef➤  fin</span><br><span class="line">aaaa</span><br><span class="line">gef➤  gef config context.nb_lines_stack 30</span><br><span class="line">gef➤  context stack</span><br><span class="line">gef➤  vmmap</span><br></pre></td></tr></table></figure></div>
+<li>我們用 gdb 來分析 stack 上面的殘渣：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">└─$ gdb -q dubblesort</span><br><span class="line">gef➤  start</span><br><span class="line">gef➤  <span class="built_in">break</span> <span class="built_in">read</span>@plt</span><br><span class="line">gef➤  c</span><br><span class="line">gef➤  fin</span><br><span class="line">aaaa</span><br><span class="line">gef➤  <span class="built_in">break</span> __printf_chk@plt</span><br><span class="line">gef➤  c</span><br><span class="line">gef➤  gef config context.nb_lines_stack 30</span><br><span class="line">gef➤  context stack</span><br><span class="line">gef➤  vmmap</span><br></pre></td></tr></table></figure></div>
 方法大致如上。<br>接著 demo 腳本，stack 如下，<code>0x61616161</code> 是我們的輸入，最後填上 ‘z’ 來幫助我們收集 leak 的資料，也就是 <code>0x7a</code>，後面緊接著就是 libc 裡面的某個地址：<br><img  
                      lazyload
                      src="/images/loading.svg"
@@ -563,7 +563,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-04-19 23:58:36
+                    :</strong> 2024-04-20 00:01:51
             </li>
         
         <li>
