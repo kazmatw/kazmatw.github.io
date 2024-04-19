@@ -26,7 +26,7 @@
 <meta property="og:description" content="Patchelf &amp; Glibc-all-in-one Combo這篇主要會提到平常在模擬 Pwn 遠端環境的好用組合技。 0x1 Introduction今天會用 pwnable.tw  的 dubblesort  示範。patchelf 和 glibc-all-in-one 安裝方式如下： patchelf1└─$ sudo apt install patchelf glibc-all">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-04-19T01:05:57.000Z">
-<meta property="article:modified_time" content="2024-04-19T06:24:21.124Z">
+<meta property="article:modified_time" content="2024-04-19T06:26:27.516Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="tools">
@@ -409,8 +409,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-04-19 14:24:21</span>
-            <span class="mobile">2024-04-19 14:24:21</span>
+            <span class="desktop">2024-04-19 14:26:27</span>
+            <span class="mobile">2024-04-19 14:26:27</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -464,7 +464,7 @@
 <h2 id="0x1-Introduction"><a href="#0x1-Introduction" class="headerlink" title="0x1 Introduction"></a>0x1 Introduction</h2><p>今天會用 <a class="link"   target="_blank" rel="noopener" href="https://pwnable.tw/" >pwnable.tw <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 的 <a class="link"   target="_blank" rel="noopener" href="https://pwnable.tw/challenge/#4" >dubblesort <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 示範。<br><code>patchelf</code> 和 <code>glibc-all-in-one</code> 安裝方式如下：</p>
 <h3 id="patchelf"><a href="#patchelf" class="headerlink" title="patchelf"></a>patchelf</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">└─$ sudo apt install patchelf</span><br></pre></td></tr></table></figure></div>
 <h3 id="glibc-all-in-one"><a href="#glibc-all-in-one" class="headerlink" title="glibc-all-in-one"></a>glibc-all-in-one</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">└─$ git <span class="built_in">clone</span> https://github.com/matrix1001/glibc-all-in-one.git </span><br></pre></td></tr></table></figure></div>
-<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><ul>
+<h2 id="0x2-Demo"><a href="#0x2-Demo" class="headerlink" title="0x2 Demo"></a>0x2 Demo</h2><ul>
 <li>首先我們要知道題目附給我們的 libc 是什麼版本的：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">└─$ strings libc_32.so.6 | grep GNU</span><br><span class="line">GNU C Library (Ubuntu GLIBC 2.23-0ubuntu5) stable release version 2.23, by Roland McGrath et al.</span><br><span class="line">Compiled by GNU CC version 5.4.0 20160609.</span><br><span class="line">        GNU Libidn by Simon Josefsson</span><br></pre></td></tr></table></figure></div>
 從上面可以得知版本是：<code>2.23-0ubuntu5</code>。</li>
 <li>接著我們要用 glibc-all-in-one 去找到對應版本需要的文件：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└─$ <span class="built_in">cd</span> glibc-all-in-one/</span><br><span class="line">└─$ ./update_list</span><br><span class="line">└─$ <span class="built_in">cat</span> list</span><br></pre></td></tr></table></figure></div>
@@ -492,7 +492,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-04-19 14:24:21
+                    :</strong> 2024-04-19 14:26:27
             </li>
         
         <li>
@@ -626,7 +626,7 @@
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">Patchelf &amp; Glibc-all-in-one Combo</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Patchelf-Glibc-all-in-one-Combo"><span class="nav-text">Patchelf &amp; Glibc-all-in-one Combo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-Introduction"><span class="nav-text">0x1 Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#patchelf"><span class="nav-text">patchelf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#glibc-all-in-one"><span class="nav-text">glibc-all-in-one</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo"><span class="nav-text">Demo</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Patchelf-Glibc-all-in-one-Combo"><span class="nav-text">Patchelf &amp; Glibc-all-in-one Combo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-Introduction"><span class="nav-text">0x1 Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#patchelf"><span class="nav-text">patchelf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#glibc-all-in-one"><span class="nav-text">glibc-all-in-one</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x2-Demo"><span class="nav-text">0x2 Demo</span></a></li></ol></li></ol>
 
     </div>
 </div>
