@@ -13,22 +13,25 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/tags/"/>
+    <link rel="canonical" href="https://kazma.tw/2024/04/19/patchelf-glibc-all-in-one-combo/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="https://kazma.tw/tags/index.html">
+        <meta name="description" content="Patchelf &amp; Glibc-all-in-one Combo這篇主要會提到平常在模擬 Pwn 遠端環境的好用組合技。 0x1 Introduction今天會用 pwnable.tw  的 dubblesort  示範。patchelf 和 glibc-all-in-one 安裝方式如下： patchelf1└─$ sudo apt install patchelf glibc-all">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Patchelf &amp; Glibc-all-in-one Combo">
+<meta property="og:url" content="https://kazma.tw/2024/04/19/Patchelf-Glibc-all-in-one-Combo/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="Patchelf &amp; Glibc-all-in-one Combo這篇主要會提到平常在模擬 Pwn 遠端環境的好用組合技。 0x1 Introduction今天會用 pwnable.tw  的 dubblesort  示範。patchelf 和 glibc-all-in-one 安裝方式如下： patchelf1└─$ sudo apt install patchelf glibc-all">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-12-10T06:07:22.000Z">
-<meta property="article:modified_time" content="2023-12-10T06:07:22.515Z">
+<meta property="article:published_time" content="2024-04-19T01:05:57.000Z">
+<meta property="article:modified_time" content="2024-04-19T06:14:47.343Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="tools">
+<meta property="article:tag" content="notes">
+<meta property="article:tag" content="binary">
 <meta name="twitter:card" content="summary">
     
     
@@ -41,7 +44,7 @@
     
     <title>
         
-            Tags -
+            Patchelf &amp; Glibc-all-in-one Combo -
         
         kazma&#39;s blog
     </title>
@@ -180,7 +183,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active" 
+                                <a class="" 
                                     href="/tags"  >
                                     
                                         
@@ -296,7 +299,7 @@
             
                 
                     <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group active" 
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
                         href="/tags"  >
                              
                                 
@@ -372,108 +375,263 @@
             <div class="main-content">
 
                 
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">Patchelf &amp; Glibc-all-in-one Combo</h1>
+            
+            </div>
+            
                     
-<div class="tagcloud-container">
-	
-	<div>
-		<h1 class="tagcloud-header">Tags</h1>
-	</div>
-	<div class="tagcloud-content">
-		<ul class="tag-list" data-show-value="true">
-			
-			<li>
-				<a data-weight="4" href="/tags/reverse/"
-					><i class="fa-solid fa-hashtag"></i>reverse</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="31" href="/tags/writeup/"
-					><i class="fa-solid fa-hashtag"></i>writeup</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="27" href="/tags/lab/"
-					><i class="fa-solid fa-hashtag"></i>lab</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="29" href="/tags/pwn/"
-					><i class="fa-solid fa-hashtag"></i>pwn</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="2" href="/tags/rop/"
-					><i class="fa-solid fa-hashtag"></i>rop</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="2" href="/tags/tools/"
-					><i class="fa-solid fa-hashtag"></i>tools</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="2" href="/tags/notes/"
-					><i class="fa-solid fa-hashtag"></i>notes</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/binary/"
-					><i class="fa-solid fa-hashtag"></i>binary</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/oob/"
-					><i class="fa-solid fa-hashtag"></i>oob</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="3" href="/tags/pwnabletw/"
-					><i class="fa-solid fa-hashtag"></i>pwnabletw</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="17" href="/tags/pwnctf/"
-					><i class="fa-solid fa-hashtag"></i>pwnctf</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/hitconctf/"
-					><i class="fa-solid fa-hashtag"></i>hitconctf</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/orw/"
-					><i class="fa-solid fa-hashtag"></i>orw</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/ret2sc/"
-					><i class="fa-solid fa-hashtag"></i>ret2sc</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/talk/"
-					><i class="fa-solid fa-hashtag"></i>talk</a
-				>
-			</li>
-			
-		</ul>
-	</div>
-	
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-04-19 09:05:57</span>
+        <span class="mobile">2024-04-19 09:05:57</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-04-19 14:14:47</span>
+            <span class="mobile">2024-04-19 14:14:47</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/pwn/">pwn</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/tools/">tools</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/notes/">notes</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/binary/">binary</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <h1 id="Patchelf-Glibc-all-in-one-Combo"><a href="#Patchelf-Glibc-all-in-one-Combo" class="headerlink" title="Patchelf &amp; Glibc-all-in-one Combo"></a>Patchelf &amp; Glibc-all-in-one Combo</h1><p>這篇主要會提到平常在模擬 Pwn 遠端環境的好用組合技。</p>
+<h2 id="0x1-Introduction"><a href="#0x1-Introduction" class="headerlink" title="0x1 Introduction"></a>0x1 Introduction</h2><p>今天會用 <a class="link"   target="_blank" rel="noopener" href="https://pwnable.tw/" >pwnable.tw <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 的 <a class="link"   target="_blank" rel="noopener" href="https://pwnable.tw/challenge/#4" >dubblesort <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 示範。<br><code>patchelf</code> 和 <code>glibc-all-in-one</code> 安裝方式如下：</p>
+<h3 id="patchelf"><a href="#patchelf" class="headerlink" title="patchelf"></a>patchelf</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">└─$ sudo apt install patchelf</span><br></pre></td></tr></table></figure></div>
+<h3 id="glibc-all-in-one"><a href="#glibc-all-in-one" class="headerlink" title="glibc-all-in-one"></a>glibc-all-in-one</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">└─$ git <span class="built_in">clone</span> https://github.com/matrix1001/glibc-all-in-one.git </span><br></pre></td></tr></table></figure></div>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><ul>
+<li>首先我們要知道他附給我們的 libc 是什麼版本的：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">└─$ strings libc_32.so.6 | grep GNU</span><br><span class="line">GNU C Library (Ubuntu GLIBC 2.23-0ubuntu5) stable release version 2.23, by Roland McGrath et al.</span><br><span class="line">Compiled by GNU CC version 5.4.0 20160609.</span><br><span class="line">        GNU Libidn by Simon Josefsson</span><br></pre></td></tr></table></figure></div>
+從上面可以得知版本是：<code>2.23-0ubuntu5</code>。</li>
+<li>接著我們要用 glibc-all-in-one 去找到對應版本需要的文件：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└─$ <span class="built_in">cd</span> glibc-all-in-one/</span><br><span class="line">└─$ ./update_list</span><br><span class="line">└─$ <span class="built_in">cat</span> list</span><br></pre></td></tr></table></figure></div>
+看了一下會發現 list 沒有我們要的版本，可以在 <a class="link"   target="_blank" rel="noopener" href="https://launchpad.net/ubuntu/+source/glibc" >https://launchpad.net/ubuntu/+source/glibc <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 找，或是直接打對應版本的網址 <a class="link"   target="_blank" rel="noopener" href="https://launchpad.net/ubuntu/+source/glibc/2.23-0ubuntu5%E3%80%82" >https://launchpad.net/ubuntu/+source/glibc/2.23-0ubuntu5。 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>右側的 <code>Builds</code> 裡面找到裡面找到題目使用的 CPU 架構。<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ file dubblesort</span><br><span class="line">dubblesort: ELF 32-bit LSB shared object, Intel 80386, version 1 (SYSV), dynamically linked, interpreter ./ld-linux.so.2, <span class="keyword">for</span> GNU/Linux 2.6.24, BuildID[sha1]=12a217baf7cbdf2bb5c344ff14adcf7703672fb1, stripped</span><br></pre></td></tr></table></figure></div>
+這題為 <code>Intel 80386</code>。<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└─$ <span class="built_in">cd</span> ~/glibc-all-in-one/debs</span><br><span class="line">└─$ wget http://launchpadlibrarian.net/293727477/libc6_2.23-0ubuntu5_i386.deb</span><br><span class="line">└─$ <span class="built_in">mkdir</span> ~/glibc-all-in-one/libs2.23-0ubuntu5_i386</span><br><span class="line">└─$ <span class="built_in">cd</span> ~/glibc-all-in-one/ </span><br><span class="line">└─$ ./extract debs/libc6_2.23-0ubuntu5_i386.deb libs/2.23-0ubuntu5_i386</span><br><span class="line">└─$ <span class="built_in">cd</span> 2.23-0ubuntu5_i386/</span><br></pre></td></tr></table></figure></div>
+那如果 list 有你想要的版本可以直接如下操作：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./download 2.23-0ubuntu11.3_amd64</span><br></pre></td></tr></table></figure></div>
+一樣會在 <code>~/glibc-all-in-one/libs</code> 下看到對應的資料夾。</li>
+<li><code>ldd</code>:<br>全名是：List Dynamic Dependencies。可以查看一個程序在運行時需要鏈接的所有共享庫。用法如下：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">└─$ ldd dubblesort</span><br><span class="line">        linux-gate.so.1 (0xf7f9e000)</span><br><span class="line">        libc.so.6 =&gt; /lib32/libc.so.6 (0xf7c00000)</span><br><span class="line">        /lib/ld-linux.so.2 (0xf7fa0000)</span><br></pre></td></tr></table></figure></div>
+可以看到目前都是用到本地 <code>/lib32</code> 還有 <code>/lib</code> 下的檔案 ，我們可以在 <code>patchelf</code> 後來觀察一下變化。</li>
+<li><code>patchelf</code>：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ <span class="built_in">cp</span> /home/kazma/glibc-all-in-one/libs/2.23-0ubuntu5_i386/ld-2.23.so  ./</span><br><span class="line">└─$ patchelf --set-interpreter ./ld-2.23.so dubblesort</span><br><span class="line">└─$ patchelf --replace-needed libc.so.6 ./libc_32.so.6 dubblesort</span><br><span class="line">└─$ ldd dubblesort</span><br><span class="line">        linux-gate.so.1 (0xf7fba000)</span><br><span class="line">        ./libc_32.so.6 (0xf7df7000)</span><br><span class="line">        ./ld-2.23.so =&gt; /lib/ld-linux.so.2 (0xf7fbc000)</span><br></pre></td></tr></table></figure></div></li>
+<li>成功執行：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./dubblesort</span><br><span class="line">What your name :</span><br></pre></td></tr></table></figure></div>
+以上是模擬遠端環境的一個簡單示範，之後有遇到其他特殊狀況會持續更新在這邊，有問題也歡迎找我討論 ~</li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Patchelf &amp; Glibc-all-in-one Combo</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-04-19 09:05:57</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-04-19 14:14:47
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/04/19/Patchelf-Glibc-all-in-one-Combo/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/tools/">#tools</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/notes/">#notes</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/binary/">#binary</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/02/19/HITCON-CTF-2023-Full-Chain-The-Blade-Writeup/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">HITCON-CTF-2023 Full Chain - The Blade Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Patchelf &amp; Glibc-all-in-one Combo</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Patchelf-Glibc-all-in-one-Combo"><span class="nav-text">Patchelf &amp; Glibc-all-in-one Combo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-Introduction"><span class="nav-text">0x1 Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#patchelf"><span class="nav-text">patchelf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#glibc-all-in-one"><span class="nav-text">glibc-all-in-one</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo"><span class="nav-text">Demo</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
 </div>
 
 
@@ -549,6 +707,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
