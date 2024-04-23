@@ -96,7 +96,8 @@
 <link rel="stylesheet" href="/fontawesome/sharp-solid.min.css">
 
     
-<meta name="generator" content="Hexo 6.3.0"></head>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="kazma's blog" type="application/atom+xml">
+</head>
 
 
 <body>
@@ -403,6 +404,67 @@
                 
                     <div class="home-content-container">
     <ul class="home-article-list">
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2024/01/19/Pwnctf-oob2-Writeup/">
+                        Pwnctf oob2 Writeup
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        oob2這題跟 oob1 是類似的，執行後可以觀察到這次多了一個功能是可以讓使用者設定自己的 nickname 然後登入的時候就會顯示你自己設定的這個暱稱，如下所示：
+123456└─$ ./oob2User ID: -4Nickname: kazm...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Fri Jan 19 2024 00:05:09 GMT+0800">
+                
+                    2024-01-19
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2024/01/19/Pwnctf-oob2-Writeup/">Read more<span class="seo-reader-text">Pwnctf oob2 Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+            </li>
         
             <li class="home-article-item">
 
@@ -969,69 +1031,6 @@ exploit.py：
 
             </li>
         
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2023/12/20/Pwnctf-bofe4sy-Writeup/">
-                        Pwnctf bofe4sy Writeup
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        bofe4sy直接 bof return 到 win 就行：
-
-exploit.py：
-1234567891011└─$ cat exploit.pyfrom pwn import *r = process(&#x27;./bofe4sy&#x27;...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Dec 20 2023 22:05:14 GMT+0800">
-                
-                    2023-12-20
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/20/Pwnctf-bofe4sy-Writeup/">Read more<span class="seo-reader-text">Pwnctf bofe4sy Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
     </ul>
 
     <div class="home-paginator">
@@ -1092,7 +1091,7 @@ exploit.py：
                 </div>
                 <div class="statistics">
                     <a class="item" href="/tags">
-                        <div class="number">15</div>
+                        <div class="number">18</div>
                         <div class="label">Tags</div>
                     </a>
                     <a class="item" href="/categories">
@@ -1100,7 +1099,7 @@ exploit.py：
                         <div class="label">Categories</div>
                     </a>
                     <a class="item" href="/archives">
-                        <div class="number">35</div>
+                        <div class="number">36</div>
                         <div class="label">Posts</div>
                     </a>
                 </div>
