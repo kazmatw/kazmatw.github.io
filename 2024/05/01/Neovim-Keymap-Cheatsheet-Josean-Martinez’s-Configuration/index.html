@@ -18,12 +18,12 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Neovim Keymap Cheatsheet這篇文章主要是要整理給自己看的筆記 XD目前使用的是一個 YouTuber, Josean Martinez 的配置：附上連結：  YouTube Video  Blog Post  Source Code   Preview附上這個配置的預覽圖：  Cover:  Telescope:  Lazy.nvim:  File Explorer:  Ls">
+        <meta name="description" content="Neovim Keymap Cheatsheet這篇文章主要是要整理給自己看的筆記 XD目前使用的是一個 YouTuber, Josean Martinez 的配置：附上連結：  YouTube Video  Blog Post  Source Code   Preview附上這個配置的一些美美預覽圖：  Cover:  Telescope:  Lazy.nvim:  File Explorer:">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Neovim Keymap Cheatsheet: Josean Martinez’s Configuration">
 <meta property="og:url" content="https://kazma.tw/2024/05/01/Neovim-Keymap-Cheatsheet-Josean-Martinez%E2%80%99s-Configuration/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="Neovim Keymap Cheatsheet這篇文章主要是要整理給自己看的筆記 XD目前使用的是一個 YouTuber, Josean Martinez 的配置：附上連結：  YouTube Video  Blog Post  Source Code   Preview附上這個配置的預覽圖：  Cover:  Telescope:  Lazy.nvim:  File Explorer:  Ls">
+<meta property="og:description" content="Neovim Keymap Cheatsheet這篇文章主要是要整理給自己看的筆記 XD目前使用的是一個 YouTuber, Josean Martinez 的配置：附上連結：  YouTube Video  Blog Post  Source Code   Preview附上這個配置的一些美美預覽圖：  Cover:  Telescope:  Lazy.nvim:  File Explorer:">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://kazma.tw/images/nvim_cover.png">
 <meta property="og:image" content="https://kazma.tw/images/nvim_file_explorer.png">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://kazma.tw/images/nvim_lsp.png">
 <meta property="og:image" content="https://kazma.tw/images/nvim_lazygit.png">
 <meta property="article:published_time" content="2024-05-01T07:59:06.000Z">
-<meta property="article:modified_time" content="2024-05-02T09:32:18.124Z">
+<meta property="article:modified_time" content="2024-05-02T09:36:16.557Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="tools">
 <meta property="article:tag" content="cheatsheet">
@@ -416,8 +416,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-05-02 17:32:18</span>
-            <span class="mobile">2024-05-02 17:32:18</span>
+            <span class="desktop">2024-05-02 17:36:16</span>
+            <span class="mobile">2024-05-02 17:36:16</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -469,7 +469,7 @@
 <li><a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbmt4Y3RQZXV4a3VJZ1p5dE5qQTdYdkp4SWJkQXxBQ3Jtc0tuZHk1R3ROeFBiYTFHYWFucU9MU2ZsenYydmRWZUpMY1Z4S2k1Ml85bUtiR2pBeHhQcXdYLUctTGR1NFhyNmNKZlJkbG9hS0paRV9YOGdHaVFVWFRjc21FenR6ZXVIS1pIODc0Z0JaNnJUQXQ4NnhjRQ&q=https://bit.ly/4agkTyQ&v=6pAG3BHurdM" >Blog Post <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 <li><a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbFhiRGpsSEt2WlJQUDd3SXdVdEs0YTBLZWRfUXxBQ3Jtc0tsZ3ZyUEprcDV2OEU4WG5YeVR2aWdTZ2FudUNBTy1GT01ScjZmQmxqRWFWSEpzUmsxRDBJOGh6cTJUMHNCbGpta0lUVDNXYjZzTzdOTnRWRTBkS3lvNmpTQ091YjlLaVBBY3RnZGx2b3ZmdDFLR1hVQQ&q=https://bit.ly/4cFlPyq&v=6pAG3BHurdM" >Source Code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 </ul>
-<h2 id="Preview"><a href="#Preview" class="headerlink" title="Preview"></a>Preview</h2><p>附上這個配置的預覽圖：</p>
+<h2 id="Preview"><a href="#Preview" class="headerlink" title="Preview"></a>Preview</h2><p>附上這個配置的一些美美預覽圖：</p>
 <ul>
 <li><p>Cover:<br><img  
                      lazyload
@@ -515,6 +515,7 @@
 </li>
 </ul>
 <h2 id="Keymaps"><a href="#Keymaps" class="headerlink" title="Keymaps"></a>Keymaps</h2><h3 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h3><ul>
+<li><code>&lt;leader&gt;</code> is eual to <code>&lt;Space&gt;</code> here</li>
 <li><code>jk</code> to exit Insert to Normal</li>
 <li><code>&lt;leader&gt;nh</code> to clear search highlights</li>
 <li><code>&lt;leader&gt;+</code> to increase number</li>
@@ -540,7 +541,7 @@
 <li><code>:Lazy</code> to open plugin manager</li>
 </ul>
 <h3 id="Tmux-navigator"><a href="#Tmux-navigator" class="headerlink" title="Tmux navigator"></a>Tmux navigator</h3><ul>
-<li><code>&lt;Ctrl&gt;h/j/k/l/</code> to move between tmux &amp; split window</li>
+<li><code>&lt;Ctrl&gt;h/j/k/l</code> to move between tmux &amp; split window</li>
 </ul>
 <h3 id="File-explorer"><a href="#File-explorer" class="headerlink" title="File explorer"></a>File explorer</h3><ul>
 <li><code>&lt;leader&gt;ee</code> to toggle file explorer</li>
@@ -656,7 +657,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-05-02 17:32:18
+                    :</strong> 2024-05-02 17:36:16
             </li>
         
         <li>
