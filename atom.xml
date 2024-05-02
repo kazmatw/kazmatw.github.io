@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-04-30T12:26:41.070Z</updated>
+  <updated>2024-05-02T09:32:18.124Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Neovim Keymap Cheatsheet: Josean Martinez’s Configuration</title>
+    <link href="https://kazma.tw/2024/05/01/Neovim-Keymap-Cheatsheet-Josean-Martinez%E2%80%99s-Configuration/"/>
+    <id>https://kazma.tw/2024/05/01/Neovim-Keymap-Cheatsheet-Josean-Martinez%E2%80%99s-Configuration/</id>
+    <published>2024-05-01T07:59:06.000Z</published>
+    <updated>2024-05-02T09:32:18.124Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Neovim-Keymap-Cheatsheet"><a href="#Neovim-Keymap-Cheatsheet" class="headerlink" title="Neovim Keymap Cheatsheet"></a>Neovim Keymap Cheatsheet</h1><p>這篇文章主要是要整理給自己看的筆記 XD<br>目前使用的是一個 YouTuber, Josean Martinez 的配置：附上連結：</p><ul><li><a class="link"   href="https://youtu.be/6pAG3BHurdM?si=cXSanNOFsM3WnEAp" >YouTube Video <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li><li><a class="link"   href="https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbmt4Y3RQZXV4a3VJZ1p5dE5qQTdYdkp4SWJkQXxBQ3Jtc0tuZHk1R3ROeFBiYTFHYWFucU9MU2ZsenYydmRWZUpMY1Z4S2k1Ml85bUtiR2pBeHhQcXdYLUctTGR1NFhyNmNKZlJkbG9hS0paRV9YOGdHaVFVWFRjc21FenR6ZXVIS1pIODc0Z0JaNnJUQXQ4NnhjRQ&q=https://bit.ly/4agkTyQ&v=6pAG3BHurdM" >Blog Post <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li><li><a class="link"   href="https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbFhiRGpsSEt2WlJQUDd3SXdVdEs0YTBLZWRfUXxBQ3Jtc0tsZ3ZyUEprcDV2OEU4WG5YeVR2aWdTZ2FudUNBTy1GT01ScjZmQmxqRWFWSEpzUmsxRDBJOGh6cTJUMHNCbGpta0lUVDNXYjZzTzdOTnRWRTBkS3lvNmpTQ091YjlLaVBBY3RnZGx2b3ZmdDFLR1hVQQ&q=https://bit.ly/4cFlPyq&v=6pAG3BHurdM" >Source Code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li></ul><h2 id="Preview"><a href="#Preview" class="headerlink" title="Preview"></a>Preview</h2><p>附上這個配置的預覽圖：</p><ul><li><p>Cover:<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/nvim_cover.png"                      alt="cover"                ></p></li><li><p>Telescope:<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/nvim_file_explorer.png"                      alt="file-explorer"                ></p></li><li><p>Lazy.nvim:<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/nvim_lazy.png"                      alt="lazy"                ></p></li><li><p>File Explorer:<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/nvim_tree.png"                      alt="tree"                ></p></li><li><p>Lsp:<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/nvim_lsp.png"                      alt="lsp"                ></p></li><li><p>Lazy git<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/nvim_lazygit.png"                      alt="lazy-git"                ></p></li></ul><h2 id="Keymaps"><a href="#Keymaps" class="headerlink" title="Keymaps"></a>Keymaps</h2><h3 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h3><ul><li><code>jk</code> to exit Insert to Normal</li><li><code>&lt;leader&gt;nh</code> to clear search highlights</li><li><code>&lt;leader&gt;+</code> to increase number</li><li><code>&lt;leader&gt;-</code> to decrease number</li><li><code>&lt;Ctrl&gt;o</code> to jump backward</li><li><code>&lt;Ctrl&gt;i</code> to jump forward</li></ul><h3 id="Split"><a href="#Split" class="headerlink" title="Split"></a>Split</h3><ul><li><code>&lt;leader&gt;sv</code> to split window vertically</li><li><code>&lt;leader&gt;sh</code> to split window horizontally</li><li><code>&lt;leader&gt;se</code> to make splits equal size</li><li><code>&lt;leader&gt;sx</code> to close current split</li><li><code>&lt;leader&gt;sm</code> to maximize&#x2F;minimize a split</li></ul><h3 id="Tab"><a href="#Tab" class="headerlink" title="Tab"></a>Tab</h3><ul><li><code>&lt;leader&gt;to</code> to open new tab</li><li><code>&lt;leader&gt;tx</code> to close current tab</li><li><code>&lt;leader&gt;tn</code> to go to next tab</li><li><code>&lt;leader&gt;tp</code> to go to previous tab</li><li><code>&lt;leader&gt;tf</code> to open current window in new tab</li></ul><h3 id="Lazy-nvim-plugin-manager"><a href="#Lazy-nvim-plugin-manager" class="headerlink" title="Lazy.nvim plugin manager"></a>Lazy.nvim plugin manager</h3><ul><li><code>:Lazy</code> to open plugin manager</li></ul><h3 id="Tmux-navigator"><a href="#Tmux-navigator" class="headerlink" title="Tmux navigator"></a>Tmux navigator</h3><ul><li><code>&lt;Ctrl&gt;h/j/k/l/</code> to move between tmux &amp; split window</li></ul><h3 id="File-explorer"><a href="#File-explorer" class="headerlink" title="File explorer"></a>File explorer</h3><ul><li><code>&lt;leader&gt;ee</code> to toggle file explorer</li><li><code>&lt;leader&gt;ef</code> to toggle file explorer on current file</li><li><code>&lt;leader&gt;ec</code> to collapse file explorer</li><li><code>&lt;leader&gt;er</code> to refresh file explorer</li></ul><h3 id="Which-key"><a href="#Which-key" class="headerlink" title="Which key"></a>Which key</h3><ul><li>print hint message after typing a letter</li></ul><h3 id="Telescope"><a href="#Telescope" class="headerlink" title="Telescope"></a>Telescope</h3><ul><li><code>&lt;leader&gt;ff</code> to fuzzy find files in cwd</li><li><code>&lt;leader&gt;fr</code> to fuzzey find recent files</li><li><code>&lt;leader&gt;fs</code> to find string in cwd</li><li><code>&lt;leader&gt;fc</code> to find string under cursor in cwd</li><li><code>&lt;leader&gt;ft</code> to find todos</li><li><code>&lt;Ctrl&gt;j/k</code> to move in the result</li><li><code>&lt;Ctrl&gt;q</code> to quit the telescope</li></ul><h3 id="Auto-session"><a href="#Auto-session" class="headerlink" title="Auto session"></a>Auto session</h3><ul><li><code>&lt;leader&gt;wr</code> to restore session for cwd</li><li><code>&lt;leader&gt;ws</code> to save session for cwd</li></ul><h3 id="File-management"><a href="#File-management" class="headerlink" title="File management"></a>File management</h3><ul><li><code>r</code> to rename a file</li><li><code>a</code> to add a file</li></ul><h3 id="Treesitter"><a href="#Treesitter" class="headerlink" title="Treesitter"></a>Treesitter</h3><ul><li><code>:Inspect Tree</code> to open syntax tree</li><li><code>&lt;Ctrl&gt;&lt;Spc&gt;</code> to select node and use it again to select parent node</li></ul><h3 id="Autocomplete"><a href="#Autocomplete" class="headerlink" title="Autocomplete"></a>Autocomplete</h3><ul><li><code>&lt;Ctrl&gt;k</code> to select previous suggestion</li><li><code>&lt;Ctrl&gt;j</code> to select previous suggestion</li><li><code>&lt;Ctrl&gt;b</code> to scroll up in docs</li><li><code>&lt;Ctrl&gt;f</code> to scroll down in docs</li><li><code>&lt;Ctrl&gt;&lt;Spc&gt;</code> to show completion suggestion</li><li><code>&lt;Ctrl&gt;e</code> to close completion window</li><li><code>&lt;Enter&gt;</code> to confirm current selection</li></ul><h3 id="Comments"><a href="#Comments" class="headerlink" title="Comments"></a>Comments</h3><ul><li><code>gcc</code> to comment&#x2F;uncomment current line</li><li><code>gc&lt;position&gt;</code> to comment&#x2F;uncomment</li><li><code>TODO:</code> in comment to create TODO tag</li><li><code>BUG</code> in comment to create BUG tag</li><li><code>HACK</code> in comment to create HACK tag</li></ul><h3 id="Substitute"><a href="#Substitute" class="headerlink" title="Substitute"></a>Substitute</h3><ul><li><code>s</code> to substitute with motion</li><li><code>ss</code> to substitute line</li><li><code>S</code> to substitute end of line</li></ul><h3 id="Surround"><a href="#Surround" class="headerlink" title="Surround"></a>Surround</h3><ul><li><code>ys&lt;motion&gt;</code> to add surrounding</li><li><code>ds&lt;motion&gt;</code> to delete surrounding</li><li><code>cs&lt;motion&gt;</code> to change surrounding</li></ul><h3 id="Lsp"><a href="#Lsp" class="headerlink" title="Lsp"></a>Lsp</h3><ul><li><code>:Mason</code> to open mason</li><li><code>gR</code> to show definition, references</li><li><code>gD</code> to go to declaration</li><li><code>gd</code> to show lsp definition</li><li><code>gi</code> to show lsp implementations</li><li><code>gt</code> to show lsp type definition</li><li><code>&lt;leader&gt;ca</code> to see available code action</li><li><code>&lt;leader&gt;rn</code> to smart rename</li><li><code>&lt;leader&gt;D</code> to show diagnostics</li><li><code>&lt;leader&gt;d</code> to show diagnostics for line</li><li><code>[d</code> to jump to previous diagnostics in buffer</li><li><code>K</code> to show documentation for what is under cursor</li><li><code>&lt;leader&gt;rs</code> to mapping to restart lsp if necessary</li></ul><h3 id="Trouble"><a href="#Trouble" class="headerlink" title="Trouble"></a>Trouble</h3><ul><li><code>&lt;leader&gt;xx</code> to open&#x2F;close trouble list</li><li><code>&lt;leader&gt;xw</code> to open trouble workspace diagnostics</li><li><code>&lt;leader&gt;xd</code> to open trouble document diagnostics</li><li><code>&lt;leader&gt;xq</code> to open trouble quick fix list</li><li><code>&lt;leader&gt;xl</code> to open trouble location list</li><li><code>&lt;leader&gt;xt</code> to open todos in trouble</li></ul><h3 id="Linting"><a href="#Linting" class="headerlink" title="Linting"></a>Linting</h3><ul><li><code>&lt;leader&gt;l</code> to trigger linting for current line</li></ul><h3 id="Git-Integration"><a href="#Git-Integration" class="headerlink" title="Git Integration"></a>Git Integration</h3><ul><li><code>]h</code> to go to next hunk</li><li><code>[h</code> to go to previous hunk</li><li><code>&lt;leader&gt;hs</code> to stage hunk</li><li><code>&lt;leader&gt;hr</code> to reset hunk</li><li><code>&lt;leader&gt;hS</code> to stage buffer</li><li><code>&lt;leader&gt;hR</code> to reset buffer</li><li><code>&lt;leader&gt;hu</code> to undo stage hunk</li><li><code>&lt;leader&gt;hp</code> to preview hunk</li><li><code>&lt;leader&gt;hb</code> to blame line</li><li><code>&lt;leader&gt;hB</code> to toggle line blame</li><li><code>&lt;leader&gt;hd</code> to diff this</li><li><code>&lt;leader&gt;hD</code> to diff this ~</li></ul><h3 id="Lazygit"><a href="#Lazygit" class="headerlink" title="Lazygit"></a>Lazygit</h3><ul><li><code>&lt;leader&gt;lg</code> to open lazy git</li><li></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Neovim-Keymap-Cheatsheet&quot;&gt;&lt;a href=&quot;#Neovim-Keymap-Cheatsheet&quot; class=&quot;headerlink&quot; title=&quot;Neovim Keymap Cheatsheet&quot;&gt;&lt;/a&gt;Neovim Keymap </summary>
+      
+    
+    
+    
+    
+    <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="cheatsheet" scheme="https://kazma.tw/tags/cheatsheet/"/>
+    
+    <category term="neovim" scheme="https://kazma.tw/tags/neovim/"/>
+    
+  </entry>
   
   <entry>
     <title>Angr_CTF Writeups</title>
@@ -94,11 +120,11 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
+    <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
+    
     <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
-    
-    <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
     
   </entry>
   
@@ -542,36 +568,6 @@
     <summary type="html">&lt;h1 id=&quot;binary&quot;&gt;&lt;a href=&quot;#binary&quot; class=&quot;headerlink&quot; title=&quot;binary&quot;&gt;&lt;/a&gt;binary&lt;/h1&gt;&lt;p&gt;這題有三個階段，分別輸入特定的值就可以開 shell，首先 stage1：&lt;/p&gt;
 &lt;p&gt;&lt;img  
   </summary>
-      
-    
-    
-    
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
-    <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Pwnctf pwntools Writeup</title>
-    <link href="https://kazma.tw/2023/12/20/Pwnctf-pwntools-Writeup/"/>
-    <id>https://kazma.tw/2023/12/20/Pwnctf-pwntools-Writeup/</id>
-    <published>2023-12-20T15:31:10.000Z</published>
-    <updated>2023-12-20T15:37:48.706Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="pwntools"><a href="#pwntools" class="headerlink" title="pwntools"></a>pwntools</h1><p>首先他會比較第一個參數是否為一個特定的值：</p><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/pwntools_compare.png"                      alt="pwntools"                ></p><p>再來就是用 pwntools 來解決他的一千道數學題，exploit.py：</p><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">r = process(<span class="string">&#x27;./pwntools&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:)&#x27;</span>, p32(<span class="number">0x79487ff</span>))</span><br><span class="line">r.recvuntil(<span class="string">b&#x27;.&#x27;</span>)</span><br><span class="line">count = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line">    q = r.recvuntil(<span class="string">b&#x27;?&#x27;</span>).decode().split(<span class="string">&#x27;=&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">    a = <span class="built_in">str</span>(<span class="built_in">eval</span>(q))</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;count&#125;</span>: <span class="subst">&#123;q&#125;</span> = <span class="subst">&#123;a&#125;</span>&quot;</span>)</span><br><span class="line">    r.sendline(a)</span><br><span class="line">    count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><p>result：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">988: 9203 * 20282 = 186655246</span><br><span class="line">989: 19822 + 22058 = 41880</span><br><span class="line">990: 38646 - 12687 = 25959</span><br><span class="line">991: 20506 * 5162 = 105851972</span><br><span class="line">992: 39428 - 8646 = 30782</span><br><span class="line">993: 1659 - 19180 = -17521</span><br><span class="line">994: 37476 * 13886 = 520391736</span><br><span class="line">995: 7168 * 38433 = 275487744</span><br><span class="line">996: 17943 + 38791 = 56734</span><br><span class="line">997: 39312 + 13976 = 53288</span><br><span class="line">998: 4194 * 19531 = 81913014</span><br><span class="line">999: 4477 - 39353 = -34876</span><br><span class="line">1000: 779 + 34351 = 35130</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">Welcome hacker!</span><br><span class="line">$ <span class="built_in">cat</span> flag</span><br><span class="line">BreakAllCTF&#123;Scr1pting_skill_is_important_for_a_hacker&#125;</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;pwntools&quot;&gt;&lt;a href=&quot;#pwntools&quot; class=&quot;headerlink&quot; title=&quot;pwntools&quot;&gt;&lt;/a&gt;pwntools&lt;/h1&gt;&lt;p&gt;首先他會比較第一個參數是否為一個特定的值：&lt;/p&gt;
-&lt;p&gt;&lt;img  
-          </summary>
       
     
     

@@ -13,23 +13,32 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/tags/"/>
+    <link rel="canonical" href="https://kazma.tw/2024/05/01/neovim-keymap-cheatsheet-josean-martinez’s-configuration/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="https://kazma.tw/tags/index.html">
+        <meta name="description" content="Neovim Keymap Cheatsheet這篇文章主要是要整理給自己看的筆記 XD目前使用的是一個 YouTuber, Josean Martinez 的配置：附上連結：  YouTube Video  Blog Post  Source Code   Preview附上這個配置的預覽圖：  Cover:  Telescope:  Lazy.nvim:  File Explorer:  Ls">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Neovim Keymap Cheatsheet: Josean Martinez’s Configuration">
+<meta property="og:url" content="https://kazma.tw/2024/05/01/Neovim-Keymap-Cheatsheet-Josean-Martinez%E2%80%99s-Configuration/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="Neovim Keymap Cheatsheet這篇文章主要是要整理給自己看的筆記 XD目前使用的是一個 YouTuber, Josean Martinez 的配置：附上連結：  YouTube Video  Blog Post  Source Code   Preview附上這個配置的預覽圖：  Cover:  Telescope:  Lazy.nvim:  File Explorer:  Ls">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-12-10T06:07:22.000Z">
-<meta property="article:modified_time" content="2023-12-10T06:07:22.515Z">
+<meta property="og:image" content="https://kazma.tw/images/nvim_cover.png">
+<meta property="og:image" content="https://kazma.tw/images/nvim_file_explorer.png">
+<meta property="og:image" content="https://kazma.tw/images/nvim_lazy.png">
+<meta property="og:image" content="https://kazma.tw/images/nvim_tree.png">
+<meta property="og:image" content="https://kazma.tw/images/nvim_lsp.png">
+<meta property="og:image" content="https://kazma.tw/images/nvim_lazygit.png">
+<meta property="article:published_time" content="2024-05-01T07:59:06.000Z">
+<meta property="article:modified_time" content="2024-05-02T09:32:18.124Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="tools">
+<meta property="article:tag" content="cheatsheet">
+<meta property="article:tag" content="neovim">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/nvim_cover.png">
     
     
     <!--- Icon Part-->
@@ -41,7 +50,7 @@
     
     <title>
         
-            Tags -
+            Neovim Keymap Cheatsheet: Josean Martinez’s Configuration -
         
         kazma&#39;s blog
     </title>
@@ -181,7 +190,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active" 
+                                <a class="" 
                                     href="/tags"  >
                                     
                                         
@@ -297,7 +306,7 @@
             
                 
                     <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group active" 
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
                         href="/tags"  >
                              
                                 
@@ -373,144 +382,416 @@
             <div class="main-content">
 
                 
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">Neovim Keymap Cheatsheet: Josean Martinez’s Configuration</h1>
+            
+            </div>
+            
                     
-<div class="tagcloud-container">
-	
-	<div>
-		<h1 class="tagcloud-header">Tags</h1>
-	</div>
-	<div class="tagcloud-content">
-		<ul class="tag-list" data-show-value="true">
-			
-			<li>
-				<a data-weight="4" href="/tags/reverse/"
-					><i class="fa-solid fa-hashtag"></i>reverse</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="34" href="/tags/writeup/"
-					><i class="fa-solid fa-hashtag"></i>writeup</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="27" href="/tags/lab/"
-					><i class="fa-solid fa-hashtag"></i>lab</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/hitconctf/"
-					><i class="fa-solid fa-hashtag"></i>hitconctf</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="4" href="/tags/tools/"
-					><i class="fa-solid fa-hashtag"></i>tools</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/cheatsheet/"
-					><i class="fa-solid fa-hashtag"></i>cheatsheet</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/neovim/"
-					><i class="fa-solid fa-hashtag"></i>neovim</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="31" href="/tags/pwn/"
-					><i class="fa-solid fa-hashtag"></i>pwn</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="2" href="/tags/notes/"
-					><i class="fa-solid fa-hashtag"></i>notes</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="2" href="/tags/rop/"
-					><i class="fa-solid fa-hashtag"></i>rop</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/angr/"
-					><i class="fa-solid fa-hashtag"></i>angr</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/binary/"
-					><i class="fa-solid fa-hashtag"></i>binary</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/ret2libc/"
-					><i class="fa-solid fa-hashtag"></i>ret2libc</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="2" href="/tags/oob/"
-					><i class="fa-solid fa-hashtag"></i>oob</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="5" href="/tags/pwnabletw/"
-					><i class="fa-solid fa-hashtag"></i>pwnabletw</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/heap/"
-					><i class="fa-solid fa-hashtag"></i>heap</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/uaf/"
-					><i class="fa-solid fa-hashtag"></i>uaf</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/ret2sc/"
-					><i class="fa-solid fa-hashtag"></i>ret2sc</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="17" href="/tags/pwnctf/"
-					><i class="fa-solid fa-hashtag"></i>pwnctf</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/orw/"
-					><i class="fa-solid fa-hashtag"></i>orw</a
-				>
-			</li>
-			
-			<li>
-				<a data-weight="1" href="/tags/talk/"
-					><i class="fa-solid fa-hashtag"></i>talk</a
-				>
-			</li>
-			
-		</ul>
-	</div>
-	
+        
+        
+            <div class="article-header flex flex-row gap-2 items-center">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-05-01 15:59:06</span>
+        <span class="mobile">2024-05-01 15:59:06</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-05-02 17:32:18</span>
+            <span class="mobile">2024-05-02 17:32:18</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/tools/">tools</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/cheatsheet/">cheatsheet</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/neovim/">neovim</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body">
+            <h1 id="Neovim-Keymap-Cheatsheet"><a href="#Neovim-Keymap-Cheatsheet" class="headerlink" title="Neovim Keymap Cheatsheet"></a>Neovim Keymap Cheatsheet</h1><p>這篇文章主要是要整理給自己看的筆記 XD<br>目前使用的是一個 YouTuber, Josean Martinez 的配置：附上連結：</p>
+<ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://youtu.be/6pAG3BHurdM?si=cXSanNOFsM3WnEAp" >YouTube Video <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbmt4Y3RQZXV4a3VJZ1p5dE5qQTdYdkp4SWJkQXxBQ3Jtc0tuZHk1R3ROeFBiYTFHYWFucU9MU2ZsenYydmRWZUpMY1Z4S2k1Ml85bUtiR2pBeHhQcXdYLUctTGR1NFhyNmNKZlJkbG9hS0paRV9YOGdHaVFVWFRjc21FenR6ZXVIS1pIODc0Z0JaNnJUQXQ4NnhjRQ&q=https://bit.ly/4agkTyQ&v=6pAG3BHurdM" >Blog Post <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbFhiRGpsSEt2WlJQUDd3SXdVdEs0YTBLZWRfUXxBQ3Jtc0tsZ3ZyUEprcDV2OEU4WG5YeVR2aWdTZ2FudUNBTy1GT01ScjZmQmxqRWFWSEpzUmsxRDBJOGh6cTJUMHNCbGpta0lUVDNXYjZzTzdOTnRWRTBkS3lvNmpTQ091YjlLaVBBY3RnZGx2b3ZmdDFLR1hVQQ&q=https://bit.ly/4cFlPyq&v=6pAG3BHurdM" >Source Code <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<h2 id="Preview"><a href="#Preview" class="headerlink" title="Preview"></a>Preview</h2><p>附上這個配置的預覽圖：</p>
+<ul>
+<li><p>Cover:<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/nvim_cover.png"
+                      alt="cover"
+                ></p>
+</li>
+<li><p>Telescope:<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/nvim_file_explorer.png"
+                      alt="file-explorer"
+                ></p>
+</li>
+<li><p>Lazy.nvim:<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/nvim_lazy.png"
+                      alt="lazy"
+                ></p>
+</li>
+<li><p>File Explorer:<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/nvim_tree.png"
+                      alt="tree"
+                ></p>
+</li>
+<li><p>Lsp:<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/nvim_lsp.png"
+                      alt="lsp"
+                ></p>
+</li>
+<li><p>Lazy git<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/nvim_lazygit.png"
+                      alt="lazy-git"
+                ></p>
+</li>
+</ul>
+<h2 id="Keymaps"><a href="#Keymaps" class="headerlink" title="Keymaps"></a>Keymaps</h2><h3 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h3><ul>
+<li><code>jk</code> to exit Insert to Normal</li>
+<li><code>&lt;leader&gt;nh</code> to clear search highlights</li>
+<li><code>&lt;leader&gt;+</code> to increase number</li>
+<li><code>&lt;leader&gt;-</code> to decrease number</li>
+<li><code>&lt;Ctrl&gt;o</code> to jump backward</li>
+<li><code>&lt;Ctrl&gt;i</code> to jump forward</li>
+</ul>
+<h3 id="Split"><a href="#Split" class="headerlink" title="Split"></a>Split</h3><ul>
+<li><code>&lt;leader&gt;sv</code> to split window vertically</li>
+<li><code>&lt;leader&gt;sh</code> to split window horizontally</li>
+<li><code>&lt;leader&gt;se</code> to make splits equal size</li>
+<li><code>&lt;leader&gt;sx</code> to close current split</li>
+<li><code>&lt;leader&gt;sm</code> to maximize&#x2F;minimize a split</li>
+</ul>
+<h3 id="Tab"><a href="#Tab" class="headerlink" title="Tab"></a>Tab</h3><ul>
+<li><code>&lt;leader&gt;to</code> to open new tab</li>
+<li><code>&lt;leader&gt;tx</code> to close current tab</li>
+<li><code>&lt;leader&gt;tn</code> to go to next tab</li>
+<li><code>&lt;leader&gt;tp</code> to go to previous tab</li>
+<li><code>&lt;leader&gt;tf</code> to open current window in new tab</li>
+</ul>
+<h3 id="Lazy-nvim-plugin-manager"><a href="#Lazy-nvim-plugin-manager" class="headerlink" title="Lazy.nvim plugin manager"></a>Lazy.nvim plugin manager</h3><ul>
+<li><code>:Lazy</code> to open plugin manager</li>
+</ul>
+<h3 id="Tmux-navigator"><a href="#Tmux-navigator" class="headerlink" title="Tmux navigator"></a>Tmux navigator</h3><ul>
+<li><code>&lt;Ctrl&gt;h/j/k/l/</code> to move between tmux &amp; split window</li>
+</ul>
+<h3 id="File-explorer"><a href="#File-explorer" class="headerlink" title="File explorer"></a>File explorer</h3><ul>
+<li><code>&lt;leader&gt;ee</code> to toggle file explorer</li>
+<li><code>&lt;leader&gt;ef</code> to toggle file explorer on current file</li>
+<li><code>&lt;leader&gt;ec</code> to collapse file explorer</li>
+<li><code>&lt;leader&gt;er</code> to refresh file explorer</li>
+</ul>
+<h3 id="Which-key"><a href="#Which-key" class="headerlink" title="Which key"></a>Which key</h3><ul>
+<li>print hint message after typing a letter</li>
+</ul>
+<h3 id="Telescope"><a href="#Telescope" class="headerlink" title="Telescope"></a>Telescope</h3><ul>
+<li><code>&lt;leader&gt;ff</code> to fuzzy find files in cwd</li>
+<li><code>&lt;leader&gt;fr</code> to fuzzey find recent files</li>
+<li><code>&lt;leader&gt;fs</code> to find string in cwd</li>
+<li><code>&lt;leader&gt;fc</code> to find string under cursor in cwd</li>
+<li><code>&lt;leader&gt;ft</code> to find todos</li>
+<li><code>&lt;Ctrl&gt;j/k</code> to move in the result</li>
+<li><code>&lt;Ctrl&gt;q</code> to quit the telescope</li>
+</ul>
+<h3 id="Auto-session"><a href="#Auto-session" class="headerlink" title="Auto session"></a>Auto session</h3><ul>
+<li><code>&lt;leader&gt;wr</code> to restore session for cwd</li>
+<li><code>&lt;leader&gt;ws</code> to save session for cwd</li>
+</ul>
+<h3 id="File-management"><a href="#File-management" class="headerlink" title="File management"></a>File management</h3><ul>
+<li><code>r</code> to rename a file</li>
+<li><code>a</code> to add a file</li>
+</ul>
+<h3 id="Treesitter"><a href="#Treesitter" class="headerlink" title="Treesitter"></a>Treesitter</h3><ul>
+<li><code>:Inspect Tree</code> to open syntax tree</li>
+<li><code>&lt;Ctrl&gt;&lt;Spc&gt;</code> to select node and use it again to select parent node</li>
+</ul>
+<h3 id="Autocomplete"><a href="#Autocomplete" class="headerlink" title="Autocomplete"></a>Autocomplete</h3><ul>
+<li><code>&lt;Ctrl&gt;k</code> to select previous suggestion</li>
+<li><code>&lt;Ctrl&gt;j</code> to select previous suggestion</li>
+<li><code>&lt;Ctrl&gt;b</code> to scroll up in docs</li>
+<li><code>&lt;Ctrl&gt;f</code> to scroll down in docs</li>
+<li><code>&lt;Ctrl&gt;&lt;Spc&gt;</code> to show completion suggestion</li>
+<li><code>&lt;Ctrl&gt;e</code> to close completion window</li>
+<li><code>&lt;Enter&gt;</code> to confirm current selection</li>
+</ul>
+<h3 id="Comments"><a href="#Comments" class="headerlink" title="Comments"></a>Comments</h3><ul>
+<li><code>gcc</code> to comment&#x2F;uncomment current line</li>
+<li><code>gc&lt;position&gt;</code> to comment&#x2F;uncomment</li>
+<li><code>TODO:</code> in comment to create TODO tag</li>
+<li><code>BUG</code> in comment to create BUG tag</li>
+<li><code>HACK</code> in comment to create HACK tag</li>
+</ul>
+<h3 id="Substitute"><a href="#Substitute" class="headerlink" title="Substitute"></a>Substitute</h3><ul>
+<li><code>s</code> to substitute with motion</li>
+<li><code>ss</code> to substitute line</li>
+<li><code>S</code> to substitute end of line</li>
+</ul>
+<h3 id="Surround"><a href="#Surround" class="headerlink" title="Surround"></a>Surround</h3><ul>
+<li><code>ys&lt;motion&gt;</code> to add surrounding</li>
+<li><code>ds&lt;motion&gt;</code> to delete surrounding</li>
+<li><code>cs&lt;motion&gt;</code> to change surrounding</li>
+</ul>
+<h3 id="Lsp"><a href="#Lsp" class="headerlink" title="Lsp"></a>Lsp</h3><ul>
+<li><code>:Mason</code> to open mason</li>
+<li><code>gR</code> to show definition, references</li>
+<li><code>gD</code> to go to declaration</li>
+<li><code>gd</code> to show lsp definition</li>
+<li><code>gi</code> to show lsp implementations</li>
+<li><code>gt</code> to show lsp type definition</li>
+<li><code>&lt;leader&gt;ca</code> to see available code action</li>
+<li><code>&lt;leader&gt;rn</code> to smart rename</li>
+<li><code>&lt;leader&gt;D</code> to show diagnostics</li>
+<li><code>&lt;leader&gt;d</code> to show diagnostics for line</li>
+<li><code>[d</code> to jump to previous diagnostics in buffer</li>
+<li><code>K</code> to show documentation for what is under cursor</li>
+<li><code>&lt;leader&gt;rs</code> to mapping to restart lsp if necessary</li>
+</ul>
+<h3 id="Trouble"><a href="#Trouble" class="headerlink" title="Trouble"></a>Trouble</h3><ul>
+<li><code>&lt;leader&gt;xx</code> to open&#x2F;close trouble list</li>
+<li><code>&lt;leader&gt;xw</code> to open trouble workspace diagnostics</li>
+<li><code>&lt;leader&gt;xd</code> to open trouble document diagnostics</li>
+<li><code>&lt;leader&gt;xq</code> to open trouble quick fix list</li>
+<li><code>&lt;leader&gt;xl</code> to open trouble location list</li>
+<li><code>&lt;leader&gt;xt</code> to open todos in trouble</li>
+</ul>
+<h3 id="Linting"><a href="#Linting" class="headerlink" title="Linting"></a>Linting</h3><ul>
+<li><code>&lt;leader&gt;l</code> to trigger linting for current line</li>
+</ul>
+<h3 id="Git-Integration"><a href="#Git-Integration" class="headerlink" title="Git Integration"></a>Git Integration</h3><ul>
+<li><code>]h</code> to go to next hunk</li>
+<li><code>[h</code> to go to previous hunk</li>
+<li><code>&lt;leader&gt;hs</code> to stage hunk</li>
+<li><code>&lt;leader&gt;hr</code> to reset hunk</li>
+<li><code>&lt;leader&gt;hS</code> to stage buffer</li>
+<li><code>&lt;leader&gt;hR</code> to reset buffer</li>
+<li><code>&lt;leader&gt;hu</code> to undo stage hunk</li>
+<li><code>&lt;leader&gt;hp</code> to preview hunk</li>
+<li><code>&lt;leader&gt;hb</code> to blame line</li>
+<li><code>&lt;leader&gt;hB</code> to toggle line blame</li>
+<li><code>&lt;leader&gt;hd</code> to diff this</li>
+<li><code>&lt;leader&gt;hD</code> to diff this ~</li>
+</ul>
+<h3 id="Lazygit"><a href="#Lazygit" class="headerlink" title="Lazygit"></a>Lazygit</h3><ul>
+<li><code>&lt;leader&gt;lg</code> to open lazy git</li>
+<li></li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Neovim Keymap Cheatsheet: Josean Martinez’s Configuration</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-05-01 15:59:06</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-05-02 17:32:18
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/05/01/Neovim-Keymap-Cheatsheet-Josean-Martinez’s-Configuration/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
+            
+
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box">
+                
+                    <li class="tag-item">
+                        <a href="/tags/tools/">#tools</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/cheatsheet/">#cheatsheet</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/neovim/">#neovim</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/04/30/Angr-CTF-Writeups/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Angr_CTF Writeups</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Neovim Keymap Cheatsheet: Josean Martinez’s Configuration</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Neovim-Keymap-Cheatsheet"><span class="nav-text">Neovim Keymap Cheatsheet</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Preview"><span class="nav-text">Preview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Keymaps"><span class="nav-text">Keymaps</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Basic"><span class="nav-text">Basic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Split"><span class="nav-text">Split</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tab"><span class="nav-text">Tab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lazy-nvim-plugin-manager"><span class="nav-text">Lazy.nvim plugin manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tmux-navigator"><span class="nav-text">Tmux navigator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#File-explorer"><span class="nav-text">File explorer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Which-key"><span class="nav-text">Which key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Telescope"><span class="nav-text">Telescope</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Auto-session"><span class="nav-text">Auto session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#File-management"><span class="nav-text">File management</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Treesitter"><span class="nav-text">Treesitter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Autocomplete"><span class="nav-text">Autocomplete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Comments"><span class="nav-text">Comments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Substitute"><span class="nav-text">Substitute</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Surround"><span class="nav-text">Surround</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lsp"><span class="nav-text">Lsp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Trouble"><span class="nav-text">Trouble</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linting"><span class="nav-text">Linting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Integration"><span class="nav-text">Git Integration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lazygit"><span class="nav-text">Lazygit</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
 </div>
 
 
@@ -586,6 +867,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
