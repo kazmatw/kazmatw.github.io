@@ -414,6 +414,134 @@
                 
 
                 <h3 class="home-article-title">
+                    <a href="/2023/12/17/Yuawn-Pwn2-ret2plt-Writeup/">
+                        Yuawn Pwn2 ret2plt Writeup
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        ret2pltr2 看一下 main：
+
+file 看一下：
+
+因為是 dynamically linked，所以 gadget 會很少，可能不能直接拼出一個 shell，所以這題改用 ret2plt 的方式，計畫是找到可以控 rdi 的 gadge...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Sun Dec 17 2023 15:13:26 GMT+0800">
+                
+                    2023-12-17
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/12/17/Yuawn-Pwn2-ret2plt-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn2 ret2plt Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+
+                <h3 class="home-article-title">
+                    <a href="/2023/12/13/Yuawn-Pwn1-casino-Writeup/">
+                        Yuawn Pwn1 casino Writeup
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        casino先執行看一下：
+
+一樣假裝沒有 source code 來用 r2 分析一下 main 先：
+
+首先 name 是全域變數，可以輸入 0x100 個 bytes，位址是 0x6020f0，age 也是全域變數，位址是 0x602104，再...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Dec 13 2023 23:05:16 GMT+0800">
+                
+                    2023-12-13
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/12/13/Yuawn-Pwn1-casino-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn1 casino Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+
+                <h3 class="home-article-title">
                     <a href="/2023/12/12/LYS-Rop-lab-rop1-Writeup/">
                         LYS Rop lab_rop1 Writeup
                     </a>
@@ -968,7 +1096,7 @@ r2 看一下 main：
                 </div>
                 <div class="statistics">
                     <a class="item" href="/tags">
-                        <div class="number">21</div>
+                        <div class="number">22</div>
                         <div class="label">Tags</div>
                     </a>
                     <a class="item" href="/categories">
@@ -976,7 +1104,7 @@ r2 看一下 main：
                         <div class="label">Categories</div>
                     </a>
                     <a class="item" href="/archives">
-                        <div class="number">38</div>
+                        <div class="number">40</div>
                         <div class="label">Posts</div>
                     </a>
                 </div>
