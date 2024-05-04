@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-05-04T09:15:08.598Z</updated>
+  <updated>2024-05-04T13:33:57.092Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -21,11 +21,24 @@
     <link href="https://kazma.tw/2024/05/04/Angr-CTF-Writeups-2/"/>
     <id>https://kazma.tw/2024/05/04/Angr-CTF-Writeups-2/</id>
     <published>2024-05-04T09:15:08.000Z</published>
-    <updated>2024-05-04T09:15:08.598Z</updated>
+    <updated>2024-05-04T13:33:57.092Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Angr-CTF-Writeups-2"><a href="#Angr-CTF-Writeups-2" class="headerlink" title="Angr_CTF Writeups 2"></a>Angr_CTF Writeups 2</h1><h2 id="04-angr-symbolic-stack"><a href="#04-angr-symbolic-stack" class="headerlink" title="04_angr_symbolic_stack"></a>04_angr_symbolic_stack</h2><p>這題要學的是把 stack 上的變數符號化，作法如下，exploit04.py:</p><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> angr <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> claripy <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p = Project(<span class="string">&#x27;./04_angr_symbolic_stack&#x27;</span>)</span><br><span class="line">start = <span class="number">0x8048697</span></span><br><span class="line">state = p.factory.blank_state(addr = start)</span><br><span class="line"></span><br><span class="line">state.regs.ebp = state.regs.esp</span><br><span class="line">state.regs.esp -= <span class="number">0x8</span></span><br><span class="line"></span><br><span class="line">pw0 = BVS(<span class="string">&#x27;pw0&#x27;</span>, <span class="number">32</span>)</span><br><span class="line">pw1 = BVS(<span class="string">&#x27;pw1&#x27;</span>, <span class="number">32</span>)</span><br><span class="line"></span><br><span class="line">state.stack_push(pw0)</span><br><span class="line">state.stack_push(pw1)</span><br><span class="line"></span><br><span class="line">simgr = p.factory.simgr(state)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">find</span>(<span class="params">simgr</span>):</span><br><span class="line">    output = simgr.posix.dumps(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">b&#x27;Good Job.&#x27;</span> <span class="keyword">in</span> output</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">avoid</span>(<span class="params">simgr</span>):</span><br><span class="line">    output = simgr.posix.dumps(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">b&#x27;Try again.&#x27;</span> <span class="keyword">in</span> output</span><br><span class="line"></span><br><span class="line">simgr.explore(find = find, avoid = avoid)</span><br><span class="line"><span class="keyword">if</span> simgr.found:</span><br><span class="line">    flag = simgr.found[<span class="number">0</span>]</span><br><span class="line">    flag1 = flag.solver.<span class="built_in">eval</span>(pw0)</span><br><span class="line">    flag2 = flag.solver.<span class="built_in">eval</span>(pw1)</span><br><span class="line">    <span class="built_in">print</span>(flag1)</span><br><span class="line">    <span class="built_in">print</span>(flag2)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;qq&quot;</span>)</span><br></pre></td></tr></table></figure></div><p>Result:</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./04_angr_symbolic_stack</span><br><span class="line">Enter the password:</span><br><span class="line">1704280884 2382341151</span><br><span class="line">Good Job.</span><br></pre></td></tr></table></figure></div>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Angr-CTF-Writeups-2&quot;&gt;&lt;a href=&quot;#Angr-CTF-Writeups-2&quot; class=&quot;headerlink&quot; title=&quot;Angr_CTF Writeups 2&quot;&gt;&lt;/a&gt;Angr_CTF Writeups 2&lt;/h1&gt;&lt;h2 i</summary>
+      
     
     
     
     
+    <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="angr" scheme="https://kazma.tw/tags/angr/"/>
     
   </entry>
   
