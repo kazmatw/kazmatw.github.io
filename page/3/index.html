@@ -414,6 +414,70 @@
                 
 
                 <h3 class="home-article-title">
+                    <a href="/2024/01/09/Pwnctf-ret2src-Writeup/">
+                        Pwnctf ret2src Writeup
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        ret2src先看一下保護機制：
+
+這題什麼保護機制都沒有w，所以作法應該蠻多種的，這裡 return 到 gets 的 plt，把 shellcode 寫到某個 bss 段，然後再跳上開 shell。
+exploit.py:
+12345678910...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Tue Jan 09 2024 18:30:32 GMT+0800">
+                
+                    2024-01-09
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2024/01/09/Pwnctf-ret2src-Writeup/">Read more<span class="seo-reader-text">Pwnctf ret2src Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+
+                <h3 class="home-article-title">
                     <a href="/2023/12/21/Pwnctf-registration-Writeup/">
                         Pwnctf registration Writeup
                     </a>
@@ -452,12 +516,12 @@ exploit.py：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -515,12 +579,12 @@ exploit.py：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -579,12 +643,12 @@ exploit.py：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -642,12 +706,12 @@ exploit.py：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -703,12 +767,12 @@ exploit.py：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -766,12 +830,12 @@ exploit.py：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -830,12 +894,12 @@ exploit.py：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -895,12 +959,12 @@ exploit.py：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -961,12 +1025,12 @@ r2：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -975,71 +1039,6 @@ r2：
     </div>
 
     <a href="/2023/12/18/Pwnctf-echo-server-Writeup/">Read more<span class="seo-reader-text">Pwnctf echo_server Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2023/12/18/Pwnctf-luck-Writeup/">
-                        Pwnctf luck Writeup
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        luck這題的目標是符合一系列的條件之後他就會發一個 shell 給我們，具體條件和區域變數如下：
-
-
-
-應該蠻淺顯易懂的 XD，直接上 exploit.py：
-12345678910111213141516171819from pwn import...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Mon Dec 18 2023 15:19:09 GMT+0800">
-                
-                    2023-12-18
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/18/Pwnctf-luck-Writeup/">Read more<span class="seo-reader-text">Pwnctf luck Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
             </li>
@@ -1104,7 +1103,7 @@ r2：
                 </div>
                 <div class="statistics">
                     <a class="item" href="/tags">
-                        <div class="number">22</div>
+                        <div class="number">23</div>
                         <div class="label">Tags</div>
                     </a>
                     <a class="item" href="/categories">
@@ -1112,7 +1111,7 @@ r2：
                         <div class="label">Categories</div>
                     </a>
                     <a class="item" href="/archives">
-                        <div class="number">41</div>
+                        <div class="number">42</div>
                         <div class="label">Posts</div>
                     </a>
                 </div>
