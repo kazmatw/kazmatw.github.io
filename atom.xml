@@ -38,9 +38,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
-    
     <category term="shellcode" scheme="https://kazma.tw/tags/shellcode/"/>
+    
+    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
   </entry>
   
@@ -232,11 +232,11 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
-    
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
     <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
+    
+    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
     
   </entry>
   
@@ -318,9 +318,9 @@
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
-    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
-    
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    
+    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
     
   </entry>
   
