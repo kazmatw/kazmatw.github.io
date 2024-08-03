@@ -34,13 +34,13 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="shellcode" scheme="https://kazma.tw/tags/shellcode/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    
+    <category term="shellcode" scheme="https://kazma.tw/tags/shellcode/"/>
     
   </entry>
   
@@ -62,15 +62,15 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
-    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
+    
+    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
   </entry>
   
@@ -92,13 +92,13 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
+    
+    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
     <category term="heap" scheme="https://kazma.tw/tags/heap/"/>
     
@@ -228,13 +228,13 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
+    
+    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
     <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
     
@@ -286,9 +286,9 @@
     
     
     
-    <category term="reverse" scheme="https://kazma.tw/tags/reverse/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="reverse" scheme="https://kazma.tw/tags/reverse/"/>
     
     <category term="hitconctf" scheme="https://kazma.tw/tags/hitconctf/"/>
     
@@ -312,11 +312,11 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -369,9 +369,9 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -397,9 +397,9 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -425,11 +425,11 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -453,11 +453,11 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -481,11 +481,11 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -509,11 +509,11 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -537,11 +537,11 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -567,11 +567,11 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
