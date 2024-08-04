@@ -14,9 +14,9 @@ export default function initUtils() {
     pageContainer_dom: document.querySelector(".page-container"),
     pageTop_dom: document.querySelector(".main-content-header"),
     homeBanner_dom: document.querySelector(".home-banner-container"),
+    homeBannerBackground_dom: document.querySelector(".home-banner-background"),
     scrollProgressBar_dom: document.querySelector(".scroll-progress-bar"),
     pjaxProgressBar_dom: document.querySelector(".pjax-progress-bar"),
-    pjaxProgressIcon_dom: document.querySelector(".swup-progress-icon"),
     backToTopButton_dom: document.querySelector(".tool-scroll-to-top"),
     toolsList: document.querySelector(".hidden-tools-list"),
     toggleButton: document.querySelector(".toggle-tools-list"),
@@ -25,6 +25,7 @@ export default function initUtils() {
     pjaxProgressBarTimer: null,
     prevScrollValue: 0,
     fontSizeLevel: 0,
+    triggerViewHeight: 0.5 * window.innerHeight,
 
     isHasScrollProgressBar: theme.global.scroll_progress.bar === true,
     isHasScrollPercent: theme.global.scroll_progress.percentage === true,
@@ -91,10 +92,13 @@ export default function initUtils() {
         this.updateScrollStyle();
         this.updateTOCScroll();
         this.updateNavbarShrink();
-        this.updateHomeBannerBlur();
+        // this.updateHomeBannerBlur();
         this.updateAutoHideTools();
-        this.updateAPlayerAutoHide();
       });
+      window.addEventListener(
+        "scroll",
+        this.debounce(() => this.updateHomeBannerBlur(), 20),
+      );
     },
 
     updateTOCScroll() {
@@ -112,65 +116,64 @@ export default function initUtils() {
       }
     },
 
+    debounce(func, delay) {
+      let timer;
+      return function () {
+        clearTimeout(timer);
+        timer = setTimeout(() => func.apply(this, arguments), delay);
+      };
+    },
+
     updateHomeBannerBlur() {
+      if (!this.homeBannerBackground_dom) return;
+
       if (
         theme.home_banner.style === "fixed" &&
         location.pathname === config.root
       ) {
-        const blurElement = document.querySelector(".home-banner-background");
-        const viewHeight = window.innerHeight;
         const scrollY = window.scrollY || window.pageYOffset;
-        const triggerViewHeight = viewHeight / 2;
-        const blurValue = scrollY >= triggerViewHeight ? 15 : 0;
+        const blurValue = scrollY >= this.triggerViewHeight ? 15 : 0;
 
         try {
-          blurElement.style.transition = "0.3s";
-          blurElement.style.webkitFilter = `blur(${blurValue}px)`;
-        } catch (e) {}
+          requestAnimationFrame(() => {
+            this.homeBannerBackground_dom.style.filter = `blur(${blurValue}px)`;
+            this.homeBannerBackground_dom.style.webkitFilter = `blur(${blurValue}px)`;
+          });
+        } catch (e) {
+          // Handle or log the error properly
+          console.error("Error updating banner blur:", e);
+        }
       }
     },
 
     updateAutoHideTools() {
-      const y = window.pageYOffset;
+      const y = window.scrollY;
       const height = document.body.scrollHeight;
       const windowHeight = window.innerHeight;
       const toolList = document.getElementsByClassName(
         "right-side-tools-container",
       );
+      const aplayer = document.getElementById("aplayer");
 
       for (let i = 0; i < toolList.length; i++) {
         const tools = toolList[i];
-        if (y <= 0) {
-          if (location.pathname !== "/") {
-            //console.log(location.pathname)
-          } else {
+        if (y <= 100) {
+          if (location.pathname === config.root) {
             tools.classList.add("hide");
+            if (aplayer !== null) {
+              aplayer.classList.add("hide");
+            }
           }
         } else if (y + windowHeight >= height - 20) {
           tools.classList.add("hide");
-        } else {
-          tools.classList.remove("hide");
-        }
-      }
-    },
-
-    updateAPlayerAutoHide() {
-      const aplayer = document.getElementById("aplayer");
-      if (aplayer == null) {
-      } else {
-        const y = window.pageYOffset;
-        const height = document.body.scrollHeight;
-        const windowHeight = window.innerHeight;
-        if (y <= 0) {
-          if (location.pathname !== "/") {
-            //console.log(location.pathname)
-          } else {
+          if (aplayer !== null) {
             aplayer.classList.add("hide");
           }
-        } else if (y + windowHeight >= height - 20) {
-          aplayer.classList.add("hide");
         } else {
-          aplayer.classList.remove("hide");
+          tools.classList.remove("hide");
+          if (aplayer !== null) {
+            aplayer.classList.remove("hide");
+          }
         }
       }
     },
@@ -181,10 +184,12 @@ export default function initUtils() {
       });
     },
 
+    fontAdjPlus_dom: document.querySelector(".tool-font-adjust-plus"),
+    fontAdMinus_dom: document.querySelector(".tool-font-adjust-minus"),
     globalFontSizeAdjust() {
       const htmlRoot = this.html_root_dom;
-      const fontAdjustPlus = document.querySelector(".tool-font-adjust-plus");
-      const fontAdjustMinus = document.querySelector(".tool-font-adjust-minus");
+      const fontAdjustPlus = this.fontAdjPlus_dom;
+      const fontAdjustMinus = this.fontAdMinus_dom;
 
       const fontSize = document.defaultView.getComputedStyle(
         document.body,
@@ -264,8 +269,6 @@ export default function initUtils() {
       }
     },
 
-    // big image viewer
-
     // set how long ago language
     setHowLongAgoLanguage(p1, p2) {
       return p2.replace(/%s/g, p1);
@@ -334,6 +337,8 @@ export default function initUtils() {
       }
     },
   };
+
+  utils.updateAutoHideTools();
 
   // init scroll
   utils.registerWindowScroll();
