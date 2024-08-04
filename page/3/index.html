@@ -414,6 +414,68 @@
                 
 
                 <h3 class="home-article-title">
+                    <a href="/2024/01/10/Pwnctf-fmtstr-Writeup/">
+                        Pwnctf fmtstr Writeup
+                    </a>
+                </h3>
+
+                <div class="home-article-content markdown-body">
+                    
+                        fmtstr這題在考的是 format string，可以從 gdb 看到 flag 在 stack 裡的位置如下：
+
+$rsp 的位置是 6，推算可以得知 flag 在 12 ~ 18 的位置，最後印出來後再調整一下 little endian 的...
+                    
+                </div>
+
+                <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Jan 10 2024 01:21:15 GMT+0800">
+                
+                    2024-01-10
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2024/01/10/Pwnctf-fmtstr-Writeup/">Read more<span class="seo-reader-text">Pwnctf fmtstr Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+
+                <h3 class="home-article-title">
                     <a href="/2024/01/09/Pwnctf-secret-Writeup/">
                         Pwnctf secret Writeup
                     </a>
@@ -974,71 +1036,6 @@ exploit.py：
 
             </li>
         
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-
-                <h3 class="home-article-title">
-                    <a href="/2023/12/20/Pwnctf-gohome-Writeup/">
-                        Pwnctf gohome Writeup
-                    </a>
-                </h3>
-
-                <div class="home-article-content markdown-body">
-                    
-                        gohome執行看一下：
-
-他說要找他家的地址：
-
-找到他家了，內容是直接在 shell 印出我們的 flag，補上一個 return 對齊一下，exploit.py：
-12345678910111213141516└─$ cat exploit.p...
-                    
-                </div>
-
-                <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Dec 20 2023 21:16:27 GMT+0800">
-                
-                    2023-12-20
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/20/Pwnctf-gohome-Writeup/">Read more<span class="seo-reader-text">Pwnctf gohome Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-            </li>
-        
     </ul>
 
     <div class="home-paginator">
@@ -1099,7 +1096,7 @@ exploit.py：
                 </div>
                 <div class="statistics">
                     <a class="item" href="/tags">
-                        <div class="number">24</div>
+                        <div class="number">25</div>
                         <div class="label">Tags</div>
                     </a>
                     <a class="item" href="/categories">
@@ -1107,7 +1104,7 @@ exploit.py：
                         <div class="label">Categories</div>
                     </a>
                     <a class="item" href="/archives">
-                        <div class="number">43</div>
+                        <div class="number">44</div>
                         <div class="label">Posts</div>
                     </a>
                 </div>
