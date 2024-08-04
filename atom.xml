@@ -130,9 +130,9 @@
     
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
-    
     <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
+    
+    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
   </entry>
   
@@ -158,9 +158,9 @@
     
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
-    
     <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
+    
+    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
     <category term="heap" scheme="https://kazma.tw/tags/heap/"/>
     
@@ -294,11 +294,11 @@
     
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
+    <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
-    <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
+    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
     
   </entry>
   
@@ -380,9 +380,9 @@
     
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
-    
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    
+    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
     
   </entry>
   
