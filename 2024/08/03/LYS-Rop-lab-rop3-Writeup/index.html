@@ -28,12 +28,12 @@
 <meta property="og:image" content="https://kazma.tw/images/rop3_libc.png">
 <meta property="og:image" content="https://kazma.tw/images/rop3_xinfo.png">
 <meta property="article:published_time" content="2024-08-03T09:35:20.484Z">
-<meta property="article:modified_time" content="2024-08-05T09:56:42.237Z">
+<meta property="article:modified_time" content="2024-08-05T09:58:49.784Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="writeup">
-<meta property="article:tag" content="lab">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="rop">
+<meta property="article:tag" content="lab">
+<meta property="article:tag" content="writeup">
 <meta property="article:tag" content="migration">
 <meta property="article:tag" content="ret2plt">
 <meta name="twitter:card" content="summary">
@@ -646,8 +646,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-05 17:56:42</span>
-            <span class="mobile">2024-08-05 17:56:42</span>
+            <span class="desktop">2024-08-05 17:58:49</span>
+            <span class="mobile">2024-08-05 17:58:49</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -659,7 +659,11 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/writeup/">writeup</a>&nbsp;
+                        <a href="/tags/pwn/">pwn</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/rop/">rop</a>&nbsp;
                     </li>
                 
                     <li>
@@ -667,11 +671,7 @@
                     </li>
                 
                     <li>
-                        | <a href="/tags/pwn/">pwn</a>&nbsp;
-                    </li>
-                
-                    <li>
-                        | <a href="/tags/rop/">rop</a>&nbsp;
+                        | <a href="/tags/writeup/">writeup</a>&nbsp;
                     </li>
                 
                     <li>
@@ -715,13 +715,13 @@
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ patchelf --set-interpreter ../ld-linux-x86-64.so.2 rop3</span><br><span class="line">└─$ patchelf --replace-needed libc.so.6 ../libc.so.6 rop3</span><br></pre></td></tr></table></figure></div>
 
 <h2 id="Libc-base"><a href="#Libc-base" class="headerlink" title="Libc_base"></a>Libc_base</h2><p>因為這次很多學員還是不太熟算 libc_base 的方式，所以這邊特別拉出來講：<br>首先我們要先確認執行檔在本地在本地用的 libc 跟遠端是一樣的，不然 offset 算出來當然不會對，再來我們可以在 exploit 中插入像是 <code>gdb.attach(r)</code> 的方式，讓我們可以分析跑起來後的 process。<br>再來我們透過 <code>u64(r.recv(6).ljust(8, b&quot;\0&quot;))</code> 先 leak 出某個函式的 got，我們可以用下面兩種方式得到 offset:</p>
-<h3 id="vmmap"><a href="#vmmap" class="headerlink" title="vmmap"></a><code>vmmap</code></h3><p><img  
+<h3 id="vmmap"><a href="#vmmap" class="headerlink" title="vmmap"></a>vmmap</h3><p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/../images/rop3_libc.png"
                       alt="vmmap"
-                ><br>上面的截圖是首先可以看到我們 leak 出的 got 是：0x7fed250606f0<br>然後下面的紅框可以看到目前的 libc_base 是：0x7fed25000000<br>所以可以算出 offset 是：0x7fed250606f0 - 0x7fed25000000 &#x3D; 0x606f0<br>同時 vmmap 也可以順便檢查我們的 libc 是不是跟 remote 一樣，那這邊是 patchelf 的狀態，所以可以看到 libc 的位置是：&#x2F;home&#x2F;kazma&#x2F;lys_rop&#x2F;libc.so.6</p>
-<h3 id="xinfo"><a href="#xinfo" class="headerlink" title="xinfo:"></a><code>xinfo</code>:</h3><p><img  
+                ><br>上面的截圖是首先可以看到我們 leak 出的 got 是：0x7fed250606f0<br>然後下面的紅框可以看到目前的 libc_base 是：0x7fed25000000<br>所以可以算出 offset 是：0x7fed250606f0 - 0x7fed25000000 &#x3D; 0x606f0<br>同時 <code>vmmap</code> 也可以順便檢查我們的 libc 是不是跟 remote 一樣，那這邊是 patchelf 後的狀態，所以可以看到 libc 的位置是：&#x2F;home&#x2F;kazma&#x2F;lys_rop&#x2F;libc.so.6</p>
+<h3 id="xinfo"><a href="#xinfo" class="headerlink" title="xinfo"></a>xinfo</h3><p><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/../images/rop3_xinfo.png"
@@ -743,7 +743,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-08-05 17:56:42
+                    :</strong> 2024-08-05 17:58:49
             </li>
         
         <li>
@@ -769,7 +769,11 @@
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/rop/">#rop</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
@@ -777,11 +781,7 @@
                     </li>
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/pwn/">#pwn</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/rop/">#rop</a>&nbsp;
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
@@ -887,7 +887,7 @@
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">LYS Rop lab_rop3 Writeup</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#lab-rop3"><span class="nav-text">lab_rop3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Diff-Exploitation"><span class="nav-text">Diff &amp; Exploitation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Patchelf"><span class="nav-text">Patchelf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Libc-base"><span class="nav-text">Libc_base</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vmmap"><span class="nav-text">vmmap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xinfo"><span class="nav-text">xinfo:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploit"><span class="nav-text">Exploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Result"><span class="nav-text">Result</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#lab-rop3"><span class="nav-text">lab_rop3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Diff-Exploitation"><span class="nav-text">Diff &amp; Exploitation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Patchelf"><span class="nav-text">Patchelf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Libc-base"><span class="nav-text">Libc_base</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vmmap"><span class="nav-text">vmmap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xinfo"><span class="nav-text">xinfo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploit"><span class="nav-text">Exploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Result"><span class="nav-text">Result</span></a></li></ol></li></ol>
 
     </div>
 </div>
