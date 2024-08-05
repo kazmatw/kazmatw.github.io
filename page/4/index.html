@@ -607,7 +607,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">25</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">26</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -615,7 +615,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">44</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">45</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -637,6 +637,71 @@
                 
                     <div class="home-content-container">
     <ul class="home-article-list">
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2023/12/20/Pwnctf-pass-Writeup/">
+                            Pwnctf pass Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            pass這題直接 r2 看一下 main 的這兩個地方：
+
+
+控好 var_4h 就結束了，exploit.py：
+12345678from pwn import *r = process(&#x27;./pass&#x27;)p = b&#x27;...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Dec 20 2023 21:35:27 GMT+0800">
+                
+                    2023-12-20
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/12/20/Pwnctf-pass-Writeup/">Read more<span class="seo-reader-text">Pwnctf pass Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
         
             <li class="home-article-item">
 
@@ -685,12 +750,12 @@
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -752,12 +817,12 @@ r2：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -818,12 +883,12 @@ r2：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -880,12 +945,12 @@ source code 基本上和上一題 ret2plt 差不多，但這次沒有 system...
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -945,12 +1010,12 @@ file 看一下：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -1010,12 +1075,12 @@ file 看一下：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -1077,7 +1142,7 @@ OK，首先他把第一個輸入讀到全域變數 obj.name，然後開了一個
                     
                         <li>
                             | 
-                            <a href="/tags/rop/">rop</a>&nbsp;
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
                         </li>
                     
                         <li>
@@ -1141,12 +1206,12 @@ OK，首先他把第一個輸入讀到全域變數 obj.name，然後開了一個
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -1208,12 +1273,12 @@ r2 看一下 main：
                     
                         <li>
                             | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
                         </li>
                     
                         <li>
                             | 
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                            <a href="/tags/lab/">lab</a>&nbsp;
                         </li>
                     
                 </ul>
@@ -1222,68 +1287,6 @@ r2 看一下 main：
     </div>
 
     <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn1 orw Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/10/Yuawn-Pwn1-bof-Writeup/">
-                            Yuawn Pwn1 bof Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            bofOverview附上這題的 source：
-1234567891011121314151617181920#include&lt;stdio.h&gt;#include&lt;stdlib.h&gt;void try_to_call_me()&...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sun Dec 10 2023 18:53:39 GMT+0800">
-                
-                    2023-12-10
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/10/Yuawn-Pwn1-bof-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn1 bof Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -1350,7 +1353,7 @@ r2 看一下 main：
 </div>
                 <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">25</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">26</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -1358,7 +1361,7 @@ r2 看一下 main：
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">44</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">45</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -1387,7 +1390,7 @@ r2 看一下 main：
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        44 posts in total
+                        45 posts in total
                     </span>
                     
                 </p>

