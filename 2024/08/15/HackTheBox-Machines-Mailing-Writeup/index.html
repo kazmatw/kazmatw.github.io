@@ -32,10 +32,10 @@
 <meta property="og:image" content="https://kazma.tw/images/mailing_evil.png">
 <meta property="og:image" content="https://kazma.tw/images/mailing_pwn.png">
 <meta property="article:published_time" content="2024-08-15T12:32:40.367Z">
-<meta property="article:modified_time" content="2024-08-17T07:45:17.016Z">
+<meta property="article:modified_time" content="2024-08-17T07:49:16.457Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="htb">
 <meta property="article:tag" content="writeup">
+<meta property="article:tag" content="htb">
 <meta property="article:tag" content="machines">
 <meta property="article:tag" content="pt">
 <meta name="twitter:card" content="summary">
@@ -648,8 +648,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-17 15:45:17</span>
-            <span class="mobile">2024-08-17 15:45:17</span>
+            <span class="desktop">2024-08-17 15:49:16</span>
+            <span class="mobile">2024-08-17 15:49:16</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -661,11 +661,11 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/htb/">htb</a>&nbsp;
+                        <a href="/tags/writeup/">writeup</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/writeup/">writeup</a>&nbsp;
+                        | <a href="/tags/htb/">htb</a>&nbsp;
                     </li>
                 
                     <li>
@@ -741,9 +741,9 @@
                       alt="fail"
                 ><br>又失敗？回去看一下才發現剛剛 hMailServer.ini 有兩組 password：</p>
 <div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AdministratorPassword=841bb5acfa6779ae432fd7a4e6600ba7</span><br><span class="line">Password=0a9f8ad8bf896b501dde74f08efd7e4c</span><br></pre></td></tr></table></figure></div>
-<p>傻眼，改爆 admin pw</p>
+<p>傻眼，改成爆 admin pw</p>
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ hashcat <span class="string">&#x27;841bb5acfa6779ae432fd7a4e6600ba7&#x27;</span> -m 0 /usr/share/wordlists/rockyou.txt </span><br><span class="line">hashcat (v6.2.6) starting</span><br><span class="line"></span><br><span class="line">OpenCL API (OpenCL 3.0 PoCL 3.1+debian  Linux, None+Asserts, RELOC, SPIR, LLVM 15.0.6, SLEEF, DISTRO, POCL_DEBUG) - Platform <span class="comment">#1 [The pocl project]</span></span><br><span class="line">==================================================================================================================================================</span><br><span class="line">* Device <span class="comment">#1: pthread-haswell-DO-Regular, skipped</span></span><br><span class="line"></span><br><span class="line">OpenCL API (OpenCL 2.1 LINUX) - Platform <span class="comment">#2 [Intel(R) Corporation]</span></span><br><span class="line">==================================================================</span><br><span class="line">* Device <span class="comment">#2: DO-Regular, 3937/7938 MB (992 MB allocatable), 4MCU</span></span><br><span class="line"></span><br><span class="line">Minimum password length supported by kernel: 0</span><br><span class="line">Maximum password length supported by kernel: 256</span><br><span class="line"></span><br><span class="line">Hashes: 1 digests; 1 unique digests, 1 unique salts</span><br><span class="line">Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates</span><br><span class="line">Rules: 1</span><br><span class="line"></span><br><span class="line">Optimizers applied:</span><br><span class="line">* Zero-Byte</span><br><span class="line">* Early-Skip</span><br><span class="line">* Not-Salted</span><br><span class="line">* Not-Iterated</span><br><span class="line">* Single-Hash</span><br><span class="line">* Single-Salt</span><br><span class="line">* Raw-Hash</span><br><span class="line"></span><br><span class="line">ATTENTION! Pure (unoptimized) backend kernels selected.</span><br><span class="line">Pure kernels can crack longer passwords, but drastically reduce performance.</span><br><span class="line">If you want to switch to optimized kernels, append -O to your commandline.</span><br><span class="line">See the above message to find out about the exact limits.</span><br><span class="line"></span><br><span class="line">Watchdog: Hardware monitoring interface not found on your system.</span><br><span class="line">Watchdog: Temperature abort trigger disabled.</span><br><span class="line"></span><br><span class="line">Host memory required <span class="keyword">for</span> this attack: 1 MB</span><br><span class="line"></span><br><span class="line">Dictionary cache hit:</span><br><span class="line">* Filename..: /usr/share/wordlists/rockyou.txt</span><br><span class="line">* Passwords.: 14344385</span><br><span class="line">* Bytes.....: 139921507</span><br><span class="line">* Keyspace..: 14344385</span><br><span class="line"></span><br><span class="line">841bb5acfa6779ae432fd7a4e6600ba7:homenetworkingadministrator</span><br><span class="line">                                                          </span><br><span class="line">Session..........: hashcat</span><br><span class="line">Status...........: Cracked</span><br><span class="line">Hash.Mode........: 0 (MD5)</span><br><span class="line">Hash.Target......: 841bb5acfa6779ae432fd7a4e6600ba7</span><br><span class="line">Time.Started.....: Thu Aug 15 21:01:42 2024 (3 secs)</span><br><span class="line">Time.Estimated...: Thu Aug 15 21:01:45 2024 (0 secs)</span><br><span class="line">Kernel.Feature...: Pure Kernel</span><br><span class="line">Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)</span><br><span class="line">Guess.Queue......: 1/1 (100.00%)</span><br><span class="line">Speed.<span class="comment">#2.........:  3248.8 kH/s (0.18ms) @ Accel:512 Loops:1 Thr:1 Vec:8</span></span><br><span class="line">Recovered........: 1/1 (100.00%) Digests (total), 1/1 (100.00%) Digests (new)</span><br><span class="line">Progress.........: 7563264/14344385 (52.73%)</span><br><span class="line">Rejected.........: 0/7563264 (0.00%)</span><br><span class="line">Restore.Point....: 7561216/14344385 (52.71%)</span><br><span class="line">Restore.Sub.<span class="comment">#2...: Salt:0 Amplifier:0-1 Iteration:0-1</span></span><br><span class="line">Candidate.Engine.: Device Generator</span><br><span class="line">Candidates.<span class="comment">#2....: homie g 1 -&gt; home38119</span></span><br><span class="line"></span><br><span class="line">Started: Thu Aug 15 21:01:40 2024</span><br><span class="line">Stopped: Thu Aug 15 21:01:45 2024</span><br></pre></td></tr></table></figure></div>
-<p>結果 admin 馬上就找到了…<br>841bb5acfa6779ae432fd7a4e6600ba7:homenetworkingadministrator<br>再來我們可以回到前面 <code>nmap</code>，會看到有蠻多服務是開啟的，其中有一個服務是 pop3，搜尋一下這是什麼：</p>
+<p>結果反而 admin 的密碼馬上就找到了…<br>841bb5acfa6779ae432fd7a4e6600ba7:homenetworkingadministrator<br>再來我們可以回到前面 <code>nmap</code>，會看到有蠻多服務是開啟的，其中有一個服務是 pop3，搜尋一下這是什麼：</p>
 <blockquote>
 <p>Post Office Protocol (English: Post Office Protocol , abbreviation: POP ) is a member of the TCP&#x2F;IP protocol family and was first defined by RFC 1939 issued in May 1996 . This protocol is primarily used to support remote management of email on the server using a client . The latest version is POP3 , whose full name is “Post Office Protocol - Version 3”, and the POP3 protocol that provides SSL encryption is called POP3S .</p>
 </blockquote>
@@ -824,7 +824,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-08-17 15:45:17
+                    :</strong> 2024-08-17 15:49:16
             </li>
         
         <li>
@@ -850,11 +850,11 @@
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/htb/">#htb</a>&nbsp;
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                        <a href="/tags/htb/">#htb</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
