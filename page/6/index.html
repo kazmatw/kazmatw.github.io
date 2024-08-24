@@ -623,7 +623,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">34</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">39</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -631,7 +631,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">55</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">57</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -653,6 +653,137 @@
                 
                     <div class="home-content-container">
     <ul class="home-article-list">
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/">
+                            Yuawn Pwn2 rop Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            rop雖然有附 source，但我們假裝沒有 XD。來用 r2 看一下 main：
+
+看到一個 0x30 的 buffer，用 gets 去讀，那我們就 rop 開一個 shell。用以下的指令來搜集需要的 gadget：
+12ROPgadget -...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Tue Dec 12 2023 18:47:00 GMT+0800">
+                
+                    2023-12-12
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn2 rop Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/">
+                            Yuawn Pwn1 orw Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            orworw 顧名思義就是開放 open，read and write 三個 syscalls 的經典題目。如下圖：
+
+執行看一下：
+
+r2 看一下 main：
+
+一開始他會先把輸入讀到全域變數 obj.sc，然後他開了 0x10 的 buffer，...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Sun Dec 10 2023 21:24:37 GMT+0800">
+                
+                    2023-12-10
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn1 orw Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
         
             <li class="home-article-item">
 
@@ -1028,7 +1159,7 @@
 </div>
                 <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">34</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">39</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -1036,7 +1167,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">55</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">57</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -1065,7 +1196,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        55 posts in total
+                        57 posts in total
                     </span>
                     
                 </p>
