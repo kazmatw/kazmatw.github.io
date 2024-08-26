@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-08-24T07:21:18.462Z</updated>
+  <updated>2024-08-26T08:05:17.335Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HackTheBox-Challenges Infiltration Writeup</title>
+    <link href="https://kazma.tw/2024/08/26/HackTheBox-Challenges-Infiltration-Writeup/"/>
+    <id>https://kazma.tw/2024/08/26/HackTheBox-Challenges-Infiltration-Writeup/</id>
+    <published>2024-08-26T07:38:42.569Z</published>
+    <updated>2024-08-26T08:05:17.335Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><blockquote><p>Can you find something to help you break into the company ‘Evil Corp LLC’. Recon social media sites to see if you can find any useful information.</p></blockquote><h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>直接搜尋 <code>&quot;Evil Corp LLC&quot;</code> 第一筆結果就會看到一個 LinkedIn，點進去之後就會看到一個很 flag 的東西：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/osint2_fake.png"                      alt="fake"                ></p><p>還以為這樣就結束了，結果不對，拿去 base64 decode 會發現是：</p><blockquote><p>You can do this, keep going!!!</p></blockquote><p>回去 google 搜尋結果看到其中一個員工的 IG，去逛逛發現有其中一篇文有一些奇怪的留言：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/osint2_ig.png"                      alt="ig"                ><br>好玩 w</p><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/osint2_pwn.png"                      alt="pwn"                ></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Description&quot;&gt;&lt;a href=&quot;#Description&quot; class=&quot;headerlink&quot; title=&quot;Description&quot;&gt;&lt;/a&gt;Description&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;Can you find somethin</summary>
+      
+    
+    
+    
+    
+    <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
+    
+    <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
+    
+    <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="osint" scheme="https://kazma.tw/tags/osint/"/>
+    
+  </entry>
   
   <entry>
     <title>HITCON CMT 2024 - UCCU AI Challenge Writeup</title>
@@ -568,37 +597,11 @@
     
     
     
-    <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
-    <category term="angr" scheme="https://kazma.tw/tags/angr/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Tmux Keymap Cheatsheet: Josean Martinez’s Configuration</title>
-    <link href="https://kazma.tw/2024/05/03/Tmux%20Keymap%20Cheatsheet:%20Josean%20Martinez%E2%80%99s%20Configuration/"/>
-    <id>https://kazma.tw/2024/05/03/Tmux%20Keymap%20Cheatsheet:%20Josean%20Martinez%E2%80%99s%20Configuration/</id>
-    <published>2024-05-03T05:15:25.000Z</published>
-    <updated>2024-05-03T06:58:57.349Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Tmux-Keymap-Cheatsheet"><a href="#Tmux-Keymap-Cheatsheet" class="headerlink" title="Tmux Keymap Cheatsheet"></a>Tmux Keymap Cheatsheet</h1><h2 id="Install-tpm"><a href="#Install-tpm" class="headerlink" title="Install tpm"></a>Install tpm</h2><ul><li><code>git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm</code></li></ul><h2 id="Keymap"><a href="#Keymap" class="headerlink" title="Keymap"></a>Keymap</h2><h3 id="Prefix"><a href="#Prefix" class="headerlink" title="Prefix"></a>Prefix</h3><ul><li><code>&lt;ctrl&gt;a</code></li><li>change <code>&lt;capsLock&gt;</code> to <code>&lt;ctrl&gt;</code></li></ul><h3 id="New-Session"><a href="#New-Session" class="headerlink" title="New Session"></a>New Session</h3><ul><li><code>tmux new -s &lt;Name&gt;</code></li></ul><h3 id="Detach"><a href="#Detach" class="headerlink" title="Detach"></a>Detach</h3><ul><li><code>tmux detach</code></li></ul><h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><ul><li><code>tmux ls</code> to show all sessions</li><li><code>&lt;prefix&gt;s</code> to show all sessions</li><li><code>&lt;prefix&gt;w</code> to show all windows</li></ul><h3 id="Attach"><a href="#Attach" class="headerlink" title="Attach"></a>Attach</h3><ul><li><code>tmux attach -t &lt;Name&gt;</code> to attach to a specific session</li></ul><h3 id="Split"><a href="#Split" class="headerlink" title="Split"></a>Split</h3><ul><li><code>&lt;prefix&gt;|</code> to split vertically</li><li><code>&lt;prefix&gt;-</code> to split horizontally</li></ul><h3 id="Refresh"><a href="#Refresh" class="headerlink" title="Refresh"></a>Refresh</h3><ul><li><code>&lt;prefix&gt;r</code> to refresh <code>.tmux.conf</code></li></ul><h3 id="Resize"><a href="#Resize" class="headerlink" title="Resize"></a>Resize</h3><ul><li><code>&lt;prefix&gt;h/j/k/l</code> to resize panes</li><li><code>&lt;prefix&gt;m</code> to maximize panes</li></ul><h3 id="Rename"><a href="#Rename" class="headerlink" title="Rename"></a>Rename</h3><ul><li><code>&lt;prefix&gt;,</code> to rename a window</li></ul><h3 id="Move"><a href="#Move" class="headerlink" title="Move"></a>Move</h3><ul><li><code>&lt;ctrl&gt;h/j/k/l</code> to move between panes</li></ul><h3 id="New"><a href="#New" class="headerlink" title="New"></a>New</h3><ul><li><code>&lt;prefix&gt;c</code> to create a new window in current session</li></ul><h3 id="Copy-Mode"><a href="#Copy-Mode" class="headerlink" title="Copy Mode"></a>Copy Mode</h3><ul><li><code>&lt;prefix&gt;[</code> to enter copy mode</li><li><code>h/j/k/l</code> to move</li><li><code>&lt;shift&gt;k/j</code> to also move up and down</li><li><code>&lt;ctrl&gt;u/d</code> to go half page up and down</li><li><code>&lt;ctrl&gt;b/f</code> to go full page up and down</li><li><code>v</code> to enter visual mode to select text</li><li><code>y</code> to copy select text</li><li><code>&lt;ctrl&gt;c</code> to exit copy mode</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;Tmux-Keymap-Cheatsheet&quot;&gt;&lt;a href=&quot;#Tmux-Keymap-Cheatsheet&quot; class=&quot;headerlink&quot; title=&quot;Tmux Keymap Cheatsheet&quot;&gt;&lt;/a&gt;Tmux Keymap Cheatshe</summary>
-      
-    
-    
-    
-    
     <category term="tools" scheme="https://kazma.tw/tags/tools/"/>
     
-    <category term="cheatsheet" scheme="https://kazma.tw/tags/cheatsheet/"/>
-    
-    <category term="tmux" scheme="https://kazma.tw/tags/tmux/"/>
+    <category term="angr" scheme="https://kazma.tw/tags/angr/"/>
     
   </entry>
   
