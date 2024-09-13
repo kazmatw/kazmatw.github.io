@@ -13,21 +13,28 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/page/5/"/>
+    <link rel="canonical" href="https://kazma.tw/2024/09/13/flipper-zero-宇宙最強攻略：30-天帶你從入門到入坑-day02-超越動物星球頻道的賽博海豚基本功能剖析/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="kazma&#39;s blog">
-<meta property="og:url" content="https://kazma.tw/page/5/index.html">
+        <meta name="description" content="主題簡介今天要告訴各位拿到小海豚後，可以做哪些有趣的事情，以及究竟這麼多 firmware 之間差在哪些功能，手把手帶大家把前置作業都摸透透！ 免責聲明請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。 基本常識介紹這邊快速帶過官方文件的介紹：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day02 - 超越動物星球頻道的賽博海豚基本功能剖析">
+<meta property="og:url" content="https://kazma.tw/2024/09/13/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day02-%E8%B6%85%E8%B6%8A%E5%8B%95%E7%89%A9%E6%98%9F%E7%90%83%E9%A0%BB%E9%81%93%E7%9A%84%E8%B3%BD%E5%8D%9A%E6%B5%B7%E8%B1%9A%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD%E5%89%96%E6%9E%90/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="主題簡介今天要告訴各位拿到小海豚後，可以做哪些有趣的事情，以及究竟這麼多 firmware 之間差在哪些功能，手把手帶大家把前置作業都摸透透！ 免責聲明請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。 基本常識介紹這邊快速帶過官方文件的介紹：">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/images/flipper_mood.png">
+<meta property="og:image" content="https://kazma.tw/images/flipper_control.png">
+<meta property="article:published_time" content="2024-09-13T15:04:47.503Z">
+<meta property="article:modified_time" content="2024-09-13T16:49:42.128Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="flipper-zero">
+<meta property="article:tag" content="iThome">
+<meta property="article:tag" content="toy">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/flipper_mood.png">
     
     
     <!--- Icon Part-->
@@ -38,6 +45,8 @@
     <!--- Page Info-->
     
     <title>
+        
+            Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day02 - 超越動物星球頻道的賽博海豚基本功能剖析 -
         
         kazma&#39;s blog
     </title>
@@ -287,41 +296,6 @@
 <main class="page-container" id="swup">
 
     
-        <style>
-    .home-article-item,
-    .sidebar-links,
-    .sidebar-content,
-    a.page-number,
-    a.extend,
-    .sidebar-links .links:hover,
-    .right-bottom-tools,
-    footer.footer {
-        background-color: var(--background-color-transparent-80) !important;
-    }
-    .right-bottom-tools:hover,
-    a.page-number:hover,
-    a.extend:hover {
-        background-color: var(--primary-color) !important;
-    }
-    .site-info,
-    .home-article-sticky-label {
-        background-color: var(--background-color-transparent-15) !important;
-    }
-    .home-article-sticky-label {
-        backdrop-filter: none !important;
-    }
-    .home-banner-background {
-        filter: blur(15px);
-    }
-</style>
-
-<div class="home-banner-background transition-fade fixed top-0 left-0 w-screen h-screen scale-125 sm:scale-110 box-border will-change-transform bg-cover">
-    <img src="/images/wallhaven-wqery6-light.webp" alt="home-banner-background" class="w-full h-full object-cover dark:hidden">
-    <img src="/images/smoke.png" alt="home-banner-background" class="w-full h-full object-cover hidden dark:block">
-</div>
-
-
-    
 
     <div class="main-content-container">
 
@@ -337,9 +311,9 @@
                 </a>
             
             <a class="logo-title" href="/">
-                <h1>
+                
                 kazma&#39;s blog
-                </h1>
+                
             </a>
         </div>
 
@@ -353,7 +327,7 @@
 
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active"
+                                <a class=""
                                    href="/"
                                         >
                                     <i class="fa-regular fa-house fa-fw"></i>
@@ -479,7 +453,7 @@
 
                     <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
                         
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
                            href="/"
                         >
                             <span>
@@ -651,735 +625,322 @@
             <div class="main-content">
 
                 
-                    <div class="home-content-container">
-    <ul class="home-article-list">
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day02 - 超越動物星球頻道的賽博海豚基本功能剖析</h1>
+                </div>
+            
+            </div>
+
         
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2024/01/09/Pwnctf-ret2src-Writeup/">
-                            Pwnctf ret2src Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
                         
-                            ret2src先看一下保護機制：
-
-這題什麼保護機制都沒有w，所以作法應該蠻多種的，這裡 return 到 gets 的 plt，把 shellcode 寫到某個 bss 段，然後再跳上開 shell。
-exploit.py:
-12345678910...
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
                         
                     </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Tue Jan 09 2024 18:30:32 GMT+0800">
-                
-                    2024-01-09
-                
-            </span>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-09-13 23:04:47</span>
+        <span class="mobile">2024-09-13 23:04:47</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-09-14 00:49:42</span>
+            <span class="mobile">2024-09-14 00:49:42</span>
+            <span class="hover-info">Updated</span>
         </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
+    
 
-    <a href="/2024/01/09/Pwnctf-ret2src-Writeup/">Read more<span class="seo-reader-text">Pwnctf ret2src Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/flipper-zero/">flipper-zero</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/iThome/">iThome</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/toy/">toy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
 </div>
 
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/21/Pwnctf-registration-Writeup/">
-                            Pwnctf registration Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            registration這題的關鍵是他會隨機生一個 id，然後存到一個全域變數，最後會去檢查這個值是否被更動：
-
-只要弄清楚變數具體的位置，這題就輕鬆通關了：
-
-exploit.py：
-1234567891011121314151617181920f...
-                        
                     </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Thu Dec 21 2023 21:32:41 GMT+0800">
-                
-                    2023-12-21
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/21/Pwnctf-registration-Writeup/">Read more<span class="seo-reader-text">Pwnctf registration Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
                 </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="主題簡介"><a href="#主題簡介" class="headerlink" title="主題簡介"></a>主題簡介</h2><p>今天要告訴各位拿到小海豚後，可以做哪些有趣的事情，以及究竟這麼多 firmware 之間差在哪些功能，手把手帶大家把前置作業都摸透透！</p>
+<h2 id="免責聲明"><a href="#免責聲明" class="headerlink" title="免責聲明"></a>免責聲明</h2><p>請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。</p>
+<h2 id="基本常識介紹"><a href="#基本常識介紹" class="headerlink" title="基本常識介紹"></a>基本常識介紹</h2><p>這邊快速帶過官方文件的介紹：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/basics/first-start%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9C%89%E9%81%87%E5%88%B0%E4%BB%BB%E4%BD%95%E5%95%8F%E9%A1%8C%E5%8F%AF%E4%BB%A5%E5%8F%83%E8%80%83%E9%80%99%E4%BB%BD%E5%AE%98%E6%96%B9%E7%9A%84%E6%96%87%E4%BB%B6%E6%8E%92%E9%99%A4%E5%95%8F%E9%A1%8C%E3%80%82" >https://docs.flipper.net/basics/first-start，如果有遇到任何問題可以參考這份官方的文件排除問題。 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="開機"><a href="#開機" class="headerlink" title="開機"></a>開機</h3><p>首先拿到小海豚後我們可以透過按著返回鍵三秒來開機。</p>
+<h3 id="重新開機"><a href="#重新開機" class="headerlink" title="重新開機"></a>重新開機</h3><p>我們可以透過按住左鍵和返回鍵五秒來重新開機。</p>
+<h3 id="microSD-card"><a href="#microSD-card" class="headerlink" title="microSD card"></a>microSD card</h3><p>買來的時候沒有附記憶卡，所以需要自己額外買一張，Flipper Zero 支援到 256 GB 的記憶卡，但官方文件說 4 GB 就很足夠了，插的時候把晶片那面朝上按進去，不過他也有防呆，反著以插不進去就是了。<br>官方有特別強調不要用品質太差的記憶卡，可能會導致裝置故障，或是異常耗電。</p>
+<h3 id="更新韌體"><a href="#更新韌體" class="headerlink" title="更新韌體"></a>更新韌體</h3><p>這邊先提官方的韌體要怎麼更新，主要有兩種方式：</p>
+<ul>
+<li>透過手機：<ul>
+<li>我們可以用手機下載 Flipper Mobile App，透過藍芽連接上之後就可以開始更新了。</li>
+</ul>
+</li>
+<li>透過電腦：<ul>
+<li>我們可以下載 qFlipper 之後透過原廠的線連接電腦就可以開始更新了。<br>然後官方分成下面三種版本：</li>
+</ul>
+</li>
+<li>DEVELOPMENT (Dev):<ul>
+<li>顧名思義就是開發中還沒進到測試階段的版本，會有一些別人沒有的新功能，同時也有一些別人沒有的 bugs XD。</li>
+</ul>
+</li>
+<li>RELEASE-CANDIDATE (RC):<ul>
+<li>是準備發行的版本，但尚未通過全部的測試，如果這階段發現問題，問修補後再釋出一個新的版本。</li>
+</ul>
+</li>
+<li>RELEASE:<ul>
+<li>經過完整測試流程後相對穩定的版本。</li>
+</ul>
+</li>
+</ul>
+<h3 id="系統設定"><a href="#系統設定" class="headerlink" title="系統設定"></a>系統設定</h3><p>到 setting -&gt; system 下可以調整慣用手、測量單位、時間格式還有日期格式。</p>
+<h3 id="官方社群"><a href="#官方社群" class="headerlink" title="官方社群"></a>官方社群</h3><ul>
+<li>Discord<ul>
+<li><a class="link"   target="_blank" rel="noopener" href="http://flipperzero.one/discord" >http://flipperzero.one/discord <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+</li>
+<li>Forum<ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://forum.flipperzero.one/" >https://forum.flipperzero.one/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+</li>
+</ul>
+<h2 id="你的專屬賽博海豚"><a href="#你的專屬賽博海豚" class="headerlink" title="你的專屬賽博海豚"></a>你的專屬賽博海豚</h2><p>在主畫面就可以看到你家海豚在幹嘛，如果在主畫面按下右鍵就可以看到他的名字心情還有等級跟經驗值，如果太久不用他的話你得海豚會變得多愁善感像是下面官方文件舉的例子：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/flipper_mood.png"
+                      alt="mood"
+                ><br>生氣的時候甚至會爆氣走人 w<br>而且很有趣的是官方叫我們定期更新韌體，因為他們會釋出季節性的表情包，也就是說可能會有聖誕海豚之類的。<br>隨著我們的使用，海豚會慢慢累積經驗值，升級之後海豚會改變它的外觀和解鎖更多動作，官方也有提供具體的經驗值計算方式：<br><a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/basics/dolphin#fi-EA" >https://docs.flipper.net/basics/dolphin#fi-EA <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="額外知識補充"><a href="#額外知識補充" class="headerlink" title="額外知識補充"></a>額外知識補充</h2><ul>
+<li>電池詳盡狀態<ul>
+<li>我們可以去 Main Menu -&gt; Settings -&gt; Power -&gt; Battery Info，可以到電池的溫度和健康度那些詳細資訊。</li>
+</ul>
+</li>
+<li>關機<ul>
+<li>Main Menu -&gt; Settings -&gt; Power -&gt; Power OFF 可以關機。</li>
+</ul>
+</li>
+<li>Active &amp; Sleep<ul>
+<li>Flipper 有這兩種模式，簡單來說平時正常使用是 Active 比較耗電。</li>
+<li>如果沒有任何執行中 app 或是連線，那海豚就會開睡，而 Sleep 又分成兩種模式：<ul>
+<li>Default 更省電但是系統會比較不穩定</li>
+<li>Legacy 會稍微耗電但是至少會維持系統穩定</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Hard Reboot:<ul>
+<li>如果一般的重新開機沒辦法解決問題的話，我們可以按住返回鍵 30 秒來使用更完整的重新開機。</li>
+</ul>
+</li>
+</ul>
+<h2 id="桌面"><a href="#桌面" class="headerlink" title="桌面"></a>桌面</h2><p>桌面除了會看到你得海豚外，你還可以自訂一些熱鍵：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/flipper_control.png"
+                      alt="control"
+                ><br>桌面按上可以進入鎖定畫面選單，鎖定畫面也可以設 pin code，是用上下左右來設定的，還蠻酷的，選單裡也也可以靜音小海豚。<br>解鎖的話按三下返回鍵就可以回到主畫面了。</p>
+<h2 id="按讚訂閱小鈴噹叮叮叮"><a href="#按讚訂閱小鈴噹叮叮叮" class="headerlink" title="按讚訂閱小鈴噹叮叮叮"></a>按讚訂閱小鈴噹叮叮叮</h2><p>OK 今天的介紹差不多就到這邊，我們地毯式的走過了官方 Document 中的 First Start，明天會帶大家認識市面上除了官方經典的韌體以外，社群也藉著開源的韌體開發了許多有趣的版本，會帶大家好好來認識一下這些版本有什麼差別，各位敬請期待！</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day02 - 超越動物星球頻道的賽博海豚基本功能剖析</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-09-13 23:04:47</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-09-14 00:49:42
             </li>
         
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/21/Pwnctf-return-Writeup/">
-                            Pwnctf return Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            return經典 bof，跳上去這個邪惡的東東就搞定了，記得對齊 0x10：
-
-exploit.py：
-123456789from pwn import *r = process(&#x27;./return&#x27;)ret = 0x400539...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Thu Dec 21 2023 16:42:58 GMT+0800">
-                
-                    2023-12-21
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/21/Pwnctf-return-Writeup/">Read more<span class="seo-reader-text">Pwnctf return Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/21/Pwnctf-binary-Writeup/">
-                            Pwnctf binary Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            binary這題有三個階段，分別輸入特定的值就可以開 shell，首先 stage1：
-
-注意前面兩個是 je，最後一個是 jne，所以這邊要送 0x100001，再來 stage2：
-
-這次要送三個值分別是：0x64，0x100，0xfaceb00...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Thu Dec 21 2023 14:43:42 GMT+0800">
-                
-                    2023-12-21
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/21/Pwnctf-binary-Writeup/">Read more<span class="seo-reader-text">Pwnctf binary Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/20/Pwnctf-pwntools-Writeup/">
-                            Pwnctf pwntools Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            pwntools首先他會比較第一個參數是否為一個特定的值：
-
-再來就是用 pwntools 來解決他的一千道數學題，exploit.py：
-12345678910111213141516from pwn import *r = process(&#x...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Dec 20 2023 23:31:10 GMT+0800">
-                
-                    2023-12-20
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/20/Pwnctf-pwntools-Writeup/">Read more<span class="seo-reader-text">Pwnctf pwntools Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/20/Pwnctf-ret2sc-Writeup/">
-                            Pwnctf ret2sc Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            ret2sc這題就是先把 shellcode 寫到 name 上，再跳上去就行，不過比較新的作業系統 bss 段沒有 x 權限，這邊就直接上 exploit.py：
-12345678910from pwn import *r = process(&#...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Dec 20 2023 22:57:23 GMT+0800">
-                
-                    2023-12-20
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/20/Pwnctf-ret2sc-Writeup/">Read more<span class="seo-reader-text">Pwnctf ret2sc Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/20/Pwnctf-bofe4sy-Writeup/">
-                            Pwnctf bofe4sy Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            bofe4sy直接 bof return 到 win 就行：
-
-exploit.py：
-1234567891011└─$ cat exploit.pyfrom pwn import *r = process(&#x27;./bofe4sy&#x27;...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Dec 20 2023 22:05:14 GMT+0800">
-                
-                    2023-12-20
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/20/Pwnctf-bofe4sy-Writeup/">Read more<span class="seo-reader-text">Pwnctf bofe4sy Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/20/Pwnctf-pass-Writeup/">
-                            Pwnctf pass Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            pass這題直接 r2 看一下 main 的這兩個地方：
-
-
-控好 var_4h 就結束了，exploit.py：
-12345678from pwn import *r = process(&#x27;./pass&#x27;)p = b&#x27;...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Dec 20 2023 21:35:27 GMT+0800">
-                
-                    2023-12-20
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/20/Pwnctf-pass-Writeup/">Read more<span class="seo-reader-text">Pwnctf pass Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/20/Pwnctf-gohome-Writeup/">
-                            Pwnctf gohome Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            gohome執行看一下：
-
-他說要找他家的地址：
-
-找到他家了，內容是直接在 shell 印出我們的 flag，補上一個 return 對齊一下，exploit.py：
-12345678910111213141516└─$ cat exploit.p...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Dec 20 2023 21:16:27 GMT+0800">
-                
-                    2023-12-20
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/20/Pwnctf-gohome-Writeup/">Read more<span class="seo-reader-text">Pwnctf gohome Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/18/Pwnctf-echo-server-Writeup/">
-                            Pwnctf echo_server Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            echo_serverlevel1 的題目就不解釋太多了w，先執行看一下：
-
-checksec：
-
-r2：
-
-1234└─$ ROPgadget --binary ./echo_server --string &#x27;/bin/sh&#x27;S...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Mon Dec 18 2023 18:20:55 GMT+0800">
-                
-                    2023-12-18
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/18/Pwnctf-echo-server-Writeup/">Read more<span class="seo-reader-text">Pwnctf echo_server Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/09/13/Flipper-Zero-宇宙最強攻略：30-天帶你從入門到入坑-Day02-超越動物星球頻道的賽博海豚基本功能剖析/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
     </ul>
-
-    <div class="home-paginator px-7 py-5">
-        <div class="paginator">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa-regular fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa-regular fa-angle-right"></i></a>
 </div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/flipper-zero/">#flipper-zero</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/iThome/">#iThome</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/toy/">#toy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/09/13/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day01-%E5%89%8D%E8%A8%80-%E7%8D%B2%E5%8F%96%E7%AE%A1%E9%81%93/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day01 - 前言 &amp; 獲取管道</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day02 - 超越動物星球頻道的賽博海豚基本功能剖析</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E9%A1%8C%E7%B0%A1%E4%BB%8B"><span class="nav-text">主題簡介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%8D%E8%B2%AC%E8%81%B2%E6%98%8E"><span class="nav-text">免責聲明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%B8%B8%E8%AD%98%E4%BB%8B%E7%B4%B9"><span class="nav-text">基本常識介紹</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%96%8B%E6%A9%9F"><span class="nav-text">開機</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E9%96%8B%E6%A9%9F"><span class="nav-text">重新開機</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#microSD-card"><span class="nav-text">microSD card</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E9%9F%8C%E9%AB%94"><span class="nav-text">更新韌體</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%B5%B1%E8%A8%AD%E5%AE%9A"><span class="nav-text">系統設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%98%E6%96%B9%E7%A4%BE%E7%BE%A4"><span class="nav-text">官方社群</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%A0%E7%9A%84%E5%B0%88%E5%B1%AC%E8%B3%BD%E5%8D%9A%E6%B5%B7%E8%B1%9A"><span class="nav-text">你的專屬賽博海豚</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%8D%E5%A4%96%E7%9F%A5%E8%AD%98%E8%A3%9C%E5%85%85"><span class="nav-text">額外知識補充</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%8C%E9%9D%A2"><span class="nav-text">桌面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E8%AE%9A%E8%A8%82%E9%96%B1%E5%B0%8F%E9%88%B4%E5%99%B9%E5%8F%AE%E5%8F%AE%E5%8F%AE"><span class="nav-text">按讚訂閱小鈴噹叮叮叮</span></a></li></ol>
 
     </div>
 </div>
+        </div>
+    
+</div>
 
-                    <div class="comment-container pjax"></div>
+
+
                 
 
             </div>
-
-            
-                <div class="home-sidebar-container">
-    <div class="sticky-container sticky">
-        
-        
-            
-                <div class="sidebar-links">
-                    <div class="site-info">
-                        <div class="site-name">kazma&#39;s blog</div>
-                        
-                    </div>
-                    
-                        
-                            
-                                <a class="links" href="/archives">
-                                    
-                                        <i class="fa-regular fa-archive icon-space"></i>
-                                    
-                                    <span class="link-name">Archives</span>
-                                </a>
-                            
-                        
-                            
-                                <a class="links" href="/tags">
-                                    
-                                        <i class="fa-regular fa-tags icon-space"></i>
-                                    
-                                    <span class="link-name">Tags</span>
-                                </a>
-                            
-                        
-                    
-                </div>
-            
-            <div class="sidebar-content"  marginTop >
-                <div class="avatar flex justify-center">
-    <img src="/images/kazma.png">
-</div>
-                <div class="author flex flex-col justify-center my-2.5 mx-0">
-    <div class="name">kazma</div>
-    
-        <div class="label">成大資安社 創辦人/社長</div>
-    
-</div>
-                <div class="statistics flex justify-around my-2.5">
-    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">43</div>
-        <div class="label text-third-text-color text-sm">Tags</div>
-    </a>
-    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
-        <div class="label text-third-text-color text-sm">Categories</div>
-    </a>
-    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">62</div>
-        <div class="label text-third-text-color text-sm">Posts</div>
-    </a>
-</div>
-            </div>
-        
-
-    </div>
-</div>
 
             
 
@@ -1457,6 +1018,27 @@ r2：
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
@@ -1579,7 +1161,6 @@ r2：
         containers: ["#swup"],
     });
 </script>
-
 
 
 
