@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+    
+    <meta name="author" content="kazma">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://kazma.tw/2024/09/16/flipper-zero-宇宙最強攻略：30-天帶你從入門到入坑-day04-搞懂-sub-ghz-你也會勞山道士的穿牆術/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="前言嗨各位，Kazma 又來了！今天的主題是 Sub-GHz，個人覺得是小海豚最強大的功能之一，所以可能會有三到四天都在介紹這個技術跟他的應用，同時這也是他受到電信管制射頻器材管理辦法限制的原因，沒辦法大量進口，甚至需要簽自用切結書，不能作為商業用途，原文如下：  根據電信管制射頻器材管理辦法第 18 條第 1 項第 2 款：二、除衛星行動地球電臺及衛星小型地球電臺外，輸入供自用之無線電信終端設備">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day04 - 搞懂 Sub-GHz 你也會勞山道士的穿牆術">
+<meta property="og:url" content="https://kazma.tw/2024/09/16/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day04-%E6%90%9E%E6%87%82-Sub-GHz-%E4%BD%A0%E4%B9%9F%E6%9C%83%E5%8B%9E%E5%B1%B1%E9%81%93%E5%A3%AB%E7%9A%84%E7%A9%BF%E7%89%86%E8%A1%93/index.html">
+<meta property="og:site_name" content="kazma&#39;s blog">
+<meta property="og:description" content="前言嗨各位，Kazma 又來了！今天的主題是 Sub-GHz，個人覺得是小海豚最強大的功能之一，所以可能會有三到四天都在介紹這個技術跟他的應用，同時這也是他受到電信管制射頻器材管理辦法限制的原因，沒辦法大量進口，甚至需要簽自用切結書，不能作為商業用途，原文如下：  根據電信管制射頻器材管理辦法第 18 條第 1 項第 2 款：二、除衛星行動地球電臺及衛星小型地球電臺外，輸入供自用之無線電信終端設備">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/-BM_kwmnhuC3hWYmGaBwJ_sub-ghznocar-1.png?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/_yl6oxmqzaB7G7BFLSkgu_monosnap-miro-2023-07-14-13-17-38.jpg?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/iWJNVsM0quT9-4IdFRVEq_monosnap-miro-2023-07-14-13-19-38.jpg?format=webp&width=1280">
+<meta property="og:image" content="https://kazma.tw/images/rssi.png">
+<meta property="og:image" content="https://kazma.tw/images/hopping.png">
+<meta property="og:image" content="https://i1.wp.com/inews.gtimg.com/newsapp_bt/0/4922910496/641">
+<meta property="og:image" content="https://cdn.flipperzero.one/Monosnap_Miro_2022-08-23_14-24-29.png">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/3LARdEupzZR64-chUzbPH_monosnap-miro-2023-07-14-12-19-41.jpg?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/oSgQs07b-5ukhIV49qyaX_monosnap-miro-2023-07-12-19-43-57.jpg?format=webp&width=1280">
+<meta property="og:image" content="https://cdn.flipperzero.one/Supported_vendors_sub-ghz____1.png">
+<meta property="og:image" content="https://kazma.tw/images/flipper_interesting.png">
+<meta property="og:image" content="https://kazma.tw/images/check.png">
+<meta property="article:published_time" content="2024-09-16T01:59:21.421Z">
+<meta property="article:modified_time" content="2024-09-17T18:06:28.172Z">
+<meta property="article:author" content="kazma">
+<meta property="article:tag" content="flipper-zero">
+<meta property="article:tag" content="iThome">
+<meta property="article:tag" content="toy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/-BM_kwmnhuC3hWYmGaBwJ_sub-ghznocar-1.png?format=webp&width=1280">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/kazma.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/kazma.png">
+    <meta name="theme-color" content="#94878e">
+    <link rel="shortcut icon" href="/images/kazma.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day04 - 搞懂 Sub-GHz 你也會勞山道士的穿牆術 -
+        
+        kazma&#39;s blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"kazma.tw","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["成大資安社 創辦人/社長"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#94878e","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/smoke.png"},"title":"kazma.tw","subtitle":{"text":["Pwning my life: ","Tales of coding, cybersecurity, and campus life"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#FFFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/kazmatw","instagram":"https://www.instagram.com/kazma.tw/","zhihu":null,"twitter":null,"email":"kazmatw@gmail.com","telegram":"https://t.me/kazma_tw","discord":"https://discord.com/users/870280109360316457"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":"enable"},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#5d5764","right":"#94878e","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"ls":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags"},"whoami":{"path":"/whoami","icon":"fa-regular fa-user"},"cv":{"path":"/cv","icon":"fa-regular fa-file"},"ctfd":{"path":"https://class.nckuctf.org/","icon":"fa-brands fa-font-awesome"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}}},"article_date_format":"auto","categories":{"enable":false,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/10/25 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/sharp-solid.min.css">
+
+    
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "nq9qfhqgy4");
+    </script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EH82J63NRM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EH82J63NRM');
+</script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="kazma's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        kazma&#39;s blog
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/kazma.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                kazma&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    LS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/whoami"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    WHOAMI
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/cv"
+                                        >
+                                    <i class="fa-regular fa-file fa-fw"></i>
+                                    CV
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                                        >
+                                    <i class="fa-brands fa-font-awesome fa-fw"></i>
+                                    CTFD
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                LS
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/whoami"
+                        >
+                            <span>
+                                WHOAMI
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/cv"
+                        >
+                            <span>
+                                CV
+                            </span>
+                            
+                                <i class="fa-regular fa-file fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                        >
+                            <span>
+                                CTFD
+                            </span>
+                            
+                                <i class="fa-brands fa-font-awesome fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/archives"
+                        >
+                            <span>Archives</span>
+                            <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">43</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">65</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day04 - 搞懂 Sub-GHz 你也會勞山道士的穿牆術</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-09-16 09:59:21</span>
+        <span class="mobile">2024-09-16 09:59:21</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-09-18 02:06:28</span>
+            <span class="mobile">2024-09-18 02:06:28</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/flipper-zero/">flipper-zero</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/iThome/">iThome</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/toy/">toy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>嗨各位，Kazma 又來了！<br>今天的主題是 Sub-GHz，個人覺得是小海豚最強大的功能之一，所以可能會有三到四天都在介紹這個技術跟他的應用，同時這也是他受到電信管制射頻器材管理辦法限制的原因，沒辦法大量進口，甚至需要簽自用切結書，不能作為商業用途，原文如下：</p>
+<blockquote>
+<p>根據電信管制射頻器材管理辦法第 18 條第 1 項第 2 款：<br>二、除衛星行動地球電臺及衛星小型地球電臺外，輸入供自用之無線電信終端設備或低功率射頻電機，應填寫自用切結書，切結僅供自用，不作為販賣或其他商業用途，並檢附符合相關技術規範之證明文件；其輸入數量限制如下：<br>（一）自行攜帶輸入者，一次至多不得逾五部。<br>（二）郵寄輸入或其他非自行攜帶方式輸入者，一次至多不得逾二部。<br>（三）同一自然人或法人輸入同廠牌型號，一年內以十部為限。</p>
+</blockquote>
+<p>那也因為能力越大責任越大，所以每天都要放一次資安倫理宣導。</p>
+<h2 id="資安倫理宣導"><a href="#資安倫理宣導" class="headerlink" title="資安倫理宣導"></a>資安倫理宣導</h2><p>請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。</p>
+<h2 id="Sub-GHz-介紹"><a href="#Sub-GHz-介紹" class="headerlink" title="Sub-GHz 介紹"></a>Sub-GHz 介紹</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/-BM_kwmnhuC3hWYmGaBwJ_sub-ghznocar-1.png?format=webp&width=1280"
+                      alt="cover"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/" >https://docs.flipper.net <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>首先，我們先從這個名詞開始介紹。<br>GHz 是一種頻率的單位，代表的是千兆赫茲，同時一千兆赫茲等於十億赫茲。而顧名思義  Sub-GHz 代表的就是低於千兆赫茲，也就是說這個名詞本身代表的其實是一個頻率範圍。所以舉一反三有一個 5G 網路中的專有名詞： Sub-6GHz 代表的就是六千兆赫茲以下的頻段，不過這不在今天的討論範圍。<br>而我們知道光速是一個常數，所以根據光速還有波長跟頻率的關係式我們可以得知如果使用 Sub-GHz 這種相對低頻率的波段，波長就會相對應得更長，以至於他有以下這些好處：</p>
+<ul>
+<li>傳輸距離長</li>
+<li>穿透力強</li>
+<li>功率低</li>
+<li>不容易被干擾</li>
+</ul>
+<p>這也是為什麼使用無線電波比較不容易受到障礙物影響，也跟我們今天的主題–穿牆術扣合。</p>
+<h2 id="Flipper-Sub-GHz-Menu"><a href="#Flipper-Sub-GHz-Menu" class="headerlink" title="Flipper Sub-GHz Menu"></a>Flipper Sub-GHz Menu</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/_yl6oxmqzaB7G7BFLSkgu_monosnap-miro-2023-07-14-13-17-38.jpg?format=webp&width=1280"
+                      alt="menu"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/" >https://docs.flipper.net <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>上面這張圖片是 flipper 的 Sub-GHz 選單，快速跟各位介紹上面的功能：</p>
+<ul>
+<li>Read:<ul>
+<li>讀取，會嘗試根據已知的協議去 decode，如果協議是靜態的，我們就可以把它存下來</li>
+</ul>
+</li>
+<li>Read Raw:<ul>
+<li>直接讀取原始訊號而不會去做解碼。</li>
+</ul>
+</li>
+<li>Saved:<ul>
+<li>列出儲存的訊號，可以模擬或是改名。</li>
+</ul>
+</li>
+<li>Add Manually:<ul>
+<li>可以配對讀取裝置。</li>
+</ul>
+</li>
+<li>Frequency Analyzer:<ul>
+<li>可以偵測訊號的頻率。</li>
+</ul>
+</li>
+<li>Region Information:<ul>
+<li>會列出當地允許的頻率範圍。</li>
+</ul>
+</li>
+<li>Radio Settings:<ul>
+<li>可以去更換成外部天線如果我們有裝的話，還有其他相關設定。</li>
+</ul>
+</li>
+</ul>
+<h2 id="Flipper-Sub-GHz-Hardware"><a href="#Flipper-Sub-GHz-Hardware" class="headerlink" title="Flipper Sub-GHz Hardware"></a>Flipper Sub-GHz Hardware</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/iWJNVsM0quT9-4IdFRVEq_monosnap-miro-2023-07-14-13-19-38.jpg?format=webp&width=1280"
+                      alt="hardware"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/" >https://docs.flipper.net <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>Flipper 使用了 CC1101 這款由 Texas Instruments 開發的低功耗無線收發器，還有配備能夠收發五十公尺訊號的無線電天線，這組芯片和天線都是專門設計來處理在 300 MHz 到 348 MHz、387 MHz 到 464 MHz 以及 779 MHz 到 928 MHz 的信號。</p>
+<h2 id="Frequency-Analyzer"><a href="#Frequency-Analyzer" class="headerlink" title="Frequency Analyzer"></a>Frequency Analyzer</h2><p>我們可以透過這個功能分析目標訊號的頻率。<br>Flipper Zero 會顯示大於閾值且強度最高的訊號，預設的閾值是 RSSI（Received Signal Strength Indicator）大於 -90 dBm，而 Momentum 把這個 Config 改成可以直接透過左右鍵去調整閾值大小，如下圖所示：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/rssi.png"
+                      alt="rssi"
+                ><br>（截圖功能真好用XD）<br>使用這功能的時候還是要盡可能地靠近裝置跟收發的天線，否則還是會有可能會有很多雜訊或是被干擾。</p>
+<h2 id="Hopping-between-frequencies"><a href="#Hopping-between-frequencies" class="headerlink" title="Hopping between frequencies"></a>Hopping between frequencies</h2><p>這功能蠻好用的，我們可以在不知道頻率的情況下，啟用 Hopping 的功能，就會在特定的頻率間反覆跳躍，我們可以從 Read -&gt; Config 去調整這個設定，如下圖：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/hopping.png"
+                      alt="hopping"
+                ><br>可以看到 Momentum 開啟 Hopping 的方式會順便調整他的閾值，開啟後也會看到上面的頻率消失，接著讀取的時候就會：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://i1.wp.com/inews.gtimg.com/newsapp_bt/0/4922910496/641"
+                      alt="jump"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://images.app.goo.gl/dJ9XwKbZzgJcZrsK8" >https://images.app.goo.gl/dJ9XwKbZzgJcZrsK8 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>抱歉，我發現這功能之後就一直很想放這張圖XD</p>
+<h2 id="Bin-RAW"><a href="#Bin-RAW" class="headerlink" title="Bin_RAW"></a>Bin_RAW</h2><p>這個選項可以讓我們在讀取的時候消除背景雜訊，移除重複的訊號片段，自動修正一些錯誤。</p>
+<h2 id="Lock-Keyborad"><a href="#Lock-Keyborad" class="headerlink" title="Lock Keyborad"></a>Lock Keyborad</h2><p>Flipper 提供我們在掃描訊號時鎖定我們的鍵盤，通常這個功能可能會用在長時間監聽訊號，而要避免誤觸的時候會用到。</p>
+<h2 id="Modulation-configuration"><a href="#Modulation-configuration" class="headerlink" title="Modulation configuration"></a>Modulation configuration</h2><p>在無線通信中，我們需要透過 modulation 把原始數據轉換成無線信號，這樣使得數據可以透過無線電波傳輸。而這過程通常是透過改變無線電波的某個屬性（如幅度、頻率或相位）來攜帶訊息。<br>而根據剛剛的說明我們可以把 modulation 用屬性歸類成兩種基本的類型，根據帶寬又可以再往下細分：</p>
+<ul>
+<li>幅度調制（Amplitude Modulation, AM）:<ul>
+<li>AM270：此設置使用 270 kHz 的帶寬來進行幅度調製</li>
+<li>AM650：此設置使用 650 kHz 的帶寬進行幅度調製，並且是 Flipper Zero 的默認設置。較寬的帶寬可以提供更好的信號質量和更穩定的數據傳輸。</li>
+</ul>
+</li>
+<li>頻率調製（Frequency Modulation, FM）：<ul>
+<li>FM238：使用 270 kHz 的帶寬和 2.380371 kHz 的頻率偏移來進行頻率調製。這種調製方式通過變化信號的頻率來編碼數據，對環境噪聲的抗干擾能力較強。</li>
+<li>FM476：使用 270 kHz 的帶寬和 47.60742 kHz 的頻率偏移進行調製。更大的頻率偏移允許信號在更複雜的干擾環境下傳輸，但也可能需要更大的帶寬支持。</li>
+</ul>
+</li>
+</ul>
+<p>舉例像是平常車子內聽的電台就是 FM 87.5 MHz 到 108.0 MHz 的頻率段。<br>而因為 Flipper Zero 不是軟體定義的無線電（Software-Defined Radio，SDR），它無法自動識別和調整接收信號的調製方式。因此，在掃描之前，需要我們手動設置正確的調製模式。如果沒有事先設置正確的調製就無法正確地解調和記錄數據。</p>
+<h2 id="讀取流程參考"><a href="#讀取流程參考" class="headerlink" title="讀取流程參考"></a>讀取流程參考</h2><p>因為讀取方法很多，所以這邊舉一種參考。<br>如果我們的目標訊號是 Flipper 已知協議的話，我們可以透過 Read 來解析訊號，如果無法識別的話可以用 Read_RAW，如果懶得識別頻率可以先嘗試 Hopping：</p>
+<ol>
+<li><p>首先我們可以透過 Frequency Analyzer 來偵測目標訊號的頻率</p>
+</li>
+<li><p>接著透過 Read 的 Config 去調整我們想收到的頻率，頻率表如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.flipperzero.one/Monosnap_Miro_2022-08-23_14-24-29.png"
+                      alt="range"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/" >https://docs.flipper.net <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</li>
+<li><p>接著就開讀<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/3LARdEupzZR64-chUzbPH_monosnap-miro-2023-07-14-12-19-41.jpg?format=webp&width=1280"
+                      alt="read"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/" >https://docs.flipper.net <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</li>
+<li><p>如果成功捕捉到的話，可以透過判斷是否有鎖頭來確定是否有加密，沒有的話則可以儲存。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/oSgQs07b-5ukhIV49qyaX_monosnap-miro-2023-07-12-19-43-57.jpg?format=webp&width=1280"
+                      alt="save"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/" >https://docs.flipper.net <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</li>
+</ol>
+<h2 id="Adding-new-remotes"><a href="#Adding-new-remotes" class="headerlink" title="Adding new remotes"></a>Adding new remotes</h2><p>這個功能讓我們可以手動添加一個虛擬的無線遙控器，直接與接受裝置配對，特別是當我們弄丟原本的遙控器時很實用。<br>而相比於單純的複製原本訊號，直接跟接收器配對可以讓我們在涉及到需要身份驗證或加密系統時可以讓新遙控器被接收裝置接受和信任。<br>使用這個功能我們需要先選擇正確的協議，詳細可以參考官方文件。</p>
+<h2 id="Supported-Sub-GHz-vendors"><a href="#Supported-Sub-GHz-vendors" class="headerlink" title="Supported Sub-GHz vendors"></a>Supported Sub-GHz vendors</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.flipperzero.one/Supported_vendors_sub-ghz____1.png"
+                      alt="vendors"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/" >https://docs.flipper.net <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>我們可以到官方文件看到 Flipper Zero 目前支援的裝置和廠商:<br><a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/sub-ghz/supported-vendors" >https://docs.flipper.net/sub-ghz/supported-vendors <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>他們也很鼓勵我們如果發現自己的裝置不在列表中可以去官方論壇留下裝置資訊，他們會盡可能地增加裝置覆蓋率。<br>那有趣的是，這邊官方特別提到：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/flipper_interesting.png"
+                      alt="interesting"
+                ><br>他說他們可以 decode dynamic 的訊號，只是基於安全原因不給你存而已，那既然韌體是開源的，我們有必要來看一下這部分怎麼寫的，這部分會在之後的文章帶大家深入討論。</p>
+<h2 id="Allowed-Frequencies"><a href="#Allowed-Frequencies" class="headerlink" title="Allowed Frequencies"></a>Allowed Frequencies</h2><p>儘管 Flipper Zero 可以接收範圍在 300-348 MHz、387-464 MHz 和 779-928 MHz 的所有頻率的信號。但是根據法律和規範，我們只能用它來發射民用許可頻率的信號，以防止干擾重要的通信服務（如緊急服務通信）。<br>而各地區的限制都有所不同，請各位詳閱官方這部分的文件以避免觸法：<br><a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/sub-ghz/frequencies" >https://docs.flipper.net/sub-ghz/frequencies <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>其中臺灣許可的發射頻率範圍在：</p>
+<ul>
+<li>304.50 - 321.95 MHz</li>
+<li>433.075 - 434.775 MHz</li>
+<li>915.00 - 927.95 MHz</li>
+</ul>
+<p>如果確定發射的頻率在法律許可的範圍後，我們可以到下面的位置解鎖發射限制：<br>Momentum -&gt; Protocols -&gt; Sub-GHz Bypass Region Lock<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/check.png"
+                      alt="check"
+                ></p>
+<h2 id="按讚訂閱收藏小鈴噹叮叮叮"><a href="#按讚訂閱收藏小鈴噹叮叮叮" class="headerlink" title="按讚訂閱收藏小鈴噹叮叮叮"></a>按讚訂閱收藏小鈴噹叮叮叮</h2><p>OK 今天的 Sub-GHz 基礎介紹大概就到這邊。<br>而大家有沒有想過如果我們可以用 Flipper Zero 複製隔壁鄰居的車子遙控器或是車庫鐵門，那我們是不是就能夠飛天遁地、橫行無阻、控制世界了。當然沒那麼簡單，但各位又會想，可是路邊的遙控器店老闆不是很輕鬆就能複製家裡的遙控器嗎？所以肯定還是有方法的嘛。沒錯，大家問的問題都很好，明天就會來跟各位揭曉這些問題的答案，請各位敬請期待！</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.dusuniot.com/zh-TW/blog/sub-ghz-communication/" >https://www.dusuniot.com/zh-TW/blog/sub-ghz-communication/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/sub-ghz" >https://docs.flipper.net/sub-ghz <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://youtu.be/NAGuFLUjM0o?si=16YoPWiqpQUDbT_s" >https://youtu.be/NAGuFLUjM0o?si=16YoPWiqpQUDbT_s <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day04 - 搞懂 Sub-GHz 你也會勞山道士的穿牆術</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-09-16 09:59:21</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-09-18 02:06:28
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/09/16/Flipper-Zero-宇宙最強攻略：30-天帶你從入門到入坑-Day04-搞懂-Sub-GHz-你也會勞山道士的穿牆術/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/flipper-zero/">#flipper-zero</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/iThome/">#iThome</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/toy/">#toy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/09/17/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day05-%E9%80%A3%E5%8B%9E%E5%B1%B1%E9%81%93%E5%A3%AB%E9%83%BD%E4%B8%8D%E6%9C%83%E7%9A%84-Sub-GHz-%E9%96%80%E7%A6%81%E7%A0%B4%E8%A7%A3%E8%A1%93/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day05 - 連勞山道士都不會的 Sub-GHz 門禁破解術</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/09/14/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day03-%E7%A9%B6%E7%AB%9F%E6%98%AF%E5%AE%98%E6%96%B9%E7%B6%93%E5%85%B8-Firmware-%E5%90%B8%E5%BC%95%E4%BA%BA%EF%BC%8C%E9%82%84%E6%98%AF%E7%A4%BE%E7%BE%A4%E9%AB%98%E5%BA%A6%E5%AE%A2%E8%A3%BD%E5%8C%96%E7%9A%84%E7%89%88%E6%9C%AC%E4%BB%A4%E4%BA%BA%E5%9A%AE%E5%BE%80/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day03 - 究竟是官方經典 Firmware 吸引人，還是社群高度客製化的版本令人嚮往</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day04 - 搞懂 Sub-GHz 你也會勞山道士的穿牆術</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E5%AE%89%E5%80%AB%E7%90%86%E5%AE%A3%E5%B0%8E"><span class="nav-text">資安倫理宣導</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sub-GHz-%E4%BB%8B%E7%B4%B9"><span class="nav-text">Sub-GHz 介紹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flipper-Sub-GHz-Menu"><span class="nav-text">Flipper Sub-GHz Menu</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flipper-Sub-GHz-Hardware"><span class="nav-text">Flipper Sub-GHz Hardware</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Frequency-Analyzer"><span class="nav-text">Frequency Analyzer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hopping-between-frequencies"><span class="nav-text">Hopping between frequencies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bin-RAW"><span class="nav-text">Bin_RAW</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lock-Keyborad"><span class="nav-text">Lock Keyborad</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modulation-configuration"><span class="nav-text">Modulation configuration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%80%E5%8F%96%E6%B5%81%E7%A8%8B%E5%8F%83%E8%80%83"><span class="nav-text">讀取流程參考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-new-remotes"><span class="nav-text">Adding new remotes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Supported-Sub-GHz-vendors"><span class="nav-text">Supported Sub-GHz vendors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Allowed-Frequencies"><span class="nav-text">Allowed Frequencies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E8%AE%9A%E8%A8%82%E9%96%B1%E6%94%B6%E8%97%8F%E5%B0%8F%E9%88%B4%E5%99%B9%E5%8F%AE%E5%8F%AE%E5%8F%AE"><span class="nav-text">按讚訂閱收藏小鈴噹叮叮叮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-text">References</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">kazma</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        65 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="right-bottom-tools rss flex justify-center items-center">
+                <a class="flex justify-center items-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                <i class="fa-regular fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
