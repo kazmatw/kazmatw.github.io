@@ -631,7 +631,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">65</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">66</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -653,6 +653,70 @@
                 
                     <div class="home-content-container">
     <ul class="home-article-list">
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2023/12/20/Pwnctf-bofe4sy-Writeup/">
+                            Pwnctf bofe4sy Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            bofe4sy直接 bof return 到 win 就行：
+
+exploit.py：
+1234567891011└─$ cat exploit.pyfrom pwn import *r = process(&#x27;./bofe4sy&#x27;...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Dec 20 2023 22:05:14 GMT+0800">
+                
+                    2023-12-20
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/12/20/Pwnctf-bofe4sy-Writeup/">Read more<span class="seo-reader-text">Pwnctf bofe4sy Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
         
             <li class="home-article-item">
 
@@ -1241,73 +1305,6 @@ OK，首先他把第一個輸入讀到全域變數 obj.name，然後開了一個
                 </div>
             </li>
         
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/">
-                            Yuawn Pwn1 orw Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            orworw 顧名思義就是開放 open，read and write 三個 syscalls 的經典題目。如下圖：
-
-執行看一下：
-
-r2 看一下 main：
-
-一開始他會先把輸入讀到全域變數 obj.sc，然後他開了 0x10 的 buffer，...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sun Dec 10 2023 21:24:37 GMT+0800">
-                
-                    2023-12-10
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn1 orw Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
     </ul>
 
     <div class="home-paginator px-7 py-5">
@@ -1377,7 +1374,7 @@ r2 看一下 main：
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">65</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">66</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -1406,7 +1403,7 @@ r2 看一下 main：
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        65 posts in total
+                        66 posts in total
                     </span>
                     
                 </p>

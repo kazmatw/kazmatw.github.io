@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+    
+    <meta name="author" content="kazma">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://kazma.tw/2024/09/25/flipper-zero-宇宙最強攻略：30-天帶你從入門到入坑-day11-誰說要卡才能進？mfkey32-攻擊讓你無卡也能破解門禁/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="前言今天開始我們會介紹 NFC 有關的攻擊手法，而且就算沒有對方的卡片，我們也能只靠讀卡機就破解門禁系統，什麼技術這麼神奇，讓我們看下去！ 資安倫理宣導請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。 Recovering keys with">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day11 - 誰說要卡才能進？MFKey32 攻擊讓你無卡也能破解門禁!">
+<meta property="og:url" content="https://kazma.tw/2024/09/25/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day11-%E8%AA%B0%E8%AA%AA%E8%A6%81%E5%8D%A1%E6%89%8D%E8%83%BD%E9%80%B2%EF%BC%9FMFKey32-%E6%94%BB%E6%93%8A%E8%AE%93%E4%BD%A0%E7%84%A1%E5%8D%A1%E4%B9%9F%E8%83%BD%E7%A0%B4%E8%A7%A3%E9%96%80%E7%A6%81/index.html">
+<meta property="og:site_name" content="kazma&#39;s blog">
+<meta property="og:description" content="前言今天開始我們會介紹 NFC 有關的攻擊手法，而且就算沒有對方的卡片，我們也能只靠讀卡機就破解門禁系統，什麼技術這麼神奇，讓我們看下去！ 資安倫理宣導請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。 Recovering keys with">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/B10K54m681GWNQAFe0Vsx_image.png?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/aRTJ3BCig7LCW4CH1YDNL_monosnap-miro-2023-08-03-19-50-38.jpg?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/naios6ohYHcu6HB9XJ8zI_image.png?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/sR4_86WJB_5haA4HoEwHc_mfkey32noncepairscollected.jpg?format=webp&width=1134">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/2XF9Qc6B3RFKbBM1tWTBJ_image.png?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/2hVk-vv6z7z6r_s4aky7Y_image.png?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/dYEUJ7zTQIFvPa4hLF3Se_image.png?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/rWzAZTDZa-jy6y5TsRHl7_flipperzerounlocknfccardswithreader.png?format=webp&width=1132">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/oVe1K7THEexefQnRauNv1_image.png?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/nnLEnF_-6NW9uYSM9n6uS_successfulunlockofallpagesofnfccard.png?format=webp&width=1132">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/nTaj2ARO2R5FM2pq9maGh_image.png?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/Tui4uuc2lF8FYPA7hbP-X_image.png?format=webp&width=1280">
+<meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/FqbYTQSK6M0vIbvjA7rWV_image.png?format=webp&width=1280">
+<meta property="article:published_time" content="2024-09-25T15:35:57.383Z">
+<meta property="article:modified_time" content="2024-09-25T15:38:26.304Z">
+<meta property="article:author" content="kazma">
+<meta property="article:tag" content="flipper-zero">
+<meta property="article:tag" content="iThome">
+<meta property="article:tag" content="toy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/B10K54m681GWNQAFe0Vsx_image.png?format=webp&width=1280">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/kazma.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/kazma.png">
+    <meta name="theme-color" content="#94878e">
+    <link rel="shortcut icon" href="/images/kazma.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day11 - 誰說要卡才能進？MFKey32 攻擊讓你無卡也能破解門禁! -
+        
+        kazma&#39;s blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"kazma.tw","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["成大資安社 創辦人/社長"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#94878e","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/smoke.png"},"title":"kazma.tw","subtitle":{"text":["Pwning my life: ","Tales of coding, cybersecurity, and campus life"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#FFFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/kazmatw","instagram":"https://www.instagram.com/kazma.tw/","zhihu":null,"twitter":null,"email":"kazmatw@gmail.com","telegram":"https://t.me/kazma_tw","discord":"https://discord.com/users/870280109360316457"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":"enable"},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#5d5764","right":"#94878e","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"ls":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags"},"whoami":{"path":"/whoami","icon":"fa-regular fa-user"},"cv":{"path":"/cv","icon":"fa-regular fa-file"},"ctfd":{"path":"https://class.nckuctf.org/","icon":"fa-brands fa-font-awesome"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}}},"article_date_format":"auto","categories":{"enable":false,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/10/25 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/sharp-solid.min.css">
+
+    
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "nq9qfhqgy4");
+    </script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EH82J63NRM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EH82J63NRM');
+</script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="kazma's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        kazma&#39;s blog
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/kazma.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                kazma&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    LS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/whoami"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    WHOAMI
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/cv"
+                                        >
+                                    <i class="fa-regular fa-file fa-fw"></i>
+                                    CV
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                                        >
+                                    <i class="fa-brands fa-font-awesome fa-fw"></i>
+                                    CTFD
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                LS
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/whoami"
+                        >
+                            <span>
+                                WHOAMI
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/cv"
+                        >
+                            <span>
+                                CV
+                            </span>
+                            
+                                <i class="fa-regular fa-file fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                        >
+                            <span>
+                                CTFD
+                            </span>
+                            
+                                <i class="fa-brands fa-font-awesome fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/archives"
+                        >
+                            <span>Archives</span>
+                            <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">43</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">66</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day11 - 誰說要卡才能進？MFKey32 攻擊讓你無卡也能破解門禁!</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-09-25 23:35:57</span>
+        <span class="mobile">2024-09-25 23:35:57</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-09-25 23:38:26</span>
+            <span class="mobile">2024-09-25 23:38:26</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/flipper-zero/">flipper-zero</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/iThome/">iThome</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/toy/">toy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天開始我們會介紹 NFC 有關的攻擊手法，而且就算沒有對方的卡片，我們也能只靠讀卡機就破解門禁系統，什麼技術這麼神奇，讓我們看下去！</p>
+<h2 id="資安倫理宣導"><a href="#資安倫理宣導" class="headerlink" title="資安倫理宣導"></a>資安倫理宣導</h2><p>請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。</p>
+<h2 id="Recovering-keys-with-MFKey32"><a href="#Recovering-keys-with-MFKey32" class="headerlink" title="Recovering keys with MFKey32"></a>Recovering keys with MFKey32</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/B10K54m681GWNQAFe0Vsx_image.png?format=webp&width=1280"
+                      alt="recover"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>有可能發生我們無法用 Flipper 讀到 MIFARE Classic 卡片的所有扇區，或讀取到的扇區不足以進行進一步操作，這時可以嘗試使用 Extract MF Keys 的功能。這個功能利用了 MFKey32 攻擊，專門針對 Crypto-1 加密演算法的弱點。那這邊根據能否取得卡片可以分成兩種情況：</p>
+<h3 id="If-you-have-access-to-the-card"><a href="#If-you-have-access-to-the-card" class="headerlink" title="If you have access to the card"></a>If you have access to the card</h3><p>這是比較簡單的情況。我們可以透過取得接收器的鑰匙，就有機會讀到卡片的更多扇區，就有機會的打開門禁之類的。步驟如下：</p>
+<ol>
+<li>先讀卡</li>
+<li>Main Menu -&gt; NFC -&gt; Saved -&gt; Name of the saved card -&gt; Extract MF Keys. Flipper Zero 會嘗試模擬這張卡，如下圖：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/aRTJ3BCig7LCW4CH1YDNL_monosnap-miro-2023-08-03-19-50-38.jpg?format=webp&width=1280"
+                      alt="attack"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>再來是我們要反覆去刷讀卡機，根據不同的狀況可能會需要反覆做十幾次，理論上 Flipper 螢幕上的數字要持續增加，如果沒有的話那代表讀卡機沒有在驗證我們的模擬卡片。示意圖如下：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/naios6ohYHcu6HB9XJ8zI_image.png?format=webp&width=1280"
+                      alt="repeat"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>成功的話就會看到下面圖片的樣子，之後我們就可以去看收集到的資料包括新收集到的鑰匙跟 sector。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/sR4_86WJB_5haA4HoEwHc_mfkey32noncepairscollected.jpg?format=webp&width=1134"
+                      alt="completed"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>接著我們有三種方式可以 Recover Keys<ol>
+<li>Flipper Mobile App -&gt; Tools -&gt; Mfkey32 (Detect Reader)</li>
+<li>Flipper Lab -&gt; NFC tools -&gt; GIVE ME THE KEYS</li>
+<li>MFKey app (需要先下載) Main Menu -&gt; Apps -&gt; NFC -&gt; MFKey app -&gt; OK<br>選擇上面任一種方式執行完後就可以把那些 keys 加到字典檔裡了。</li>
+</ol>
+</li>
+<li>接著在模擬一次就有機會成功了，沒成功的話可以重複剛剛 1 ~ 6 的動作，或是如果觀察到鑰匙或扇區沒有增加的話可能是系統不同，或者是讀卡機沒有 MFKey32 attack 的弱點。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/2XF9Qc6B3RFKbBM1tWTBJ_image.png?format=webp&width=1280"
+                      alt="emulate"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+<h3 id="If-you-don’t-have-access-to-the-card"><a href="#If-you-don’t-have-access-to-the-card" class="headerlink" title="If you don’t have access to the card"></a>If you don’t have access to the card</h3><p>如果我們沒辦法取得目標卡片還是有可能透過獲取讀卡機的鑰匙然後加到字典檔來破解。步驟如下：</p>
+<ol>
+<li><p>Main Menu -&gt; NFC -&gt; Extract MF Keys</p>
+</li>
+<li><p>跟剛剛一樣重複刷讀卡機來獲取 nonce pairs</p>
+<blockquote>
+<p>Nonce（一次性數字）是加密領域中的一個術語，指的是一個僅使用一次的隨機數字或隨機值。其主要作用是防止重播攻擊和加密密鑰的預測。Nonce 通常在通訊協議中與加密密鑰配合使用，以確保每次加密過程的唯一性和安全性。</p>
+</blockquote>
+</li>
+<li><p>跟剛剛一樣 Recover keys，有三種方式可選，接下來的步驟也都一樣。</p>
+</li>
+</ol>
+<p>沒有卡片的時候主要的不同是第一步，我們在沒有卡片的情況下模擬一張 NFC Card。</p>
+<h2 id="Unlocking-cards-with-passwords"><a href="#Unlocking-cards-with-passwords" class="headerlink" title="Unlocking cards with passwords"></a>Unlocking cards with passwords</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/2hVk-vv6z7z6r_s4aky7Y_image.png?format=webp&width=1280"
+                      alt="pw"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>如果我嗯沒辦法讀到 NFC 卡片的所有 pages 的話，代表這張卡有可能是有密碼的，如果知道密碼的話我們可以手動加入密碼來解鎖卡片。但相反的，如果我們多次嘗試錯誤的話，有可能導致卡片鎖起來。</p>
+<h3 id="Extracting-the-password-from-the-reader"><a href="#Extracting-the-password-from-the-reader" class="headerlink" title="Extracting the password from the reader"></a>Extracting the password from the reader</h3><p>如果我們有權限碰到卡跟讀卡機的話，我們可透過模擬卡片去刷讀卡機，這時讀卡機在驗證的時候可能會包含密碼，這時我們是可以用 Flipper 記錄下來，之後就可以讀到之前看不到的那些 pages 了。</p>
+<ol>
+<li>Read and save the card.</li>
+<li>Main Menu -&gt; NFC -&gt; Saved -&gt; Card’s name -&gt; Unlock.</li>
+<li>刷卡<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/dYEUJ7zTQIFvPa4hLF3Se_image.png?format=webp&width=1280"
+                      alt="tape"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>成功的話：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/rWzAZTDZa-jy6y5TsRHl7_flipperzerounlocknfccardswithreader.png?format=webp&width=1132"
+                      alt="captured"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>接著就再讀一次卡：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/oVe1K7THEexefQnRauNv1_image.png?format=webp&width=1280"
+                      alt="card"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>如果解鎖的話就會看到所有 pages 都能讀了：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/nnLEnF_-6NW9uYSM9n6uS_successfulunlockofallpagesofnfccard.png?format=webp&width=1132"
+                      alt="unlocked"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>如果失敗的話，代表這張卡可能不是跟這台讀卡機配對的。</li>
+</ol>
+<h2 id="Generating-the-password"><a href="#Generating-the-password" class="headerlink" title="Generating the password"></a>Generating the password</h2><p>當我們使用 Flipper Zero 來與具備 NFC 技術的設備（如 toys-to-life 技術或小米空氣淨化器）互動時，Flipper Zero 可以根據設備的 UID（唯一識別碼）來生成一個密碼。當這些 NFC 卡片或設備靠近 Flipper Zero 時，Flipper 會讀取該卡片或設備的 UID，並根據這個 UID 自動生成一個對應的密碼。</p>
+<ol>
+<li>Main Menu -&gt; NFC -&gt; Extra Actions -&gt; Unlock NTAG&#x2F;Ultralight</li>
+<li>選擇卡片種類，然後讀卡</li>
+<li>成功的話就會看到 pages unlocked，接著就可以儲存。</li>
+</ol>
+<blockquote>
+<p>Toys-to-life 是一種結合實體玩具和數位遊戲的技術。玩家可以通過將實體玩具（通常帶有內建的 NFC 或 RFID 技術）放在與遊戲連接的感應器上，來將玩具中的角色或物品「帶入」數位遊戲中。當這些玩具與感應器互動時，遊戲會讀取玩具上的資料，例如唯一識別碼（UID），並在遊戲中生成相應的角色或物品。</p>
+</blockquote>
+<h2 id="Entering-the-password-manually"><a href="#Entering-the-password-manually" class="headerlink" title="Entering the password manually"></a>Entering the password manually</h2><p>在儲存的卡片裡面我們可以透過輸入已知的十六進位的密碼來解鎖：<br>Main Menu -&gt; NFC -&gt; Saved -&gt; (Card Name) -&gt; Unlock with Password -&gt; Enter Password Manually</p>
+<h2 id="Writing-data-to-magic-cards"><a href="#Writing-data-to-magic-cards" class="headerlink" title="Writing data to magic cards"></a>Writing data to magic cards</h2><p>通常每張 NFC 卡都有製造商給的唯一識別碼 (UID)，但 NFC magic 跟 UID rewritable 是兩種特殊的卡片。首先我們要先下載 NFC Magic 這個 app。</p>
+<h3 id="Writing-card-data"><a href="#Writing-card-data" class="headerlink" title="Writing card data"></a>Writing card data</h3><p>Flipper 可以對 Gen1、Gen2、Gen4 這些卡片做寫入，還有一般的 MIFARE Classic® 卡 (不改變 UID)。 </p>
+<h3 id="Magic-卡片類型和配置選項"><a href="#Magic-卡片類型和配置選項" class="headerlink" title="Magic 卡片類型和配置選項"></a>Magic 卡片類型和配置選項</h3><h4 id="Gen1-Magic-卡片"><a href="#Gen1-Magic-卡片" class="headerlink" title="Gen1 Magic 卡片"></a>Gen1 Magic 卡片</h4><ul>
+<li>可配置為以下卡片類型：<ul>
+<li>MIFARE Classic® 1K</li>
+</ul>
+</li>
+</ul>
+<h4 id="Gen2-Magic-卡片"><a href="#Gen2-Magic-卡片" class="headerlink" title="Gen2 Magic 卡片"></a>Gen2 Magic 卡片</h4><ul>
+<li>可配置為以下卡片類型：<ul>
+<li>MIFARE Classic® 1K（需要 Gen 2 相容卡）</li>
+<li>MIFARE Classic® 4K（需要 Gen 2 相容卡）</li>
+</ul>
+</li>
+</ul>
+<h4 id="Gen4-Ultimate-Magic-卡片"><a href="#Gen4-Ultimate-Magic-卡片" class="headerlink" title="Gen4 (Ultimate) Magic 卡片"></a>Gen4 (Ultimate) Magic 卡片</h4><ul>
+<li>可配置為以下卡片類型：<ul>
+<li>任意 MIFARE Classic®</li>
+<li>MIFARE Ultralight® EV1</li>
+<li>MIFARE Ultralight® EV2</li>
+<li>NTAG® 203</li>
+<li>NTAG® 213</li>
+<li>NTAG® 215</li>
+<li>NTAG® 216</li>
+</ul>
+</li>
+</ul>
+<p>如果要完整的複製原始卡片的話，我們需要把 UID 跟資料都複製過去，步驟如下：</p>
+<ol>
+<li>讀原本的卡</li>
+<li>Main Menu -&gt; Apps -&gt; NFC -&gt; NFC Magic</li>
+<li>檢查我們是否具有相容的 Magic Card 選擇 Check Magic Tag 這個功能，如果對象是有密碼保護的 Gen4 卡的話，我們需要到 Gen4 Actions -&gt; Auth with password，接著再使用 Check Magic Tag<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/nTaj2ARO2R5FM2pq9maGh_image.png?format=webp&width=1280"
+                      alt="check"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>成功的話就會說 detected，否則就會一直讀：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/Tui4uuc2lF8FYPA7hbP-X_image.png?format=webp&width=1280"
+                      alt="scan"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+<li>More -&gt; Write 選擇要複製的卡，成功的話就會看到：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/FqbYTQSK6M0vIbvjA7rWV_image.png?format=webp&width=1280"
+                      alt="success"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/nfc/mfkey32" >https://docs.flipper.net/nfc/mfkey32 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+<p>另外我們也可以用 Wipe 這個功能來格式化卡片，UID 會變成 default 然後資料會被清除。</p>
+<h2 id="按讚訂閱收藏小鈴噹叮叮叮"><a href="#按讚訂閱收藏小鈴噹叮叮叮" class="headerlink" title="按讚訂閱收藏小鈴噹叮叮叮"></a>按讚訂閱收藏小鈴噹叮叮叮</h2><p>NFC 因為安全性較 RFID 高的關係，所以其他能玩的花樣也變得更多，有針對各種類型的卡片的應用以及一些攻擊手法，但還是呼籲大家學下這些知識是為了幫助世界變得更美好，大家都要當個好駭客，我們明天繼續介紹 NFC！</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day11 - 誰說要卡才能進？MFKey32 攻擊讓你無卡也能破解門禁!</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-09-25 23:35:57</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-09-25 23:38:26
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/09/25/Flipper-Zero-宇宙最強攻略：30-天帶你從入門到入坑-Day11-誰說要卡才能進？MFKey32-攻擊讓你無卡也能破解門禁/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/flipper-zero/">#flipper-zero</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/iThome/">#iThome</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/toy/">#toy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/09/24/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day10-%E6%AF%94-NFT-%E6%9B%B4%E6%9C%89%E5%AF%A6%E7%94%A8%E5%83%B9%E5%80%BC%E7%9A%84-NFC-%E6%95%B8%E4%BD%8D%E9%AD%94%E6%B3%95%E8%88%87%E7%A7%91%E6%8A%80%E8%B2%A1%E5%AF%8C/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day10 - 比 NFT 更有實用價值的 NFC 數位魔法與科技財富</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day11 - 誰說要卡才能進？MFKey32 攻擊讓你無卡也能破解門禁!</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E5%AE%89%E5%80%AB%E7%90%86%E5%AE%A3%E5%B0%8E"><span class="nav-text">資安倫理宣導</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Recovering-keys-with-MFKey32"><span class="nav-text">Recovering keys with MFKey32</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#If-you-have-access-to-the-card"><span class="nav-text">If you have access to the card</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#If-you-don%E2%80%99t-have-access-to-the-card"><span class="nav-text">If you don’t have access to the card</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unlocking-cards-with-passwords"><span class="nav-text">Unlocking cards with passwords</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Extracting-the-password-from-the-reader"><span class="nav-text">Extracting the password from the reader</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Generating-the-password"><span class="nav-text">Generating the password</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Entering-the-password-manually"><span class="nav-text">Entering the password manually</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Writing-data-to-magic-cards"><span class="nav-text">Writing data to magic cards</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Writing-card-data"><span class="nav-text">Writing card data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Magic-%E5%8D%A1%E7%89%87%E9%A1%9E%E5%9E%8B%E5%92%8C%E9%85%8D%E7%BD%AE%E9%81%B8%E9%A0%85"><span class="nav-text">Magic 卡片類型和配置選項</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E8%AE%9A%E8%A8%82%E9%96%B1%E6%94%B6%E8%97%8F%E5%B0%8F%E9%88%B4%E5%99%B9%E5%8F%AE%E5%8F%AE%E5%8F%AE"><span class="nav-text">按讚訂閱收藏小鈴噹叮叮叮</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">kazma</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        66 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="right-bottom-tools rss flex justify-center items-center">
+                <a class="flex justify-center items-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                <i class="fa-regular fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
