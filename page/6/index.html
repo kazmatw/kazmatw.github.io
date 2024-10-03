@@ -631,7 +631,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">72</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">73</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -653,6 +653,69 @@
                 
                     <div class="home-content-container">
     <ul class="home-article-list">
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2024/01/09/Pwnctf-secret-Writeup/">
+                            Pwnctf secret Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            secret我們先來看一下有哪些變數：關鍵在他會比較 var_4h 是不是 0xab37：我們要從 var_20h overflow 到 var_4h，然後送一個大寫 Y，就可以拿到 flag 了。
+exploit.py
+1234567from pw...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Tue Jan 09 2024 19:49:31 GMT+0800">
+                
+                    2024-01-09
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2024/01/09/Pwnctf-secret-Writeup/">Read more<span class="seo-reader-text">Pwnctf secret Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
         
             <li class="home-article-item">
 
@@ -1235,73 +1298,6 @@ exploit.py：
                 </div>
             </li>
         
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/18/Pwnctf-echo-server-Writeup/">
-                            Pwnctf echo_server Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            echo_serverlevel1 的題目就不解釋太多了w，先執行看一下：
-
-checksec：
-
-r2：
-
-1234└─$ ROPgadget --binary ./echo_server --string &#x27;/bin/sh&#x27;S...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Mon Dec 18 2023 18:20:55 GMT+0800">
-                
-                    2023-12-18
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/18/Pwnctf-echo-server-Writeup/">Read more<span class="seo-reader-text">Pwnctf echo_server Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
     </ul>
 
     <div class="home-paginator px-7 py-5">
@@ -1371,7 +1367,7 @@ r2：
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">72</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">73</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -1400,7 +1396,7 @@ r2：
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        72 posts in total
+                        73 posts in total
                     </span>
                     
                 </p>
