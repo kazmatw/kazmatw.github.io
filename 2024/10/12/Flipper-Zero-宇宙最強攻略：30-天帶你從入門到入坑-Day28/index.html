@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+    
+    <meta name="author" content="kazma">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://kazma.tw/2024/10/12/flipper-zero-宇宙最強攻略：30-天帶你從入門到入坑-day28/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Cover圖片來源：https:&#x2F;&#x2F;artprojectsforkids.org&#x2F;how-to-draw-a-dolphin&#x2F;  資安倫理宣導請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。 開發倒數 48 小時SceneManager an">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day28 - 會寫完喔！倒數 48 小時的勝利宣言，即將踏上終點的鐵人賽之旅！">
+<meta property="og:url" content="https://kazma.tw/2024/10/12/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day28/index.html">
+<meta property="og:site_name" content="kazma&#39;s blog">
+<meta property="og:description" content="Cover圖片來源：https:&#x2F;&#x2F;artprojectsforkids.org&#x2F;how-to-draw-a-dolphin&#x2F;  資安倫理宣導請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的一部分。 開發倒數 48 小時SceneManager an">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://artprojectsforkids.org/wp-content/uploads/2024/04/Draw-a-dolphin-web.jpg">
+<meta property="article:published_time" content="2024-10-12T13:17:31.017Z">
+<meta property="article:modified_time" content="2024-10-27T09:34:56.609Z">
+<meta property="article:author" content="kazma">
+<meta property="article:tag" content="flipper-zero">
+<meta property="article:tag" content="iThome">
+<meta property="article:tag" content="toy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://artprojectsforkids.org/wp-content/uploads/2024/04/Draw-a-dolphin-web.jpg">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/kazma.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/kazma.png">
+    <meta name="theme-color" content="#94878e">
+    <link rel="shortcut icon" href="/images/kazma.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day28 - 會寫完喔！倒數 48 小時的勝利宣言，即將踏上終點的鐵人賽之旅！ -
+        
+        kazma&#39;s blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"kazma.tw","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["成大資安社 創辦人/社長"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#94878e","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/smoke.png"},"title":"kazma.tw","subtitle":{"text":["Pwning my life: ","Tales of coding, cybersecurity, and campus life"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#FFFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/kazmatw","instagram":"https://www.instagram.com/kazma.tw/","zhihu":null,"twitter":null,"email":"kazmatw@gmail.com","telegram":"https://t.me/kazma_tw","discord":"https://discord.com/users/870280109360316457"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":"enable"},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#5d5764","right":"#94878e","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"ls":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags"},"whoami":{"path":"/whoami","icon":"fa-regular fa-user"},"cv":{"path":"/cv","icon":"fa-regular fa-file"},"ctfd":{"path":"https://class.nckuctf.org/","icon":"fa-brands fa-font-awesome"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}}},"article_date_format":"auto","categories":{"enable":false,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/10/25 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/sharp-solid.min.css">
+
+    
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "nq9qfhqgy4");
+    </script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EH82J63NRM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EH82J63NRM');
+</script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="kazma's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        kazma&#39;s blog
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/kazma.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                kazma&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    LS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/whoami"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    WHOAMI
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/cv"
+                                        >
+                                    <i class="fa-regular fa-file fa-fw"></i>
+                                    CV
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                                        >
+                                    <i class="fa-brands fa-font-awesome fa-fw"></i>
+                                    CTFD
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                LS
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/whoami"
+                        >
+                            <span>
+                                WHOAMI
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/cv"
+                        >
+                            <span>
+                                CV
+                            </span>
+                            
+                                <i class="fa-regular fa-file fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                        >
+                            <span>
+                                CTFD
+                            </span>
+                            
+                                <i class="fa-brands fa-font-awesome fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/archives"
+                        >
+                            <span>Archives</span>
+                            <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">43</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">86</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day28 - 會寫完喔！倒數 48 小時的勝利宣言，即將踏上終點的鐵人賽之旅！</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-10-12 21:17:31</span>
+        <span class="mobile">2024-10-12 21:17:31</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-10-27 17:34:56</span>
+            <span class="mobile">2024-10-27 17:34:56</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/flipper-zero/">flipper-zero</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/iThome/">iThome</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/toy/">toy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Cover"><a href="#Cover" class="headerlink" title="Cover"></a>Cover</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://artprojectsforkids.org/wp-content/uploads/2024/04/Draw-a-dolphin-web.jpg"
+                      alt="cover"
+                ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://artprojectsforkids.org/how-to-draw-a-dolphin/" >https://artprojectsforkids.org/how-to-draw-a-dolphin/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="資安倫理宣導"><a href="#資安倫理宣導" class="headerlink" title="資安倫理宣導"></a>資安倫理宣導</h2><p>請注意，透過 Flipper Zero 學習的資訊技術與知識，目的在於提升個人的技術能力和資安意識。我們強烈呼籲大家，絕對不要使用所學知識從事任何違法行為。您的合法使用是我們的期望，也是您自身責任的<br>一部分。</p>
+<h2 id="開發倒數-48-小時"><a href="#開發倒數-48-小時" class="headerlink" title="開發倒數 48 小時"></a>開發倒數 48 小時</h2><h3 id="SceneManager-and-ViewDispatcher"><a href="#SceneManager-and-ViewDispatcher" class="headerlink" title="SceneManager and ViewDispatcher"></a>SceneManager and ViewDispatcher</h3><p>我們要繼續提到 SceneManager 透過一系列的 <code>scene_manager_*</code> 開頭的函式來管理應用程式中的所有場景細節。主要是確保當進入場景、離開場景或接收到新事件時，相關的處理函式會被正確的呼叫。<br>另一個是 ViewDispatcher 是使用許多 <code>view_dispatcher_*</code> 的函式來管理 views。這些函式會在 SceneManager 中被呼叫。總之，ViewDispatcher 是負責處理場景中 Views 的顯示和管理。<br>當我們在定義應用程式場景時，應提供所有場景處理函式作為一個 SceneManagerHandlers 結構傳給 <code>scene_manager_alloc</code> 函式。例如說作者這邊的場景會用數字做為索引，同時為了方便追蹤這些場景，通常我們會定義一個 enum 類型來表示場景的索引，像是：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">    TestAppScene_MainMenu,      <span class="comment">// 主選單場景</span></span><br><span class="line">    TestAppScene_FirstPopup,    <span class="comment">// 第一個彈出視窗場景</span></span><br><span class="line">    TestAppScene_SecondPopup,   <span class="comment">// 第二個彈出視窗場景</span></span><br><span class="line">    TestAppScene_count          <span class="comment">// 場景計數，方便後續擴展</span></span><br><span class="line">&#125; TestAppScene;</span><br></pre></td></tr></table></figure></div>
+<p>像是這邊的 count 只要放在枚舉的最後一項，之後增加或是修改場景數量的時候都可以輕鬆算出場景的總數。</p>
+<p>而視圖是可以重複使用的，因此應用程式中可能場景數量會比視圖更多。換句話說，我們有可能一個視圖對應多個場景：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span></span><br><span class="line">    TestAppView_Menu,   <span class="comment">// 菜單視圖</span></span><br><span class="line">    TestAppView_Popup   <span class="comment">// 彈出視圖</span></span><br><span class="line">&#125; TestAppScene;</span><br></pre></td></tr></table></figure></div>
+<p>這樣也提高了資源利用率。</p>
+<h3 id="初始化應用程式"><a href="#初始化應用程式" class="headerlink" title="初始化應用程式"></a>初始化應用程式</h3><p>首先我們會在 <code>test_app_init</code> 函式裡面初始化 scene manager 以及 view dispatcher：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TestApp* app = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(TestApp));</span><br><span class="line">test_app_scene_manager_init(app);</span><br><span class="line">test_app_view_dispatcher_init(app);</span><br></pre></td></tr></table></figure></div>
+<h3 id="設定-Scene-Manager"><a href="#設定-Scene-Manager" class="headerlink" title="設定 Scene Manager"></a>設定 Scene Manager</h3><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app-&gt;scene_manager = scene_manager_alloc(&amp;test_app_scene_event_handlers, app);</span><br></pre></td></tr></table></figure></div>
+<p>我們為 SceneManager 分配記憶體。<br>其中這邊的第二個參數是 context，當場景處理方法被調用時，會回傳這個 context，第一個參數是 <code>SceneManagerHandlers* test_app_scene_event_handlers</code> 已經提前定義好並包含 <code>on_enter</code>、<code>on_exit</code>、<code>on_event</code> 處理函式集合。</p>
+<h3 id="處理函式集合"><a href="#處理函式集合" class="headerlink" title="處理函式集合"></a>處理函式集合</h3><p><code>on_enter_handlers</code>：當進入某個場景時會調用這個處理函式集合，它包含了所有場景的進入處理邏輯。這些函式與定義的 enum 順序一致。例如，進入主選單或彈出視窗時會調用對應的進入函數。</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> (*<span class="type">const</span> test_app_scene_on_enter_handlers[])(<span class="type">void</span>*) = &#123;</span><br><span class="line">    test_app_scene_on_enter_main_menu,</span><br><span class="line">    test_app_scene_on_enter_popup_one,</span><br><span class="line">    test_app_scene_on_enter_popup_two&#125;;</span><br></pre></td></tr></table></figure></div>
+<p><code>on_event_handlers</code>：當某個場景處於活動狀態時，並且收到了事件（如使用者操作），會調用這個事件處理函式集合。每個場景有其專屬的事件處理邏輯，也是與 enum 順序一致。</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> (*<span class="type">const</span> test_app_scene_on_event_handlers[])(<span class="type">void</span>*, SceneManagerEvent) = &#123;</span><br><span class="line">    test_app_scene_on_event_main_menu,</span><br><span class="line">    test_app_scene_on_event_popup_one,</span><br><span class="line">    test_app_scene_on_event_popup_two&#125;;</span><br></pre></td></tr></table></figure></div>
+<p><code>on_exit_handlers</code>：當離開某個場景時，會調用這個處理函式集合。這些函式負責處理場景退出時的清理或其他工作，同樣是與 enum 順序保持一致。</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> (*<span class="type">const</span> test_app_scene_on_exit_handlers[])(<span class="type">void</span>*) = &#123;</span><br><span class="line">    test_app_scene_on_exit_main_menu,</span><br><span class="line">    test_app_scene_on_exit_popup_one,</span><br><span class="line">    test_app_scene_on_exit_popup_two&#125;;</span><br></pre></td></tr></table></figure></div>
+<p><code>test_app_scene_event_handlers</code>：這是所有場景處理器的集合，包含 <code>on_enter</code>、<code>on_event</code> 和 <code>on_exit</code> 的處理函數。這樣的結構可以確保每個場景的進入、事件處理和退出邏輯都能正確運行。</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> SceneManagerHandlers test_app_scene_event_handlers = &#123;</span><br><span class="line">    .on_enter_handlers = test_app_scene_on_enter_handlers,   <span class="comment">// 進入處理函式集合</span></span><br><span class="line">    .on_event_handlers = test_app_scene_on_event_handlers,   <span class="comment">// 事件處理函式集合</span></span><br><span class="line">    .on_exit_handlers = test_app_scene_on_exit_handlers,     <span class="comment">// 退出處理函式集合</span></span><br><span class="line">    .scene_num = TestAppScene_count&#125;;                       <span class="comment">// 場景數量</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="設定-View-Dispatcher"><a href="#設定-View-Dispatcher" class="headerlink" title="設定 View Dispatcher"></a>設定 View Dispatcher</h2><p><code>test_app_view_dispatcher_init</code> 函式負責初始化視圖分發器，這部分稍微複雜一點。具體的步驟如下：</p>
+<ol>
+<li>首先我們要先分配一個視圖分發器，用來管理應用程式中的不同視圖：<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app-&gt;view_dispatcher = view_dispatcher_alloc();</span><br></pre></td></tr></table></figure></div></li>
+<li>接著，我們需要啟用隊列功能，讓視圖分發器能夠依序處理事件。<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">view_dispatcher_enable_queue(app-&gt;view_dispatcher);</span><br></pre></td></tr></table></figure></div></li>
+<li>然後我們需要為應用程式中的各個視圖分配記憶體，這裡我們分別為菜單和彈出視窗進行分配：<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app-&gt;menu = menu_alloc();</span><br><span class="line">app-&gt;popup = popup_alloc();</span><br></pre></td></tr></table></figure></div></li>
+<li>接著我們將事件從視圖傳遞到場景管理器，因為視圖本身會處理事件和導航功能，但我們希望這些事件能夠傳遞到場景管理器，使得目前處於活躍狀態的場景能夠接收到並處理這些事件。因此我們需要設置事件回調函式來將事件傳遞到場景管理器。<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 設置回調函式，將事件從視圖傳遞到場景管理器</span></span><br><span class="line">view_dispatcher_set_event_callback_context(app-&gt;view_dispatcher, app);</span><br><span class="line">view_dispatcher_set_custom_event_callback(</span><br><span class="line">    app-&gt;view_dispatcher,</span><br><span class="line">    test_app_scene_manager_custom_event_callback);</span><br><span class="line">view_dispatcher_set_navigation_event_callback(</span><br><span class="line">    app-&gt;view_dispatcher,</span><br><span class="line">    test_app_scene_manager_navigation_event_callback);</span><br></pre></td></tr></table></figure></div></li>
+<li>最後，我們需要將視圖註冊到視圖分發器，並且將它們與各自的列舉值進行對應。這樣，當我們需要切換到特定視圖時，系統能夠正確處理視圖之間的切換。<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 將視圖添加到分發器，並根據它們的列舉值進行索引</span></span><br><span class="line">view_dispatcher_add_view(</span><br><span class="line">    app-&gt;view_dispatcher,</span><br><span class="line">    TestAppView_Menu,</span><br><span class="line">    menu_get_view(app-&gt;menu));</span><br><span class="line"></span><br><span class="line">view_dispatcher_add_view(</span><br><span class="line">    app-&gt;view_dispatcher,</span><br><span class="line">    TestAppView_Popup,</span><br><span class="line">    popup_get_view(app-&gt;popup));</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<h2 id="按讚訂閱收藏小鈴噹叮叮叮"><a href="#按讚訂閱收藏小鈴噹叮叮叮" class="headerlink" title="按讚訂閱收藏小鈴噹叮叮叮"></a>按讚訂閱收藏小鈴噹叮叮叮</h2><p>今天就先到這邊，預計明天走完教學，後天做出自已的 app。<br>各位明天見！</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://instantiator.dev/post/flipper-zero-app-tutorial-02/" >https://instantiator.dev/post/flipper-zero-app-tutorial-02/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day28 - 會寫完喔！倒數 48 小時的勝利宣言，即將踏上終點的鐵人賽之旅！</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-10-12 21:17:31</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-10-27 17:34:56
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/10/12/Flipper-Zero-宇宙最強攻略：30-天帶你從入門到入坑-Day28/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/flipper-zero/">#flipper-zero</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/iThome/">#iThome</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/toy/">#toy</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/10/13/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day29/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day29 - 絶対的な優位を掌握せよ！倒数24時間、登場する圧軸必殺技！</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/10/11/Flipper-Zero-%E5%AE%87%E5%AE%99%E6%9C%80%E5%BC%B7%E6%94%BB%E7%95%A5%EF%BC%9A30-%E5%A4%A9%E5%B8%B6%E4%BD%A0%E5%BE%9E%E5%85%A5%E9%96%80%E5%88%B0%E5%85%A5%E5%9D%91-Day27/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day27 - 死線逼近！強制切回生存模式的 72 小時開發極限挑戰！</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Flipper Zero 宇宙最強攻略：30 天帶你從入門到入坑 Day28 - 會寫完喔！倒數 48 小時的勝利宣言，即將踏上終點的鐵人賽之旅！</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cover"><span class="nav-text">Cover</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B3%87%E5%AE%89%E5%80%AB%E7%90%86%E5%AE%A3%E5%B0%8E"><span class="nav-text">資安倫理宣導</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E7%99%BC%E5%80%92%E6%95%B8-48-%E5%B0%8F%E6%99%82"><span class="nav-text">開發倒數 48 小時</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SceneManager-and-ViewDispatcher"><span class="nav-text">SceneManager and ViewDispatcher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-text">初始化應用程式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A-Scene-Manager"><span class="nav-text">設定 Scene Manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%95%E7%90%86%E5%87%BD%E5%BC%8F%E9%9B%86%E5%90%88"><span class="nav-text">處理函式集合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A-View-Dispatcher"><span class="nav-text">設定 View Dispatcher</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%89%E8%AE%9A%E8%A8%82%E9%96%B1%E6%94%B6%E8%97%8F%E5%B0%8F%E9%88%B4%E5%99%B9%E5%8F%AE%E5%8F%AE%E5%8F%AE"><span class="nav-text">按讚訂閱收藏小鈴噹叮叮叮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-text">References</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">kazma</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        86 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="right-bottom-tools rss flex justify-center items-center">
+                <a class="flex justify-center items-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                <i class="fa-regular fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>

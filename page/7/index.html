@@ -631,7 +631,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">75</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">86</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -663,25 +663,534 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2023/12/20/Pwnctf-pass-Writeup/">
-                            Pwnctf pass Writeup
+                        <a href="/2024/01/19/Pwnctf-oob2-Writeup/">
+                            Pwnctf oob2 Writeup
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
-                            pass這題直接 r2 看一下 main 的這兩個地方：
-
-
-控好 var_4h 就結束了，exploit.py：
-12345678from pwn import *r = process(&#x27;./pass&#x27;)p = b&#x27;...
+                            oob2這題跟 oob1 是類似的，執行後可以觀察到這次多了一個功能是可以讓使用者設定自己的 nickname 然後登入的時候就會顯示你自己設定的這個暱稱，如下所示：
+123456└─$ ./oob2User ID: -4Nickname: kazm...
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Dec 20 2023 21:35:27 GMT+0800">
+            <span class="home-article-date" data-date="Fri Jan 19 2024 00:05:09 GMT+0800">
+                
+                    2024-01-19
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2024/01/19/Pwnctf-oob2-Writeup/">Read more<span class="seo-reader-text">Pwnctf oob2 Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2024/01/17/Pwnctf-oob1-Writeup/">
+                            Pwnctf oob1 Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            oob1執行後可以觀察到這題的情境是一個登入系統，首先會讓我們輸入 User ID，然後輸入密碼，再來會顯示我們嘗試登入的使用者名稱，最後輸出結果，如下所示：
+12345678910111213└─$ ./oob1User ID: 3PIN: 132...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Jan 17 2024 01:04:53 GMT+0800">
+                
+                    2024-01-17
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2024/01/17/Pwnctf-oob1-Writeup/">Read more<span class="seo-reader-text">Pwnctf oob1 Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2024/01/10/Pwnctf-fmtstr-Writeup/">
+                            Pwnctf fmtstr Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            fmtstr這題在考的是 format string，可以從 gdb 看到 flag 在 stack 裡的位置如下：
+
+$rsp 的位置是 6，推算可以得知 flag 在 12 ~ 18 的位置，最後印出來後再調整一下 little endian 的...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Jan 10 2024 01:21:15 GMT+0800">
+                
+                    2024-01-10
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2024/01/10/Pwnctf-fmtstr-Writeup/">Read more<span class="seo-reader-text">Pwnctf fmtstr Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2024/01/09/Pwnctf-secret-Writeup/">
+                            Pwnctf secret Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            secret我們先來看一下有哪些變數：關鍵在他會比較 var_4h 是不是 0xab37：我們要從 var_20h overflow 到 var_4h，然後送一個大寫 Y，就可以拿到 flag 了。
+exploit.py
+1234567from pw...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Tue Jan 09 2024 19:49:31 GMT+0800">
+                
+                    2024-01-09
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2024/01/09/Pwnctf-secret-Writeup/">Read more<span class="seo-reader-text">Pwnctf secret Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2024/01/09/Pwnctf-ret2src-Writeup/">
+                            Pwnctf ret2src Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            ret2src先看一下保護機制：
+
+這題什麼保護機制都沒有w，所以作法應該蠻多種的，這裡 return 到 gets 的 plt，把 shellcode 寫到某個 bss 段，然後再跳上開 shell。
+exploit.py:
+12345678910...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Tue Jan 09 2024 18:30:32 GMT+0800">
+                
+                    2024-01-09
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2024/01/09/Pwnctf-ret2src-Writeup/">Read more<span class="seo-reader-text">Pwnctf ret2src Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2023/12/21/Pwnctf-registration-Writeup/">
+                            Pwnctf registration Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            registration這題的關鍵是他會隨機生一個 id，然後存到一個全域變數，最後會去檢查這個值是否被更動：
+
+只要弄清楚變數具體的位置，這題就輕鬆通關了：
+
+exploit.py：
+1234567891011121314151617181920f...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Thu Dec 21 2023 21:32:41 GMT+0800">
+                
+                    2023-12-21
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/12/21/Pwnctf-registration-Writeup/">Read more<span class="seo-reader-text">Pwnctf registration Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2023/12/21/Pwnctf-return-Writeup/">
+                            Pwnctf return Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            return經典 bof，跳上去這個邪惡的東東就搞定了，記得對齊 0x10：
+
+exploit.py：
+123456789from pwn import *r = process(&#x27;./return&#x27;)ret = 0x400539...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Thu Dec 21 2023 16:42:58 GMT+0800">
+                
+                    2023-12-21
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/12/21/Pwnctf-return-Writeup/">Read more<span class="seo-reader-text">Pwnctf return Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2023/12/21/Pwnctf-binary-Writeup/">
+                            Pwnctf binary Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            binary這題有三個階段，分別輸入特定的值就可以開 shell，首先 stage1：
+
+注意前面兩個是 je，最後一個是 jne，所以這邊要送 0x100001，再來 stage2：
+
+這次要送三個值分別是：0x64，0x100，0xfaceb00...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Thu Dec 21 2023 14:43:42 GMT+0800">
+                
+                    2023-12-21
+                
+            </span>
+        </span>
+        
+        
+            <span class="home-article-tag">
+                <i class="fa-solid fa-tags"></i>&nbsp;
+                <ul>
+                    
+                        <li>
+                            
+                            <a href="/tags/writeup/">writeup</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/pwn/">pwn</a>&nbsp;
+                        </li>
+                    
+                        <li>
+                            | 
+                            <a href="/tags/lab/">lab</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            </span>
+        
+    </div>
+
+    <a href="/2023/12/21/Pwnctf-binary-Writeup/">Read more<span class="seo-reader-text">Pwnctf binary Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+</div>
+
+                </div>
+            </li>
+        
+            <li class="home-article-item">
+
+                
+
+                
+
+                
+                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
+                    <h3 class="home-article-title">
+                        <a href="/2023/12/20/Pwnctf-pwntools-Writeup/">
+                            Pwnctf pwntools Writeup
+                        </a>
+                    </h3>
+
+                    <div class="home-article-content markdown-body">
+                        
+                            pwntools首先他會比較第一個參數是否為一個特定的值：
+
+再來就是用 pwntools 來解決他的一千道數學題，exploit.py：
+12345678910111213141516from pwn import *r = process(&#x...
+                        
+                    </div>
+
+                    <div class="home-article-meta-info-container">
+    <div class="home-article-meta-info">
+        <span><i class="fa-solid fa-calendars"></i>&nbsp;
+            <span class="home-article-date" data-date="Wed Dec 20 2023 23:31:10 GMT+0800">
                 
                     2023-12-20
                 
@@ -713,7 +1222,7 @@
         
     </div>
 
-    <a href="/2023/12/20/Pwnctf-pass-Writeup/">Read more<span class="seo-reader-text">Pwnctf pass Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2023/12/20/Pwnctf-pwntools-Writeup/">Read more<span class="seo-reader-text">Pwnctf pwntools Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -728,26 +1237,22 @@
                 
                 <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
                     <h3 class="home-article-title">
-                        <a href="/2023/12/20/Pwnctf-gohome-Writeup/">
-                            Pwnctf gohome Writeup
+                        <a href="/2023/12/20/Pwnctf-ret2sc-Writeup/">
+                            Pwnctf ret2sc Writeup
                         </a>
                     </h3>
 
                     <div class="home-article-content markdown-body">
                         
-                            gohome執行看一下：
-
-他說要找他家的地址：
-
-找到他家了，內容是直接在 shell 印出我們的 flag，補上一個 return 對齊一下，exploit.py：
-12345678910111213141516└─$ cat exploit.p...
+                            ret2sc這題就是先把 shellcode 寫到 name 上，再跳上去就行，不過比較新的作業系統 bss 段沒有 x 權限，這邊就直接上 exploit.py：
+12345678910from pwn import *r = process(&#...
                         
                     </div>
 
                     <div class="home-article-meta-info-container">
     <div class="home-article-meta-info">
         <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Dec 20 2023 21:16:27 GMT+0800">
+            <span class="home-article-date" data-date="Wed Dec 20 2023 22:57:23 GMT+0800">
                 
                     2023-12-20
                 
@@ -779,530 +1284,7 @@
         
     </div>
 
-    <a href="/2023/12/20/Pwnctf-gohome-Writeup/">Read more<span class="seo-reader-text">Pwnctf gohome Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/18/Pwnctf-echo-server-Writeup/">
-                            Pwnctf echo_server Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            echo_serverlevel1 的題目就不解釋太多了w，先執行看一下：
-
-checksec：
-
-r2：
-
-1234└─$ ROPgadget --binary ./echo_server --string &#x27;/bin/sh&#x27;S...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Mon Dec 18 2023 18:20:55 GMT+0800">
-                
-                    2023-12-18
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/18/Pwnctf-echo-server-Writeup/">Read more<span class="seo-reader-text">Pwnctf echo_server Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/18/Pwnctf-luck-Writeup/">
-                            Pwnctf luck Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            luck這題的目標是符合一系列的條件之後他就會發一個 shell 給我們，具體條件和區域變數如下：
-
-
-
-應該蠻淺顯易懂的 XD，直接上 exploit.py：
-12345678910111213141516171819from pwn import...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Mon Dec 18 2023 15:19:09 GMT+0800">
-                
-                    2023-12-18
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/18/Pwnctf-luck-Writeup/">Read more<span class="seo-reader-text">Pwnctf luck Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/18/Yuawn-Pwn2-ret2libc-Writeup/">
-                            Yuawn Pwn2 ret2libc Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            ret2libc基本上每個新的技術就是為了解決一個新的保護機制，那 ret2libc 主要就是能 bypass ASLR，那廢話不多說我們來整理一下這次的計畫：
-source code 基本上和上一題 ret2plt 差不多，但這次沒有 system...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Mon Dec 18 2023 00:22:18 GMT+0800">
-                
-                    2023-12-18
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/18/Yuawn-Pwn2-ret2libc-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn2 ret2libc Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/17/Yuawn-Pwn2-ret2plt-Writeup/">
-                            Yuawn Pwn2 ret2plt Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            ret2pltr2 看一下 main：
-
-file 看一下：
-
-因為是 dynamically linked，所以 gadget 會很少，可能不能直接拼出一個 shell，所以這題改用 ret2plt 的方式，計畫是找到可以控 rdi 的 gadge...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sun Dec 17 2023 15:13:26 GMT+0800">
-                
-                    2023-12-17
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/17/Yuawn-Pwn2-ret2plt-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn2 ret2plt Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/13/Yuawn-Pwn1-casino-Writeup/">
-                            Yuawn Pwn1 casino Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            casino先執行看一下：
-
-一樣假裝沒有 source code 來用 r2 分析一下 main 先：
-
-首先 name 是全域變數，可以輸入 0x100 個 bytes，位址是 0x6020f0，age 也是全域變數，位址是 0x602104，再...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Wed Dec 13 2023 23:05:16 GMT+0800">
-                
-                    2023-12-13
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/13/Yuawn-Pwn1-casino-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn1 casino Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/12/LYS-Rop-lab-rop1-Writeup/">
-                            LYS Rop lab_rop1 Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            lab_rop1執行看一下：
-
-file 看一下：
-
-r2 看一下 main：
-
-OK，首先他把第一個輸入讀到全域變數 obj.name，然後開了一個 0x10 的 buffer 但是讀了 0x100 個 bytes。那我們的計畫就是把 “&#x2F...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Tue Dec 12 2023 22:54:46 GMT+0800">
-                
-                    2023-12-12
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/12/LYS-Rop-lab-rop1-Writeup/">Read more<span class="seo-reader-text">LYS Rop lab_rop1 Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/">
-                            Yuawn Pwn2 rop Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            rop雖然有附 source，但我們假裝沒有 XD。來用 r2 看一下 main：
-
-看到一個 0x30 的 buffer，用 gets 去讀，那我們就 rop 開一個 shell。用以下的指令來搜集需要的 gadget：
-12ROPgadget -...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Tue Dec 12 2023 18:47:00 GMT+0800">
-                
-                    2023-12-12
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/12/Yuawn-Pwn2-rop-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn2 rop Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
-</div>
-
-                </div>
-            </li>
-        
-            <li class="home-article-item">
-
-                
-
-                
-
-                
-                <div class="flex flex-col gap-5 px-7 pb-7 pt-7">
-                    <h3 class="home-article-title">
-                        <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/">
-                            Yuawn Pwn1 orw Writeup
-                        </a>
-                    </h3>
-
-                    <div class="home-article-content markdown-body">
-                        
-                            orworw 顧名思義就是開放 open，read and write 三個 syscalls 的經典題目。如下圖：
-
-執行看一下：
-
-r2 看一下 main：
-
-一開始他會先把輸入讀到全域變數 obj.sc，然後他開了 0x10 的 buffer，...
-                        
-                    </div>
-
-                    <div class="home-article-meta-info-container">
-    <div class="home-article-meta-info">
-        <span><i class="fa-solid fa-calendars"></i>&nbsp;
-            <span class="home-article-date" data-date="Sun Dec 10 2023 21:24:37 GMT+0800">
-                
-                    2023-12-10
-                
-            </span>
-        </span>
-        
-        
-            <span class="home-article-tag">
-                <i class="fa-solid fa-tags"></i>&nbsp;
-                <ul>
-                    
-                        <li>
-                            
-                            <a href="/tags/writeup/">writeup</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/pwn/">pwn</a>&nbsp;
-                        </li>
-                    
-                        <li>
-                            | 
-                            <a href="/tags/lab/">lab</a>&nbsp;
-                        </li>
-                    
-                </ul>
-            </span>
-        
-    </div>
-
-    <a href="/2023/12/10/Yuawn-Pwn1-orw-Writeup/">Read more<span class="seo-reader-text">Yuawn Pwn1 orw Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
+    <a href="/2023/12/20/Pwnctf-ret2sc-Writeup/">Read more<span class="seo-reader-text">Pwnctf ret2sc Writeup</span>&nbsp;<i class="fa-solid fa-angle-right"></i></a>
 </div>
 
                 </div>
@@ -1312,7 +1294,7 @@ r2 看一下 main：
 
     <div class="home-paginator px-7 py-5">
         <div class="paginator">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa-regular fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/8/"><i class="fa-regular fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa-regular fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/8/"><i class="fa-regular fa-angle-right"></i></a>
 </div>
 
     </div>
@@ -1377,7 +1359,7 @@ r2 看一下 main：
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">75</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">86</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -1406,7 +1388,7 @@ r2 看一下 main：
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        75 posts in total
+                        86 posts in total
                     </span>
                     
                 </p>
