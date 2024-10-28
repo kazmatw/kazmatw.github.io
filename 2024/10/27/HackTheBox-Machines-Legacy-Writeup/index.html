@@ -18,21 +18,22 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="從今天開始想要在考 OSCP 前刷一下 HackTheBox 中跟 OSCP 證照比較相關的機器：https:&#x2F;&#x2F;github.com&#x2F;rkhal101&#x2F;Hack-the-Box-OSCP-Preparation 今天要打的是 Windows 的 legacy Recon先 nmap 掃一下  -sV 是服務版本偵測 --script&#x3D;vuln 會針對已知漏洞進行檢查123456789101112">
+        <meta name="description" content="從今天開始想要在考 OSCP 前刷一下 HackTheBox 中跟 OSCP 證照比較相關的機器：https:&#x2F;&#x2F;github.com&#x2F;rkhal101&#x2F;Hack-the-Box-OSCP-Preparation 今天要打的是 Windows 的 legacy 先 nmap 掃一下  -sV 是服務版本偵測 --script&#x3D;vuln 會針對已知漏洞進行檢查12345678910111213141">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HackTheBox-Machines Legacy Writeup">
 <meta property="og:url" content="https://kazma.tw/2024/10/27/HackTheBox-Machines-Legacy-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="從今天開始想要在考 OSCP 前刷一下 HackTheBox 中跟 OSCP 證照比較相關的機器：https:&#x2F;&#x2F;github.com&#x2F;rkhal101&#x2F;Hack-the-Box-OSCP-Preparation 今天要打的是 Windows 的 legacy Recon先 nmap 掃一下  -sV 是服務版本偵測 --script&#x3D;vuln 會針對已知漏洞進行檢查123456789101112">
+<meta property="og:description" content="從今天開始想要在考 OSCP 前刷一下 HackTheBox 中跟 OSCP 證照比較相關的機器：https:&#x2F;&#x2F;github.com&#x2F;rkhal101&#x2F;Hack-the-Box-OSCP-Preparation 今天要打的是 Windows 的 legacy 先 nmap 掃一下  -sV 是服務版本偵測 --script&#x3D;vuln 會針對已知漏洞進行檢查12345678910111213141">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://kazma.tw/images/legacy_pwn.png">
 <meta property="article:published_time" content="2024-10-27T09:38:00.249Z">
-<meta property="article:modified_time" content="2024-10-27T11:02:36.617Z">
+<meta property="article:modified_time" content="2024-10-27T11:10:12.335Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="htb">
 <meta property="article:tag" content="machines">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="pt">
+<meta property="article:tag" content="windows">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://kazma.tw/images/legacy_pwn.png">
     
@@ -597,7 +598,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">43</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">45</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -605,7 +606,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">86</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -659,8 +660,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-10-27 19:02:36</span>
-            <span class="mobile">2024-10-27 19:02:36</span>
+            <span class="desktop">2024-10-27 19:10:12</span>
+            <span class="mobile">2024-10-27 19:10:12</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -687,6 +688,10 @@
                         | <a href="/tags/pt/">pt</a>&nbsp;
                     </li>
                 
+                    <li>
+                        | <a href="/tags/windows/">windows</a>&nbsp;
+                    </li>
+                
             </ul>
         </span>
     
@@ -711,7 +716,7 @@
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
             <p>從今天開始想要在考 OSCP 前刷一下 HackTheBox 中跟 OSCP 證照比較相關的機器：<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/rkhal101/Hack-the-Box-OSCP-Preparation" >https://github.com/rkhal101/Hack-the-Box-OSCP-Preparation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>今天要打的是 Windows 的 legacy</p>
-<h2 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h2><p>先 <code>nmap</code> 掃一下</p>
+<p>先 <code>nmap</code> 掃一下</p>
 <ul>
 <li><code>-sV</code> 是服務版本偵測</li>
 <li><code>--script=vuln</code> 會針對已知漏洞進行檢查<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ nmap -sV --script=vuln 10.129.152.110</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-10-27 05:21 CDT</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 10.129.152.110</span><br><span class="line">Host is up (0.078s latency).</span><br><span class="line">Not shown: 997 closed tcp ports (reset)</span><br><span class="line">PORT    STATE SERVICE      VERSION</span><br><span class="line">135/tcp open  msrpc        Microsoft Windows RPC</span><br><span class="line">139/tcp open  netbios-ssn  Microsoft Windows netbios-ssn</span><br><span class="line">445/tcp open  microsoft-ds Microsoft Windows XP microsoft-ds</span><br><span class="line">Service Info: OSs: Windows, Windows XP; CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_smb-vuln-ms10-054: <span class="literal">false</span></span><br><span class="line">| smb-vuln-ms17-010: </span><br><span class="line">|   VULNERABLE:</span><br><span class="line">|   Remote Code Execution vulnerability <span class="keyword">in</span> Microsoft SMBv1 servers (ms17-010)</span><br><span class="line">|     State: VULNERABLE</span><br><span class="line">|     IDs:  CVE:CVE-2017-0143</span><br><span class="line">|     Risk <span class="built_in">factor</span>: HIGH</span><br><span class="line">|       A critical remote code execution vulnerability exists <span class="keyword">in</span> Microsoft SMBv1</span><br><span class="line">|        servers (ms17-010).</span><br><span class="line">|           </span><br><span class="line">|     Disclosure <span class="built_in">date</span>: 2017-03-14</span><br><span class="line">|     References:</span><br><span class="line">|       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/</span><br><span class="line">|       https://technet.microsoft.com/en-us/library/security/ms17-010.aspx</span><br><span class="line">|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143</span><br><span class="line">|_smb-vuln-ms10-061: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">|_samba-vuln-cve-2012-1182: NT_STATUS_ACCESS_DENIED</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 23.14 seconds</span><br></pre></td></tr></table></figure></div>
@@ -739,7 +744,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-10-27 19:02:36
+                    :</strong> 2024-10-27 19:10:12
             </li>
         
         <li>
@@ -780,6 +785,10 @@
                         <a href="/tags/pt/">#pt</a>&nbsp;
                     </li>
                 
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/windows/">#windows</a>&nbsp;
+                    </li>
+                
             </ul>
         
 
@@ -787,6 +796,21 @@
 
         
             <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/10/27/HackTheBox-Machines-Blue-Writeup/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">HackTheBox-Machines Blue Writeup</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
                 
                 
                     <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
@@ -875,7 +899,7 @@
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">HackTheBox-Machines Legacy Writeup</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Recon"><span class="nav-text">Recon</span></a></li></ol>
+        
 
     </div>
 </div>
@@ -908,7 +932,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        86 posts in total
+                        91 posts in total
                     </span>
                     
                 </p>
