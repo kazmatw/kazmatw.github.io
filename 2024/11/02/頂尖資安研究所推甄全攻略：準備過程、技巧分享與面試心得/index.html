@@ -20,14 +20,14 @@
     
         <meta name="description" content="交大資工所丙組性向測驗準備如果有重複出現的會直接拿掉 113 考古題 https:&#x2F;&#x2F;www.dcard.tw&#x2F;f&#x2F;graduate_school&#x2F;p&#x2F;253728478    Q: 有一個全域變數 count，且 main() 會執行兩次 inc_count() 函數。現在我們希望使用兩個執行緒（threads）來同時執行這段程式碼。請問要如何避免多執行緒操作 count 時發生競爭條件的錯誤？">
 <meta property="og:type" content="article">
-<meta property="og:title" content="頂尖資安研究所推甄全攻略：準備過程、技巧分享與面試心得">
+<meta property="og:title" content="頂大資安研究所推甄全攻略：準備過程、技巧分享與面試心得">
 <meta property="og:url" content="https://kazma.tw/2024/11/02/%E9%A0%82%E5%B0%96%E8%B3%87%E5%AE%89%E7%A0%94%E7%A9%B6%E6%89%80%E6%8E%A8%E7%94%84%E5%85%A8%E6%94%BB%E7%95%A5%EF%BC%9A%E6%BA%96%E5%82%99%E9%81%8E%E7%A8%8B%E3%80%81%E6%8A%80%E5%B7%A7%E5%88%86%E4%BA%AB%E8%88%87%E9%9D%A2%E8%A9%A6%E5%BF%83%E5%BE%97/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="交大資工所丙組性向測驗準備如果有重複出現的會直接拿掉 113 考古題 https:&#x2F;&#x2F;www.dcard.tw&#x2F;f&#x2F;graduate_school&#x2F;p&#x2F;253728478    Q: 有一個全域變數 count，且 main() 會執行兩次 inc_count() 函數。現在我們希望使用兩個執行緒（threads）來同時執行這段程式碼。請問要如何避免多執行緒操作 count 時發生競爭條件的錯誤？">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://kazma.tw/images/1.1.png">
 <meta property="article:published_time" content="2024-11-02T06:22:10.711Z">
-<meta property="article:modified_time" content="2024-11-02T11:45:52.631Z">
+<meta property="article:modified_time" content="2024-11-03T00:10:09.497Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="education">
 <meta property="article:tag" content="career">
@@ -44,7 +44,7 @@
     
     <title>
         
-            頂尖資安研究所推甄全攻略：準備過程、技巧分享與面試心得 -
+            頂大資安研究所推甄全攻略：準備過程、技巧分享與面試心得 -
         
         kazma&#39;s blog
     </title>
@@ -629,7 +629,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">頂尖資安研究所推甄全攻略：準備過程、技巧分享與面試心得</h1>
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">頂大資安研究所推甄全攻略：準備過程、技巧分享與面試心得</h1>
                 </div>
             
             </div>
@@ -657,8 +657,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-11-02 19:45:52</span>
-            <span class="mobile">2024-11-02 19:45:52</span>
+            <span class="desktop">2024-11-03 08:10:09</span>
+            <span class="mobile">2024-11-03 08:10:09</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -706,9 +706,9 @@
 </ul>
 <ol>
 <li><p>Q: 有一個全域變數 count，且 main() 會執行兩次 inc_count() 函數。現在我們希望使用兩個執行緒（threads）來同時執行這段程式碼。請問要如何避免多執行緒操作 count 時發生競爭條件的錯誤？</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">inc_count</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">0</span>)</span><br><span class="line">        count++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    <span class="function">std::thread <span class="title">t1</span><span class="params">(inc_count)</span></span>;</span><br><span class="line">    <span class="function">std::thread <span class="title">t2</span><span class="params">(inc_count)</span></span>;</span><br><span class="line"></span><br><span class="line">    t1.<span class="built_in">join</span>();</span><br><span class="line">    t2.<span class="built_in">join</span>();</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Count: &quot;</span> &lt;&lt; count &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> Count = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">inc_count</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">0</span>)</span><br><span class="line">        count++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    <span class="built_in">inc_count</span>();</span><br><span class="line">    <span class="built_in">inc_count</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 <p>A: 要避免多執行緒操作全域變數 count 時發生競爭條件問題，我們可以使用互斥鎖（mutex）來保護 count 的訪問。這樣可以確保只有一個執行緒在任意時刻修改 count，避免多執行緒造成的數據不一致問題。以下是更新後的程式碼，使用了 std::mutex 來保護 count：</p>
-<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">std::mutex mtx;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">inc_count</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::lock_guard&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>; <span class="comment">// 使用 lock_guard 來確保互斥鎖的自動管理</span></span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">0</span>)</span><br><span class="line">        count++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    <span class="function">std::thread <span class="title">t1</span><span class="params">(inc_count)</span></span>;</span><br><span class="line">    <span class="function">std::thread <span class="title">t2</span><span class="params">(inc_count)</span></span>;</span><br><span class="line"></span><br><span class="line">    t1.<span class="built_in">join</span>();</span><br><span class="line">    t2.<span class="built_in">join</span>();</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Count: &quot;</span> &lt;&lt; count &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Cpp"><figure class="iseeu highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> count = <span class="number">0</span>;</span><br><span class="line">std::mutex mtx;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">inc_count</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::lock_guard&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>;</span><br><span class="line">    <span class="keyword">if</span> (count == <span class="number">0</span>)</span><br><span class="line">        count++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123; </span><br><span class="line">    <span class="function">std::thread <span class="title">t1</span><span class="params">(inc_count)</span></span>;</span><br><span class="line">    <span class="function">std::thread <span class="title">t2</span><span class="params">(inc_count)</span></span>;</span><br><span class="line"></span><br><span class="line">    t1.<span class="built_in">join</span>();</span><br><span class="line">    t2.<span class="built_in">join</span>();</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Count: &quot;</span> &lt;&lt; count &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 </li>
 <li><p>Q: 有一個函數 f(int num)，它接受一個整數 num 作為參數，並對該數字進行一系列位元操作（左移和右移），最終返回一個整數結果。我們需要根據給定的數字 11 來執行這個函數，並計算出該數字經過位元操作後的輸出結果（包含二進位和十進位格式）。<br>A: 無法作答。</p>
 </li>
@@ -717,7 +717,10 @@
 <li>CPU 瓶頸：若 CPU 效能限制了處理速度，增加 RAM 不會提高 CPU 的處理能力。</li>
 <li>I&#x2F;O 瓶頸：若程式頻繁存取硬碟，存取速度受限於硬碟或 SSD 的讀寫速度。</li>
 <li>軟體架構限制：某些程式可能無法有效利用額外的 RAM，例如單一線程程式無法利用多核心或多執行緒優勢。</li>
-<li>作業系統的內存管理：作業系統可能未充分使用新增的 RAM，或未有效管理內存分配，導致額外 RAM 未被完全利用。<br>Q2: 通訊軟體在傳遞訊息時，使用者端及伺服器端的完整過程？<br>A2: </li>
+<li>作業系統的內存管理：作業系統可能未充分使用新增的 RAM，或未有效管理內存分配，導致額外 RAM 未被完全利用。</li>
+</ul>
+<p>Q2: 通訊軟體在傳遞訊息時，使用者端及伺服器端的完整過程？<br>A2: </p>
+<ul>
 <li>用戶端發送訊息：<ol>
 <li>   輸入：用戶在應用程式中輸入訊息，按下「傳送」按鈕。</li>
 <li>   封包處理：應用程式將訊息進行序列化，封裝成特定格式（如 JSON）。</li>
@@ -737,10 +740,16 @@
 <li>   連接伺服器：接收方的用戶端通過網路協議連接伺服器並接收訊息。</li>
 <li>   解密訊息：用戶端解密訊息以獲取其內容。</li>
 <li>   顯示訊息：訊息顯示在使用者界面中，通知用戶有新的訊息。</li>
-<li>傳一個message 到line或等等的軟體，請問中間的過程為何？（有給一堆名詞，socket、layer、device IO等等）(1) edge-computing (2) cloud-computing (3) hybrid</li>
 </ol>
 </li>
 </ul>
+</li>
+<li><p>Q: 傳送一個訊息到 LINE 或其他即時通訊軟體，中間過程為何？<br>A:</p>
+<ol>
+<li>   Edge-computing：訊息在靠近使用者的裝置或本地伺服器處理與儲存，快速響應但依賴裝置的運算能力。使用者的裝置透過 socket 連接伺服器，訊息透過 device I&#x2F;O 傳遞，再經過應用層、安全層等處理，快速送達對方。</li>
+<li>   Cloud-computing：訊息經過 socket 傳至雲端伺服器處理。雲端負責所有層級的處理（包括應用層、安全層、加密等），並通過伺服器間連結轉送至接收端。此方式不依賴本地裝置，能擴展大量用戶，但受限於網路延遲。</li>
+<li>   Hybrid：結合 edge 和 cloud，訊息的即時性需求部分在本地端處理，非即時數據在雲端存取。重要訊息先在 edge 端經 socket 連至雲端，透過 layer 處理後進行傳送，達到效率與彈性兼具的效果。</li>
+</ol>
 </li>
 <li><p>Q: 設計一個面部識別解鎖系統的架構（例如用於手機或門鎖），並解釋三種軟體架構的設計情況：全部運行在裝置上（on-device）、全部運行在雲端上（cloud-based）、以及混合模式（hybrid）。另外，結合 DevOps 和 MLOps 的概念，說明這些架構如何影響開發與部署流程。<br>A: 	</p>
 <ul>
@@ -778,6 +787,22 @@
 <li>你比較有興趣的領域跟得意作品等等，有給一些領域參考（程式設計、演算法、多媒體、AI、網頁、資安）</li>
 </ul>
 </li>
+</ol>
+<h3 id="112-考古題"><a href="#112-考古題" class="headerlink" title="112 考古題"></a>112 考古題</h3><ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://hackmd.io/@jotpac/HkVSK3Hps" >https://hackmd.io/@jotpac/HkVSK3Hps <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ul>
+<ol>
+<li>Q: 什麼是 Kernel？它如何運作？如何進行 debug？<br>A: Kernel 是操作系統的核心，負責管理硬體資源和與軟體的溝通，透過系統呼叫提供安全的硬體訪問。運作上，Kernel 在開機時載入並常駐內存，管理內存、處理器資源及 I&#x2F;O 等功能。debug 方法可使用 gdb 搭配 qemu 模擬、ftrace 追蹤內核事件，或用 dmesg 檢查 Kernel 日誌等方式。</li>
+<li>   Q: 什麼是 Clang？有什麼用途？<br>  A: Clang 是一個 C、C++ 和其他編程語言的編譯器前端，基於 LLVM。Clang 具有高效的編譯速度和清晰的錯誤訊息，常用於系統軟體開發、程式分析和編譯優化。</li>
+<li>   Q: MMIO（Memory-Mapped I&#x2F;O） 是什麼？<br>  A: MMIO 將硬體設備的 I&#x2F;O 寄存器映射到系統記憶體空間，使 CPU 透過讀寫內存地址進行設備通訊，適合需要快速訪問設備的應用場景。</li>
+<li>   Q: Android 手機是否可以進行 IP Spoofing？如何實現？<br>  A: 是的，可以透過 root 權限來更改網絡封包的來源 IP。使用 iptables 的 mangle 表或自訂 socket 寫入自訂的 IP 地址達到 spoofing 效果，但可能違法或違反網絡政策。</li>
+<li>   Q: 解釋 QUIC 協議，並與 TCP 和 UDP 比較。<br>  A: QUIC 是由 Google 開發的新協議，旨在解決 TCP 的連線建立延遲和 UDP 的無連接缺陷。它基於 UDP 傳輸層，實現了多路複用、低延遲和自動加密，適合低延遲和頻繁連線變更的應用場景，例如串流和即時互動。</li>
+<li>   Q: 當收不到 ACK 時，如何確定對方裝置是關機還是網路問題？<br>  A: 可使用 ping 檢查是否能達到目標的 IP。若無回應且設備支持，通過 ARP 請求看是否有相應的 MAC 地址，或查閱路由表和 DNS 檢查網絡設置。</li>
+<li>   Q: 如果能 ping 到 DNS 伺服器，能否透過其他方式上網？<br>  A: 是的，可以利用 DNS 隧道 將數據封裝在 DNS 查詢中傳輸，這是一種在封鎖或受限網絡中進行隧道通信的方法，例如使用 iodine 或 dnscat2。</li>
+<li>   Q: 如何為家中的 Wi-Fi 路由器增加功能？需要哪些工具？<br>  A: 可以下載並編譯適合路由器的開源韌體（如 OpenWRT 或 DD-WRT），在開發環境下使用 C 或 shell 腳本編寫新功能。需要交叉編譯工具、串口線、韌體燒錄工具及文檔支援。</li>
+<li>   Q: 如何利用 GPU 加速計算？<br>  A: GPU 的多核架構適合大規模並行計算，可使用 CUDA（NVIDIA）或 OpenCL 進行 GPU 加速編程，在深度學習、數據處理等應用中顯著提升運算速度。</li>
+<li>   Q: 什麼是雲原生（Cloud Native）？<br> A: 雲原生是利用容器、微服務架構、持續交付、服務網格等工具和技術來構建和運行可擴展、彈性、動態調度的應用程序，優勢在於更快速的部署和擴展，適合現代的分散式計算環境。</li>
+<li>   Q: 什麼是 MLOps？<br> A: MLOps 是機器學習運營的最佳實踐，結合了機器學習、DevOps 和數據工程，用於自動化模型訓練、部署和監控，確保模型在生產環境中的穩定性和可擴展性。</li>
 </ol>
 <h3 id="111-考古題"><a href="#111-考古題" class="headerlink" title="111 考古題"></a>111 考古題</h3><ul>
 <li><a class="link"   target="_blank" rel="noopener" href="https://hackmd.io/@bogay/111-NYCU-CS-aptitude-test" >https://hackmd.io/@bogay/111-NYCU-CS-aptitude-test <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
@@ -826,7 +851,13 @@
 <li><p>Q: DNS redirect attack 是啥? 怎麼在 Linux 上實作<br>A: DNS Redirect Attack 是一種攻擊方法，攻擊者透過竄改 DNS 資料，將用戶的 DNS 請求重新導向到惡意網站，目的是進行釣魚或竊取資料。攻擊方式可能包括 ARP 欺騙、DNS 偽造等。</p>
 <p>在 Linux 上模擬這類攻擊可以使用工具，例如 dnsspoof 或 ettercap，並且設定網卡為混雜模式，然後在網路中攔截和修改 DNS 請求來達成重導效果。不過，這樣的行為會對使用者的隱私與安全造成影響，且屬於違法行為，應僅限於合法、經授權的安全測試環境。</p>
 </li>
-<li><p>Q: 實作過哪些 CVE<br>A: 好問題，晚點來準備一下。</p>
+<li><p>Q: 實作過哪些 CVE<br>A: </p>
+<ul>
+<li>CVE-2018-4407 (Apple XNU Kernel Integer Overflow)：<ul>
+<li>這是 macOS 和 iOS 上的一個 kernel 缺陷，但它揭示了 IoT 和嵌入式系統中常見的整數溢位問題。<br>•	展示方向：討論如何發現和利用整數溢位，並設計對應的修復方式，這種溢位漏洞在 binary exploitation 中非常普遍。</li>
+</ul>
+</li>
+</ul>
 </li>
 <li><p>Q: buffer overflow 常見的形式<br>A: 	</p>
 <ol>
@@ -844,7 +875,7 @@
 </li>
 <li><p>Q: wifi 可能會沒有自己想要的功能，有沒有辦法使用 c 語言在上面新增功能，列出需要的工具<br>A: </p>
 <ol>
-<li>   開發板與驅動程式源代碼：例如 WiFi 模組的 SDK，如 ESP8266 或 ESP32 等開發板的 SDK 和原始碼。</li>
+<li>   開發板與驅動程式原始碼：例如 WiFi 模組的 SDK，如 ESP8266 或 ESP32 等開發板的 SDK 和原始碼。</li>
 <li>   C 編譯器與工具鏈：適合目標設備的交叉編譯器（如 GCC 工具鏈），以便將 C 代碼編譯成設備可執行的格式。</li>
 <li>   開發板驅動程式 API 文件：瞭解硬體功能和 API 介面，以便使用正確的函數和控制指令。</li>
 <li>   測試與調試工具：如 JTAG 調試器或 UART 串口工具，便於測試和調整功能。</li>
@@ -1005,11 +1036,11 @@
 </li>
 <li><p>Q: 88^89 跟 89^88 誰比較大？<br>A: 基數和指數相近時的比較方法：當基數和指數很接近時，可以考慮基數略大的那個數的次方更大。因為 89 比 88 稍大，而指數相差不大，所以 89^{88} 的增長會略微快於 88^{89}。</p>
 </li>
-<li><p>Q: 請問 SaaS、IaaS 跟 PaaS 的差別，舉例說明。<br>A: </p>
+<li><p>Q: 請問 IaaS、PaaS、SaaS 的差別，舉例說明。<br>A: </p>
 <ul>
-<li>SaaS (Software as a Service) 是一種軟體服務模式，用戶可以透過網路直接使用軟體應用程式，無需安裝、配置和管理軟體。這些軟體通常運行在提供商的伺服器上，並透過瀏覽器或客戶端應用程式來訪問。例子：Google Workspace (如 Gmail、Google Drive)、Salesforce、Microsoft 365。</li>
 <li>IaaS（Infrastructure as a Service）提供基礎的 IT 基礎架構，包含虛擬機器、儲存、網路等資源。使用者可以直接管理和控制這些基礎設施（如選擇作業系統、安裝軟體），但不需要維護實體硬體。例子：Amazon Web Services (AWS) EC2、Microsoft Azure Virtual Machines、Google Compute Engine。</li>
-<li>PaaS（Platform as a Service）提供的是平台層級的服務，包含運行應用所需的作業系統、中介軟體和開發工具等基礎設施。開發者可以在這個平台上開發、運行和管理應用程式，而不需要處理底層的基礎架構。例子：Google App Engine、Microsoft Azure App Service、Heroku。</li>
+<li>PaaS（Platform as a Service）提供的是平台層級的服務，包含運行應用所需的作業系統、中介軟體和開發工具等基礎設施。開發者可以在這個平台上開發、運行和管理應用程式，而不需要處理底層的基礎架構。例子：Google App Engine、Microsoft Azure App  </li>
+<li>SaaS (Software as a Service) 是一種軟體服務模式，用戶可以透過網路直接使用軟體應用程式，無需安裝、配置和管理軟體。這些軟體通常運行在提供商的伺服器上，並透過瀏覽器或客戶端應用程式來訪問。例子：Google Workspace (如 Gmail、Google Drive)、Salesforce、Microsoft 365。</li>
 </ul>
 </li>
 <li><p>Q: VM 跟 Container 差在哪裡，分別適合什麼時候用?<br>A: </p>
@@ -1098,7 +1129,28 @@
 <li><a class="link"   target="_blank" rel="noopener" href="https://hackmd.io/@splitline/BkALfYY5r" >https://hackmd.io/@splitline/BkALfYY5r <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
 </ul>
 <ol>
-<li>Q: Node.js 的出現有什麼很大的影響？他有什麼特色？<br>A:</li>
+<li>   Q: Node.js 的出現有什麼很大的影響？它有什麼特色？<br>  A: Node.js 改變了後端開發的方式，允許使用 JavaScript 建構非同步、事件驅動的高效能應用。特色包括單執行緒模型、高效能 I&#x2F;O 處理、支援 NPM 等模組化設計。</li>
+<li>   Q: 比較分析 React vs Vue 或 Angular 或你用過的前端框架<br>  A: React 側重於 UI 元件化、可重複利用和快速渲染；Vue 易於學習、雙向數據綁定、靈活性高；Angular 是完整框架，擁有強類型支援和完整工具鏈，適合大型應用。</li>
+<li>   Q: 常用的網管工具有哪些？<br>  A: 常用工具包括 Wireshark、Nagios、Zabbix、Prometheus、Grafana 和 Nmap，這些工具幫助監控網絡流量、伺服器健康度、效能和安全性。</li>
+<li>   Q: 如何撰寫 int freq_mode(int a, int b, int c, int d)，回傳眾數出現的次數？<br>  A: 透過使用 STL 的 std::map 或 unordered_map 來計算每個數字的出現次數，找出最高次數即可。</li>
+<li>   Q: 如何實作包覆三維平面上的 n 個點的球型，半徑必須小於最小解的兩倍，且達到 O(n) 解？<br>  A: 可使用 Welzl’s Algorithm，逐點隨機放置到球體中，重複至包覆所有點。此方法達成 O(n) 複雜度。</li>
+<li>   Q: 如何找出陣列 int A[n] 第二小的數並達成 O(n) 解？<br>  A: 使用線性掃描過濾出最小和第二小的元素，藉由一次遍歷達到 O(n) 複雜度，無法比 Ω(n) 更快。</li>
+<li>   Q: memory allocation 太慢怎麼 debug？可以用什麼工具解決？<br>  A: 使用 valgrind 的 massif 或 perf 工具檢查記憶體分配問題；可透過記憶體池（memory pool）改善效率。</li>
+<li>   Q: IDS（入侵檢測系統）和 AV（防毒軟體）有何不同？各檢查什麼？為什麼很難擋住 APT？<br>  A: IDS 側重於網路流量分析，AV 側重於檢測檔案特徵碼。APT 較隱蔽，利用多層次和持久性，難以單靠 IDS 和 AV 攔截。</li>
+<li>   Q: 為什麼 hashing 在 Linux Kernel 中那麼常見？<br>  A: Hashing 能夠快速查找數據，適合處理 Kernel 中大量數據管理的需求，如系統調度、文件快取和網路路由。</li>
+<li>   Q: 舉一個你會實作的較複雜演算法，並用 30 字簡介<br> A: Floyd-Warshall 演算法，用於計算所有點對間的最短路徑，複雜度為 O(n^3)，適合密集圖。</li>
+<li>   Q: Stack 和 Queue 分別是什麼？分別適用於什麼演算法？<br> A: Stack（堆疊）為先進後出，常用於遞迴和 DFS；Queue（佇列）為先進先出，適用於 BFS 和排程。</li>
+<li>   Q: 開發 Linux Kernel 或 Driver 時如何 debug？可以不重新編譯測試多筆輸入嗎？<br> A: 可使用 kgdb、ftrace 或 dmesg 進行 Kernel debug，可透過 debugfs 或動態修改 sysfs 參數以測試不同輸入。</li>
+<li>   Q: Android 手機可以進行 IP Spoofing 嗎？如何操作？<br> A: 可以，在 Root 權限下使用 iptables 或自訂 Socket 寫入自訂 IP 地址達到 IP Spoofing 效果。</li>
+<li>   Q: 如何在 Wi-Fi Router 上新增 C 程式功能？需要哪些工具？<br> A: 編譯 OpenWRT&#x2F;DD-WRT 或使用開源韌體 SDK 編寫，使用交叉編譯工具、串口燒錄和適配器。</li>
+<li>   Q: GMM 和 K-means 有何不同？請說明原理<br> A: K-means 假設每個叢集形狀為圓，GMM 利用高斯分布來估計，允許各叢集有不同形狀。</li>
+<li>   Q: Server 虛擬化的好處是什麼？常用的工具有哪些？<br> A: Server 虛擬化增加資源利用率和隔離性，工具有 VMware、KVM、Hyper-V 和 VirtualBox 等。</li>
+<li>   Q: 解釋加速方式 (a) SIMD (b) GPGPU (c) FPGA (d) MPI 並舉例<br> A: (a) SIMD: 單指令多數據，如向量計算；(b) GPGPU: 使用 GPU 做並行運算，如 AI 訓練；(c) FPGA: 可重組邏輯，加速專用計算；(d) MPI: 分散式多處理，如超級計算機。</li>
+<li>   Q: 偵錯效能瓶頸 (a) 程式瓶頸 (b) 快取缺失 (c) 區域性問題<br> A: (a) 程式瓶頸：分析 perf；(b) 快取缺失：調整數據結構和存取模式；(c) 區域性：改善記憶體區域性。</li>
+<li>   Q: DNS 反射攻擊如何實作？<br> A: 利用開放的 DNS 伺服器將查詢反射至目標 IP，造成拒絕服務，使用小詢問封包造成大回應。</li>
+<li>   Q: 說明 Attention 機制<br> A: Attention 用於提升深度學習模型的效能，透過關注重要部分資料，使模型更高效學習關鍵特徵。</li>
+<li>   Q: 你的開發環境？有無 GitHub 協作經驗或程式檢定經驗？<br> A: 使用 VSCode 和 Git，擁有 GitHub 協作經驗</li>
+<li>   Q: 你負責的最具挑戰的專案或成就？<br> A: 略</li>
 </ol>
 
         </div>
@@ -1107,14 +1159,14 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> 頂尖資安研究所推甄全攻略：準備過程、技巧分享與面試心得</li>
+        <li><strong>Title:</strong> 頂大資安研究所推甄全攻略：準備過程、技巧分享與面試心得</li>
         <li><strong>Author:</strong> kazma</li>
         <li><strong>Created at
                 :</strong> 2024-11-02 14:22:10</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-11-02 19:45:52
+                    :</strong> 2024-11-03 08:10:09
             </li>
         
         <li>
@@ -1241,8 +1293,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">頂尖資安研究所推甄全攻略：準備過程、技巧分享與面試心得</div>
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%A4%A7%E8%B3%87%E5%B7%A5%E6%89%80%E4%B8%99%E7%B5%84%E6%80%A7%E5%90%91%E6%B8%AC%E9%A9%97%E6%BA%96%E5%82%99"><span class="nav-text">交大資工所丙組性向測驗準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#113-%E8%80%83%E5%8F%A4%E9%A1%8C"><span class="nav-text">113 考古題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#111-%E8%80%83%E5%8F%A4%E9%A1%8C"><span class="nav-text">111 考古題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#110-%E8%80%83%E5%8F%A4%E9%A1%8C"><span class="nav-text">110 考古題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#109-%E8%80%83%E5%8F%A4%E9%A1%8C"><span class="nav-text">109 考古題</span></a></li></ol></li></ol>
+        <div class="page-title">頂大資安研究所推甄全攻略：準備過程、技巧分享與面試心得</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%A4%A7%E8%B3%87%E5%B7%A5%E6%89%80%E4%B8%99%E7%B5%84%E6%80%A7%E5%90%91%E6%B8%AC%E9%A9%97%E6%BA%96%E5%82%99"><span class="nav-text">交大資工所丙組性向測驗準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#113-%E8%80%83%E5%8F%A4%E9%A1%8C"><span class="nav-text">113 考古題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#112-%E8%80%83%E5%8F%A4%E9%A1%8C"><span class="nav-text">112 考古題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#111-%E8%80%83%E5%8F%A4%E9%A1%8C"><span class="nav-text">111 考古題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#110-%E8%80%83%E5%8F%A4%E9%A1%8C"><span class="nav-text">110 考古題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#109-%E8%80%83%E5%8F%A4%E9%A1%8C"><span class="nav-text">109 考古題</span></a></li></ol></li></ol>
 
     </div>
 </div>
