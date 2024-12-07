@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-11-20T07:39:35.367Z</updated>
+  <updated>2024-12-07T07:33:15.414Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CGGC Reverse Medium Kazmansomware Writeup</title>
+    <link href="https://kazma.tw/2024/12/07/CGGC-2024-Reverse-Medium-Kazmansomware-Writeup/"/>
+    <id>https://kazma.tw/2024/12/07/CGGC-2024-Reverse-Medium-Kazmansomware-Writeup/</id>
+    <published>2024-12-07T06:22:39.961Z</published>
+    <updated>2024-12-07T07:33:15.414Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>這次出了一題勒索軟體當作 CGGC 2024 決賽的 reverse medium，開發上其實花了不少時間，因為一直在調整勒索的範圍以及在思考考點要怎麼拿捏比較適合，最後也花了點時間反覆測試題目在解題上是可行的才放心去做別的事，希望大家會喜歡，雖然最後題目難度偏簡單有點可惜，但也許之後會出個 revenge 也說不定。<br>題解的部分會直接用出題者的角度去介紹，所以大家也可以參考看看跟自己的做法有哪些差異。</p><h2 id="Writeup"><a href="#Writeup" class="headerlink" title="Writeup"></a>Writeup</h2><p>這次的題目會給一個 flag.zip 如下：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/kazmansomware_flag.png"                      alt="flag.png"                ><br>然後我們解壓縮之後會看到 flag.png，但其實他是一個 flag.png.exe，只是因為 windows 預設會隱藏副檔名的顯示，所以如果我們執行這張假圖片的話他就會執行到裡面藏的勒索軟體 rans.exe，像是下面這樣：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/kazmansomware_exe.png"                      alt="exe"                ><br>可以明顯看到他幫我們換桌布並且跳出一個類似勒索軟體的 gui，並且如果我們嘗試關閉的話會看到需要 termination key：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/kazmansomware_termination.png"                      alt="termination"                ><br>那這邊原本其實是想懲罰在主機解題的人，所以原本是會把檔案都加密的，但是評估了一下還是只幫各位換桌布而已，有點可惜QQ<br>總之如果各位把他丟進去逆向工具會發現他其實是一個 Self-Extracting Archive 的壓縮檔：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/kazmansomware_sfx.png"                      alt="sfx"                ><br>這可以直接透過 WinRAR 或是 binwalk 之類的工具拿到 rans.exe 如下：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/kazmansomware_rans.png"                      alt="rans"                ><br>那把 rans.exe 丟去逆向應該會發現它是由 python 編譯成的 exe：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/kazmansomware_pyi.png"                      alt="pyi"                ><br>那實際上我確實是用 <code>auto-py-to-exe</code> 編譯成的，所以我們這邊可以先用 pyinstxtractor 幫我們解出 pyc：<br><a class="link"   href="https://github.com/extremecoders-re/pyinstxtractor.git" >https://github.com/extremecoders-re/pyinstxtractor.git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p><p>然後再用 decompyle3 把 rans.pyc 解回 rans.py，如果用 uncompyle6 可能會因為不支援最新版的 python 所以反編譯失敗，接著拿到 rans.py 後就應該就沒什麼問題了，可以注意到勒索軟體它會去生成一組隨機的 machine id 跟 key 然後用 receive_key 的 api 把資料送給遠端的 server，然後又可以注意到勒索軟體使用者嘗試輸入 key 之後解開的時候會去拿 machine id 跟 key 請求 get_flag api，那這邊其實解法很簡單，我們其實只要自己生一組 machine id 跟 key 之後請求 receive_key api 就可以在遠端存下這組 id 跟 key，然後我們再用同一組 id 跟 key 去請求 get_flag 就可以拿到 flag 了，因為資料庫裡存在我們剛剛放進去的那組 key。<br>不過一開始沒想到的是，後來看 dashboard 好像有人存了一組空白的 id 跟 key 導致後來請求空白的 id 跟 key 就能拿到 flag 了QQ<br>有點可惜 receive_key api 應該加一下限制，不然大家隨便送的 id 跟 key 都會收。<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/kazmansomware_space.png"                      alt="space"                ></p><h3 id="Exploit-參考"><a href="#Exploit-參考" class="headerlink" title="Exploit 參考"></a>Exploit 參考</h3><p>GPT 生的解題腳本：</p><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python pyinstxtractor.py rans.exe</span></span><br><span class="line"><span class="comment"># decompyle3 ./rans.pyc &gt; rans.py</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">from</span> Crypto.Protocol.KDF <span class="keyword">import</span> PBKDF2</span><br><span class="line"><span class="keyword">from</span> Crypto.Random <span class="keyword">import</span> get_random_bytes</span><br><span class="line"></span><br><span class="line"><span class="comment"># Server endpoints</span></span><br><span class="line">DASHBOARD_URL = <span class="string">&#x27;https://rans.kazma.tw/prjrans/includes/api/receive_key.php&#x27;</span></span><br><span class="line">GET_FLAG_URL = <span class="string">&#x27;https://rans.kazma.tw/prjrans/includes/api/get_flag.php&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Key generation function (matches the logic in EncryptionTool)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_key</span>(<span class="params">password, salt=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="keyword">if</span> salt <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        salt = get_random_bytes(<span class="number">16</span>)  <span class="comment"># Generate a random salt</span></span><br><span class="line">    <span class="keyword">return</span> PBKDF2(password.encode(), salt, dkLen=<span class="number">32</span>, count=<span class="number">1000000</span>), salt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Exploit logic</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">exploit</span>():</span><br><span class="line">    <span class="comment"># Step 1: Generate a fake machine ID</span></span><br><span class="line">    fake_machine_id = <span class="built_in">str</span>(uuid.uuid4())  <span class="comment"># Generate a valid UUID</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[+] Fake Machine ID: <span class="subst">&#123;fake_machine_id&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 2: Generate a fake encryption key</span></span><br><span class="line">    password = <span class="string">&quot;PleaseGiveMeMoney&quot;</span>  <span class="comment"># Password used in the code</span></span><br><span class="line">    key, salt = generate_key(password)</span><br><span class="line">    encoded_key = base64.b64encode(key).decode(<span class="string">&#x27;utf-8&#x27;</span>)  <span class="comment"># Encode the key in base64</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[+] Generated Encryption Key: <span class="subst">&#123;encoded_key&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 3: Send the machine_id and key to the server</span></span><br><span class="line">    payload = &#123;</span><br><span class="line">        <span class="string">&#x27;machine_id&#x27;</span>: fake_machine_id,</span><br><span class="line">        <span class="string">&#x27;encryption_key&#x27;</span>: encoded_key</span><br><span class="line">    &#125;</span><br><span class="line">    headers = &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>&#125;</span><br><span class="line">    response = requests.post(DASHBOARD_URL, json=payload, headers=headers, verify=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[+] Successfully submitted machine ID and key to the server!&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[-] Failed to submit key. Server response: <span class="subst">&#123;response.text&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Step 4: Use the fake machine ID and key to request the flag</span></span><br><span class="line">    payload = &#123;</span><br><span class="line">        <span class="string">&#x27;machine_id&#x27;</span>: fake_machine_id,</span><br><span class="line">        <span class="string">&#x27;decryption_key&#x27;</span>: encoded_key</span><br><span class="line">    &#125;</span><br><span class="line">    response = requests.post(GET_FLAG_URL, json=payload, headers=headers, verify=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">        data = response.json()</span><br><span class="line">        <span class="keyword">if</span> data.get(<span class="string">&quot;success&quot;</span>):</span><br><span class="line">            flag = data.get(<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;No flag returned.&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[+] Successfully retrieved the flag: <span class="subst">&#123;flag&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;[-] Failed to retrieve the flag: <span class="subst">&#123;data.get(<span class="string">&#x27;message&#x27;</span>)&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[-] Failed to fetch flag. Server response: <span class="subst">&#123;response.text&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Run the exploit</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    exploit()</span><br></pre></td></tr></table></figure></div><p>執行結果：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">╰─ python solve.py                                                                                                  ─╯</span><br><span class="line">[+] Fake Machine ID: 43e88d41-67fe-4af4-95af-11a0ff5731e2</span><br><span class="line">[+] Generated Encryption Key: xs0zV0FG4V3f8NBwdO/k2GjiMEg6ptqJ46aSf2rbaEM=</span><br><span class="line">/Users/kingkazma/anaconda3/lib/python3.10/site-packages/urllib3/connectionpool.py:1064: InsecureRequestWarning: Unverified HTTPS request is being made to host <span class="string">&#x27;rans.kazma.tw&#x27;</span>. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/1.26.x/advanced-usage.html<span class="comment">#ssl-warnings</span></span><br><span class="line">  warnings.warn(</span><br><span class="line">[+] Successfully submitted machine ID and key to the server!</span><br><span class="line">/Users/kingkazma/anaconda3/lib/python3.10/site-packages/urllib3/connectionpool.py:1064: InsecureRequestWarning: Unverified HTTPS request is being made to host <span class="string">&#x27;rans.kazma.tw&#x27;</span>. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/1.26.x/advanced-usage.html<span class="comment">#ssl-warnings</span></span><br><span class="line">  warnings.warn(</span><br><span class="line">[+] Successfully retrieved the flag: CGGC&#123;Nn3lr*WppJ%RkdTsGRAR&#125;</span><br></pre></td></tr></table></figure></div>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Intro&quot;&gt;&lt;a href=&quot;#Intro&quot; class=&quot;headerlink&quot; title=&quot;Intro&quot;&gt;&lt;/a&gt;Intro&lt;/h2&gt;&lt;p&gt;這次出了一題勒索軟體當作 CGGC 2024 決賽的 reverse medium，開發上其實花了不少時間，因為一直</summary>
+      
+    
+    
+    
+    
+    <category term="cggc" scheme="https://kazma.tw/tags/cggc/"/>
+    
+    <category term="medium" scheme="https://kazma.tw/tags/medium/"/>
+    
+    <category term="reverse" scheme="https://kazma.tw/tags/reverse/"/>
+    
+    <category term="ransomware" scheme="https://kazma.tw/tags/ransomware/"/>
+    
+  </entry>
   
   <entry>
     <title>AngelBoy Windows Binary Exploitation play_with_win_sc Writeup</title>
@@ -36,11 +64,11 @@
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
+    <category term="note" scheme="https://kazma.tw/tags/note/"/>
+    
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
     
     <category term="shellcoding" scheme="https://kazma.tw/tags/shellcoding/"/>
-    
-    <category term="note" scheme="https://kazma.tw/tags/note/"/>
     
   </entry>
   
@@ -561,38 +589,6 @@
     <category term="misc" scheme="https://kazma.tw/tags/misc/"/>
     
     <category term="pyjail" scheme="https://kazma.tw/tags/pyjail/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>HackTheBox-Challenges Wrong Spooky Season Writeup</title>
-    <link href="https://kazma.tw/2024/10/31/HackTheBox-Challenges-Wrong-Spooky-Season-Writeup/"/>
-    <id>https://kazma.tw/2024/10/31/HackTheBox-Challenges-Wrong-Spooky-Season-Writeup/</id>
-    <published>2024-10-31T11:26:23.920Z</published>
-    <updated>2024-10-31T11:57:15.500Z</updated>
-    
-    <content type="html"><![CDATA[<p>這題給我們封包分析，可以練習一下 wireshark 的用法。<br>首先我們可以先看 Statistics -&gt; Protocol Hierarchy 看一下有哪些協議：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/spooky_hierarchy.png"                      alt="hierarchy"                ><br>我們首先關心的是其中的 data，我們可以直接搜尋 data 的封包，或是右鍵 Apply as Filter -&gt; Selected，然後我們 Follow TCP stream 可以看到下面的畫面：<br><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/spooky_b64.png"                      alt="b64"                ><br>我們可以看到駭客執行了一系列的指令操作其中包括把 reverse shell 寫入 &#x2F;root&#x2F;.bashrc 這樣下次開啟 shell 就會觸發，其中還有隱藏訊息，我們把它弄回來就會看到 flag 了：</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">╰─ <span class="built_in">echo</span> <span class="string">&quot;==gC9FSI5tGMwA3cfRjd0o2Xz0GNjNjYfR3c1p2Xn5WMyBXNfRjd0o2eCRFS&quot;</span> | rev | <span class="built_in">base64</span> -d                            ─╯</span><br><span class="line">HTB&#123;j4v4_5pr1ng_just_b3c4m3_j4v4_sp00ky!!&#125;</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/spooky_pwn.png"                      alt="pwn"                ></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;這題給我們封包分析，可以練習一下 wireshark 的用法。&lt;br&gt;首先我們可以先看 Statistics -&amp;gt; Protocol Hierarchy 看一下有哪些協議：&lt;br&gt;&lt;img  
-                     lazyload
-       </summary>
-      
-    
-    
-    
-    
-    <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
-    
-    <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
-    
-    <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="misc" scheme="https://kazma.tw/tags/misc/"/>
-    
-    <category term="pcap" scheme="https://kazma.tw/tags/pcap/"/>
     
   </entry>
   
