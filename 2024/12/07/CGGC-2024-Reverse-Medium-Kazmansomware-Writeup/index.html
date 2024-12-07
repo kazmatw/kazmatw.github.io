@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://kazma.tw/images/kazmansomware_pyi.png">
 <meta property="og:image" content="https://kazma.tw/images/kazmansomware_space.png">
 <meta property="article:published_time" content="2024-12-07T06:22:39.961Z">
-<meta property="article:modified_time" content="2024-12-07T07:33:15.414Z">
+<meta property="article:modified_time" content="2024-12-07T08:14:18.193Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="cggc">
 <meta property="article:tag" content="medium">
@@ -665,8 +665,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-12-07 15:33:15</span>
-            <span class="mobile">2024-12-07 15:33:15</span>
+            <span class="desktop">2024-12-07 16:14:18</span>
+            <span class="mobile">2024-12-07 16:14:18</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -748,7 +748,8 @@
                      data-src="/../images/kazmansomware_pyi.png"
                       alt="pyi"
                 ><br>那實際上我確實是用 <code>auto-py-to-exe</code> 編譯成的，所以我們這邊可以先用 pyinstxtractor 幫我們解出 pyc：<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/extremecoders-re/pyinstxtractor.git" >https://github.com/extremecoders-re/pyinstxtractor.git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>然後再用 decompyle3 把 rans.pyc 解回 rans.py，如果用 uncompyle6 可能會因為不支援最新版的 python 所以反編譯失敗，接著拿到 rans.py 後就應該就沒什麼問題了，可以注意到勒索軟體它會去生成一組隨機的 machine id 跟 key 然後用 receive_key 的 api 把資料送給遠端的 server，然後又可以注意到勒索軟體使用者嘗試輸入 key 之後解開的時候會去拿 machine id 跟 key 請求 get_flag api，那這邊其實解法很簡單，我們其實只要自己生一組 machine id 跟 key 之後請求 receive_key api 就可以在遠端存下這組 id 跟 key，然後我們再用同一組 id 跟 key 去請求 get_flag 就可以拿到 flag 了，因為資料庫裡存在我們剛剛放進去的那組 key。<br>不過一開始沒想到的是，後來看 dashboard 好像有人存了一組空白的 id 跟 key 導致後來請求空白的 id 跟 key 就能拿到 flag 了QQ<br>有點可惜 receive_key api 應該加一下限制，不然大家隨便送的 id 跟 key 都會收。<br><img  
+<p>然後再用 decompyle3 把 rans.pyc 解回 rans.py，如果用 uncompyle6 可能會因為不支援最新版的 python 所以反編譯失敗。<br>接著拿到 rans.py 後就應該就沒什麼問題了，可以注意到勒索軟體它會去生成一組隨機的 machine id 跟 key 然後用 receive_key 的 api 把資料送給遠端的 server，然後又可以注意到勒索軟體使用者嘗試輸入 key 之後解開的時候會去拿 machine id 跟 key 請求 get_flag api。<br>那這邊其實解法很簡單，我們其實只要自己生一組 machine id 跟 key 之後請求 receive_key api 就可以在遠端存下這組 id 跟 key，然後我們再用同一組 id 跟 key 去請求 get_flag 就可以拿到 flag 了，因為資料庫裡存在我們剛剛放進去的那組 key。</p>
+<p>不過一開始沒想到的是，後來看 dashboard 好像有人存了一組空白的 id 跟 key 導致後來請求空白的 id 跟 key 就能拿到 flag 了 QQ<br>有點可惜 receive_key api 應該加一下限制，不然大家隨便送的 id 跟 key 都會收。<br><img  
                      lazyload
                      src="/images/loading.svg"
                      data-src="/../images/kazmansomware_space.png"
@@ -773,7 +774,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-12-07 15:33:15
+                    :</strong> 2024-12-07 16:14:18
             </li>
         
         <li>
