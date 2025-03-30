@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-12-25T10:53:44.379Z</updated>
+  <updated>2025-03-30T07:25:14.824Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>sinan test</title>
+    <link href="https://kazma.tw/2025/03/30/sinan-test/"/>
+    <id>https://kazma.tw/2025/03/30/sinan-test/</id>
+    <published>2025-03-30T07:24:15.000Z</published>
+    <updated>2025-03-30T07:25:14.824Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Stock-is-good"><a href="#Stock-is-good" class="headerlink" title="Stock is good"></a>Stock is good</h1><ul><li>you can be rich if you follow us</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Stock-is-good&quot;&gt;&lt;a href=&quot;#Stock-is-good&quot; class=&quot;headerlink&quot; title=&quot;Stock is good&quot;&gt;&lt;/a&gt;Stock is good&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;you can be rich if y</summary>
+      
+    
+    
+    
+    
+    <category term="sinan" scheme="https://kazma.tw/tags/sinan/"/>
+    
+    <category term="stock" scheme="https://kazma.tw/tags/stock/"/>
+    
+    <category term="money" scheme="https://kazma.tw/tags/money/"/>
+    
+  </entry>
   
   <entry>
     <title>AngelBoy Windows Kernel Exploitation Note</title>
@@ -35,11 +62,11 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="note" scheme="https://kazma.tw/tags/note/"/>
     
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="kernel" scheme="https://kazma.tw/tags/kernel/"/>
     
@@ -91,11 +118,11 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="note" scheme="https://kazma.tw/tags/note/"/>
     
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="shellcoding" scheme="https://kazma.tw/tags/shellcoding/"/>
     
@@ -119,9 +146,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="ret2lib" scheme="https://kazma.tw/tags/ret2lib/"/>
     
@@ -145,9 +172,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="bof" scheme="https://kazma.tw/tags/bof/"/>
     
@@ -171,9 +198,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="windbg" scheme="https://kazma.tw/tags/windbg/"/>
     
@@ -558,35 +585,6 @@
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="crypto" scheme="https://kazma.tw/tags/crypto/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>HackTheBox-Challenges FlagCasino Writeup</title>
-    <link href="https://kazma.tw/2024/11/01/HackTheBox-Challenges-FlagCasino-Writeup/"/>
-    <id>https://kazma.tw/2024/11/01/HackTheBox-Challenges-FlagCasino-Writeup/</id>
-    <published>2024-11-01T09:16:21.217Z</published>
-    <updated>2024-11-01T09:35:16.321Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>這是一題逆向，因為程式不長就直接放上來：</p><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __fastcall <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> input; <span class="comment">// [rsp+Bh] [rbp-5h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> i; <span class="comment">// [rsp+Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;[ ** WELCOME TO ROBO CASINO **]&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(</span><br><span class="line">    <span class="string">&quot;     ,     ,\n&quot;</span></span><br><span class="line">    <span class="string">&quot;    (\\____/)\n&quot;</span></span><br><span class="line">    <span class="string">&quot;     (_oo_)\n&quot;</span></span><br><span class="line">    <span class="string">&quot;       (O)\n&quot;</span></span><br><span class="line">    <span class="string">&quot;     __||__    \\)\n&quot;</span></span><br><span class="line">    <span class="string">&quot;  []/______\\[] /\n&quot;</span></span><br><span class="line">    <span class="string">&quot;  / \\______/ \\/\n&quot;</span></span><br><span class="line">    <span class="string">&quot; /    /__\\\n&quot;</span></span><br><span class="line">    <span class="string">&quot;(\\   /____\\\n&quot;</span></span><br><span class="line">    <span class="string">&quot;---------------------&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;[*** PLEASE PLACE YOUR BETS ***]&quot;</span>);</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">0x1D</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&gt; &quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)__isoc99_scanf(<span class="string">&quot; %c&quot;</span>, &amp;input) != <span class="number">1</span> )</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    srand(input);</span><br><span class="line">    <span class="keyword">if</span> ( rand() != check[i] )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">&quot;[ * INCORRECT * ]&quot;</span>);</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">&quot;[ *** ACTIVATING SECURITY SYSTEM - PLEASE VACATE *** ]&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">-2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;[ * CORRECT *]&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;[ ** HOUSE BALANCE $0 - PLEASE COME BACK LATER ** ]&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>上面是 ida 反編譯的主程式邏輯，總之我們就是要連續輸入正確的亂數種子來符合 check 陣列裡的值，所以就是一個 flag checker，這裡我們來撰寫 exploit 來算出對應的亂數種子。</p><h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line">libc = ctypes.CDLL(<span class="string">&#x27;libc.so.6&#x27;</span>)</span><br><span class="line">mapping = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">255</span>):</span><br><span class="line">    libc.srand(i)</span><br><span class="line">    mapping[libc.rand()] = <span class="built_in">chr</span>(i)</span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">casino = ELF(<span class="string">&quot;./casino&quot;</span>, checksec=<span class="literal">False</span>)</span><br><span class="line"><span class="keyword">for</span> b <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">30</span>):</span><br><span class="line">    val = casino.u32(casino.sym[<span class="string">&quot;check&quot;</span>] + b * <span class="number">4</span>)</span><br><span class="line">    flag += mapping[val]</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div><p>首先我們載入 <code>ctypes</code> 讓 python 可以呼叫 C 標準函式庫中的函數。<br>然後使用 ctypes.CDLL 函數來加載 Linux 的 C 標準函式庫 libc.so.6，這樣加載後的 libc 物件就可以直接呼叫 C 標準庫中的函數，例如題目中用到的 srand() 和 rand()。<br>然後我們遞迴 ascii 的範圍建一個字典，再來我們可以透過 ida 觀察到 check 陣列觀察到有 30 個 4 bytes，所以這裡我們可以把 casino 用 pwntools 載進來之後透過 u32 以及一次移動我們的指針四個單位來找到對應的隨機種子，最後印出我們的 flag。</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">╰─ file casino                                          ─╯</span><br><span class="line">casino: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=7618b017ef4299337610a90a0a6ccb7f9efc44a4, <span class="keyword">for</span> GNU/Linux 3.2.0, not stripped</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/casino_pwn.png"                      alt="pwn"                ></p><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul><li><a class="link"   href="https://motasemhamdan.medium.com/hackthebox-flag-casino-reverse-engineering-ctf-writeups-2247bc6dafee" >https://motasemhamdan.medium.com/hackthebox-flag-casino-reverse-engineering-ctf-writeups-2247bc6dafee <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;Exploitation&quot;&gt;&lt;a href=&quot;#Exploitation&quot; class=&quot;headerlink&quot; title=&quot;Exploitation&quot;&gt;&lt;/a&gt;Exploitation&lt;/h2&gt;&lt;p&gt;這是一題逆向，因為程式不長就直接放上來：&lt;/p&gt;
-&lt;div </summary>
-      
-    
-    
-    
-    
-    <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
-    
-    <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
-    
-    <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="rev" scheme="https://kazma.tw/tags/rev/"/>
     
   </entry>
   
