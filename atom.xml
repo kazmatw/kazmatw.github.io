@@ -35,9 +35,9 @@
     
     
     
-    <category term="note" scheme="https://kazma.tw/tags/note/"/>
-    
     <category term="pt" scheme="https://kazma.tw/tags/pt/"/>
+    
+    <category term="note" scheme="https://kazma.tw/tags/note/"/>
     
     <category term="ad" scheme="https://kazma.tw/tags/ad/"/>
     
@@ -62,11 +62,11 @@
     
     
     
+    <category term="note" scheme="https://kazma.tw/tags/note/"/>
+    
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
-    <category term="note" scheme="https://kazma.tw/tags/note/"/>
     
     <category term="kernel" scheme="https://kazma.tw/tags/kernel/"/>
     
@@ -118,13 +118,13 @@
     
     
     
+    <category term="note" scheme="https://kazma.tw/tags/note/"/>
+    
     <category term="windows" scheme="https://kazma.tw/tags/windows/"/>
     
     <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="shellcoding" scheme="https://kazma.tw/tags/shellcoding/"/>
-    
-    <category term="note" scheme="https://kazma.tw/tags/note/"/>
     
   </entry>
   
@@ -224,13 +224,13 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="egg-hunting" scheme="https://kazma.tw/tags/egg-hunting/"/>
     
@@ -256,11 +256,11 @@
     
     
     
-    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
-    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="machines" scheme="https://kazma.tw/tags/machines/"/>
+    
+    <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
     
     <category term="pt" scheme="https://kazma.tw/tags/pt/"/>
     
@@ -287,9 +287,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="migration" scheme="https://kazma.tw/tags/migration/"/>
     
@@ -314,9 +314,9 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="writeup" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="oob-write" scheme="https://kazma.tw/tags/oob-write/"/>
     
@@ -340,13 +340,13 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
   </entry>
   
@@ -369,13 +369,13 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
   </entry>
   
@@ -397,13 +397,13 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="retlibc" scheme="https://kazma.tw/tags/retlibc/"/>
     
@@ -428,13 +428,13 @@
     
     
     
-    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
-    
     <category term="htb" scheme="https://kazma.tw/tags/htb/"/>
     
     <category term="challenges" scheme="https://kazma.tw/tags/challenges/"/>
     
     <category term="writeup&#39;" scheme="https://kazma.tw/tags/writeup/"/>
+    
+    <category term="pwn" scheme="https://kazma.tw/tags/pwn/"/>
     
     <category term="fmt-write" scheme="https://kazma.tw/tags/fmt-write/"/>
     

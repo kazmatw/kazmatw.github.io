@@ -29,10 +29,10 @@
 <meta property="article:published_time" content="2024-11-06T06:04:48.148Z">
 <meta property="article:modified_time" content="2024-11-06T07:11:15.380Z">
 <meta property="article:author" content="kazma">
-<meta property="article:tag" content="pwn">
 <meta property="article:tag" content="htb">
 <meta property="article:tag" content="challenges">
 <meta property="article:tag" content="writeup&#39;">
+<meta property="article:tag" content="pwn">
 <meta property="article:tag" content="retlibc">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://kazma.tw/images/pwn_retribution.png">
@@ -89,7 +89,7 @@
 
     <script id="hexo-configurations">
     window.config = {"hostname":"kazma.tw","root":"/","language":"en"};
-    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["成大資安社 創辦人/社長"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#94878e","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/smoke.png"},"title":"kazma.tw","subtitle":{"text":["Pwning my life: ","Tales of coding, cybersecurity, and campus life"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#FFFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/kazmatw","instagram":"https://www.instagram.com/kazma.tw/","zhihu":null,"twitter":null,"email":"kazmatw@gmail.com","telegram":"https://t.me/kazma_tw","discord":"https://discord.com/users/870280109360316457"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":"enable"},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#5d5764","right":"#94878e","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"ls":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags"},"whoami":{"path":"/whoami","icon":"fa-regular fa-user"},"cv":{"path":"/cv","icon":"fa-regular fa-file"},"ctfd":{"path":"https://class.nckuctf.org/","icon":"fa-brands fa-font-awesome"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}}},"article_date_format":"auto","categories":{"enable":false,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/10/25 11:45:14"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["成大資安社 創辦人/社長"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#94878e","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"../images/darkBlog.jpg"},"title":"kazma.tw","subtitle":{"text":["Pwning my life: ","Tales of coding, cybersecurity, and campus life"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#FFFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/kazmatw","instagram":"https://www.instagram.com/kazma.tw/","zhihu":null,"twitter":null,"email":"kazmatw@gmail.com","telegram":"https://t.me/kazma_tw","discord":"https://discord.com/users/870280109360316457"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":"enable"},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#5d5764","right":"#94878e","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"ls":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags"},"whoami":{"path":"/whoami","icon":"fa-regular fa-user"},"cv":{"path":"/cv","icon":"fa-regular fa-file"},"ctfd":{"path":"https://class.nckuctf.org/","icon":"fa-brands fa-font-awesome"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}}},"article_date_format":"auto","categories":{"enable":false,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/10/25 11:45:14"};
     window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
     window.data = {"masonry":false};
   </script>
@@ -673,11 +673,7 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/pwn/">pwn</a>&nbsp;
-                    </li>
-                
-                    <li>
-                        | <a href="/tags/htb/">htb</a>&nbsp;
+                        <a href="/tags/htb/">htb</a>&nbsp;
                     </li>
                 
                     <li>
@@ -686,6 +682,10 @@
                 
                     <li>
                         | <a href="/tags/writeup/">writeup&#39;</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/pwn/">pwn</a>&nbsp;
                     </li>
                 
                     <li>
@@ -768,10 +768,6 @@
             <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/pwn/">#pwn</a>&nbsp;
-                    </li>
-                
-                    <li class="tag-item mx-0.5">
                         <a href="/tags/htb/">#htb</a>&nbsp;
                     </li>
                 
@@ -781,6 +777,10 @@
                 
                     <li class="tag-item mx-0.5">
                         <a href="/tags/writeup/">#writeup&#39;</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/pwn/">#pwn</a>&nbsp;
                     </li>
                 
                     <li class="tag-item mx-0.5">
