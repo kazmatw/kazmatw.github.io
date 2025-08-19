@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="kazma, blog, ctf, reverse, engineering, pwn, binary, ncku, life, programming, coding, cybersecurity">
+    
+    <meta name="author" content="kazma">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://kazma.tw/2025/08/17/站上世界級的駭客舞台吧！2025-black-hat-def-con-全紀錄/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="BlackHat &amp; DEFCON 心得  ⬆️ Photo by Dange  關於這篇嗨大家，這裡是 Kazma！好久沒有更新部落格了，趁現在剛從拉斯維加斯回來，趕緊記錄這趟充實的旅程。 這次有好多第一次的體驗：第一次去美國、第一次踏上拉斯維加斯、第一次參加 BlackHat USA、第一次以 DEF CON 講者的身份站在世界舞台；同時也代表「奧義資安研究員」以及「來自臺灣的大學生」">
+<meta property="og:type" content="article">
+<meta property="og:title" content="站上世界級的駭客舞台吧！2025 Black Hat &amp; DEF CON 全紀錄">
+<meta property="og:url" content="https://kazma.tw/2025/08/17/%E7%AB%99%E4%B8%8A%E4%B8%96%E7%95%8C%E7%B4%9A%E7%9A%84%E9%A7%AD%E5%AE%A2%E8%88%9E%E5%8F%B0%E5%90%A7%EF%BC%812025-Black-Hat-DEF-CON-%E5%85%A8%E7%B4%80%E9%8C%84/index.html">
+<meta property="og:site_name" content="kazma&#39;s blog">
+<meta property="og:description" content="BlackHat &amp; DEFCON 心得  ⬆️ Photo by Dange  關於這篇嗨大家，這裡是 Kazma！好久沒有更新部落格了，趁現在剛從拉斯維加斯回來，趕緊記錄這趟充實的旅程。 這次有好多第一次的體驗：第一次去美國、第一次踏上拉斯維加斯、第一次參加 BlackHat USA、第一次以 DEF CON 講者的身份站在世界舞台；同時也代表「奧義資安研究員」以及「來自臺灣的大學生」">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kazma.tw/images/dc_cover.JPG">
+<meta property="og:image" content="https://kazma.tw/images/dc_johnecho.JPG">
+<meta property="og:image" content="https://kazma.tw/images/dc_singapore.png">
+<meta property="og:image" content="https://kazma.tw/images/jeff_moss.jpg">
+<meta property="og:image" content="https://kazma.tw/images/bh_opening.jpg">
+<meta property="og:image" content="https://kazma.tw/images/mikko.webp">
+<meta property="og:image" content="https://kazma.tw/images/hall.webp">
+<meta property="og:image" content="https://kazma.tw/images/msrc_photo.jpeg">
+<meta property="og:image" content="https://kazma.tw/images/skyfall_view.JPG">
+<meta property="og:image" content="https://kazma.tw/images/skyfall_party.JPG">
+<meta property="og:image" content="https://kazma.tw/images/msrc_swag.jpeg">
+<meta property="og:image" content="https://kazma.tw/images/msrc_angelboy.jpg">
+<meta property="og:image" content="https://kazma.tw/images/msrc_reply.png">
+<meta property="og:image" content="https://kazma.tw/images/dc_shot.JPG">
+<meta property="og:image" content="https://kazma.tw/images/dc_audi%20Medium.jpeg">
+<meta property="og:image" content="https://kazma.tw/images/dc_flag.jpeg">
+<meta property="og:image" content="https://kazma.tw/images/dc_taiwan_photo.JPEG">
+<meta property="og:image" content="https://kazma.tw/images/dc_taiwan.png">
+<meta property="og:image" content="https://kazma.tw/images/bh_store2.JPG">
+<meta property="og:image" content="https://kazma.tw/images/bh_store3.JPG">
+<meta property="og:image" content="https://kazma.tw/images/dc33_merch.png">
+<meta property="og:image" content="https://kazma.tw/images/dc33_merch2.png">
+<meta property="og:image" content="https://kazma.tw/images/dc_merch.PNG">
+<meta property="og:image" content="https://kazma.tw/images/keyport.jpeg">
+<meta property="og:image" content="https://kazma.tw/images/dc_bomb.jpeg">
+<meta property="og:image" content="https://kazma.tw/images/cat_mario.jpg">
+<meta property="og:image" content="https://kazma.tw/images/dc_se.png">
+<meta property="og:image" content="https://kazma.tw/images/dc_se2.png">
+<meta property="og:image" content="https://kazma.tw/images/dc_black_badge.jpg">
+<meta property="og:image" content="https://kazma.tw/images/payment.jpg">
+<meta property="og:image" content="https://kazma.tw/images/dc_physical.png">
+<meta property="og:image" content="https://kazma.tw/images/dc33_sticker.jpg">
+<meta property="og:image" content="https://kazma.tw/images/pwn_college.jpeg">
+<meta property="og:image" content="https://kazma.tw/images/dc_list.jpg">
+<meta property="article:published_time" content="2025-08-17T08:10:34.302Z">
+<meta property="article:modified_time" content="2025-08-19T06:06:15.580Z">
+<meta property="article:author" content="kazma">
+<meta property="article:tag" content="talk">
+<meta property="article:tag" content="BlackHat">
+<meta property="article:tag" content="DEFCON">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kazma.tw/images/dc_cover.JPG">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/kazma.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/kazma.png">
+    <meta name="theme-color" content="#94878e">
+    <link rel="shortcut icon" href="/images/kazma.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            站上世界級的駭客舞台吧！2025 Black Hat &amp; DEF CON 全紀錄 -
+        
+        kazma&#39;s blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/GeistMono/geist-mono.css">
+
+    
+<link rel="stylesheet" href="/fonts/Geist/geist.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    
+        
+<script src="/js/libs/anime.min.js"></script>
+
+    
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"kazma.tw","root":"/","language":"en"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"3.2rem","h2":"2.4rem","h3":"1.9rem","h4":"1.6rem","h5":"1.4rem","h6":"1.3rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["成大資安社 創辦人/社長"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推薦閱讀","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#94878e","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"../images/lightBlog.jpg","dark":"../images/darkBlog.jpg"},"title":"kazma.tw","subtitle":{"text":["Welcome to my blog","Switch theme for another world"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#000000","dark":"#FFFFFF"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/kazmatw","instagram":"https://www.instagram.com/kazma.tw/","zhihu":null,"twitter":null,"email":"kazmatw@gmail.com","telegram":"https://t.me/kazma_tw","discord":"https://discord.com/users/870280109360316457"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":"enable"},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null,"lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.4","navbar":{"auto_hide":false,"color":{"left":"#5d5764","right":"#94878e","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"ls":{"path":"/archives","icon":"fa-regular fa-archive"},"tags":{"icon":"fa-solid fa-tags","path":"/tags"},"whoami":{"path":"/whoami","icon":"fa-regular fa-user"},"cv":{"path":"/cv","icon":"fa-regular fa-file"},"ctfd":{"path":"https://class.nckuctf.org/","icon":"fa-brands fa-font-awesome"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"right","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"}}},"article_date_format":"auto","categories":{"enable":false,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023/10/25 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+        
+<link rel="stylesheet" href="/fontawesome/sharp-solid.min.css">
+
+    
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "nq9qfhqgy4");
+    </script>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EH82J63NRM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EH82J63NRM');
+</script>
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="kazma's blog" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <h2 class="ml13">
+        kazma&#39;s blog
+    </h2>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+        var animation = anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [40,0],
+                translateZ: 0,
+                opacity: [0,1],
+                filter: ['blur(5px)', 'blur(0px)'], // Starting from blurred to unblurred
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i,
+            }).add({
+                targets: '.ml13 .letter',
+                translateY: [0,-40],
+                opacity: [1,0],
+                filter: ['blur(0px)', 'blur(5px)'], // Ending from unblurred to blurred
+                easing: "easeInExpo",
+                duration: 1200,
+                delay: (el, i) => 100 + 30 * i,
+                complete: function() {
+                    hidePreloader(); // Call hidePreloader after the animation completes
+                }
+            });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            setTimeout(hidePreloader, 5000); // Call hidePreloader after 5000 milliseconds if not already called by animation
+        });
+
+        function hidePreloader() {
+            var preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(function () {
+                preloader.style.display = 'none';
+            }, 200);
+        }
+    </script>
+</div>
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/kazma.png">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                kazma&#39;s blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    HOME
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    LS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/tags"
+                                        >
+                                    <i class="fa-solid fa-tags fa-fw"></i>
+                                    TAGS
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/whoami"
+                                        >
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    WHOAMI
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/cv"
+                                        >
+                                    <i class="fa-regular fa-file fa-fw"></i>
+                                    CV
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                                        >
+                                    <i class="fa-brands fa-font-awesome fa-fw"></i>
+                                    CTFD
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                HOME
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                LS
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/tags"
+                        >
+                            <span>
+                                TAGS
+                            </span>
+                            
+                                <i class="fa-solid fa-tags fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/whoami"
+                        >
+                            <span>
+                                WHOAMI
+                            </span>
+                            
+                                <i class="fa-regular fa-user fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/cv"
+                        >
+                            <span>
+                                CV
+                            </span>
+                            
+                                <i class="fa-regular fa-file fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           target="_blank" rel="noopener" href="https://class.nckuctf.org/"
+                        >
+                            <span>
+                                CTFD
+                            </span>
+                            
+                                <i class="fa-brands fa-font-awesome fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/archives"
+                        >
+                            <span>Archives</span>
+                            <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">76</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">0</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">122</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color tracking-tight text-4xl md:text-6xl font-semibold px-2 sm:px-6 md:px-8 py-3">站上世界級的駭客舞台吧！2025 Black Hat &amp; DEF CON 全紀錄</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/kazma.png">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">kazma</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">成大資安社 創辦人/社長</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2025-08-17 16:10:34</span>
+        <span class="mobile">2025-08-17 16:10:34</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2025-08-19 14:06:15</span>
+            <span class="mobile">2025-08-19 14:06:15</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/talk/">talk</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/BlackHat/">BlackHat</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/DEFCON/">DEFCON</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="BlackHat-DEFCON-心得"><a href="#BlackHat-DEFCON-心得" class="headerlink" title="BlackHat &amp; DEFCON 心得"></a>BlackHat &amp; DEFCON 心得</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_cover.JPG"
+                      alt="cover"
+                ></p>
+<blockquote>
+<p>⬆️ Photo by Dange</p>
+</blockquote>
+<h2 id="關於這篇"><a href="#關於這篇" class="headerlink" title="關於這篇"></a>關於這篇</h2><p>嗨大家，這裡是 Kazma！<br>好久沒有更新部落格了，趁現在剛從拉斯維加斯回來，趕緊記錄這趟充實的旅程。</p>
+<p>這次有好多第一次的體驗：第一次去美國、第一次踏上拉斯維加斯、第一次參加 BlackHat USA、第一次以 DEF CON 講者的身份站在世界舞台；同時也代表「奧義資安研究員」以及「來自臺灣的大學生」的身份出現。在那邊見到了許多平常只在研究時電腦螢幕上出現的熟悉名字與面孔，也認識了很多熱情又有天賦的研究員。這些經驗讓我有機會脫離舒適圈也增加了不少見識，也讓我對人生目標有了不少新的想法。說真的，自己也很好奇未來會出現在什麼地方、做什麼有趣的事 XD</p>
+<p>這篇文章會圍繞在有關 BH&#x2F;DC 的經驗，跟大家分享其中各種有趣的片段，也希望未來第一次參加 BH&#x2F;DC 的人，可以透過這篇文章獲得一些實用的資訊～</p>
+<h2 id="旅程的起點，成為-DEF-CON-講者"><a href="#旅程的起點，成為-DEF-CON-講者" class="headerlink" title="旅程的起點，成為 DEF CON 講者"></a>旅程的起點，成為 DEF CON 講者</h2><p>這次在 DEF CON 演講的主題，是今年六月在德國海德堡研討會 TROOPERS25 研究的延伸：<br>“<a class="link"   target="_blank" rel="noopener" href="https://defcon.org/html/defcon-33/dc-33-speakers.html#content_60341" >Original Sin of SSO: macOS PRT Cookie Theft &amp; Entra ID Persistence via Device Forgery <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>“。</p>
+<p>主要的內容是我們發現了微軟在 macOS 上實作 SSO 的漏洞，首次成功在 macOS 上利用使用者權限竊取 PRT cookies，並進一步透過 PRT 實現 persistence。關於這部分，之後會再專門寫一篇技術文章深入探討細節和一篇德國 TROOPERS 的心得 XD</p>
+<p>在這裡特別感謝我的好主管、研究夥伴、旅伴：<a class="link"   target="_blank" rel="noopener" href="https://www.facebook.com/thunder.john.1" >John <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 和 <a class="link"   target="_blank" rel="noopener" href="https://www.facebook.com/brian.lee.1441" >Echo <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，一路上給我數不盡的幫助和支持。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_johnecho.JPG"
+                      alt="johnecho"
+                ></p>
+<blockquote>
+<p>⬆️ Photo by Dange</p>
+</blockquote>
+<h2 id="BlackHat-DEF-CON-介紹"><a href="#BlackHat-DEF-CON-介紹" class="headerlink" title="BlackHat &amp; DEF CON 介紹"></a>BlackHat &amp; DEF CON 介紹</h2><p>BlackHat 和 DEF CON 每年都會在拉斯維加斯前後舉辦。甚至在 2026 年 4 月底，DEF CON 還要登陸新加坡，和 BlackHat Asia 一起舉行 <a class="link"   target="_blank" rel="noopener" href="https://defcon.org/html/defcon-singapore/dc-singapore-index.html" >參考連結 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>。（接下來得加緊研究進度準備投稿了 QQ）<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_singapore.png"
+                      alt="singa"
+                ></p>
+<p>這兩個研討會的創辦人都是同一個人 —— Jeff Moss（<a class="link"   target="_blank" rel="noopener" href="https://x.com/thedarktangent" >X <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>、<a class="link"   target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Jeff_Moss_%28hacker%29" >Wiki <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>）。關於 Jeff 還有很多可以聊的，在會場四處都能看到他的身影。有別於一個高高在上的領導者，他更像是一個充滿熱情的會眾，常常能看到他和不同背景的參與者自在交談。這次也在 DEF CON 的 speaker room 遇到他幾次，可惜都沒有深入交流。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/jeff_moss.jpg"
+                      alt="jeff"
+                ></p>
+<p>Jeff 在 1993 年創立了 DEF CON，隨後在 1997 年創立了 BlackHat。這兩個研討會幾乎可以說代表了全世界最頂尖的兩種資安研討會：BlackHat 代表商業導向的研討會，而 DEF CON 則代表駭客社群的研討會。從票價就能看出兩者鮮明的定位 —— BlackHat 主會議票價通常在 $2,700–$3,400 美金，而 DEF CON 則相對平民，約 $400–$540 美金（雖然還是很貴我知道 XD）。</p>
+<p>在 BlackHat 會看到許多人穿著相對正式的服裝，議程內容多聚焦於新穎的商業話題或是大家都關注的企業產品。相比之下，DEF CON 更像是一場嘉年華，結合了許多貼近日常生活的活動和議題，並有各式各樣的有趣 Village，例如：拆炸彈、模擬開飛機、盜領 ATM、破解門鎖、社交工程等等，充滿各種驚喜。</p>
+<p>兩個研討會各有特色，一時之間也說不上更偏愛哪個。不過能一次參加到 BH 和 DC 真的很幸運，畢竟很多人因為 BH 昂貴的門票只會選擇參加 DC，也因此 DC 的人數往往遠遠超過 BH，現場氣氛可以說是十分混亂（後面會再提到許多例子w），但這也正是它的特色之一。這次也因為強者同事成功投上 BH，我才能順利申請學生獎學金，幫公司省下不少費用，同時今年也是我們公司第一次派九個人到拉斯維加斯，也算創下了一個紀錄。</p>
+<h2 id="傳說中的駭客演唱會開場"><a href="#傳說中的駭客演唱會開場" class="headerlink" title="傳說中的駭客演唱會開場"></a>傳說中的駭客演唱會開場</h2><p>在出發前，就一直聽曾經參加過的前輩們提到 BH 的開幕絕對不能錯過，也就是傳說中的「駭客演唱會」。現場的場面果然十分壯觀，由創辦人 Jeff 和主講者 <a class="link"   target="_blank" rel="noopener" href="https://x.com/mikko" >Mikko Hypponen <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 一起為大家揭開序幕。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/bh_opening.jpg"
+                      alt="opening"
+                ></p>
+<p>Mikko 目前在 X 上大約有 22.8 萬 followers，是 WithSecure 的首席資安長。之前專注於惡意程式分析與資安教育推廣，他的研究團隊就是第一個找到並分析 ILOVEYOU 病毒的團隊。也曾到牛津、哈佛等學校授課，並在 The New York Times、Wired 等國際媒體上發表過研究，算是業界公認的資安大前輩。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/mikko.webp"
+                      alt="mikko"
+                ></p>
+<p>當天在現場聽他演講，真的會被他強烈的個人舞台魅力所驚艷。演講中還搭配了許多有趣的效果，例如說講到中毒的片段，就出現雜訊畫面然後瞬間斷電關燈，以及精緻的投影片排版跟效果，可以看出這背後龐大的團隊，以及投入了相當可觀的時間與資源。<br>總之，BH 開幕值得一看，建議大家不能錯過！</p>
+<h2 id="Business-Hall"><a href="#Business-Hall" class="headerlink" title="Business Hall"></a>Business Hall</h2><p>不知道大家有沒有參加過臺灣的資安大會，在 BH 裡有一個區域叫做 <strong>Business Hall</strong>，基本上就像是資安大會的展示區，但規模更壯觀，擺設也更加浮誇。這裡主要是讓大家交流各家公司的產品，或是和潛在客戶互相介紹。也有不少人會選擇只買 Business Hall 的票，因為價格相對便宜，可以專注在商業交流上。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/hall.webp"
+                      alt="hall"
+                ></p>
+<p>在 Business Hall 裡面還有兩個特殊區域：<strong>Arsenal</strong> 和 <strong>Arsenal Labs</strong>。Arsenal 主要展示新的酷工具，而 Labs 則比較像工作坊的形式。這次我們公司也有投上一場跟 IDA MCP 相關的工作坊（<a class="link"   target="_blank" rel="noopener" href="https://www.blackhat.com/us-25/arsenal/schedule/#all-talk-ai-action-binary-analysis-toolkit-mcp-server-47874" >參考連結 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>）。不過到現在還是不太懂，為什麼不把 Arsenal 跟 Arsenal Labs 放在旁邊，場地實在大到每次過去都會迷路或搞混。</p>
+<p>另外，Business Hall 也有一些其他展示，比如無人機體驗，還有無人機 Hacking，非常有趣。</p>
+<h2 id="MSRC-派對"><a href="#MSRC-派對" class="headerlink" title="MSRC 派對"></a>MSRC 派對</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/msrc_photo.jpeg"
+                      alt="photo"
+                ></p>
+<p>這次因為研究主題與微軟產品相關，所以我們團隊在整個過程中，都持續和 Microsoft Security Response Center (MSRC) 保持聯繫，回報漏洞並確認揭露的細節。研究投上 BH&#x2F;DC 之後，MSRC 也會在會議期間安排時間，邀請相關研究員面談，討論回報流程與可能的改進。</p>
+<p>特別想提的是，他們和我們約在早上十點的餐廳見面，本來還打算能順便享受一頓豐盛早餐，結果最後連一杯水都沒喝到，原本心裡還默默抱怨「微軟也太小氣了吧」時，他們送了我們每人一件 MSRC 紀念衣服，瞬間就被收買了 XD。</p>
+<p>更精彩的是，當天晚上在 Skyfall 舉辦的 MSRC 派對。Skyfall 的景色超美，現場還設計了各種互動小遊戲，可以和微軟員工交流並收集 pin。那個 pin 正是微軟在 1997 年 Office 97 推出的「智慧型小幫手」Clippy——雖然聽說當年因為太常跳出來打斷工作被嫌到退場，但現在成了受歡迎的復古梗。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/skyfall_view.JPG"
+                      alt="view"
+                ></p>
+<blockquote>
+<p>⬆️ Photo by Allen Own</p>
+</blockquote>
+<p>派對現場食物和調酒都很棒，還有撲克牌遊戲，我也從遊戲裡拿到第二件 MSRC 派對衣服。</p>
+<p>其實 BH&#x2F;DC 幾乎每天都有一堆派對可以參加，但 MSRC 派對被很多人公認為「最頂的派對之一」，原因大概是交流氣氛特別熱絡。剛開始就有不少人主動來聊天，讓我很快適應了派對的節奏，後來也認識了許多研究員並交換了聯繫方式，真的收穫滿滿。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/skyfall_party.JPG"
+                      alt="party"
+                ></p>
+<blockquote>
+<p>⬆️ Photo by Allen Own</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/msrc_swag.jpeg"
+                      alt="swag"
+                ></p>
+<p>其中一件衣服背面和派對背板還印有 2025 的 Most Valuable Researchers (MVRs) ，其中包括 Angelboy：<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/msrc_angelboy.jpg"
+                      alt="mvr"
+                ></p>
+<blockquote>
+<p>⬆️ Photo by Allen Own</p>
+</blockquote>
+<p>這趟讓我對 MSRC 的印象大加分，而且最後從我豐富的衣服戰利品中挑的就是 MSRC 的紀念衣服穿上台演講，還因此收到有趣的回覆 XD：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/msrc_reply.png"
+                      alt="reply"
+                ></p>
+<h2 id="DEF-CON-演講"><a href="#DEF-CON-演講" class="headerlink" title="DEF CON 演講"></a>DEF CON 演講</h2><p>DEF CON 有個傳統是新人第一次登台演講時可以參加「新人 shot」。</p>
+<p>於是就有了下面這張酷酷的照片 XD<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_shot.JPG"
+                      alt="shot"
+                ></p>
+<blockquote>
+<p>⬆️ Photo by Dange</p>
+</blockquote>
+<p>不過因為我平常很少喝酒，所以杯子裡其實裝的是水，聽 Echo 說演講表現多少有受到酒精影響，所以大家再斟酌要不要喝。另外，當下因為舞台很高、燈光又很亮，其實看不太清楚台下情況，但演講結束下台後才發現觀眾席竟然是坐滿的<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_audi%20Medium.jpeg"
+                      alt="audi"
+                ></p>
+<blockquote>
+<p>⬆️ 因應肖像權，已調降畫質。</p>
+</blockquote>
+<p>非常感謝同事 Dange 和攝影師 Jur1st，幫我們留下了許多漂亮的照片。演講完成後還會拿的兩個講者專屬的特別紀念品：一個是 DEF CON 講者徽章，另一個是超大面的講者旗子。被同事慫恿後來在會場披著旗子走了幾圈，一開始還挺抗拒的，但想想也是挺難得的回憶，畢竟之後感覺也找不到安置這麼大一面旗子的地方<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_flag.jpeg"
+                      alt="flag"
+                ></p>
+<p>演講結束後，在會場常常遇到路人主動給我們正面回饋，甚至連去廁所時還有老兄主動碰拳說「Good talk!」。同時也非常感謝啟發我們研究的大前輩 Dirk-jan 和 Olaf 前來聽捧場，以及許多台灣朋友到場支持</p>
+<h2 id="臺灣人溫馨大聚餐"><a href="#臺灣人溫馨大聚餐" class="headerlink" title="臺灣人溫馨大聚餐"></a>臺灣人溫馨大聚餐</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_taiwan_photo.JPEG"
+                      alt="taiwan"
+                ></p>
+<blockquote>
+<p>感謝善良的拉斯維加斯路人幫忙拍照，愛逮丸 🇹🇼</p>
+</blockquote>
+<p>照慣例，每年去拉斯維加斯參加 BH&#x2F;DC 的臺灣人都會找一天晚上一起吃飯，所以要去的各位記得關注一下臉書的活動，確保自己不會錯過</p>
+<p>今年是由 Jeffery 主辦的，一直很佩服大家人數一直加加減減，怎麼有辦法把餐廳人數訂得剛剛好，再次感恩讚嘆 Jeffery！</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_taiwan.png"
+                      alt="taiwan"
+                ></p>
+<p>能在遙遠的地方，和來自家鄉的朋友們圍在一起吃飯，感覺特別溫暖。除了能和國內的資安前輩們交流學習，也特別能在這些時刻感受到臺灣人的團結與凝聚力，爭取明年再次參與！</p>
+<h2 id="BH-DC-紀念品"><a href="#BH-DC-紀念品" class="headerlink" title="BH&#x2F;DC 紀念品"></a>BH&#x2F;DC 紀念品</h2><h3 id="BlackHat-紀念品"><a href="#BlackHat-紀念品" class="headerlink" title="BlackHat 紀念品"></a>BlackHat 紀念品</h3><p>紀念品大概是很多人最關注的部分，我自己出發前也是最期待這環節。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/bh_store2.JPG"
+                      alt="store1"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/bh_store3.JPG"
+                      alt="store1"
+                ></p>
+<blockquote>
+<p>⬆️ Photos by 班若</p>
+</blockquote>
+<p>首先 BlackHat 的紀念品是在一個獨立的空間裡賣的，像一個商店一樣，然後可以刷卡，去了才知道 BlackHat 的商品種類非常誇張，光是包包就超過十種，通常進去不需要排隊，但有些熱門商品還是有機會賣完，但要特別提醒的是這些紀念品都挺貴的，雖然我自己買了不少，但是還是提醒大家切勿衝動消費，然後也別幫太多人代購，像我就是差點要再買一個行李箱 XD</p>
+<p>另外補充一點，通常最後一天會有一些促銷，像這次最後他們有衣服買二送一的活動，所以如果覺得太昂貴下不了手的，不妨等看看。</p>
+<h3 id="DEF-CON-紀念品"><a href="#DEF-CON-紀念品" class="headerlink" title="DEF CON 紀念品"></a>DEF CON 紀念品</h3><p>DEF CON 紀念品就是一場災難了，非常之誇張。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc33_merch.png"
+                      alt="merch"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc33_merch2.png"
+                      alt="merch2"
+                ></p>
+<blockquote>
+<p>⬆️ Photos on Reddit</p>
+</blockquote>
+<p>一堆人不知道從凌晨幾點就開始在排隊，Reddit 每年都可以看到一堆相關的梗圖，整個隊伍完全看不到盡頭，甚至一堆人無聊到帶沙灘排球邊排隊邊消耗時間。而造成這個現象主要的差異是 DEF CON 買紀念品是不需要門票的，所以隨便一個路人都可以走進來排隊，但要注意的是他們只收現金，另外，DEF CON 通常在前一天晚上會在 HackerTracker 開放讓大家選購 Merch，到時候就可以直接讓他們刷 QRcode 加快流程，但隨著時間流逝會看到上面很多東西逐漸 sold out，建議大家下次組隊去輪流排隊比較有機會買到熱門商品，否則就會像我這次只能撿剩下的，難過的是講者也沒有送任何衣服 QQ</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_merch.PNG"
+                      alt="dc"
+                ></p>
+<p>但 DEF CON 除了這些紀念品以外，還有另一大個區域是專門賣各種玩具的，像是 Wi-Fi Pineapple、HackRF One、Flipper Zero、Proxmark3 等，我這次也在這邊買了 Keyport，一個模組化像是瑞士刀的小東西，買完後推坑 John 跟 Echo 也入手一人一隻了，裡面我放了 USB、yubikey、NFC Contact Card、油性筆、和一把刀，給大家參考。他也有網路商店，不過只有現場可以買到有 DEF CON 聯名的配件：<br><a class="link"   target="_blank" rel="noopener" href="https://www.mykeyport.com/" >https://www.mykeyport.com/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/keyport.jpeg"
+                      alt="keyport"
+                ><br>特別提一下，上面的磁吸式分離配件是 DEF CON 33 全球限量 100 個，所以上面可以看到 8 of 100，超讚</p>
+<h2 id="B33F-W33D-拆彈小隊"><a href="#B33F-W33D-拆彈小隊" class="headerlink" title="B33F W33D 拆彈小隊"></a>B33F W33D 拆彈小隊</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_bomb.jpeg"
+                      alt="bomb"
+                ></p>
+<blockquote>
+<p>⬆️ Photo by Jeffery</p>
+</blockquote>
+<p>在 DEF CON Day3，跟 Jim 一起參加了一個超有趣的拆炸彈 Village。這個活動每年都會有新題目，但聽說已經好幾年沒有人成功解開炸彈了。今年的戰況一樣慘烈：死亡次數八九百次，成功零次。</p>
+<p>規則基本上什麼都沒講，只丟給我們一個炸彈，限時十分鐘，想辦法在不斷「死亡」的過程中搞清楚玩法。有點像魂系遊戲，也讓我想到 cat mario，只能透過一直送頭累積經驗 XD。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/cat_mario.jpg"
+                      alt="cat"
+                ></p>
+<p>炸彈系統挺複雜的，總共有三四個箱子互相連動，裡面塞了一堆必須避開的 sensor。現場除了我們，主要就是幾個隊伍在輪流嘗試，一邊開拓路徑、一邊找解法。</p>
+<p>更有趣的是，工具都要自己準備，像膠帶、磁鐵、電火布之類的都得靠自己帶。整體體驗雖然超通靈，但真的很好玩！建議大家下次經過的時候可以組隊上去挑戰看看。</p>
+<h2 id="Social-Engineering-Village"><a href="#Social-Engineering-Village" class="headerlink" title="Social Engineering Village"></a>Social Engineering Village</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_se.png"
+                      alt="se1"
+                ><br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_se2.png"
+                      alt="se2"
+                ></p>
+<p>DEF CON 最著名的村莊之一，主要分成以下幾種活動在進行：</p>
+<ul>
+<li>Social Engineering Capture the Flag (SECTF)<ul>
+<li>正式比賽，需要事先報名並通過遴選，通常在 DEF CON 開始前幾個月就要填申請表</li>
+<li>現場會透明隔音電話亭 live call 轉播給大家聽，一次約 20~30 min，超級精彩</li>
+<li>每次會抽出一些 flag 讓參賽者收集來累積分數，例如：<ul>
+<li>用什麼防毒軟體？</li>
+<li>Wi-Fi 名稱是什麼？</li>
+<li>誰負責 IT 支援？</li>
+<li>午休時間是什麼時候？</li>
+<li>security camera 是否能被 remote access</li>
+</ul>
+</li>
+<li>冠軍隊伍成員可以獲得傳說中的「Black Badge」(見下章節)</li>
+</ul>
+</li>
+<li>OSINT CTF：給定一個虛構人物或公司，參賽者要靠公開資料蒐集盡可能多的資訊</li>
+<li>心理操控 &#x2F; 說服遊戲：像是比誰能在短時間內說服陌生人做某件小事</li>
+<li>工作坊挑戰：練習聲音表達、建立信任感、或者角色扮演</li>
+</ul>
+<p>非常精彩，每次去都大排長龍，甚至好幾次因為隊伍太長不讓人再往下排下去，印象深刻的像是：有個路人小女孩用他年輕的聲音跟對方說，希望她協助完成學校的資安民調報告，然後不到兩分鐘就拿到全部的 flag。也有遇到對方資安意識很強烈的，一直要求挑戰者表明身份跟唸出員工 ID，屢屢失敗也讓觀眾一直笑翻。因為路人挑戰只有五分鐘，所以也有遇到運氣很差的路人電話一直打不通有夠難過。</p>
+<h2 id="Black-Badge-科普"><a href="#Black-Badge-科普" class="headerlink" title="Black Badge 科普"></a>Black Badge 科普</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_black_badge.jpg"
+                      alt="black"
+                ></p>
+<blockquote>
+<p>The DEF CON Black Badge is a powerful talisman, awarded only to those who have emerged unbeaten from the crucible of elite DEF CON competition. Which competitions? The answer varies from year to year. This is in the nature of the talisman.  Those chosen by the Badge enter DEF CON free of charge for the duration of their natural life.</p>
+</blockquote>
+<p>Ref: <a class="link"   target="_blank" rel="noopener" href="https://defcon.org/html/links/dc-black-badge.html" >https://defcon.org/html/links/dc-black-badge.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>簡單來說，每年會從一些指定的競賽中頒發給冠軍們 DEF CON 黑徽章，象徵著最高榮譽，而且終身可以憑黑徽章自由進出 DEF CON 會場，每年配合的比賽跟徽章樣式都不太一樣，有興趣的可以參考上面的連結～</p>
+<p>另外，今年在 BlackHat 聽到 Azure Yang 關於 Secureboot 的議程時，就有聽到他在自我介紹提到他是某一年的 Black badge 得主，同時也是 MSRC MVR 22&#x2F;23&#x2F;24&#x2F;25，有夠猛…</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>快速帶過其他各種有趣活動：</p>
+<h3 id="Payment-Village"><a href="#Payment-Village" class="headerlink" title="Payment Village"></a>Payment Village</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/payment.jpg"
+                      alt="payment"
+                ></p>
+<p>有各種 ATM 跟 POS 機可以讓大家練習盜領假鈔，酷斃</p>
+<h3 id="Physical-Village"><a href="#Physical-Village" class="headerlink" title="Physical Village"></a>Physical Village</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_physical.png"
+                      alt="physical"
+                ></p>
+<p>經典中的經典，說不哪天會救你一命的各種開鎖技巧 XD</p>
+<h3 id="Sticker-Wall"><a href="#Sticker-Wall" class="headerlink" title="Sticker Wall"></a>Sticker Wall</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc33_sticker.jpg"
+                      alt="sticker_wall"
+                ></p>
+<blockquote>
+<p>⬆️ Photo by Allen Own</p>
+</blockquote>
+<p>經典貼紙牆，大家出發前記得帶上自己家的貼紙去佔個地盤！</p>
+<h3 id="DEFCON-Academy"><a href="#DEFCON-Academy" class="headerlink" title="DEFCON Academy"></a>DEFCON Academy</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/pwn_college.jpeg"
+                      alt="pwn_college"
+                ></p>
+<p>這邊今年看到其實就是 pwn.college，一走進去就聽到熟悉的：”Hello Hackers!”，跟 shellphish 還有 Yan 聊了一下，還拿了件衣服跟超帥的 coin</p>
+<h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>這篇介紹大概就到這邊，這堂旅程真的很充實，也讓我增加了不少見識跟研究動力，之後應該還會有一篇是專門介紹拉斯維加斯旅遊篇以及想要特別幫這篇翻譯英文版，請各位敬請期待我慢慢填補完這一堆坑<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/../images/dc_list.jpg"
+                      alt="list"
+                ></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 站上世界級的駭客舞台吧！2025 Black Hat &amp; DEF CON 全紀錄</li>
+        <li><strong>Author:</strong> kazma</li>
+        <li><strong>Created at
+                :</strong> 2025-08-17 16:10:34</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2025-08-19 14:06:15
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://kazma.tw/2025/08/17/站上世界級的駭客舞台吧！2025-Black-Hat-DEF-CON-全紀錄/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/talk/">#talk</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/BlackHat/">#BlackHat</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/DEFCON/">#DEFCON</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2025/05/20/NCKUCTF-XY-Active-Directory-Note/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">NCKUCTF XY Active Directory Note</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        Comments
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-swup-reload-script
+            src="//cdn.staticfile.org/gitalk/1.8.0/gitalk.min.js"></script>
+    <script data-swup-reload-script>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: '68fd7e0e6c37358fbb4f',
+                    clientSecret: 'dc6a9d6490a92521e96b38717770845226846c62',
+                    repo: 'kazmatw.github.io',
+                    owner: 'kazmatw',
+                    admin: ['kazmatw'],
+                    id: __gitalk__pathname,
+                    language: 'en',
+                    proxy: 'https://github.com/login/oauth/access_token'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">站上世界級的駭客舞台吧！2025 Black Hat &amp; DEF CON 全紀錄</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BlackHat-DEFCON-%E5%BF%83%E5%BE%97"><span class="nav-text">BlackHat &amp; DEFCON 心得</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%9C%E6%96%BC%E9%80%99%E7%AF%87"><span class="nav-text">關於這篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%85%E7%A8%8B%E7%9A%84%E8%B5%B7%E9%BB%9E%EF%BC%8C%E6%88%90%E7%82%BA-DEF-CON-%E8%AC%9B%E8%80%85"><span class="nav-text">旅程的起點，成為 DEF CON 講者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BlackHat-DEF-CON-%E4%BB%8B%E7%B4%B9"><span class="nav-text">BlackHat &amp; DEF CON 介紹</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%82%B3%E8%AA%AA%E4%B8%AD%E7%9A%84%E9%A7%AD%E5%AE%A2%E6%BC%94%E5%94%B1%E6%9C%83%E9%96%8B%E5%A0%B4"><span class="nav-text">傳說中的駭客演唱會開場</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Business-Hall"><span class="nav-text">Business Hall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MSRC-%E6%B4%BE%E5%B0%8D"><span class="nav-text">MSRC 派對</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DEF-CON-%E6%BC%94%E8%AC%9B"><span class="nav-text">DEF CON 演講</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%BA%E7%81%A3%E4%BA%BA%E6%BA%AB%E9%A6%A8%E5%A4%A7%E8%81%9A%E9%A4%90"><span class="nav-text">臺灣人溫馨大聚餐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BH-DC-%E7%B4%80%E5%BF%B5%E5%93%81"><span class="nav-text">BH&#x2F;DC 紀念品</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BlackHat-%E7%B4%80%E5%BF%B5%E5%93%81"><span class="nav-text">BlackHat 紀念品</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DEF-CON-%E7%B4%80%E5%BF%B5%E5%93%81"><span class="nav-text">DEF CON 紀念品</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B33F-W33D-%E6%8B%86%E5%BD%88%E5%B0%8F%E9%9A%8A"><span class="nav-text">B33F W33D 拆彈小隊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Social-Engineering-Village"><span class="nav-text">Social Engineering Village</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Black-Badge-%E7%A7%91%E6%99%AE"><span class="nav-text">Black Badge 科普</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Payment-Village"><span class="nav-text">Payment Village</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Physical-Village"><span class="nav-text">Physical Village</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sticker-Wall"><span class="nav-text">Sticker Wall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DEFCON-Academy"><span class="nav-text">DEFCON Academy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-text">總結</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2025&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">kazma</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        122 posts in total
+                    </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.4</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+            <li class="right-bottom-tools rss flex justify-center items-center">
+                <a class="flex justify-center items-center"
+                   href="/atom.xml"
+                   target="_blank"
+                >
+                <i class="fa-regular fa-rss"></i>
+                </a>
+            </li>
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+</body>
+</html>
