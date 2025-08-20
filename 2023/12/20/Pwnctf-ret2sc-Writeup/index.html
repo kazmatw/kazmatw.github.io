@@ -26,7 +26,7 @@
 <meta property="og:description" content="ret2sc這題就是先把 shellcode 寫到 name 上，再跳上去就行，不過比較新的作業系統 bss 段沒有 x 權限，這邊就直接上 exploit.py： 12345678910from pwn import *r &#x3D; process(&amp;#x27;.&#x2F;ret2sc&amp;#x27;)name &#x3D; 0x601080sc &#x3D; b&quot;\x50\x48\x31\xd2\x48\xbb\x2f\">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-12-20T14:57:23.000Z">
-<meta property="article:modified_time" content="2023-12-20T15:03:09.932Z">
+<meta property="article:modified_time" content="2025-08-20T05:53:24.969Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="writeup">
@@ -583,8 +583,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-12-20 23:03:09</span>
-            <span class="mobile">2023-12-20 23:03:09</span>
+            <span class="desktop">2025-08-20 13:53:24</span>
+            <span class="mobile">2025-08-20 13:53:24</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -652,7 +652,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2023-12-20 23:03:09
+                    :</strong> 2025-08-20 13:53:24
             </li>
         
         <li>
