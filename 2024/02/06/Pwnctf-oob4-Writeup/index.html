@@ -27,7 +27,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://kazma.tw/images/oob4_r2.png">
 <meta property="article:published_time" content="2024-02-05T18:50:53.000Z">
-<meta property="article:modified_time" content="2025-08-20T03:38:34.003Z">
+<meta property="article:modified_time" content="2025-08-20T03:52:02.321Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="writeup">
@@ -585,8 +585,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:38:34</span>
-            <span class="mobile">2025-08-20 11:38:34</span>
+            <span class="desktop">2025-08-20 11:52:02</span>
+            <span class="mobile">2025-08-20 11:52:02</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -645,7 +645,7 @@
 <p>然後附上輸入 Nickname 的 fgets：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/oob4_r2.png"
+                     data-src="/images/oob4_r2.png"
                       alt="r2"
                 ><br>因為在 call 完 fgets 之後會 ret 回 main，所以可以把 win 寫在 rsp - 8 的位置，offset 是：<br><code>(0x40 - 0x5c - 0x8) / 8 = -5</code></p>
 <p>exploit 如下：</p>
@@ -666,7 +666,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:38:34
+                    :</strong> 2025-08-20 11:52:02
             </li>
         
         <li>

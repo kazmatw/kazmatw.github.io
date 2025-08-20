@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://kazma.tw/images/haknote_addstruct.png">
 <meta property="og:image" content="https://kazma.tw/images/hacknote_struct2.png">
 <meta property="article:published_time" content="2024-06-04T15:02:05.373Z">
-<meta property="article:modified_time" content="2025-08-20T03:38:34.187Z">
+<meta property="article:modified_time" content="2025-08-20T03:52:02.414Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="writeup">
@@ -588,8 +588,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:38:34</span>
-            <span class="mobile">2025-08-20 11:38:34</span>
+            <span class="desktop">2025-08-20 11:52:02</span>
+            <span class="mobile">2025-08-20 11:52:02</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -665,12 +665,12 @@
 <p>我們搭配動態分析了解一下他是怎麼新增筆記的。<br>首先把斷點下在 <code>exit</code>，然後新增一個大小為 32 內容為 <code>aaaabbbb</code> 的筆記觀察一下他的結構：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/haknote_addstruct.png"
+                     data-src="/images/haknote_addstruct.png"
                       alt="add_struct"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/hacknote_struct2.png"
+                     data-src="/images/hacknote_struct2.png"
                       alt="struct2"
                 ><br>可以看到他每一個筆記都會 <code>malloc</code> 兩次，首先固定會 <code>malloc(8)</code> 並且前 4 bytes 為一個會印出後 4 bytes 內容的功能，再來後 4 bytes 放的就是實際內容的 pointer，那要印出筆記內容的時候就會去呼叫這個印出內容的函式。<br>嗯，好酷的設計，有點硬要 XD</p>
 <h3 id="delete-note"><a href="#delete-note" class="headerlink" title="delete_note"></a>delete_note</h3><p>再來就是漏洞的關鍵點：</p>
@@ -704,7 +704,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:38:34
+                    :</strong> 2025-08-20 11:52:02
             </li>
         
         <li>

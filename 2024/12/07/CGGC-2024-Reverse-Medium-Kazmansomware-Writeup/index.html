@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://kazma.tw/images/kazmansomware_pyi.png">
 <meta property="og:image" content="https://kazma.tw/images/kazmansomware_space.png">
 <meta property="article:published_time" content="2024-12-07T06:22:39.961Z">
-<meta property="article:modified_time" content="2025-08-20T03:38:34.187Z">
+<meta property="article:modified_time" content="2025-08-20T03:52:02.402Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="cggc">
 <meta property="article:tag" content="medium">
@@ -591,8 +591,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:38:34</span>
-            <span class="mobile">2025-08-20 11:38:34</span>
+            <span class="desktop">2025-08-20 11:52:02</span>
+            <span class="mobile">2025-08-20 11:52:02</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -646,39 +646,39 @@
 <h2 id="Writeup"><a href="#Writeup" class="headerlink" title="Writeup"></a>Writeup</h2><p>這次的題目會給一個 flag.zip 如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/kazmansomware_flag.png"
+                     data-src="/images/kazmansomware_flag.png"
                       alt="flag.png"
                 ><br>然後我們解壓縮之後會看到 flag.png，但其實他是一個 flag.png.exe，只是因為 windows 預設會隱藏副檔名的顯示，所以如果我們執行這張假圖片的話他就會執行到裡面藏的勒索軟體 rans.exe，像是下面這樣：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/kazmansomware_exe.png"
+                     data-src="/images/kazmansomware_exe.png"
                       alt="exe"
                 ><br>可以明顯看到他幫我們換桌布並且跳出一個類似勒索軟體的 gui，並且如果我們嘗試關閉的話會看到需要 termination key：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/kazmansomware_termination.png"
+                     data-src="/images/kazmansomware_termination.png"
                       alt="termination"
                 ><br>那這邊原本其實是想懲罰在主機解題的人，所以原本是會把檔案都加密的，但是評估了一下還是只幫各位換桌布而已，有點可惜QQ<br>總之如果各位把他丟進去逆向工具會發現他其實是一個 Self-Extracting Archive 的壓縮檔：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/kazmansomware_sfx.png"
+                     data-src="/images/kazmansomware_sfx.png"
                       alt="sfx"
                 ><br>這可以直接透過 WinRAR 或是 binwalk 之類的工具拿到 rans.exe 如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/kazmansomware_rans.png"
+                     data-src="/images/kazmansomware_rans.png"
                       alt="rans"
                 ><br>那把 rans.exe 丟去逆向應該會發現它是由 python 編譯成的 exe：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/kazmansomware_pyi.png"
+                     data-src="/images/kazmansomware_pyi.png"
                       alt="pyi"
                 ><br>那實際上我確實是用 <code>auto-py-to-exe</code> 編譯成的，所以我們這邊可以先用 pyinstxtractor 幫我們解出 pyc：<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/extremecoders-re/pyinstxtractor.git" >https://github.com/extremecoders-re/pyinstxtractor.git <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p>然後再用 decompyle3 把 rans.pyc 解回 rans.py，如果用 uncompyle6 可能會因為不支援最新版的 python 所以反編譯失敗。<br>接著拿到 rans.py 後就應該就沒什麼問題了，可以注意到勒索軟體它會去生成一組隨機的 machine id 跟 key 然後用 receive_key 的 api 把資料送給遠端的 server，然後又可以注意到勒索軟體使用者嘗試輸入 key 之後解開的時候會去拿 machine id 跟 key 請求 get_flag api。<br>那這邊其實解法很簡單，我們其實只要自己生一組 machine id 跟 key 之後請求 receive_key api 就可以在遠端存下這組 id 跟 key，然後我們再用同一組 id 跟 key 去請求 get_flag 就可以拿到 flag 了，因為資料庫裡存在我們剛剛放進去的那組 key。</p>
 <p>不過一開始沒想到的是，後來看 dashboard 好像有人存了一組空白的 id 跟 key 導致後來請求空白的 id 跟 key 就能拿到 flag 了 QQ<br>有點可惜 receive_key api 應該加一下限制，不然大家隨便送的 id 跟 key 都會收。<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/kazmansomware_space.png"
+                     data-src="/images/kazmansomware_space.png"
                       alt="space"
                 ></p>
 <h3 id="Exploit-參考"><a href="#Exploit-參考" class="headerlink" title="Exploit 參考"></a>Exploit 參考</h3><p>GPT 生的解題腳本：</p>
@@ -700,7 +700,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:38:34
+                    :</strong> 2025-08-20 11:52:02
             </li>
         
         <li>

