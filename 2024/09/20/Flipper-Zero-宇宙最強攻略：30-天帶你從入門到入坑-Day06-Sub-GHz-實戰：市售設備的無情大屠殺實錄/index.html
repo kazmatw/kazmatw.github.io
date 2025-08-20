@@ -25,21 +25,21 @@
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="前言在聽完昨天關於 Sub-GHz 的各種攻擊理論後，相信大家都等不及拿起 Flipper Zero 來動手學習這些知識了，今天我們會繼續透過 YouTuber Derek Jamison 的影片清單 – Flipper Zero - Rolling Codes  來學習這些內容。 資安倫理宣導請注意，透過 Flipper Zero 所學到的技術與知識，主要目的是提升個人技術能力與資訊安全意識。我">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/source/images/teach1.0.png">
-<meta property="og:image" content="https://kazma.tw/source/images/keyloq0.png">
-<meta property="og:image" content="https://kazma.tw/source/images/keyloq.png">
+<meta property="og:image" content="https://kazma.tw/images/teach1.0.png">
+<meta property="og:image" content="https://kazma.tw/images/keyloq0.png">
+<meta property="og:image" content="https://kazma.tw/images/keyloq.png">
 <meta property="og:image" content="https://i.ebayimg.com/images/g/NroAAOSwJPBhqtRX/s-l960.webp">
 <meta property="og:image" content="https://m.media-amazon.com/images/I/61yinjC9viL._AC_SL1500_.jpg">
 <meta property="og:image" content="https://m.media-amazon.com/images/I/81RbB-RrvgL._AC_SL1500_.jpg">
-<meta property="og:image" content="https://kazma.tw/source/images/flaws_demo.png">
+<meta property="og:image" content="https://kazma.tw/images/flaws_demo.png">
 <meta property="article:published_time" content="2024-09-19T19:44:57.184Z">
-<meta property="article:modified_time" content="2025-08-20T03:35:55.551Z">
+<meta property="article:modified_time" content="2025-08-20T03:38:34.081Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="flipper-zero">
 <meta property="article:tag" content="iThome">
 <meta property="article:tag" content="toy">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/source/images/teach1.0.png">
+<meta name="twitter:image" content="https://kazma.tw/images/teach1.0.png">
     
     
     <!--- Icon Part-->
@@ -590,8 +590,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:35:55</span>
-            <span class="mobile">2025-08-20 11:35:55</span>
+            <span class="desktop">2025-08-20 11:38:34</span>
+            <span class="mobile">2025-08-20 11:38:34</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -647,7 +647,7 @@
 <h2 id="Security-1-0"><a href="#Security-1-0" class="headerlink" title="Security+ 1.0"></a>Security+ 1.0</h2><p>首先，我們先進到 Flipper 的 Sub-GHz -&gt; Add Manually 之後會看到最下面有一排 Security 開頭的訊號，我們點選 Security+ 1.0 315MHz 並且把它存成 1.0test。補充說明：作者在這個部分是用 LiftMaster，但我沒找到就用這個代替了。<br>接著，我們到 saved 去模擬這個訊號，可以看到左上角寫著 Security+ 1.0 以及一堆數字，我們借用 Derek Jamison 的影片截圖來協助我們講解：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/teach1.0.png"
+                     data-src="/../images/teach1.0.png"
                       alt="teach"
                 ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://youtu.be/fmCzYAX7O38?si=LeOzLlxPmyya5qYb" >https://youtu.be/fmCzYAX7O38?si=LeOzLlxPmyya5qYb <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>左上角可以看到這個協議是 Security+ 1.0，在這個協議中資料是 encoded 不是 encrypted 的，所以可以說是相當不安全也是最簡單的一種協議。而往右邊一個會看到 42b 代表的是封包是 42 位元的，但注意這邊其實是 trits 因為是三進位的，但不知道為什麼不叫 42t，知道的可以在下面留言跟我說。再往右邊就是頻率和調製，然後接著就是當前密鑰。而密鑰的前面一半是固定的前綴，後面則是下面的計數器 Cnt 的值，每按一下會加二，其中當我們把密鑰的前綴換成三進位後就可以看到最後三個 trits 分別代表：</p>
 <ul>
@@ -661,12 +661,12 @@
 <h2 id="KeyLoq"><a href="#KeyLoq" class="headerlink" title="KeyLoq"></a>KeyLoq</h2><p>這次我們要看的是 KeyLoq 這個協議，我們可以跟剛剛一樣到 Add Manually 去找到 KL: DoorHan 這個製造商，前面的 KL 就是 KeyLoq 的縮寫，所以其實 Flipper 都有很貼心的幫我們把協議寫在製造商前面，這次我們把它存成 KeyLoq_test。<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/keyloq0.png"
+                     data-src="/../images/keyloq0.png"
                       alt="keyloq"
                 ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://youtu.be/x4ml1JAH1q0?si=1ZcHYcQYr8c7WQW-" >https://youtu.be/x4ml1JAH1q0?si=1ZcHYcQYr8c7WQW- <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>左上角一樣是他的協議，右邊這次是 64bit，但這次真的是二進位了，Key 就是每次在傳輸的 data，而我們可以看到前 32 個 bits 每次都會不一樣，這部分是用 manufacturer key 或是搭配更多參數像是 Serial Number 或是其他亂數種子加密，這部分就是滾動碼在滾動的部分，但 Flipper Zero 是有能力解密一部份的製造商的，如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/keyloq.png"
+                     data-src="/../images/keyloq.png"
                       alt="keyloq2"
                 ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://youtu.be/x4ml1JAH1q0" >https://youtu.be/x4ml1JAH1q0 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>?<br>我們把 Key 寫成二進制並且倒過來我們稱它叫 Yek (英文字母順序反過來)，而現在 Yek 的前 32 bits 變成固定的值呈現在 Fix 的欄位，而後 32 bits 則是 Hop 的值，而我們可以發現 Fix 其實就是 Btn + Sn。接著作者嘗試使用 DoorHan 的 Manufacturer Key 解密得到 22540004，分別對應到 Btn: 2，Sn ending: 54，第二個 2 忽略，後面 0004 代表計數，表示我們成功解密了。</p>
 <h2 id="市售設備測試"><a href="#市售設備測試" class="headerlink" title="市售設備測試"></a>市售設備測試</h2><p>這邊因為鐵人賽沒時間等我慢慢網購，所以用作者測試的結果來跟大家討論。作者在第三集買了三個設備要來測試前面提到的協議，分別有：</p>
@@ -692,7 +692,7 @@
 <h2 id="Rolling-Flaws-applicaation"><a href="#Rolling-Flaws-applicaation" class="headerlink" title="Rolling Flaws applicaation"></a>Rolling Flaws applicaation</h2><p>Rolling Flaws 指的就是 Rolling Codes 的各種弱點就像是我們昨天介紹的一樣，而作者在第四集有跟大家介紹一個有趣的 Flipper Zero 應用程式，可以作為接收器其中包含多個參數設定來模擬各種 Rolling Flaws，而作者在這邊用兩個 Flipper 來示範各種攻擊：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/flaws_demo.png"
+                     data-src="/../images/flaws_demo.png"
                       alt="flaw"
                 ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://youtu.be/gMnGuDC9EQo?si=XKvD4r47qs1hGaZT" >https://youtu.be/gMnGuDC9EQo?si=XKvD4r47qs1hGaZT <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>如上圖，左邊就是攻擊用得 Flipper，而右邊是接收器，會告訴你是否成功打開，並且會顯示打開的原因是什麼，很適合我們學習 Rolling Flaws，如果這個月有時間會跟別人借一個 Flipper 來寫一篇。<br>Rolling Flaws: <a class="link"   target="_blank" rel="noopener" href="https://github.com/jamisonderek/flipper-zero-tutorials/tree/main/subghz/apps/rolling-flaws" >https://github.com/jamisonderek/flipper-zero-tutorials/tree/main/subghz/apps/rolling-flaws <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>YouTube: <a class="link"   target="_blank" rel="noopener" href="https://youtu.be/gMnGuDC9EQo?si=NnaknRuKZE3naxSi" >https://youtu.be/gMnGuDC9EQo?si=NnaknRuKZE3naxSi <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <h2 id="按讚訂閱收藏小鈴噹叮叮叮"><a href="#按讚訂閱收藏小鈴噹叮叮叮" class="headerlink" title="按讚訂閱收藏小鈴噹叮叮叮"></a>按讚訂閱收藏小鈴噹叮叮叮</h2><p>今天我們跟著 Derek Jamison 的前四集影片學到了 Security+ 1.0 和 KeyLoq 這兩個協議的封包內容以及他們的運作方式。了解完後我們透過第三集影片看到實際的市售設備測試，並且發現 KeyLoq 也不一定是安全的，還是要看製造商的實作機制如何，以及 Flipper Zero 有沒有辦法解密該製造商的資料，明天我們會聊到 Sub-GHz 的 decoders&#x2F;encoders 是怎麼運作的，那就明天見！</p>
@@ -713,7 +713,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:35:55
+                    :</strong> 2025-08-20 11:38:34
             </li>
         
         <li>

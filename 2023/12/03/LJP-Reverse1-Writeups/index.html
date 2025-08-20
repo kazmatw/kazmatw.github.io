@@ -25,20 +25,20 @@
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="baby先用 IDA 開起來看看。  首先會先看到一個解爛的 start()，裡面塞了一大坨參數，對他 y 一下把參數清掉。  舒服多了，再來我們四處逛一下會發現他好像開了一個檔然後一直往裡面寫東西，那我們就在它寫入的地方下個斷點來看看他在寫啥。  可以看到我們把斷點下在 0x4010ae，並且 $rsi 也就是即將寫入的值是 “F”，再繼續 continue 看看。  所以可以猜到他在寫的是：F">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/source/images/rev1.png">
-<meta property="og:image" content="https://kazma.tw/source/images/rev2.png">
-<meta property="og:image" content="https://kazma.tw/source/images/write.png">
-<meta property="og:image" content="https://kazma.tw/source/images/gdb.png">
-<meta property="og:image" content="https://kazma.tw/source/images/L.png">
-<meta property="og:image" content="https://kazma.tw/source/images/A.png">
+<meta property="og:image" content="https://kazma.tw/images/rev1.png">
+<meta property="og:image" content="https://kazma.tw/images/rev2.png">
+<meta property="og:image" content="https://kazma.tw/images/write.png">
+<meta property="og:image" content="https://kazma.tw/images/gdb.png">
+<meta property="og:image" content="https://kazma.tw/images/L.png">
+<meta property="og:image" content="https://kazma.tw/images/A.png">
 <meta property="article:published_time" content="2023-12-03T15:58:23.000Z">
-<meta property="article:modified_time" content="2025-08-20T03:33:54.788Z">
+<meta property="article:modified_time" content="2025-08-20T03:38:34.018Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="reverse">
 <meta property="article:tag" content="lab">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/source/images/rev1.png">
+<meta name="twitter:image" content="https://kazma.tw/images/rev1.png">
     
     
     <!--- Icon Part-->
@@ -589,8 +589,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:33:54</span>
-            <span class="mobile">2025-08-20 11:33:54</span>
+            <span class="desktop">2025-08-20 11:38:34</span>
+            <span class="mobile">2025-08-20 11:38:34</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -640,38 +640,38 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/rev1.png"
+                     data-src="/../images/rev1.png"
                       alt="Overview"
                 ></p>
 <p>首先會先看到一個解爛的 start()，裡面塞了一大坨參數，對他 y 一下把參數清掉。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/rev2.png"
+                     data-src="/../images/rev2.png"
                       alt="good"
                 ></p>
 <p>舒服多了，再來我們四處逛一下會發現他好像開了一個檔然後一直往裡面寫東西，那我們就在它寫入的地方下個斷點來看看他在寫啥。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/write.png"
+                     data-src="/../images/write.png"
                       alt="write"
                 ></p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/gdb.png"
+                     data-src="/../images/gdb.png"
                       alt="gdb"
                 ><br>可以看到我們把斷點下在 0x4010ae，並且 $rsi 也就是即將寫入的值是 “F”，再繼續 continue 看看。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/L.png"
+                     data-src="/../images/L.png"
                       alt="L"
                 ><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/A.png"
+                     data-src="/../images/A.png"
                       alt="A"
                 ></p>
 <p>所以可以猜到他在寫的是：FLAG…<br>這題就醬，繼續 c 下去就出來囉！</p>
@@ -689,7 +689,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:33:54
+                    :</strong> 2025-08-20 11:38:34
             </li>
         
         <li>

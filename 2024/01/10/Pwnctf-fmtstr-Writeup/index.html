@@ -25,16 +25,16 @@
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="fmtstr這題在考的是 format string，可以從 gdb 看到 flag 在 stack 裡的位置如下：  $rsp 的位置是 6，推算可以得知 flag 在 12 ~ 18 的位置，最後印出來後再調整一下 little endian 的格式，exploit.py 如下： 12345678910111213141516171819202122from pwn import *r &#x3D; p">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/source/images/fmtstr_stack.png">
+<meta property="og:image" content="https://kazma.tw/images/fmtstr_stack.png">
 <meta property="article:published_time" content="2024-01-09T17:21:15.000Z">
-<meta property="article:modified_time" content="2025-08-20T03:35:55.651Z">
+<meta property="article:modified_time" content="2025-08-20T03:38:34.081Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="lab">
 <meta property="article:tag" content="pwnctf">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/source/images/fmtstr_stack.png">
+<meta name="twitter:image" content="https://kazma.tw/images/fmtstr_stack.png">
     
     
     <!--- Icon Part-->
@@ -585,8 +585,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:35:55</span>
-            <span class="mobile">2025-08-20 11:35:55</span>
+            <span class="desktop">2025-08-20 11:38:34</span>
+            <span class="mobile">2025-08-20 11:38:34</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -640,7 +640,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/fmtstr_stack.png"
+                     data-src="/../images/fmtstr_stack.png"
                       alt="stack"
                 ></p>
 <p>$rsp 的位置是 6，推算可以得知 flag 在 12 ~ 18 的位置，最後印出來後再調整一下 little endian 的格式，exploit.py 如下：</p>
@@ -659,7 +659,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:35:55
+                    :</strong> 2025-08-20 11:38:34
             </li>
         
         <li>

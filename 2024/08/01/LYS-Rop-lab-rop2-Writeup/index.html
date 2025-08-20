@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="lab_rop2這次藉著到 AIS3 當助教的緣故順便跟 Curious  一起把 LYS ROP 系列課程的 lab 整理到了部落格，也方便給學員參考。那因為是一系列的 lab，所以接下來只會主要講跟上個版本的差異 Stack Migration首先提一下 stack migration 的概念：當我們今天發現程式可以 overflow 但是溢出的長度卻不夠我們構造 ROP 開 shell 的時">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/source/images/rop2_stack.png">
-<meta property="og:image" content="https://kazma.tw/source/images/rop2_explain.png">
-<meta property="og:image" content="https://kazma.tw/source/images/rop2_explain2.png">
+<meta property="og:image" content="https://kazma.tw/images/rop2_stack.png">
+<meta property="og:image" content="https://kazma.tw/images/rop2_explain.png">
+<meta property="og:image" content="https://kazma.tw/images/rop2_explain2.png">
 <meta property="article:published_time" content="2024-08-01T01:24:27.147Z">
-<meta property="article:modified_time" content="2025-08-20T03:35:55.690Z">
+<meta property="article:modified_time" content="2025-08-20T03:38:34.096Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="writeup">
@@ -37,7 +37,7 @@
 <meta property="article:tag" content="rop">
 <meta property="article:tag" content="migration">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/source/images/rop2_stack.png">
+<meta name="twitter:image" content="https://kazma.tw/images/rop2_stack.png">
     
     
     <!--- Icon Part-->
@@ -588,8 +588,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:35:55</span>
-            <span class="mobile">2025-08-20 11:35:55</span>
+            <span class="desktop">2025-08-20 11:38:34</span>
+            <span class="mobile">2025-08-20 11:38:34</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -647,7 +647,7 @@
 <h2 id="Stack-Migration"><a href="#Stack-Migration" class="headerlink" title="Stack Migration"></a>Stack Migration</h2><p>首先提一下 stack migration 的概念：<br>當我們今天發現程式可以 overflow 但是溢出的長度卻不夠我們構造 ROP 開 shell 的時候，我們可以透過塞入一個 <code>leave; ret</code> gadget，控制 rbp 進而跳到另外一個足夠的空間詠唱。<br>以下附上 LYS 的投影片截圖參考：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/rop2_stack.png"
+                     data-src="/../images/rop2_stack.png"
                       alt="stack"
                 ></p>
 <h2 id="Diff"><a href="#Diff" class="headerlink" title="Diff"></a>Diff</h2><p>首先附上部分程式碼：</p>
@@ -658,12 +658,12 @@
 <h2 id="Dive-in"><a href="#Dive-in" class="headerlink" title="Dive in"></a>Dive in</h2><p>那剛好這幾天在 AIS3 當助教有很多學員都問到同一個問題，這邊提出來討論：<br>Q: 為什麼 migration 不是跳到 name + 8 的位置，執行 <code>/bin/sh\x00</code> 不會報錯嗎？<br>A: 問的好，首先如果我們不確定 exploit 執行過程中到底 binary 發生什麼事的話，gdb 是我們的好朋友。<br>那打開 gdb 後我們首先來看一下 payload 放進去的樣子：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/rop2_explain.png"
+                     data-src="/../images/rop2_explain.png"
                       alt="explain"
                 ><br>看起來很完美，那繼續執行下去很去就會發現兩次的 <code>leave; ret</code> 會把 rbp 填成 <code>/bin/sh\x00</code>：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/rop2_explain2.png"
+                     data-src="/../images/rop2_explain2.png"
                       alt="explain2"
                 ><br>所以這樣剛好 rip 就會從 rop chain 的開頭開始執行。</p>
 <h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p>最後依照慣例附上 exploit 的結果：</p>
@@ -682,7 +682,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:35:55
+                    :</strong> 2025-08-20 11:38:34
             </li>
         
         <li>

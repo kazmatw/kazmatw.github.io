@@ -25,18 +25,18 @@
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="ret2pltr2 看一下 main：  file 看一下：  因為是 dynamically linked，所以 gadget 會很少，可能不能直接拼出一個 shell，所以這題改用 ret2plt 的方式，計畫是找到可以控 rdi 的 gadget 然後一個有 rwx 的 地址區段，再 call gets 的 plt 來往裡面寫入 sh，最後採 syscall 的 plt，召喚我們的 shel">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/source/images/plt_r2.png">
-<meta property="og:image" content="https://kazma.tw/source/images/plt_file.png">
-<meta property="og:image" content="https://kazma.tw/source/images/plt_bss2.png">
-<meta property="og:image" content="https://kazma.tw/source/images/plt_result.png">
+<meta property="og:image" content="https://kazma.tw/images/plt_r2.png">
+<meta property="og:image" content="https://kazma.tw/images/plt_file.png">
+<meta property="og:image" content="https://kazma.tw/images/plt_bss2.png">
+<meta property="og:image" content="https://kazma.tw/images/plt_result.png">
 <meta property="article:published_time" content="2023-12-17T07:13:26.000Z">
-<meta property="article:modified_time" content="2025-08-20T03:35:55.551Z">
+<meta property="article:modified_time" content="2025-08-20T03:38:34.001Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="lab">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/source/images/plt_r2.png">
+<meta name="twitter:image" content="https://kazma.tw/images/plt_r2.png">
     
     
     <!--- Icon Part-->
@@ -587,8 +587,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2025-08-20 11:35:55</span>
-            <span class="mobile">2025-08-20 11:35:55</span>
+            <span class="desktop">2025-08-20 11:38:34</span>
+            <span class="mobile">2025-08-20 11:38:34</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -638,21 +638,21 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/plt_r2.png"
+                     data-src="/../images/plt_r2.png"
                       alt="r2"
                 ></p>
 <p>file 看一下：</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/plt_file.png"
+                     data-src="/../images/plt_file.png"
                       alt="file"
                 ></p>
 <p>因為是 dynamically linked，所以 gadget 會很少，可能不能直接拼出一個 shell，所以這題改用 ret2plt 的方式，計畫是找到可以控 rdi 的 gadget 然後一個有 rwx 的 地址區段，再 call gets 的 plt 來往裡面寫入 sh，最後採 syscall 的 plt，召喚我們的 shell，那先用 gdb 找一下可寫可執行的地址：</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/plt_bss2.png"
+                     data-src="/../images/plt_bss2.png"
                       alt="bss"
                 ></p>
 <p>隨便挑一個不會蓋到東西的位址，這裡挑 0x601070。<br>exploit.py：</p>
@@ -661,7 +661,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/source/images/plt_result.png"
+                     data-src="/../images/plt_result.png"
                       alt="result"
                 ></p>
 <h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4>
@@ -678,7 +678,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2025-08-20 11:35:55
+                    :</strong> 2025-08-20 11:38:34
             </li>
         
         <li>
