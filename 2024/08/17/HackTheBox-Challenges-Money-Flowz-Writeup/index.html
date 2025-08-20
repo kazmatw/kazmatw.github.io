@@ -25,23 +25,23 @@
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="來玩一下 Osint 的 CTF ~ Description Frank Vitalik is a hustler, can you figure out where the money flows?  對，題目就這樣而已 XD Exploitation首先人名應該是比較獨特的，所以先嘗試用 google hacking 的技巧來找這個人名加上一些關鍵字，ex: &quot;Frank Vital">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/images/money_flow_nothing.png">
-<meta property="og:image" content="https://kazma.tw/images/money_flow_result.png">
-<meta property="og:image" content="https://kazma.tw/images/money_flow_user.png">
-<meta property="og:image" content="https://kazma.tw/images/flow_htb.png">
-<meta property="og:image" content="https://kazma.tw/images/flow_giveaway.png">
-<meta property="og:image" content="https://kazma.tw/images/flow_account.png">
-<meta property="og:image" content="https://kazma.tw/images/flow_no.png">
-<meta property="og:image" content="https://kazma.tw/images/flow_pwn.png">
+<meta property="og:image" content="https://kazma.tw/source/images/money_flow_nothing.png">
+<meta property="og:image" content="https://kazma.tw/source/images/money_flow_result.png">
+<meta property="og:image" content="https://kazma.tw/source/images/money_flow_user.png">
+<meta property="og:image" content="https://kazma.tw/source/images/flow_htb.png">
+<meta property="og:image" content="https://kazma.tw/source/images/flow_giveaway.png">
+<meta property="og:image" content="https://kazma.tw/source/images/flow_account.png">
+<meta property="og:image" content="https://kazma.tw/source/images/flow_no.png">
+<meta property="og:image" content="https://kazma.tw/source/images/flow_pwn.png">
 <meta property="article:published_time" content="2024-08-17T08:03:00.087Z">
-<meta property="article:modified_time" content="2024-08-18T16:22:50.784Z">
+<meta property="article:modified_time" content="2025-08-20T03:34:36.189Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="htb">
 <meta property="article:tag" content="challenges">
 <meta property="article:tag" content="writeup&#39;">
 <meta property="article:tag" content="osint">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/images/money_flow_nothing.png">
+<meta name="twitter:image" content="https://kazma.tw/source/images/money_flow_nothing.png">
     
     
     <!--- Icon Part-->
@@ -592,8 +592,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-19 00:22:50</span>
-            <span class="mobile">2024-08-19 00:22:50</span>
+            <span class="desktop">2025-08-20 11:34:36</span>
+            <span class="mobile">2025-08-20 11:34:36</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -651,44 +651,44 @@
 <h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>首先人名應該是比較獨特的，所以先嘗試用 google hacking 的技巧來找這個人名加上一些關鍵字，ex: <code>&quot;Frank Vitalik&quot; +money</code><br>結果出現一堆人的 writeup 超好笑 XD，我們可以嘗試用 google hacking 的技巧忽略特定關鍵字，ex: <code>&quot;Frank Vitalik&quot; +money -hackthebox -writeup</code><br>結果什麼都沒有 w：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/money_flow_nothing.png"
+                     data-src="/source/images/money_flow_nothing.png"
                       alt="nothing"
                 ><br>改成搜尋：<code>&quot;Frank Vitalik&quot; -hackthebox -writeup</code><br>結果：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/money_flow_result.png"
+                     data-src="/source/images/money_flow_result.png"
                       alt="result"
                 ><br>結果好像都跟錢有扯到一點關係，我們先看看第一個：<br><a class="link"   target="_blank" rel="noopener" href="https://www.reddit.com/user/frankvitalik/" >https://www.reddit.com/user/frankvitalik/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>發現 Frank Vitalik 是一個 reddit 上的用戶，下面有一些在討論騙局的文章：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/money_flow_user.png"
+                     data-src="/source/images/money_flow_user.png"
                       alt="user"
                 ><br>第一篇好像被移除了，我們看一下第二篇：<br><a class="link"   target="_blank" rel="noopener" href="https://www.reddit.com/r/CryptoCurrency/comments/goptey/whats_the_cleverest_scam_youve_seen_in_crypto/" >What’s the cleverest scam you’ve seen in crypto?
  <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>上面這篇在講述之前有個很聰明的加密貨幣騙局，是關於有人故意到處洩漏自己錢包的私鑰，然後透過讓別人支付手續費來嘗試領取錢包裡不多的餘額，但重點就在他自己寫了個腳本把所有進去的金流馬上提領出來，三年有兩萬多筆交易。然後有附一個很多交易紀錄的連結，不過目前資訊還不足所以我們回到上一頁繼續逛逛。<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/flow_htb.png"
+                     data-src="/source/images/flow_htb.png"
                       alt="htb"
                 ><br>結果突然看到這個人名是 htb 的帳號，確定了我們的 flag 應該就在附近，我們去看看剩下那篇還沒看的貼文：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/flow_giveaway.png"
+                     data-src="/source/images/flow_giveaway.png"
                       alt="giveaway"
                 ><br>結果看到這邊給了一個網址帶有 htb 的 free coin 連結，點進去會看到：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/flow_account.png"
+                     data-src="/source/images/flow_account.png"
                       alt="account"
                 ><br>看到這邊應該就會猜到 HackTheBox 在 ropsten net 這個測試網路裡模擬了上面提到的騙局，然後帳號是 <code>0x1b3247Cd0A59ac8B37A922804D150556dB837699</code>，所以接下來我們就去翻 ropsten net 的交易紀錄查詢這個帳號應該就有機會找到 flag 了！<br>結果一直找不到，發現他好像已經不能查紀錄了，所以這題應該不能做了QQ<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/flow_no.png"
+                     data-src="/source/images/flow_no.png"
                       alt="no"
                 ><br>上面提到的網址已經沒有服務了，所以只好使用通靈術拿下這題。</p>
 <h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/flow_pwn.png"
+                     data-src="/source/images/flow_pwn.png"
                       alt="pwn"
                 ></p>
 
@@ -705,7 +705,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-08-19 00:22:50
+                    :</strong> 2025-08-20 11:34:36
             </li>
         
         <li>

@@ -25,10 +25,10 @@
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="Recon首先這題是保護全開，然後我們先跑個幾次測試之後就可以得到資訊是前面的 Name 跟 Nickname 不重要，然後我們選第一台車跑第二張圖，或是第二台車跑第一張圖就可以比較容易贏得遊戲。遊戲勝利後他會去打開 flag.txt 所以我們需要先隨便設定一個 flag.txt，但是他只會打開不會輸出出來，丟進去 ida 後就會看到這邊在最後得獎感言的部分有一個 printf 的 format">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/images/racecar_gdb.png">
-<meta property="og:image" content="https://kazma.tw/images/racecar_pwn.png">
+<meta property="og:image" content="https://kazma.tw/source/images/racecar_gdb.png">
+<meta property="og:image" content="https://kazma.tw/source/images/racecar_pwn.png">
 <meta property="article:published_time" content="2024-10-28T13:32:58.318Z">
-<meta property="article:modified_time" content="2024-10-28T18:24:57.623Z">
+<meta property="article:modified_time" content="2025-08-20T03:35:55.491Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="pwn">
 <meta property="article:tag" content="htb">
@@ -36,7 +36,7 @@
 <meta property="article:tag" content="writeup&#39;">
 <meta property="article:tag" content="fmtstr">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/images/racecar_gdb.png">
+<meta name="twitter:image" content="https://kazma.tw/source/images/racecar_gdb.png">
     
     
     <!--- Icon Part-->
@@ -587,8 +587,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-10-29 02:24:57</span>
-            <span class="mobile">2024-10-29 02:24:57</span>
+            <span class="desktop">2025-08-20 11:35:55</span>
+            <span class="mobile">2025-08-20 11:35:55</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -647,7 +647,7 @@
 <h2 id="Exploitation"><a href="#Exploitation" class="headerlink" title="Exploitation"></a>Exploitation</h2><p>所以我們可以透過 format string 印出 flag.txt 的內容，然後我們可以先透過 gdb 來看 flag 的位置然後寫出我們的 exploit 來幫我們解出 flag。<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/racecar_gdb.png"
+                     data-src="/source/images/racecar_gdb.png"
                       alt="gdb"
                 ><br>我們本地的 flag 設定成：</p>
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;aaaabbbb&quot;</span> &gt; flag.txt</span><br></pre></td></tr></table></figure></div>
@@ -659,7 +659,7 @@
 <h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/racecar_pwn.png"
+                     data-src="/source/images/racecar_pwn.png"
                       alt="pwn"
                 ></p>
 
@@ -676,7 +676,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-10-29 02:24:57
+                    :</strong> 2025-08-20 11:35:55
             </li>
         
         <li>

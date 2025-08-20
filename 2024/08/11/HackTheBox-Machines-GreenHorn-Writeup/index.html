@@ -25,20 +25,20 @@
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="Exploitation首先一樣用 nmap 看一下他有開哪些服務： 123456789└──╼ [★]$ nmap -sV 10.10.11.25Starting Nmap 7.94SVN ( https:&#x2F;&#x2F;nmap.org ) at 2024-08-11 02:36 CDTNmap scan report for 10.10.11.25Host is up (0.0024s latency)">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/images/green_pluck.png">
-<meta property="og:image" content="https://kazma.tw/images/green_git.png">
-<meta property="og:image" content="https://kazma.tw/images/green_crack.png">
-<meta property="og:image" content="https://kazma.tw/images/green_depix.png">
-<meta property="og:image" content="https://kazma.tw/images/green.png">
+<meta property="og:image" content="https://kazma.tw/source/images/green_pluck.png">
+<meta property="og:image" content="https://kazma.tw/source/images/green_git.png">
+<meta property="og:image" content="https://kazma.tw/source/images/green_crack.png">
+<meta property="og:image" content="https://kazma.tw/source/images/green_depix.png">
+<meta property="og:image" content="https://kazma.tw/source/images/green.png">
 <meta property="article:published_time" content="2024-08-11T03:36:07.232Z">
-<meta property="article:modified_time" content="2024-08-11T09:15:38.028Z">
+<meta property="article:modified_time" content="2025-08-20T03:35:55.492Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="writeup">
 <meta property="article:tag" content="htb">
 <meta property="article:tag" content="machines">
 <meta property="article:tag" content="pt">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/images/green_pluck.png">
+<meta name="twitter:image" content="https://kazma.tw/source/images/green_pluck.png">
     
     
     <!--- Icon Part-->
@@ -589,8 +589,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-08-11 17:15:38</span>
-            <span class="mobile">2024-08-11 17:15:38</span>
+            <span class="desktop">2025-08-20 11:35:55</span>
+            <span class="mobile">2025-08-20 11:35:55</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -647,19 +647,19 @@
 <p>連上網站後逛一圈會發現首頁底下有個 admin 的按鈕點進去會看到：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/green_pluck.png"
+                     data-src="/source/images/green_pluck.png"
                       alt="pluck"
                 ><br>上網查一下 pluck 是什麼：</p>
 <blockquote>
 <p> Pluck is your small and simple content management system, written in php. With pluck, you can easily manage your own website without knowledge of programming languages. Pluck focuses on ease of use and enables everyone to manage his own website. This makes pluck an excellent choice for every small website.<br>看起來是一個用 php 寫的框架，讓人方便管理網站的。<br>同時截圖左邊可以看到 pluck 4.7.18 的小字，那上網查會發現這是有漏洞的版本，研究了他的利用手法後，我們會發現他有一個上傳漏洞，但目前我們可能要先想辦法登入他，那一開始 nmap 還有掃到 3000 port 有開服務，用瀏覽器存取後會發現是一個自架的 git server，在可能的路徑翻找一下會看到：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/green_git.png"
+                     data-src="/source/images/green_git.png"
                       alt="git"
                 ><br>我們可以透過線上工具去嘗試破解這串密文：<br><a class="link"   target="_blank" rel="noopener" href="https://crackstation.net/" >https://crackstation.net/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/green_crack.png"
+                     data-src="/source/images/green_crack.png"
                       alt="crack"
                 ><br>找到密碼：<code>iloveyou1</code> -&gt; 登入 pluck<br>上網找到一個很方便的腳本：<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/b0ySie7e/Pluck_Cms_4.7.18_RCE_Exploit" >https://github.com/b0ySie7e/Pluck_Cms_4.7.18_RCE_Exploit <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>照著 README.md 的教學使用：</p>
 </blockquote>
@@ -678,7 +678,7 @@
 <p>看一下結果：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/green_depix.png"
+                     data-src="/source/images/green_depix.png"
                       alt="depix"
                 ><br>得到密碼是：sidefromsidetheothersidesidefromsidetheotherside<br>馬上丟進去試試看：</p>
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">www-data@greenhorn:/$ su root</span><br><span class="line">su root</span><br><span class="line">Password: sidefromsidetheothersidesidefromsidetheotherside</span><br><span class="line"></span><br><span class="line">root@greenhorn:/<span class="comment"># id</span></span><br><span class="line"><span class="built_in">id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root)</span><br><span class="line">root@greenhorn:/<span class="comment"># find / -name &#x27;root.txt&#x27; 2&gt;/dev/null</span></span><br><span class="line">find / -name <span class="string">&#x27;root.txt&#x27;</span> 2&gt;/dev/null</span><br><span class="line">/root/root.txt</span><br></pre></td></tr></table></figure></div>
@@ -686,7 +686,7 @@
 <h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/green.png"
+                     data-src="/source/images/green.png"
                       alt="green"
                 ></p>
 
@@ -703,7 +703,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-08-11 17:15:38
+                    :</strong> 2025-08-20 11:35:55
             </li>
         
         <li>

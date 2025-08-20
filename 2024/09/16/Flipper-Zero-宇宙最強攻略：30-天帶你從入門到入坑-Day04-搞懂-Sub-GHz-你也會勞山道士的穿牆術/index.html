@@ -28,17 +28,17 @@
 <meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/-BM_kwmnhuC3hWYmGaBwJ_sub-ghznocar-1.png?format=webp&width=1280">
 <meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/_yl6oxmqzaB7G7BFLSkgu_monosnap-miro-2023-07-14-13-17-38.jpg?format=webp&width=1280">
 <meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/iWJNVsM0quT9-4IdFRVEq_monosnap-miro-2023-07-14-13-19-38.jpg?format=webp&width=1280">
-<meta property="og:image" content="https://kazma.tw/images/rssi.png">
-<meta property="og:image" content="https://kazma.tw/images/hopping.png">
+<meta property="og:image" content="https://kazma.tw/source/images/rssi.png">
+<meta property="og:image" content="https://kazma.tw/source/images/hopping.png">
 <meta property="og:image" content="https://i1.wp.com/inews.gtimg.com/newsapp_bt/0/4922910496/641">
 <meta property="og:image" content="https://cdn.flipperzero.one/Monosnap_Miro_2022-08-23_14-24-29.png">
 <meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/3LARdEupzZR64-chUzbPH_monosnap-miro-2023-07-14-12-19-41.jpg?format=webp&width=1280">
 <meta property="og:image" content="https://images.archbee.com/3StCFqarJkJQZV-7N79yY/oSgQs07b-5ukhIV49qyaX_monosnap-miro-2023-07-12-19-43-57.jpg?format=webp&width=1280">
 <meta property="og:image" content="https://cdn.flipperzero.one/Supported_vendors_sub-ghz____1.png">
-<meta property="og:image" content="https://kazma.tw/images/flipper_interesting.png">
-<meta property="og:image" content="https://kazma.tw/images/check.png">
+<meta property="og:image" content="https://kazma.tw/source/images/flipper_interesting.png">
+<meta property="og:image" content="https://kazma.tw/source/images/check.png">
 <meta property="article:published_time" content="2024-09-16T01:59:21.421Z">
-<meta property="article:modified_time" content="2024-09-17T18:06:28.172Z">
+<meta property="article:modified_time" content="2025-08-20T03:35:55.602Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="flipper-zero">
 <meta property="article:tag" content="iThome">
@@ -595,8 +595,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-09-18 02:06:28</span>
-            <span class="mobile">2024-09-18 02:06:28</span>
+            <span class="desktop">2025-08-20 11:35:55</span>
+            <span class="mobile">2025-08-20 11:35:55</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -706,13 +706,13 @@
 <h2 id="Frequency-Analyzer"><a href="#Frequency-Analyzer" class="headerlink" title="Frequency Analyzer"></a>Frequency Analyzer</h2><p>我們可以透過這個功能分析目標訊號的頻率。<br>Flipper Zero 會顯示大於閾值且強度最高的訊號，預設的閾值是 RSSI（Received Signal Strength Indicator）大於 -90 dBm，而 Momentum 把這個 Config 改成可以直接透過左右鍵去調整閾值大小，如下圖所示：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/rssi.png"
+                     data-src="/source/images/rssi.png"
                       alt="rssi"
                 ><br>（截圖功能真好用XD）<br>使用這功能的時候還是要盡可能地靠近裝置跟收發的天線，否則還是會有可能會有很多雜訊或是被干擾。</p>
 <h2 id="Hopping-between-frequencies"><a href="#Hopping-between-frequencies" class="headerlink" title="Hopping between frequencies"></a>Hopping between frequencies</h2><p>這功能蠻好用的，我們可以在不知道頻率的情況下，啟用 Hopping 的功能，就會在特定的頻率間反覆跳躍，我們可以從 Read -&gt; Config 去調整這個設定，如下圖：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/hopping.png"
+                     data-src="/source/images/hopping.png"
                       alt="hopping"
                 ><br>可以看到 Momentum 開啟 Hopping 的方式會順便調整他的閾值，開啟後也會看到上面的頻率消失，接著讀取的時候就會：<br><img  
                      lazyload
@@ -771,7 +771,7 @@
                 ><br>圖片來源：<a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/" >https://docs.flipper.net <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>我們可以到官方文件看到 Flipper Zero 目前支援的裝置和廠商:<br><a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/sub-ghz/supported-vendors" >https://docs.flipper.net/sub-ghz/supported-vendors <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>他們也很鼓勵我們如果發現自己的裝置不在列表中可以去官方論壇留下裝置資訊，他們會盡可能地增加裝置覆蓋率。<br>那有趣的是，這邊官方特別提到：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/flipper_interesting.png"
+                     data-src="/source/images/flipper_interesting.png"
                       alt="interesting"
                 ><br>他說他們可以 decode dynamic 的訊號，只是基於安全原因不給你存而已，那既然韌體是開源的，我們有必要來看一下這部分怎麼寫的，這部分會在之後的文章帶大家深入討論。</p>
 <h2 id="Allowed-Frequencies"><a href="#Allowed-Frequencies" class="headerlink" title="Allowed Frequencies"></a>Allowed Frequencies</h2><p>儘管 Flipper Zero 可以接收範圍在 300-348 MHz、387-464 MHz 和 779-928 MHz 的所有頻率的信號。但是根據法律和規範，我們只能用它來發射民用許可頻率的信號，以防止干擾重要的通信服務（如緊急服務通信）。<br>而各地區的限制都有所不同，請各位詳閱官方這部分的文件以避免觸法：<br><a class="link"   target="_blank" rel="noopener" href="https://docs.flipper.net/sub-ghz/frequencies" >https://docs.flipper.net/sub-ghz/frequencies <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><br>其中臺灣許可的發射頻率範圍在：</p>
@@ -783,7 +783,7 @@
 <p>如果確定發射的頻率在法律許可的範圍後，我們可以到下面的位置解鎖發射限制：<br>Momentum -&gt; Protocols -&gt; Sub-GHz Bypass Region Lock<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/check.png"
+                     data-src="/source/images/check.png"
                       alt="check"
                 ></p>
 <h2 id="按讚訂閱收藏小鈴噹叮叮叮"><a href="#按讚訂閱收藏小鈴噹叮叮叮" class="headerlink" title="按讚訂閱收藏小鈴噹叮叮叮"></a>按讚訂閱收藏小鈴噹叮叮叮</h2><p>OK 今天的 Sub-GHz 基礎介紹大概就到這邊。<br>而大家有沒有想過如果我們可以用 Flipper Zero 複製隔壁鄰居的車子遙控器或是車庫鐵門，那我們是不是就能夠飛天遁地、橫行無阻、控制世界了。當然沒那麼簡單，但各位又會想，可是路邊的遙控器店老闆不是很輕鬆就能複製家裡的遙控器嗎？所以肯定還是有方法的嘛。沒錯，大家問的問題都很好，明天就會來跟各位揭曉這些問題的答案，請各位敬請期待！</p>
@@ -806,7 +806,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-09-18 02:06:28
+                    :</strong> 2025-08-20 11:35:55
             </li>
         
         <li>

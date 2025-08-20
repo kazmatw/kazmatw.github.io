@@ -25,11 +25,11 @@
 <meta property="og:site_name" content="kazma&#39;s blog">
 <meta property="og:description" content="這題給我們封包分析，可以練習一下 wireshark 的用法。首先我們可以先看 Statistics -&gt; Protocol Hierarchy 看一下有哪些協議：我們首先關心的是其中的 data，我們可以直接搜尋 data 的封包，或是右鍵 Apply as Filter -&gt; Selected，然後我們 Follow TCP stream 可以看到下面的畫面：我們可以看到駭客執行了">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://kazma.tw/images/spooky_hierarchy.png">
-<meta property="og:image" content="https://kazma.tw/images/spooky_b64.png">
-<meta property="og:image" content="https://kazma.tw/images/spooky_pwn.png">
+<meta property="og:image" content="https://kazma.tw/source/images/spooky_hierarchy.png">
+<meta property="og:image" content="https://kazma.tw/source/images/spooky_b64.png">
+<meta property="og:image" content="https://kazma.tw/source/images/spooky_pwn.png">
 <meta property="article:published_time" content="2024-10-31T11:26:23.920Z">
-<meta property="article:modified_time" content="2024-10-31T11:57:15.500Z">
+<meta property="article:modified_time" content="2025-08-20T03:35:55.491Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="htb">
 <meta property="article:tag" content="challenges">
@@ -37,7 +37,7 @@
 <meta property="article:tag" content="misc">
 <meta property="article:tag" content="pcap">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://kazma.tw/images/spooky_hierarchy.png">
+<meta name="twitter:image" content="https://kazma.tw/source/images/spooky_hierarchy.png">
     
     
     <!--- Icon Part-->
@@ -588,8 +588,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-10-31 19:57:15</span>
-            <span class="mobile">2024-10-31 19:57:15</span>
+            <span class="desktop">2025-08-20 11:35:55</span>
+            <span class="mobile">2025-08-20 11:35:55</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -646,12 +646,12 @@
             <p>這題給我們封包分析，可以練習一下 wireshark 的用法。<br>首先我們可以先看 Statistics -&gt; Protocol Hierarchy 看一下有哪些協議：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/spooky_hierarchy.png"
+                     data-src="/source/images/spooky_hierarchy.png"
                       alt="hierarchy"
                 ><br>我們首先關心的是其中的 data，我們可以直接搜尋 data 的封包，或是右鍵 Apply as Filter -&gt; Selected，然後我們 Follow TCP stream 可以看到下面的畫面：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/spooky_b64.png"
+                     data-src="/source/images/spooky_b64.png"
                       alt="b64"
                 ><br>我們可以看到駭客執行了一系列的指令操作其中包括把 reverse shell 寫入 &#x2F;root&#x2F;.bashrc 這樣下次開啟 shell 就會觸發，其中還有隱藏訊息，我們把它弄回來就會看到 flag 了：</p>
 <div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">╰─ <span class="built_in">echo</span> <span class="string">&quot;==gC9FSI5tGMwA3cfRjd0o2Xz0GNjNjYfR3c1p2Xn5WMyBXNfRjd0o2eCRFS&quot;</span> | rev | <span class="built_in">base64</span> -d                            ─╯</span><br><span class="line">HTB&#123;j4v4_5pr1ng_just_b3c4m3_j4v4_sp00ky!!&#125;</span><br></pre></td></tr></table></figure></div>
@@ -659,7 +659,7 @@
 <h4 id="Pwned"><a href="#Pwned" class="headerlink" title="Pwned !!!"></a>Pwned !!!</h4><p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/spooky_pwn.png"
+                     data-src="/source/images/spooky_pwn.png"
                       alt="pwn"
                 ></p>
 
@@ -676,7 +676,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-10-31 19:57:15
+                    :</strong> 2025-08-20 11:35:55
             </li>
         
         <li>

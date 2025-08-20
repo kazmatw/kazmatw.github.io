@@ -27,11 +27,11 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://blog.flipper.net/content/images/size/w1600/2024/09/Flipper_Zero_Firmware_1.0_whats_new_02--1-.png">
 <meta property="og:image" content="https://blog.flipper.net/content/images/size/w1600/2024/09/Flipper_Zero_JavaScript_support_new.png">
-<meta property="og:image" content="https://kazma.tw/images/train.png">
-<meta property="og:image" content="https://kazma.tw/images/hello_from_flipper.png">
-<meta property="og:image" content="https://kazma.tw/images/error.png">
+<meta property="og:image" content="https://kazma.tw/source/images/train.png">
+<meta property="og:image" content="https://kazma.tw/source/images/hello_from_flipper.png">
+<meta property="og:image" content="https://kazma.tw/source/images/error.png">
 <meta property="article:published_time" content="2024-10-09T14:20:49.032Z">
-<meta property="article:modified_time" content="2024-10-27T09:33:47.227Z">
+<meta property="article:modified_time" content="2025-08-20T03:35:55.706Z">
 <meta property="article:author" content="kazma">
 <meta property="article:tag" content="flipper-zero">
 <meta property="article:tag" content="iThome">
@@ -588,8 +588,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-10-27 17:33:47</span>
-            <span class="mobile">2024-10-27 17:33:47</span>
+            <span class="desktop">2025-08-20 11:35:55</span>
+            <span class="mobile">2025-08-20 11:35:55</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -660,7 +660,7 @@
 <h2 id="Train"><a href="#Train" class="headerlink" title="Train"></a>Train</h2><p>其中 Derek 提供了一個他做的 GitHub Repo 可以幫助我們訓練 GPT 其中包含一段 intro.txt 以及三個 train.js，用法就是把 train.js 都丟給 GPT 然後放上 intro.txt 的描述後加上我們的需求例如下面的方式放上去：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/train.png"
+                     data-src="/source/images/train.png"
                       alt="train"
                 ><br>其中 <code>intro.txt</code> 的內容如下：</p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Flipper Zero JavaScript is based on the mJS engine, which is fairly restricted.  For example:</span><br><span class="line">	- You must use the `let` keyword.  `const` and `var` are not allowed.</span><br><span class="line">	- You cannot do string interpolation with the `$`.</span><br><span class="line">	- You must use `let Math = require(&quot;math&quot;);` if you need access to any of the Math functions.</span><br><span class="line">	- You must use `to_string` to convert numerics (like integer and float) into a string.</span><br><span class="line">	- When keyboard.text display the on-screen keyboard, it covers the entire screen (so you can&#x27;t see any previously printed information).</span><br><span class="line">	- All files are stored on the SD Card under the `/ext/` subdirectory.</span><br><span class="line">	- Delays are always measured in milliseconds and use the built-in `delay` function.</span><br><span class="line">	- Uint8Array(buffer) instead of `new Uint8Array(buffer)`.  Objects like `String` do not exist.  See arraybuf_to_string for code that should be used when converting a buffer into a string.</span><br><span class="line">	- There is no split or trim functions build in for strings.  &quot;1,2&quot;.split(&quot;,&quot;); and &quot;x  &quot;.trim(); will generate runtime errors.</span><br><span class="line">	- See the training file for how to use the to_upper_case, to_lower_case, parse_int.  You can get the ascii value of a character in a string using charCodeAt and also convert an ascii value back to a char using chr; see training file for details.</span><br><span class="line">	- Console.log prints to the serial port debugger, as an [I]nfo.  Console.error prints to the serial port debugger, as an [E]rror.  The print method writes to the Flipper display.</span><br><span class="line">	- Functions must be declared before they are used, but typically after all of the require statements.</span><br><span class="line"></span><br><span class="line">Attached are three sample JavaScript files that work on the Flipper Zero.</span><br><span class="line"></span><br><span class="line">You should only use functions defined in the training file, no additional built-in commands are supported.  You should not redefine any function that is used in the training file.</span><br></pre></td></tr></table></figure></div>
@@ -670,7 +670,7 @@
 <p>執行結果：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/hello_from_flipper.png"
+                     data-src="/source/images/hello_from_flipper.png"
                       alt="hello"
                 ></p>
 <p>成功！！<br>接著我們給他新任務，試著讀入使用者輸入：<br>mission: can you prompt for the name of the person then print “Hello <name>!”</p>
@@ -679,7 +679,7 @@
 <p>結果如下：<br><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="/../images/error.png"
+                     data-src="/source/images/error.png"
                       alt="error"
                 ></p>
 <p>結果大概重新試了十次還是一直遇到錯誤，好爛QQ<br>接著我們試著讓他寫一個 BasUSB 的腳本讓他去測試十個最常見的四位數 pin 碼：<br>結果是他還是會寫出許多錯誤，需要我們跟 GPT 來回 debug 3 ~ 5 次才會成功。</p>
@@ -698,7 +698,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-10-27 17:33:47
+                    :</strong> 2025-08-20 11:35:55
             </li>
         
         <li>
